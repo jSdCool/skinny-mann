@@ -94,7 +94,7 @@ PImage CBi;
 PShape coin3D, redArrow, greenArrow, blueArrow, yellowArrow, redScaler, greenScaler, blueScaler, yellowScaler, LevelCreatorLogo;
 
 PApplet primaryWindow=this;
-boolean menue =true, inGame=false, player1_moving_right=false, player1_moving_left=false, dev_mode=true, player1_jumping=false, dead=false, level_complete=false, reset_spawn=false, fs, E_pressed=false, loopThread2=true, showSettingsAfterStart=false, displayFPS=true, displayDebugInfo=false, prevousInGame=false, setPlayerPosTo=false, e3DMode=false, checkpointIn3DStage=false, WPressed=false, SPressed=false, levelCompleteSoundPlayed=false, tutorialMode=false, shadow3D=true, UGC_lvl=false, levelCompatible=false, editingBlueprint=false, viewingItemContents=false, selecting=false, s3D=false, w3D=false, shift3D=false, space3D=false, d3D=false, a3D=false, cam_down=false, cam_up=false, cam_right=false, cam_left=false, isHost=false, killPhysics=false, enteringName=false, enteringPort=false, enteringIP=false, multiplayer=false, clientQuitting=false, waitingForReady=false, loaded=false, reachedEnd=false, editingStage=false, simulating=false, ground=false, check_point=false, goal=false, deleteing=false, moving_player=false, grid_mode=false, holo_gram=false, drawCoins=false, drawingPortal=false, sloap=false, holoTriangle=false, dethPlane=false, selectingBlueprint=false, placingSound=false, drawingSign=false, placingLogicButton=false, draw3DSwitch1=false, draw3DSwitch2=false, editinglogicBoard=false, connectingLogic=false, moveLogicComponents=false, placingAndGate=false, placingOrGate=false, placingXorGate=false, placingNandGate=false, placingNorGate=false, placingXnorGate=false, placingOnSingal=false, placingReadVariable=false, placingSetVaravle=false, placingSetVisibility=false, placingXOffset=false, placingYOffset=false, placingDelay=false, placingZOffset=false, placing3Dsetter=false, placing3Dreader=false, placingPlaySoundLogic=false, placingPulse=false, placingRandom=false, saveColors=false, levelOverview=false, drawingPortal3=false, placingTestLogic=false, settingPlayerSpawn=false, levelCreator=false, drawing=false, draw=false, delete=false, translateXaxis=false, translateYaxis=false, translateZaxis=false, drawingPortal2=false, startup=false, loading=false, newLevel=false, newFile=false, creatingNewBlueprint=false, entering_name=false, loadingBlueprint=false, entering_file_path=false, coursor=false, connecting=false, movingLogicComponent=false, exitLevelCreator=false, levelNotFound=false, transitioningMenu=false,newSoundAsNarration =false;
+boolean menue =true, inGame=false, player1_moving_right=false, player1_moving_left=false, dev_mode=true, player1_jumping=false, dead=false, level_complete=false, reset_spawn=false, fs, E_pressed=false, loopThread2=true, showSettingsAfterStart=false, displayFPS=true, displayDebugInfo=false, prevousInGame=false, setPlayerPosTo=false, e3DMode=false, checkpointIn3DStage=false, WPressed=false, SPressed=false, levelCompleteSoundPlayed=false, tutorialMode=false, shadow3D=true, UGC_lvl=false, levelCompatible=false, editingBlueprint=false, viewingItemContents=false, selecting=false, s3D=false, w3D=false, shift3D=false, space3D=false, d3D=false, a3D=false, cam_down=false, cam_up=false, cam_right=false, cam_left=false, isHost=false, killPhysics=false, enteringName=false, enteringPort=false, enteringIP=false, multiplayer=false, clientQuitting=false, waitingForReady=false, loaded=false, reachedEnd=false, editingStage=false, simulating=false, ground=false, check_point=false, goal=false, deleteing=false, moving_player=false, grid_mode=false, holo_gram=false, drawCoins=false, drawingPortal=false, sloap=false, holoTriangle=false, dethPlane=false, selectingBlueprint=false, placingSound=false, drawingSign=false, placingLogicButton=false, draw3DSwitch1=false, draw3DSwitch2=false, editinglogicBoard=false, connectingLogic=false, moveLogicComponents=false, placingAndGate=false, placingOrGate=false, placingXorGate=false, placingNandGate=false, placingNorGate=false, placingXnorGate=false, placingOnSingal=false, placingReadVariable=false, placingSetVaravle=false, placingSetVisibility=false, placingXOffset=false, placingYOffset=false, placingDelay=false, placingZOffset=false, placing3Dsetter=false, placing3Dreader=false, placingPlaySoundLogic=false, placingPulse=false, placingRandom=false, saveColors=false, levelOverview=false, drawingPortal3=false, placingTestLogic=false, settingPlayerSpawn=false, levelCreator=false, drawing=false, draw=false, delete=false, translateXaxis=false, translateYaxis=false, translateZaxis=false, drawingPortal2=false, startup=false, loading=false, newLevel=false, newFile=false, creatingNewBlueprint=false, entering_name=false, loadingBlueprint=false, entering_file_path=false, coursor=false, connecting=false, movingLogicComponent=false, exitLevelCreator=false, levelNotFound=false, transitioningMenu=false,newSoundAsNarration =false,newBlueprintIs3D = false;
  String Menue ="creds"/*,level="n"*/, version="0.8.1_Early_Access", EDITOR_version="0.1.0_EAc", ip="localhost", name="can't_be_botherd_to_chane_it", input, file_path, rootPath, stageType="", settingsMenue="game play", author="", displayText="", GAME_version=version, internetVersion, cursor="", disconnectReason="", multyplayerSelectionLevels="speed", multyplayerSelectedLevelPath, appdata, coursorr="", new_name, newFileName="", newFileType="2D", fileToCoppyPath="";
 ArrayList<Boolean> coins;
 ArrayList<String> UGCNames = new ArrayList<>(), playerNames=new ArrayList<>();
@@ -873,6 +873,15 @@ void draw() {// the function that is called every fraim
 
         createBlueprintGo.draw();//create button
         lc_backButton.draw();
+        if(newBlueprintIs3D){
+          new2DStage.setColor(#BB48ED, #4857ED);
+          new3DStage.setColor(#BB48ED, #51DFFA);
+        }else{
+          new2DStage.setColor(#BB48ED, #51DFFA);
+          new3DStage.setColor(#BB48ED, #4857ED);
+        }
+        new2DStage.draw();
+        new3DStage.draw();
         stroke(0);
         strokeWeight(1*Scale);
         line(40*Scale, 152*Scale, 800*Scale, 152*Scale);//text line
@@ -898,10 +907,12 @@ void draw() {// the function that is called every fraim
 
       if (editingBlueprint) {//if edditing blueprint
         background(7646207);
-        fill(0);
-        strokeWeight(0);
-        rect(width/2-0.5, 0, 1, height);//draw lines in the center of the screen that indicate wherer (0,0) is
-        rect(0, height/2-0.5, width, 1);
+        if(!e3DMode){
+          fill(0);
+          strokeWeight(0);
+          rect(width/2-0.5, 0, 1, height);//draw lines in the center of the screen that indicate wherer (0,0) is
+          rect(0, height/2-0.5, width, 1);
+        }
         blueprintEditDraw();//draw the accual blueprint
         stageEditGUI();//overlays when placing things
       }//end of edit blueprint
@@ -2075,19 +2086,30 @@ void mouseClicked() {// when you click the mouse
         if (creatingNewBlueprint) {//if creating a new blueprint
           if (createBlueprintGo.isMouseOver()) {//create button
             if (new_name!=null&&!new_name.equals("")) {//if something was entered
-              workingBlueprint=new Stage(new_name, "blueprint");//creat and load the new blueprint
+              if(newBlueprintIs3D){
+                workingBlueprint=new Stage(new_name, "3D blueprint");//creat and load the new blueprint
+              }else{
+                workingBlueprint=new Stage(new_name, "blueprint");//creat and load the new blueprint
+              }
               entering_name=false;//set up enviormatn vaibles
               creatingNewBlueprint=false;
               editingBlueprint=true;
               camPos=-640;
               camPosY=360;
               rootPath=System.getenv("appdata")+"/CBi-games/skinny mann level creator/blueprints";
+              
             }//end of name was enterd
           }//end of create button
           if (lc_backButton.isMouseOver()) {
             startup=true;
             creatingNewBlueprint=false;
             entering_name=false;
+          }
+          if (new3DStage.isMouseOver()) {//buttons to set type
+            newBlueprintIs3D=true;
+          }
+          if (new2DStage.isMouseOver()) {
+            newBlueprintIs3D=false;
           }
         }//end of creating new bluepint
 
@@ -2736,7 +2758,14 @@ void mousePressed() {
         }
       }//end of editng logic board
       if (e3DMode&&selectedIndex!=-1) {
-        StageComponent ct=level.stages.get(currentStageIndex).parts.get(selectedIndex);
+        StageComponent ct = null;
+          if (editingStage) {
+            ct=level.stages.get(currentStageIndex).parts.get(selectedIndex);
+          }
+          if (editingBlueprint) {
+            ct = workingBlueprint.parts.get(selectedIndex);
+          }
+        
         for (int i=0; i<5000; i++) {
           Point3D testPoint=genMousePoint(i);
           if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z+ct.dz && testPoint.z <= ct.z+ct.dz+60) {
