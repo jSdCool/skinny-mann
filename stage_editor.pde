@@ -25,11 +25,12 @@ void stageEditGUI() {
   if (grid_mode) {//grid mode position box
     int X2=0, Y2=0, X1=0, Y1=0;
     X1=(int)((((int)((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos)*Scale);
-    X2=(int)(((int)(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos)*Scale)-X1;
+    X2=(int)(grid_size*Scale);//(int)(((int)(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos)*Scale)-X1;
     Y1=(int)((((int)((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY)*Scale);
-    Y2=(int)(((int)(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY)*Scale)-Y1;
+    Y2=(int)(grid_size*Scale);//(int)(((int)(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY)*Scale)-abs(Y1);\
     fill(#AAAA00,120);
     rect(X1,Y1,X2,Y2);
+
     
   }
 
