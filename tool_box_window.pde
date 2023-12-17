@@ -1708,15 +1708,20 @@ class ToolBox extends PApplet {
               int numofjsons=0;
               for (int i=0; i<files.length; i++) {
                 if (files[i].contains(".json")) {
-                  numofjsons++;
+                  String bpType = loadJSONArray(System.getenv("AppData")+"/CBi-games/skinny mann level creator/blueprints/"+files[i]).getJSONObject(0).getString("type");
+                  if(bpType.equals("blueprint"))
+                    numofjsons++;
                 }
               }
               blueprints=new Stage[numofjsons];
               int pointer=0;
               for (int i=0; i<files.length; i++) {
                 if (files[i].contains(".json")) {
-                  blueprints[pointer]=new Stage(loadJSONArray(System.getenv("AppData")+"/CBi-games/skinny mann level creator/blueprints/"+files[i]));
-                  pointer++;
+                  String bpType = loadJSONArray(System.getenv("AppData")+"/CBi-games/skinny mann level creator/blueprints/"+files[i]).getJSONObject(0).getString("type");
+                  if(bpType.equals("blueprint")){
+                    blueprints[pointer]=new Stage(loadJSONArray(System.getenv("AppData")+"/CBi-games/skinny mann level creator/blueprints/"+files[i]));
+                    pointer++;
+                  }
                 }
               }
               System.out.println(blueprints.length);
