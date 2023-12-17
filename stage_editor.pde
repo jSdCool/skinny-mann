@@ -24,9 +24,9 @@ void stageEditGUI() {
   
   if (grid_mode) {//grid mode position box
     int X2=0, Y2=0, X1=0, Y1=0;
-    X1=(int)((((int)((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos)*Scale);
+    X1=(int)(((floor((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos)*Scale);
     X2=(int)(grid_size*Scale);//(int)(((int)(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos)*Scale)-X1;
-    Y1=(int)((((int)((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY)*Scale);
+    Y1=(int)(((floor((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY)*Scale);
     Y2=(int)(grid_size*Scale);//(int)(((int)(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY)*Scale)-abs(Y1);\
     fill(#AAAA00,120);
     rect(X1,Y1,X2,Y2);
@@ -46,20 +46,20 @@ void stageEditGUI() {
         if (sloap||holoTriangle) {//if your currenly drawing a triangle type
           int X2=0, Y2=0, X1=0, Y1=0;//calcaute the location of the mouese press and unpress location
           if (mouseX>downX) {
-            X1=(int)((downX/Scale+camPos)/grid_size)*grid_size-camPos;
-            X2=(int)(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos;
+            X1=(int)Math.floor((downX/Scale+camPos)/grid_size)*grid_size-camPos;
+            X2=(int)Math.floor(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos;
           }
           if (mouseX<downX) {
-            X1=(int)((mouseX/Scale+camPos)/grid_size)*grid_size-camPos;
-            X2=(int)(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-camPos;
+            X1=(int)Math.floor((mouseX/Scale+camPos)/grid_size)*grid_size-camPos;
+            X2=(int)Math.floor(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-camPos;
           }
           if (mouseY>downY) {
-            Y1=(int)((downY/Scale-camPosY)/grid_size)*grid_size+camPosY;
-            Y2=(int)(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY;
+            Y1=(int)Math.floor((downY/Scale-camPosY)/grid_size)*grid_size+camPosY;
+            Y2=(int)Math.floor(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY;
           }
           if (mouseY<downY) {
-            Y1=(int)((mouseY/Scale-camPosY)/grid_size)*grid_size+camPosY;
-            Y2=(int)(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)+camPosY;
+            Y1=(int)Math.floor((mouseY/Scale-camPosY)/grid_size)*grid_size+camPosY;
+            Y2=(int)Math.floor(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)+camPosY;
           }
           if (triangleMode==0) {//display the triangle that will be created
             triangle(X1*Scale, Y1*Scale, X2*Scale, Y2*Scale, X2*Scale, Y1*Scale);
@@ -76,21 +76,21 @@ void stageEditGUI() {
         } else {//if the type is not a triangle
           int XD=0, YD=0, X1=0, Y1=0;//calcaute the location of the mouese press and unpress location
           if (mouseX>downX) {
-            X1=(int)((downX/Scale+camPos)/grid_size)*grid_size-camPos;
-            XD=(int)(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-X1-camPos;
+            X1=(int)Math.floor((downX/Scale+camPos)/grid_size)*grid_size-camPos;
+            XD=(int)Math.floor(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-X1-camPos;
           }
           if (mouseX<downX) {
-            X1=(int)((mouseX/Scale+camPos)/grid_size)*grid_size-camPos;
-            XD=(int)(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1-camPos;
+            X1=(int)Math.floor((mouseX/Scale+camPos)/grid_size)*grid_size-camPos;
+            XD=(int)Math.floor(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1-camPos;
           }
           if (mouseY>downY) {
-            Y1=(int)((downY/Scale-camPosY)/grid_size)*grid_size+camPosY;
-            YD=(int)(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)-Y1+camPosY;
+            Y1=(int)Math.floor((downY/Scale-camPosY)/grid_size)*grid_size+camPosY;
+            YD=(int)Math.floor(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)-Y1+camPosY;
           }
           //YD=(int)(Math.ceil(upY/grid_size)*grid_size)-Y1;
           if (mouseY<downY) {
-            Y1=(int)((mouseY/Scale-camPosY)/grid_size)*grid_size+camPosY;
-            YD=(int)(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1+camPosY;
+            Y1=(int)Math.floor((mouseY/Scale-camPosY)/grid_size)*grid_size+camPosY;
+            YD=(int)Math.floor(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1+camPosY;
           }
           strokeWeight(0);
 
@@ -100,20 +100,20 @@ void stageEditGUI() {
         if (sloap||holoTriangle) {
           int X2=0, Y2=0, X1=0, Y1=0;//calcaute the location of the mouese press and unpress location
           if (mouseX>downX) {
-            X1=(int)((downX/Scale));
-            X2=(int)(Math.ceil((mouseX/Scale)));
+            X1=(int)Math.floor((downX/Scale));
+            X2=(int)Math.floor(Math.ceil((mouseX/Scale)));
           }
           if (mouseX<downX) {
-            X1=(int)((mouseX/Scale));
-            X2=(int)(Math.ceil((downX/Scale)));
+            X1=(int)Math.floor((mouseX/Scale));
+            X2=(int)Math.floor(Math.ceil((downX/Scale)));
           }
           if (mouseY>downY) {
-            Y1=(int)(downY/Scale);
-            Y2=(int)(Math.ceil(mouseY/Scale));
+            Y1=(int)Math.floor(downY/Scale);
+            Y2=(int)Math.floor(Math.ceil(mouseY/Scale));
           }
           if (mouseY<downY) {
-            Y1=(int)(mouseY/Scale);
-            Y2=(int)(Math.ceil(downY/Scale));
+            Y1=(int)Math.floor(mouseY/Scale);
+            Y2=(int)Math.floor(Math.ceil(downY/Scale));
           }
           if (triangleMode==0) {//display the triangle that will be created
             triangle(X1*Scale, Y1*Scale, X2*Scale, Y2*Scale, X2*Scale, Y1*Scale);
@@ -144,20 +144,20 @@ void stageEditGUI() {
 
 
         if (upX>downX) {//calcualte corner position
-          X1=(int)((downX/Scale+camPos)/grid_size)*grid_size;
-          XD=(int)(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size)-X1;
+          X1=(int)Math.floor((downX/Scale+camPos)/grid_size)*grid_size;
+          XD=(int)Math.floor(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size)-X1;
         }
         if (upX<downX) {
-          X1=(int)((upX/Scale+camPos)/grid_size)*grid_size;
-          XD=(int)(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1;
+          X1=(int)Math.floor((upX/Scale+camPos)/grid_size)*grid_size;
+          XD=(int)Math.floor(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1;
         }
         if (upY>downY) {
-          Y1=(int)((downY/Scale-camPosY)/grid_size)*grid_size;
-          YD=(int)(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size)-Y1;
+          Y1=(int)Math.floor((downY/Scale-camPosY)/grid_size)*grid_size;
+          YD=(int)Math.floor(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size)-Y1;
         }
         if (upY<downY) {
-          Y1=(int)((upY/Scale-camPosY)/grid_size)*grid_size;
-          YD=(int)(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1;
+          Y1=(int)Math.floor((upY/Scale-camPosY)/grid_size)*grid_size;
+          YD=(int)Math.floor(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1;
         }
         if (downX==upX) {//if there was no change is mouse position then don't create a new segment
           draw=false;
@@ -207,20 +207,20 @@ void stageEditGUI() {
 
 
         if (upX>downX) {//calculate corder position
-          X1=(int)((downX/Scale+camPos)/grid_size)*grid_size;
-          XD=(int)(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size)-X1;
+          X1=(int)Math.floor((downX/Scale+camPos)/grid_size)*grid_size;
+          XD=(int)Math.floor(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size)-X1;
         }
         if (upX<downX) {
-          X1=(int)((upX/Scale+camPos)/grid_size)*grid_size;
-          XD=(int)(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1;
+          X1=(int)Math.floor((upX/Scale+camPos)/grid_size)*grid_size;
+          XD=(int)Math.floor(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1;
         }
         if (upY>downY) {
-          Y1=(int)((downY/Scale-camPosY)/grid_size)*grid_size;
-          YD=(int)(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size)-Y1;
+          Y1=(int)Math.floor((downY/Scale-camPosY)/grid_size)*grid_size;
+          YD=(int)Math.floor(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size)-Y1;
         }
         if (upY<downY) {
-          Y1=(int)((upY/Scale-camPosY)/grid_size)*grid_size;
-          YD=(int)(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1;
+          Y1=(int)Math.floor((upY/Scale-camPosY)/grid_size)*grid_size;
+          YD=(int)Math.floor(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1;
         }
         if (downX==upX) {//if there was no change is mouse position then don't create a new segment
           draw=false;
@@ -269,20 +269,20 @@ void stageEditGUI() {
 
 
         if (upX>downX) {//calculate corder position
-          X1=(int)((downX/Scale+camPos)/grid_size)*grid_size;
-          XD=(int)(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size)-X1;
+          X1=(int)Math.floor((downX/Scale+camPos)/grid_size)*grid_size;
+          XD=(int)Math.floor(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size)-X1;
         }
         if (upX<downX) {
-          X1=(int)((upX/Scale+camPos)/grid_size)*grid_size;
-          XD=(int)(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1;
+          X1=(int)Math.floor((upX/Scale+camPos)/grid_size)*grid_size;
+          XD=(int)Math.floor(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1;
         }
         if (upY>downY) {
-          Y1=(int)((downY/Scale-camPosY)/grid_size)*grid_size;
-          YD=(int)(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size)-Y1;
+          Y1=(int)Math.floor((downY/Scale-camPosY)/grid_size)*grid_size;
+          YD=(int)Math.floor(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size)-Y1;
         }
         if (upY<downY) {
-          Y1=(int)((upY/Scale-camPosY)/grid_size)*grid_size;
-          YD=(int)(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1;
+          Y1=(int)Math.floor((upY/Scale-camPosY)/grid_size)*grid_size;
+          YD=(int)Math.floor(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1;
         }
         if (downX==upX) {//if there was no change is mouse position then don't create a new segment
           draw=false;
@@ -327,7 +327,7 @@ void stageEditGUI() {
 
     if (check_point&&draw) {//creating new checkpoint
       if (grid_mode) {//if grid mode is on
-        current.parts.add(new CheckPoint(Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size));//add new checkpoint to the stage
+        current.parts.add(new CheckPoint(Math.round(((int)Math.floor(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)Math.floor(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size));//add new checkpoint to the stage
       } else {
         current.parts.add(new CheckPoint((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY));//add new checkpoint to the stage
       }
@@ -335,7 +335,7 @@ void stageEditGUI() {
     }//end of create new checkpoint
     if (goal&&draw) {//create new finishline
       if (grid_mode) {//if grid mode is on
-        current.parts.add(new Goal(Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size));//add new finishline to the stage
+        current.parts.add(new Goal(Math.round(((int)Math.floor(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)Math.floor(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size));//add new finishline to the stage
       } else {
         current.parts.add(new Goal((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY));//add new finishline to the stage
       }
@@ -384,20 +384,20 @@ void stageEditGUI() {
 
 
         if (upX>downX) {//calcualte corner positions
-          X1=(int)((downX/Scale+camPos)/grid_size)*grid_size;
-          X2=(int)(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size);
+          X1=(int)Math.floor((downX/Scale+camPos)/grid_size)*grid_size;
+          X2=(int)Math.floor(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size);
         }
         if (upX<downX) {
-          X1=(int)((upX/Scale+camPos)/grid_size)*grid_size;
-          X2=(int)(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size);
+          X1=(int)Math.floor((upX/Scale+camPos)/grid_size)*grid_size;
+          X2=(int)Math.floor(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size);
         }
         if (upY>downY) {
-          Y1=(int)((downY/Scale-camPosY)/grid_size)*grid_size;
-          Y2=(int)(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size);
+          Y1=(int)Math.floor((downY/Scale-camPosY)/grid_size)*grid_size;
+          Y2=(int)Math.floor(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size);
         }
         if (upY<downY) {
-          Y1=(int)((upY/Scale-camPosY)/grid_size)*grid_size;
-          Y2=(int)(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size);
+          Y1=(int)Math.floor((upY/Scale-camPosY)/grid_size)*grid_size;
+          Y2=(int)Math.floor(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size);
         }
         if (downX==upX) {//if there was no change is mouse position then don't create a new segment
           draw=false;
@@ -445,20 +445,20 @@ void stageEditGUI() {
 
 
         if (upX>downX) {//calculate corder position
-          X1=(int)((downX/Scale+camPos)/grid_size)*grid_size;
-          X2=(int)(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size);
+          X1=(int)Math.floor((downX/Scale+camPos)/grid_size)*grid_size;
+          X2=(int)Math.floor(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size);
         }
         if (upX<downX) {
-          X1=(int)((upX/Scale+camPos)/grid_size)*grid_size;
-          X2=(int)(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size);
+          X1=(int)Math.floor((upX/Scale+camPos)/grid_size)*grid_size;
+          X2=(int)Math.floor(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size);
         }
         if (upY>downY) {
-          Y1=(int)((downY/Scale-camPosY)/grid_size)*grid_size;
-          Y2=(int)(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size);
+          Y1=(int)Math.floor((downY/Scale-camPosY)/grid_size)*grid_size;
+          Y2=(int)Math.floor(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size);
         }
         if (upY<downY) {
-          Y1=(int)((upY/Scale-camPosY)/grid_size)*grid_size;
-          Y2=(int)(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size);
+          Y1=(int)Math.floor((upY/Scale-camPosY)/grid_size)*grid_size;
+          Y2=(int)Math.floor(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size);
         }
         if (downX==upX) {
           draw=false;
@@ -544,6 +544,15 @@ void stageEditGUI() {
   if (current.type.equals("3Dstage") || current.type.equals("3D blueprint")) {//if in a 3D stage
 
     if (!e3DMode) {//if 3D mode is off
+      if (grid_mode) {//grid mode position box
+        int X2=0, Y2=0, X1=0, Y1=0;
+        X1=(int)(((floor((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos)*Scale);
+        X2=(int)(grid_size*Scale);//(int)(((int)(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos)*Scale)-X1;
+        Y1=(int)(((floor((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY)*Scale);
+        Y2=(int)(grid_size*Scale);//(int)(((int)(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY)*Scale)-abs(Y1);\
+        fill(#AAAA00,120);
+        rect(X1,Y1,X2,Y2);
+      }
 
       if (drawing) {//if drawing something
         fill(Color);
@@ -556,21 +565,21 @@ void stageEditGUI() {
         if (grid_mode||holo_gram) {//if drawing something that is a rectangle
           int XD=0, YD=0, X1=0, Y1=0;//calc the corner positions
           if (mouseX>downX) {
-            X1=(int)((downX/Scale+camPos)/grid_size)*grid_size-camPos;
-            XD=(int)(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-X1-camPos;
+            X1=(int)Math.floor((downX/Scale+camPos)/grid_size)*grid_size-camPos;
+            XD=(int)Math.floor(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-X1-camPos;
           }
           if (mouseX<downX) {
-            X1=(int)((mouseX/Scale+camPos)/grid_size)*grid_size-camPos;
-            XD=(int)(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1-camPos;
+            X1=(int)Math.floor((mouseX/Scale+camPos)/grid_size)*grid_size-camPos;
+            XD=(int)Math.floor(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1-camPos;
           }
           if (mouseY>downY) {
-            Y1=(int)((downY/Scale-camPosY)/grid_size)*grid_size+camPosY;
-            YD=(int)(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)-Y1+camPosY;
+            Y1=(int)Math.floor((downY/Scale-camPosY)/grid_size)*grid_size+camPosY;
+            YD=(int)Math.floor(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)-Y1+camPosY;
           }
           //YD=(int)(Math.ceil(upY/grid_size)*grid_size)-Y1;
           if (mouseY<downY) {
-            Y1=(int)((mouseY/Scale-camPosY)/grid_size)*grid_size+camPosY;
-            YD=(int)(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1+camPosY;
+            Y1=(int)Math.floor((mouseY/Scale-camPosY)/grid_size)*grid_size+camPosY;
+            YD=(int)Math.floor(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1+camPosY;
           }
           strokeWeight(0);
 
@@ -589,20 +598,20 @@ void stageEditGUI() {
 
 
           if (upX>downX) {//cacl corner posirions
-            X1=(int)((downX/Scale+camPos)/grid_size)*grid_size;
-            XD=(int)(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size)-X1;
+            X1=(int)Math.floor((downX/Scale+camPos)/grid_size)*grid_size;
+            XD=(int)Math.floor(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size)-X1;
           }
           if (upX<downX) {
-            X1=(int)((upX/Scale+camPos)/grid_size)*grid_size;
-            XD=(int)(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1;
+            X1=(int)Math.floor((upX/Scale+camPos)/grid_size)*grid_size;
+            XD=(int)Math.floor(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1;
           }
           if (upY>downY) {
-            Y1=(int)((downY/Scale-camPosY)/grid_size)*grid_size;
-            YD=(int)(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size)-Y1;
+            Y1=(int)Math.floor((downY/Scale-camPosY)/grid_size)*grid_size;
+            YD=(int)Math.floor(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size)-Y1;
           }
           if (upY<downY) {
-            Y1=(int)((upY/Scale-camPosY)/grid_size)*grid_size;
-            YD=(int)(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1;
+            Y1=(int)Math.floor((upY/Scale-camPosY)/grid_size)*grid_size;
+            YD=(int)Math.floor(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1;
           }
           if (downX==upX) {//if there was no change is mouse position then don't create a new segment
             draw=false;
@@ -650,20 +659,20 @@ void stageEditGUI() {
 
 
           if (upX>downX) {//calc corner position
-            X1=(int)((downX/Scale+camPos)/grid_size)*grid_size;
-            XD=(int)(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size)-X1;
+            X1=(int)Math.floor((downX/Scale+camPos)/grid_size)*grid_size;
+            XD=(int)Math.floor(Math.ceil((upX/Scale+camPos)/grid_size)*grid_size)-X1;
           }
           if (upX<downX) {
-            X1=(int)((upX/Scale+camPos)/grid_size)*grid_size;
-            XD=(int)(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1;
+            X1=(int)Math.floor((upX/Scale+camPos)/grid_size)*grid_size;
+            XD=(int)Math.floor(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-X1;
           }
           if (upY>downY) {
-            Y1=(int)((downY/Scale-camPosY)/grid_size)*grid_size;
-            YD=(int)(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size)-Y1;
+            Y1=(int)Math.floor((downY/Scale-camPosY)/grid_size)*grid_size;
+            YD=(int)Math.floor(Math.ceil((upY/Scale-camPosY)/grid_size)*grid_size)-Y1;
           }
           if (upY<downY) {
-            Y1=(int)((upY/Scale-camPosY)/grid_size)*grid_size;
-            YD=(int)(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1;
+            Y1=(int)Math.floor((upY/Scale-camPosY)/grid_size)*grid_size;
+            YD=(int)Math.floor(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)-Y1;
           }
           if (downX==upX) {//if there was no change is mouse position then don't create a new segment
             draw=false;
