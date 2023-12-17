@@ -1312,15 +1312,15 @@ void mouseClicked() {// when you click the mouse
         }
 
         if (Menue.equals("pause")) {//if that menue is pause
-          if (mouseX >= 500*Scale && mouseX <= 800*Scale && mouseY >= 200*Scale && mouseY <= 260*Scale) {//resume game button
+          if (pauseResumeButton.isMouseOver()) {//resume game button
             menue=false;
           }
-          if (mouseX >= 500*Scale && mouseX <= 800*Scale && mouseY >= 300*Scale && mouseY <= 360*Scale) {//resume game button
+          if (pauseOptionsButton.isMouseOver()) {//resume game button
             Menue="settings";
             prevousInGame=true;
             inGame=false;
           }
-          if (mouseX >= 500*Scale && mouseX <= 800*Scale && mouseY >= 400*Scale && mouseY <= 460*Scale) {//quit button
+          if (pauseQuitButton.isMouseOver()) {//quit button
             menue=true;
             inGame=false;
             tutorialMode=false;
