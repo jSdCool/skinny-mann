@@ -659,7 +659,9 @@ void draw() {// the function that is called every fraim
 
         if (selectingBlueprint&&blueprints.length!=0) {//if selecting blueprint
           generateDisplayBlueprint();//visualize the blueprint that is selected
-          renderBlueprint();//render blueprint
+          if(!e3DMode){
+            renderBlueprint();//render blueprint
+          }
         }
       }
 

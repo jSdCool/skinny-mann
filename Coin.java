@@ -33,6 +33,15 @@ class Coin extends StageComponent {//ground component
   StageComponent copy() {
     return new Coin(x, y, z, coinId);
   }
+  
+  StageComponent copy(float offsetX,float offsetY){
+    return new Coin(x+offsetX,y+offsetY,coinId);
+  }
+  
+  StageComponent copy(float offsetX,float offsetY,float offsetZ){
+    return new Coin(x+offsetX,y+offsetY,z+offsetZ,coinId);
+  }
+  
   JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();
     part.setFloat("x", x);

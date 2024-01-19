@@ -1223,8 +1223,9 @@ void GUImouseClicked() {
       selectedIndex=colid_index(mouseX/Scale+camPos, mouseY/Scale-camPosY, current);
     }
     if (selectingBlueprint&&blueprints.length!=0) {//place selectedb bluepring and paste it into the stage
+      boolean type3d = blueprints[currentBluieprintIndex].type.equals("3D blueprint");
       StageComponent tmp;
-      int ix, iy;
+      int ix, iy, iz = startingDepth;
       if (grid_mode) {
         ix=Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size;
         iy=Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size;
@@ -1234,32 +1235,30 @@ void GUImouseClicked() {
       }
       for (int i=0; i<blueprints[currentBluieprintIndex].parts.size(); i++) {//translate the objects from blueprint form into stage readdy form
         tmp=blueprints[currentBluieprintIndex].parts.get(i);
-        if (tmp instanceof Ground) {
-          Ground g=(Ground)tmp;
-          current.parts.add(new Ground(g.x+ix, g.y+iy, g.dx, g.dy, g.ccolor));
-        }
-        if (tmp instanceof Holo) {
-          Holo g=(Holo)tmp;
-          current.parts.add(new Holo(g.x+ix, g.y+iy, g.dx, g.dy, g.ccolor));
-        }
-        if (tmp instanceof CheckPoint) {
-          CheckPoint g=(CheckPoint)tmp;
-          current.parts.add(new CheckPoint(g.x+iy, g.y+ix, g.z));
-        }
+        //coins are special
         if (tmp instanceof Coin) {
-          Coin g=(Coin)tmp;
-          current.parts.add(new Coin(g.x+ix, g.y+iy, g.z, level.numOfCoins));
+          Coin g;
+          //make a copy of the coin for the apprirate dimention 
+          if(type3d){
+            g=(Coin)tmp.copy(ix,iy,iz);
+          }else{
+            g=(Coin)tmp.copy(ix,iy);
+          }
+          //set the correct ID for the coin
+          g.coinId = level.numOfCoins;
+          //add the coin to the stage
+          current.parts.add(g);
           coins.add(false);
           level.numOfCoins++;
+          continue;
         }
-        if (tmp instanceof Sloap) {
-          Sloap g=(Sloap)tmp;
-          current.parts.add(new Sloap(g.x+ix, g.y+iy, g.dx+ix, g.dy+iy, g.direction, g.ccolor));
+        
+        if(type3d){//if the bluepint is 3D
+          current.parts.add(tmp.copy(ix,iy,iz));//preform a 3D copy on the curernt part and add it to the stage
+        }else{
+          current.parts.add(tmp.copy(ix,iy));//preform a 2D copy on a part and add it to the stage
         }
-        if (tmp instanceof HoloTriangle) {
-          HoloTriangle g=(HoloTriangle)tmp;
-          current.parts.add(new HoloTriangle(g.x+ix, g.y+iy, g.dx+ix, g.dy+iy, g.direction, g.ccolor));
-        }
+        
       }
     }
     if (placingSound) {
@@ -1679,8 +1678,10 @@ void mouseClicked3D() {
  
  */
 void generateDisplayBlueprint() {
-  displayBlueprint=new Stage("tmp", "blueprint");
-  int ix, iy;
+  String type = blueprints[currentBluieprintIndex].type;
+  boolean type3d = type.equals("3D blueprint");
+  displayBlueprint=new Stage("tmp", type);
+  int ix, iy, iz =startingDepth;
   if (grid_mode) {
     ix=Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size;
     iy=Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size;
@@ -1695,9 +1696,15 @@ void generateDisplayBlueprint() {
     if (displayBlueprint.parts.get(i).type.equals("sloap")||displayBlueprint.parts.get(i).type.equals("holoTriangle")) {
       displayBlueprint.parts.get(i).dx+=ix;
       displayBlueprint.parts.get(i).dy+=iy;
+      if(type3d){
+        displayBlueprint.parts.get(i).dz+=iz;
+      }
     }
     displayBlueprint.parts.get(i).x+=ix;
     displayBlueprint.parts.get(i).y+=iy;
+    if(type3d){
+      displayBlueprint.parts.get(i).z+=iz;
+    }
     //System.out.println(displayBlueprint.parts.get(i).x);
   }
 }
@@ -1705,6 +1712,12 @@ void generateDisplayBlueprint() {
 void renderBlueprint() {//render the blueprint on top of the stage
   for (int i=0; i<displayBlueprint.parts.size(); i++) {
     displayBlueprint.parts.get(i).draw();
+  }
+}
+
+void renderBlueprint3D() {//render the blueprint on top of the stage
+  for (int i=0; i<displayBlueprint.parts.size(); i++) {
+    displayBlueprint.parts.get(i).draw3D();
   }
 }
 

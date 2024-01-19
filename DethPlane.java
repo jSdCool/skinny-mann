@@ -28,6 +28,15 @@ class DethPlane extends StageComponent {//ground component
   StageComponent copy() {
     return new DethPlane(x, y, dx, dy);
   }
+  
+  StageComponent copy(float offsetX,float offsetY){
+    return new DethPlane(x+offsetX,y+offsetY,dx,dy);
+  }
+  
+  StageComponent copy(float offsetX,float offsetY,float offsetZ){
+    System.err.println("Attempted to create a 3D copy of a deth plane. This opperation is not supported");
+    return null;
+  }
 
   JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();

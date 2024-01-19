@@ -37,8 +37,17 @@ class Ground extends StageComponent {//ground component
     dz=DZ;
     ccolor=fcolor;
   }
+  
   StageComponent copy() {
     return new Ground(x, y, z, dx, dy, dz, ccolor);
+  }
+  
+  StageComponent copy(float offsetX,float offsetY){
+    return new Ground(x+offsetX,y+offsetY,dx,dy,ccolor);
+  }
+  
+  StageComponent copy(float offsetX,float offsetY,float offsetZ){
+    return new Ground(x+offsetX,y+offsetY,z+offsetZ,dx,dy,dz,ccolor);
   }
 
   JSONObject save(boolean stage_3D) {

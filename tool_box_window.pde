@@ -570,6 +570,14 @@ class ToolBox extends PApplet {
               drawCoin(605, 65+100, 4);
 
               saveLevel.draw();
+              
+              if (selectingBlueprint) {
+                placeBlueprint.setColor(#0F1AD3, #F2F258);
+              } else {
+                placeBlueprint.setColor(#0F1AD3, 203);
+              }
+              placeBlueprint.draw();
+              
               textAlign(LEFT, BOTTOM);
               toggle3DMode.drawHoverText();
               switch3D1.drawHoverText();
@@ -593,6 +601,7 @@ class ToolBox extends PApplet {
               exitStageEdit.drawHoverText();
               gridModeButton.drawHoverText();
               deleteButton.drawHoverText();
+              placeBlueprint.drawHoverText();
             }//end of if not in 3D mode
             else {
               toggle3DMode.setColor(255, #F2F258);
@@ -714,6 +723,13 @@ class ToolBox extends PApplet {
               rect(315, 60+100, 5, 20);
               rect(298, 60+100, 5, 20);
               rect(307, 60+100, 5, 20);
+              
+              if (selectingBlueprint) {
+                placeBlueprint.setColor(#0F1AD3, #F2F258);
+              } else {
+                placeBlueprint.setColor(#0F1AD3, 203);
+              }
+              placeBlueprint.draw();
 
               move3DButton.drawHoverText();
               size3DButton.drawHoverText();
@@ -737,6 +753,7 @@ class ToolBox extends PApplet {
               sign.drawHoverText();
               logicButtonButton.drawHoverText();
               deleteButton.drawHoverText();
+              placeBlueprint.drawHoverText();
             }
           }//end of if stage is 3D
 
@@ -1704,11 +1721,11 @@ class ToolBox extends PApplet {
             if (placeBlueprint.isMouseOver()) {
               turnThingsOff();
 
-              String[] files=new File(System.getenv("AppData")+"/CBi-games/skinny mann level creator/blueprints").list();
+              String[] files=new File(appdata+"/CBi-games/skinny mann level creator/blueprints").list();
               int numofjsons=0;
               for (int i=0; i<files.length; i++) {
                 if (files[i].contains(".json")) {
-                  String bpType = loadJSONArray(System.getenv("AppData")+"/CBi-games/skinny mann level creator/blueprints/"+files[i]).getJSONObject(0).getString("type");
+                  String bpType = loadJSONArray(appdata+"/CBi-games/skinny mann level creator/blueprints/"+files[i]).getJSONObject(0).getString("type");
                   if(bpType.equals("blueprint"))
                     numofjsons++;
                 }
@@ -1717,9 +1734,9 @@ class ToolBox extends PApplet {
               int pointer=0;
               for (int i=0; i<files.length; i++) {
                 if (files[i].contains(".json")) {
-                  String bpType = loadJSONArray(System.getenv("AppData")+"/CBi-games/skinny mann level creator/blueprints/"+files[i]).getJSONObject(0).getString("type");
+                  String bpType = loadJSONArray(appdata+"/CBi-games/skinny mann level creator/blueprints/"+files[i]).getJSONObject(0).getString("type");
                   if(bpType.equals("blueprint")){
-                    blueprints[pointer]=new Stage(loadJSONArray(System.getenv("AppData")+"/CBi-games/skinny mann level creator/blueprints/"+files[i]));
+                    blueprints[pointer]=new Stage(loadJSONArray(appdata+"/CBi-games/skinny mann level creator/blueprints/"+files[i]));
                     pointer++;
                   }
                 }
@@ -1888,6 +1905,34 @@ class ToolBox extends PApplet {
                 deleteing=true;
               }
             }//end of 3D mode is on
+            
+            if (placeBlueprint.isMouseOver()) {
+              turnThingsOff();
+
+              String[] files=new File(appdata+"/CBi-games/skinny mann level creator/blueprints").list();
+              int numofjsons=0;
+              for (int i=0; i<files.length; i++) {
+                if (files[i].contains(".json")) {
+                  String bpType = loadJSONArray(appdata+"/CBi-games/skinny mann level creator/blueprints/"+files[i]).getJSONObject(0).getString("type");
+                  if(bpType.equals("3D blueprint"))
+                    numofjsons++;
+                }
+              }
+              blueprints=new Stage[numofjsons];
+              int pointer=0;
+              for (int i=0; i<files.length; i++) {
+                if (files[i].contains(".json")) {
+                  String bpType = loadJSONArray(appdata+"/CBi-games/skinny mann level creator/blueprints/"+files[i]).getJSONObject(0).getString("type");
+                  if(bpType.equals("3D blueprint")){
+                    blueprints[pointer]=new Stage(loadJSONArray(appdata+"/CBi-games/skinny mann level creator/blueprints/"+files[i]));
+                    pointer++;
+                  }
+                }
+              }
+              System.out.println(blueprints.length);
+              selectingBlueprint=true;
+              currentBluieprintIndex=0;
+            }
           }
 
           if (saveLevel.isMouseOver()) {
