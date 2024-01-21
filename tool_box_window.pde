@@ -9,7 +9,7 @@ class ToolBox extends PApplet {
   public int redVal=0, greenVal=0, blueVal=0, CC=0;
   int rsp=0, gsp=0, bsp=0, selectedColor=0, millisOffset, variableScroll=0, groupScroll=0;
   String page="colors", newGroopName="";
-  Button colorPage, toolsPage, draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, toggle3DMode, switch3D1, switch3D2, saveLevel, exitStageEdit, sign, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, playSound, nextSound, prevSound, checkpointButton, playPauseButton, groundButton, goalButton, deleteButton, movePlayerButton, gridModeButton, holoButton, connectLogicButton, moveComponentsButton, andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, logicButtonButton, runLoad, delayButton, zOffsetButton, logicHelpButton, move3DButton, size3DButton, set3DButton, read3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, playLogicSoundButton, pulseButton, randomButton, tickLogicButton;
+  Button colorPage, toolsPage, draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, toggle3DMode, switch3D1, switch3D2, saveLevel, exitStageEdit, sign, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, playSound, nextSound, prevSound, checkpointButton, playPauseButton, groundButton, goalButton, deleteButton, movePlayerButton, gridModeButton, holoButton, connectLogicButton, moveComponentsButton, andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, logicButtonButton, runLoad, delayButton, zOffsetButton, logicHelpButton, move3DButton, size3DButton, set3DButton, read3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, playLogicSoundButton, pulseButton, randomButton, tickLogicButton,placeBlueprint3DButton;
   boolean typingSign=false, settingSkyColor=false, typingGroopName=false;
 
   public void settings() {
@@ -102,6 +102,7 @@ class ToolBox extends PApplet {
     typeGroopName=new Button(this, 680, 190, 400, 30);
     runLoad=new Button(this, 500, 550, 200, 50, "load").setHoverText("run the load logic board");
     tickLogicButton = new Button(this, 500, 650, 200, 50, "tick").setHoverText("run 1 logic tick on the current logic board");
+    placeBlueprint3DButton = new Button(this,590,600,100,50,"Place").setHoverText("place the current blueprint");
 
 
     multyplayerModeSpeedrunButton=new Button(this, 220, 190, 80, 30, "speed run", 255, #F6FF03);
@@ -726,10 +727,13 @@ class ToolBox extends PApplet {
               
               if (selectingBlueprint) {
                 placeBlueprint.setColor(#0F1AD3, #F2F258);
+                if(blueprints.length!=0)
+                  placeBlueprint3DButton.draw();
               } else {
                 placeBlueprint.setColor(#0F1AD3, 203);
               }
               placeBlueprint.draw();
+              
 
               move3DButton.drawHoverText();
               size3DButton.drawHoverText();
@@ -754,6 +758,9 @@ class ToolBox extends PApplet {
               logicButtonButton.drawHoverText();
               deleteButton.drawHoverText();
               placeBlueprint.drawHoverText();
+              if (selectingBlueprint && blueprints.length != 0) {
+                placeBlueprint3DButton.drawHoverText();
+              }
             }
           }//end of if stage is 3D
 
@@ -1904,6 +1911,32 @@ class ToolBox extends PApplet {
                 turnThingsOff();
                 deleteing=true;
               }
+              
+              if (selectingBlueprint && blueprints.length != 0 && placeBlueprint3DButton.isMouseOver()) {
+                StageComponent tmp;
+                Stage current=level.stages.get(currentStageIndex);
+                for (int i=0; i<blueprints[currentBluieprintIndex].parts.size(); i++) {//translate the objects from blueprint form into stage readdy form
+                  tmp=blueprints[currentBluieprintIndex].parts.get(i);
+                  //coins are special
+                  if (tmp instanceof Coin) {
+                    Coin g;
+                    //make a copy of the coin for the apprirate dimention 
+                    g=(Coin)tmp.copy(blueprintPlacemntX,blueprintPlacemntY,blueprintPlacemntZ);
+
+                    //set the correct ID for the coin
+                    g.coinId = level.numOfCoins;
+                    //add the coin to the stage
+                    current.parts.add(g);
+                    coins.add(false);
+                    level.numOfCoins++;
+                    continue;
+                  }
+                  
+                  
+                  current.parts.add(tmp.copy(blueprintPlacemntX,blueprintPlacemntY,blueprintPlacemntZ));//preform a 3D copy on the curernt part and add it to the stage
+                }
+                  
+              }
             }//end of 3D mode is on
             
             if (placeBlueprint.isMouseOver()) {
@@ -1932,6 +1965,9 @@ class ToolBox extends PApplet {
               System.out.println(blueprints.length);
               selectingBlueprint=true;
               currentBluieprintIndex=0;
+              blueprintPlacemntX=cam3Dx;
+              blueprintPlacemntY=cam3Dy;
+              blueprintPlacemntZ=cam3Dz;
             }
           }
 

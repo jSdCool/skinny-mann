@@ -98,7 +98,7 @@ boolean menue =true, inGame=false, player1_moving_right=false, player1_moving_le
  String Menue ="creds"/*,level="n"*/, version="0.8.1_Early_Access", EDITOR_version="0.1.0_EAc", ip="localhost", name="can't_be_botherd_to_chane_it", input, file_path, rootPath, stageType="", settingsMenue="game play", author="", displayText="", GAME_version=version, internetVersion, cursor="", disconnectReason="", multyplayerSelectionLevels="speed", multyplayerSelectedLevelPath, appdata, coursorr="", new_name, newFileName="", newFileType="2D", fileToCoppyPath="";
 ArrayList<Boolean> coins;
 ArrayList<String> UGCNames = new ArrayList<>(), playerNames=new ArrayList<>();
-float Scale =1, Scale2=1, musicVolume=1, sfxVolume=1, gravity=0.001, downX, downY, upX, upY,narrationVolume=1;
+float Scale =1, Scale2=1, musicVolume=1, sfxVolume=1, gravity=0.001, downX, downY, upX, upY,narrationVolume=1,blueprintPlacemntX,blueprintPlacemntY,blueprintPlacemntZ;
 Player players[] =new Player[10];
 
 ArrayList<Client> clients= new ArrayList<>();
@@ -111,7 +111,7 @@ SoundHandler soundHandler;
 Level level;
 JSONObject portalStage1, portalStage2;
 int[][] tutorialNarration=new int[2][17];
-float [] tpCords=new float[3];
+float [] tpCords=new float[3],blueprintMax=new float[3],blueprintMin = new float[3];
 Stage workingBlueprint;
 ArrayList<Boolean> compatibles;
 LogicThread logicTickingThread =new LogicThread();
@@ -655,11 +655,22 @@ void draw() {// the function that is called every fraim
         }
 
         stageLevelDraw();//level draw code
+        
+        //if placing a blueprint in 3D, render the blueprint that is being palced
+        if (e3DMode && selectingBlueprint && blueprints.length!=0){
+          generateDisplayBlueprint3D();
+          renderBlueprint3D();
+          float cdx = blueprintMax[0]-blueprintMin[0];
+          float cdy = blueprintMax[1]-blueprintMin[1];
+          float cdz = blueprintMax[2]-blueprintMin[2];
+          renderTranslationArrows(blueprintMin[0],blueprintMin[1],blueprintMin[2],cdx,cdy,cdz);
+        }
+        
         stageEditGUI();//level gui code
 
         if (selectingBlueprint&&blueprints.length!=0) {//if selecting blueprint
-          generateDisplayBlueprint();//visualize the blueprint that is selected
-          if(!e3DMode){
+        if(!e3DMode){
+            generateDisplayBlueprint();//visualize the blueprint that is selected
             renderBlueprint();//render blueprint
           }
         }
@@ -2810,6 +2821,53 @@ void mousePressed() {
         initalObjectPos=new Point3D(ct.x, ct.y, ct.z);
         initialObjectDim=new Point3D(ct.dx, ct.dy, ct.dz);
       }
+      
+      //placing a blueprint in 3D movement
+      if (e3DMode && selectingBlueprint && blueprints.length!=0){
+        float cdx = blueprintMax[0]-blueprintMin[0];
+        float cdy = blueprintMax[1]-blueprintMin[1];
+        float cdz = blueprintMax[2]-blueprintMin[2];
+        for (int i=0; i<5000; i++) {
+          Point3D testPoint=genMousePoint(i);
+          if (testPoint.x >= (blueprintMin[0]+cdx/2)-5 && testPoint.x <= (blueprintMin[0]+cdx/2)+5 && testPoint.y >= (blueprintMin[1]+cdy/2)-5 && testPoint.y <= (blueprintMin[1]+cdy/2)+5 && testPoint.z >= blueprintMin[2]+cdz && testPoint.z <= blueprintMin[2]+cdz+60) {
+            translateZaxis=true;
+            transformComponentNumber=1;
+            break;
+          }
+
+          if (testPoint.x >= (blueprintMin[0]+cdx/2)-5 && testPoint.x <= (blueprintMin[0]+cdx/2)+5 && testPoint.y >= (blueprintMin[1]+cdy/2)-5 && testPoint.y <= (blueprintMin[1]+cdy/2)+5 && testPoint.z >= blueprintMin[2]-60 && testPoint.z <= blueprintMin[2]) {
+            translateZaxis=true;
+            transformComponentNumber=2;
+            break;
+          }
+
+          if (testPoint.x >= blueprintMin[0]-60 && testPoint.x <= blueprintMin[0] && testPoint.y >= (blueprintMin[1]+cdy/2)-5 && testPoint.y <= (blueprintMin[1]+cdy/2)+5 && testPoint.z >= (blueprintMin[2]+cdz/2)-5 && testPoint.z <= (blueprintMin[2]+cdz/2)+5) {
+            translateXaxis=true;
+            transformComponentNumber=2;
+            break;
+          }
+
+          if (testPoint.x >= blueprintMin[0]+cdx && testPoint.x <= blueprintMin[0]+cdx+60 && testPoint.y >= (blueprintMin[1]+cdy/2)-5 && testPoint.y <= (blueprintMin[1]+cdy/2)+5 && testPoint.z >= (blueprintMin[2]+cdz/2)-5 && testPoint.z <= (blueprintMin[2]+cdz/2)+5) {
+            translateXaxis=true;
+            transformComponentNumber=1;
+            break;
+          }
+
+          if (testPoint.x >= (blueprintMin[0]+cdx/2)-5 && testPoint.x <= (blueprintMin[0]+cdx/2)+5 && testPoint.y >= blueprintMin[1]-60 && testPoint.y <= blueprintMin[1] && testPoint.z >= (blueprintMin[2]+cdz/2)-5 && testPoint.z <= (blueprintMin[2]+cdz/2)+5) {
+            translateYaxis=true;
+            transformComponentNumber=2;
+            break;
+          }
+
+          if (testPoint.x >= (blueprintMin[0]+cdx/2)-5 && testPoint.x <= (blueprintMin[0]+cdx/2)+5 && testPoint.y >= blueprintMin[1]+cdy && testPoint.y <= blueprintMin[1]+cdy+60 && testPoint.z >= (blueprintMin[2]+cdz/2)-5 && testPoint.z <= (blueprintMin[2]+cdz/2)+5) {
+            translateYaxis=true;
+            transformComponentNumber=1;
+            break;
+          }
+        }
+        initalMousePoint=mousePoint;
+        initalObjectPos=new Point3D(blueprintPlacemntX, blueprintPlacemntY, blueprintPlacemntZ);
+      }
     }
   }
 }
@@ -2871,6 +2929,11 @@ void mouseReleased() {
         }
       }//end of editing logic board
       if (e3DMode&&selectedIndex!=-1) {
+        translateZaxis=false;
+        translateXaxis=false;
+        translateYaxis=false;
+      }
+      if (e3DMode && selectingBlueprint){
         translateZaxis=false;
         translateXaxis=false;
         translateYaxis=false;

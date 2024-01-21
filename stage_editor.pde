@@ -820,8 +820,10 @@ void stageEditGUI() {
     }//end of is 3d mode off if statment
     else {//if 3dmode is on
       if (selectedIndex!=-1) {
+        //wether the red/green/blue arrows are currrntly being hoverd over
         boolean b1=false, b2=false, r1=false, r2=false, g1=false, g2=false;
         StageComponent ct=current.parts.get(selectedIndex);
+        //check if the mouse is hovering over an arrow
         for (int i=0; i<5000; i++) {
           Point3D testPoint=genMousePoint(i);
           if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z+ct.dz && testPoint.z <= ct.z+ct.dz+60) {
@@ -854,6 +856,8 @@ void stageEditGUI() {
             break;
           }
         }
+        
+        //render the arrow
         if (current3DTransformMode==1) {
           translate(ct.x+ct.dx/2, ct.y+ct.dy/2, ct.z+ct.dz);
           if (b1)
@@ -1062,6 +1066,32 @@ void stageEditGUI() {
           }
         }//end of 3d transform mode is scale
       }//end of 3d tranform is move mode
+      
+      if (e3DMode && selectingBlueprint && blueprints.length!=0){
+
+        if (grid_mode) {//Math.round(((int)mouseX+camPos)*1.0/grid_size)*grid_size
+            if (translateZaxis) {
+              blueprintPlacemntZ=(int)Math.round((initalObjectPos.z-initalMousePoint.z+mousePoint.z)*1.0/grid_size)*grid_size;
+            }
+            if (translateXaxis) {
+              blueprintPlacemntX=(int)Math.round((initalObjectPos.x-initalMousePoint.x+mousePoint.x)*1.0/grid_size)*grid_size;
+            }
+            if (translateYaxis) {
+              blueprintPlacemntY=(int)Math.round((initalObjectPos.y-initalMousePoint.y+mousePoint.y)*1.0/grid_size)*grid_size;
+            }
+          } else {//if not in grid mdoe
+            if (translateZaxis) {
+              blueprintPlacemntZ=(int)initalObjectPos.z-(initalMousePoint.z-mousePoint.z);
+            }
+            if (translateXaxis) {
+              blueprintPlacemntX=(int)initalObjectPos.x-(initalMousePoint.x-mousePoint.x);
+            }
+            if (translateYaxis) {
+              blueprintPlacemntY=(int)initalObjectPos.y-(initalMousePoint.y-mousePoint.y);
+            }
+          }
+      }//end of moving blueprint in 3D
+      
       engageHUDPosition();//move the draw position to align with the camera
 
 
@@ -1291,6 +1321,100 @@ void GUImouseReleased() {
       drawing=false;
       draw=true;
     }
+  }
+}
+
+void renderTranslationArrows(float x,float y,float z,float dx, float dy,float dz){
+  //wether the red/green/blue arrows are currrntly being hoverd over
+  boolean b1=false, b2=false, r1=false, r2=false, g1=false, g2=false;
+  //check if the mouse is hovering over an arrow
+  for (int i=0; i<5000; i++) {
+    Point3D testPoint=genMousePoint(i);
+    if (testPoint.x >= (x+dx/2)-5 && testPoint.x <= (x+dx/2)+5 && testPoint.y >= (y+dy/2)-5 && testPoint.y <= (y+dy/2)+5 && testPoint.z >= z+dz && testPoint.z <= z+dz+60) {
+      b1=true;
+      break;
+    }
+
+    if (testPoint.x >= (x+dx/2)-5 && testPoint.x <= (x+dx/2)+5 && testPoint.y >= (y+dy/2)-5 && testPoint.y <= (y+dy/2)+5 && testPoint.z >= z-60 && testPoint.z <= z) {
+      b2=true;
+      break;
+    }
+
+    if (testPoint.x >= x-60 && testPoint.x <= x && testPoint.y >= (y+dy/2)-5 && testPoint.y <= (y+dy/2)+5 && testPoint.z >= (z+dz/2)-5 && testPoint.z <= (z+dz/2)+5) {
+      r1=true;
+      break;
+    }
+
+    if (testPoint.x >= x+dx && testPoint.x <= x+dx+60 && testPoint.y >= (y+dy/2)-5 && testPoint.y <= (y+dy/2)+5 && testPoint.z >= (z+dz/2)-5 && testPoint.z <= (z+dz/2)+5) {
+      r2=true;
+      break;
+    }
+
+    if (testPoint.x >= (x+dx/2)-5 && testPoint.x <= (x+dx/2)+5 && testPoint.y >= y-60 && testPoint.y <= y && testPoint.z >= (z+dz/2)-5 && testPoint.z <= (z+dz/2)+5) {
+      g1=true;
+      break;
+    }
+
+    if (testPoint.x >= (x+dx/2)-5 && testPoint.x <= (x+dx/2)+5 && testPoint.y >= y+dy && testPoint.y <= y+dy+60 && testPoint.z >= (z+dz/2)-5 && testPoint.z <= (z+dz/2)+5) {
+      g2=true;
+      break;
+    }
+  }
+  
+  //render the arrows
+  if (current3DTransformMode==1) {
+    translate(x+dx/2, y+dy/2, z+dz);
+    if (b1)
+      shape(yellowArrow);
+    else
+      shape(blueArrow);
+
+    translate(-(x+dx/2), -(y+dy/2), -(z+dz));
+
+    translate(x+dx/2, y+dy/2, z);
+    rotateY(radians(180));
+    if (b2)
+      shape(yellowArrow);
+    else
+      shape(blueArrow);
+    rotateY(-radians(180));
+    translate(-(x+dx/2), -(y+dy/2), -(z));
+
+    translate(x, y+dy/2, z+dz/2);
+    rotateY(-radians(90));
+    if (r1)
+      shape(yellowArrow);
+    else
+      shape(redArrow);
+    rotateY(radians(90));
+    translate(-(x), -(y+dy/2), -(z+dz/2));
+
+    translate(x+dx, y+dy/2, z+dz/2);
+    rotateY(radians(90));
+    if (r2)
+      shape(yellowArrow);
+    else
+      shape(redArrow);
+    rotateY(-radians(90));
+    translate(-(x+dx), -(y+dy/2), -(z+dz/2));
+
+    translate(x+dx/2, y, z+dz/2);
+    rotateX(radians(90));
+    if (g1)
+      shape(yellowArrow);
+    else
+      shape(greenArrow);
+    rotateX(-radians(90));
+    translate(-(x+dx/2), -(y), -(z+dz/2));
+
+    translate(x+dx/2, y+dy, z+dz/2);
+    rotateX(-radians(90));
+    if (g2)
+      shape(yellowArrow);
+    else
+      shape(greenArrow);
+    rotateX(radians(90));
+    translate(-(x+dx/2), -(y+dy), -(z+dz/2));
   }
 }
 
@@ -1709,6 +1833,25 @@ void generateDisplayBlueprint() {
   }
 }
 
+void generateDisplayBlueprint3D() {
+  String type = blueprints[currentBluieprintIndex].type;
+  displayBlueprint=new Stage("tmp", type);
+  float ix = blueprintPlacemntX, iy = blueprintPlacemntY, iz = blueprintPlacemntZ;
+  blueprintMax=new float[]{-66666666,-66666666,-66666666};
+  blueprintMin=new float[]{66666666,66666666,66666666};
+  for (int i=0; i<blueprints[currentBluieprintIndex].parts.size(); i++) {
+    StageComponent part = blueprints[currentBluieprintIndex].parts.get(i).copy(ix,iy,iz);
+    displayBlueprint.parts.add(part);
+    //NOTE this will have to be reworked when sloaps are added to 3D
+    blueprintMax[0]=max(blueprintMax[0],part.x+part.dx);
+    blueprintMax[1]=max(blueprintMax[1],part.y+part.dy);
+    blueprintMax[2]=max(blueprintMax[2],part.z+part.dz);
+    blueprintMin[0]=min(blueprintMin[0],part.x);
+    blueprintMin[1]=min(blueprintMin[1],part.y);
+    blueprintMin[2]=min(blueprintMin[2],part.z);
+  }
+}
+
 void renderBlueprint() {//render the blueprint on top of the stage
   for (int i=0; i<displayBlueprint.parts.size(); i++) {
     displayBlueprint.parts.get(i).draw();
@@ -1744,7 +1887,7 @@ void calcMousePoint() {//get a 3d point that is at the same postition as the mou
   mousePoint=new Point3D(camCentercCalcX+nx, camCentercCalcY+ny, camCentercCalcZ-nz);
 }
 
-Point3D genMousePoint(float hyp) {//calcualte the coords of a new point that is in line toth the mouse pointer at a set distance from the camera
+Point3D genMousePoint(float hyp) {//calcualte the coords of a new point that is in line through the mouse pointer at a set distance from the camera
   calcMousePoint();//make shure the mouse position is up to date
   float x, y, z, ry_xz, rx_z, xzh;//define variables that will be used
   hyp*=-1;//invert the inputed distance
