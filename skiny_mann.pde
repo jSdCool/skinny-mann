@@ -95,7 +95,7 @@ PShape coin3D, redArrow, greenArrow, blueArrow, yellowArrow, redScaler, greenSca
 
 PApplet primaryWindow=this;
 boolean menue =true, inGame=false, player1_moving_right=false, player1_moving_left=false, dev_mode=true, player1_jumping=false, dead=false, level_complete=false, reset_spawn=false, fs, E_pressed=false, loopThread2=true, showSettingsAfterStart=false, displayFPS=true, displayDebugInfo=false, prevousInGame=false, setPlayerPosTo=false, e3DMode=false, checkpointIn3DStage=false, WPressed=false, SPressed=false, levelCompleteSoundPlayed=false, tutorialMode=false, shadow3D=true, UGC_lvl=false, levelCompatible=false, editingBlueprint=false, viewingItemContents=false, selecting=false, s3D=false, w3D=false, shift3D=false, space3D=false, d3D=false, a3D=false, cam_down=false, cam_up=false, cam_right=false, cam_left=false, isHost=false, killPhysics=false, enteringName=false, enteringPort=false, enteringIP=false, multiplayer=false, clientQuitting=false, waitingForReady=false, loaded=false, reachedEnd=false, editingStage=false, simulating=false, ground=false, check_point=false, goal=false, deleteing=false, moving_player=false, grid_mode=false, holo_gram=false, drawCoins=false, drawingPortal=false, sloap=false, holoTriangle=false, dethPlane=false, selectingBlueprint=false, placingSound=false, drawingSign=false, placingLogicButton=false, draw3DSwitch1=false, draw3DSwitch2=false, editinglogicBoard=false, connectingLogic=false, moveLogicComponents=false, placingAndGate=false, placingOrGate=false, placingXorGate=false, placingNandGate=false, placingNorGate=false, placingXnorGate=false, placingOnSingal=false, placingReadVariable=false, placingSetVaravle=false, placingSetVisibility=false, placingXOffset=false, placingYOffset=false, placingDelay=false, placingZOffset=false, placing3Dsetter=false, placing3Dreader=false, placingPlaySoundLogic=false, placingPulse=false, placingRandom=false, saveColors=false, levelOverview=false, drawingPortal3=false, placingTestLogic=false, settingPlayerSpawn=false, levelCreator=false, drawing=false, draw=false, delete=false, translateXaxis=false, translateYaxis=false, translateZaxis=false, drawingPortal2=false, startup=false, loading=false, newLevel=false, newFile=false, creatingNewBlueprint=false, entering_name=false, loadingBlueprint=false, entering_file_path=false, coursor=false, connecting=false, movingLogicComponent=false, exitLevelCreator=false, levelNotFound=false, transitioningMenu=false,newSoundAsNarration =false,newBlueprintIs3D = false;
- String Menue ="creds"/*,level="n"*/, version="0.8.1_Early_Access", EDITOR_version="0.1.0_EAc", ip="localhost", name="can't_be_botherd_to_chane_it", input, file_path, rootPath, stageType="", settingsMenue="game play", author="", displayText="", GAME_version=version, internetVersion, cursor="", disconnectReason="", multyplayerSelectionLevels="speed", multyplayerSelectedLevelPath, appdata, coursorr="", new_name, newFileName="", newFileType="2D", fileToCoppyPath="";
+ String Menue ="creds"/*,level="n"*/, version="0.8.1_Early_Access", EDITOR_version="0.1.0_EAc", ip="localhost", name="can't_be_botherd_to_chane_it", input, file_path, rootPath, stageType="", settingsMenue="game play", author="", displayText="", GAME_version=version, internetVersion, cursor="", disconnectReason="", multyplayerSelectionLevels="speed", multyplayerSelectedLevelPath, appdata, coursorr="", new_name, newFileName="", newFileType="2D", fileToCoppyPath="",defaultAuthor = "can't be botherd to change it";
 ArrayList<Boolean> coins;
 ArrayList<String> UGCNames = new ArrayList<>(), playerNames=new ArrayList<>();
 float Scale =1, Scale2=1, musicVolume=1, sfxVolume=1, gravity=0.001, downX, downY, upX, upY,narrationVolume=1,blueprintPlacemntX,blueprintPlacemntY,blueprintPlacemntZ;
@@ -122,9 +122,10 @@ LeaderBoard leaderBoard= new LeaderBoard(new String[]{"", "", "", "", "", "", ""
 Stage blueprints[], displayBlueprint;
 Point3D initalMousePoint=new Point3D(0, 0, 0), initalObjectPos=new Point3D(0, 0, 0), initialObjectDim=new Point3D(0, 0, 0);
 UiFrame ui;
-UiText mm_title, mm_EarlyAccess, mm_version, ls_levelSelect, lsUGC_title, lsUGC_noLevelFound, lsUGC_levelNotCompatible, lsUGC_levelName, st_title, st_Hssr, st_Vssr, st_gameplay, st_vsrp, st_hsrp, st_dsp_vsr, st_dsp_fs, st_dsp_4k, st_dsp_1440, st_dsp_1080, st_dsp_900, st_dsp_720, st_dsp_fsYes, st_dsp_fsNo, st_display, st_o_displayFPS, st_o_debugINFO, st_snd_musicVol, st_snd_SFXvol, st_o_3DShadow, st_snd_narration, st_o_yes, st_o_no, st_snd_better, st_snd_demonitized, st_snd_currentMusicVolume, st_snd_currentSoundsVolume, st_other, initMultyplayerScreenTitle, mp_hostSeccion, mp_host_Name, mp_host_enterdName, mp_host_port, mp_host_endterdPort, mp_joinSession, mp_join_name, mp_join_enterdName, mp_join_port, mp_join_enterdPort, mp_join_ip, mp_join_enterdIp, mp_disconnected, mp_dc_reason, dev_title, dev_info, tut_notToday, tut_disclaimer, tut_toClose, coinCountText, pa_title, logoText, up_title, up_info, up_wait, lc_start_version, lc_start_author, lc_load_new_describe, lc_load_new_enterd, lc_load_notFound, lc_newf_enterdName, lc_newf_fileName, lc_dp2_info, lc_newbp_describe, lc_exit_question, lc_exit_disclaimer, deadText, fpsText, dbg_mspc, dbg_playerX, dbg_playerY, dbg_vertvel, dbg_animationCD, dbg_pose, dbg_camX, dbg_camY, dbg_tutorialPos, game_displayText, lebelCompleteText, lc_fullScreenWarning, settingPlayerSpawnText,st_sound,st_snd_narrationVol,st_snd_currentNarrationVolume,narrationCaptionText,st_o_diableTransitions;
+UiText mm_title, mm_EarlyAccess, mm_version, ls_levelSelect, lsUGC_title, lsUGC_noLevelFound, lsUGC_levelNotCompatible, lsUGC_levelName, st_title, st_Hssr, st_Vssr, st_gameplay, st_vsrp, st_hsrp, st_dsp_vsr, st_dsp_fs, st_dsp_4k, st_dsp_1440, st_dsp_1080, st_dsp_900, st_dsp_720, st_dsp_fsYes, st_dsp_fsNo, st_display, st_o_displayFPS, st_o_debugINFO, st_snd_musicVol, st_snd_SFXvol, st_o_3DShadow, st_snd_narration, st_o_yes, st_o_no, st_snd_better, st_snd_demonitized, st_snd_currentMusicVolume, st_snd_currentSoundsVolume, st_other, initMultyplayerScreenTitle, mp_hostSeccion, mp_host_Name, mp_host_enterdName, mp_host_port, mp_host_endterdPort, mp_joinSession, mp_join_name, mp_join_enterdName, mp_join_port, mp_join_enterdPort, mp_join_ip, mp_join_enterdIp, mp_disconnected, mp_dc_reason, dev_title, dev_info, tut_notToday, tut_disclaimer, tut_toClose, coinCountText, pa_title, logoText, up_title, up_info, up_wait, lc_start_version, lc_start_author, lc_load_new_describe, lc_load_new_enterd, lc_load_notFound, lc_newf_enterdName, lc_newf_fileName, lc_dp2_info, lc_newbp_describe, lc_exit_question, lc_exit_disclaimer, deadText, fpsText, dbg_mspc, dbg_playerX, dbg_playerY, dbg_vertvel, dbg_animationCD, dbg_pose, dbg_camX, dbg_camY, dbg_tutorialPos, game_displayText, lebelCompleteText, lc_fullScreenWarning, settingPlayerSpawnText,st_sound,st_snd_narrationVol,st_snd_currentNarrationVolume,narrationCaptionText,st_o_diableTransitions,st_o_defaultAuthor;
 UiSlider musicVolumeSlider, SFXVolumeSlider, verticleEdgeScrollSlider, horozontalEdgeScrollSlider,narrationVolumeSlider;
 ArrayList<GlitchBox> glitchBoxes = new ArrayList<>();
+UiTextBox defaultAuthorNameTextBox;
 //▄
 
 
@@ -1320,6 +1321,7 @@ void mouseClicked() {// when you click the mouse
             newFile=false;
             levelCreator=true;
             filesScrole=0;
+            author = defaultAuthor;//set the author to the default
             return;
           }
         }
@@ -1573,18 +1575,27 @@ void mouseClicked() {// when you click the mouse
               
             }
             
+            defaultAuthorNameTextBox.mouseClicked();
+            
           }//end of outher settings menue
 
-          if (sttingsGPL.isMouseOver())
+          if (sttingsGPL.isMouseOver()){
             settingsMenue="game play";
-          if (settingsDSP.isMouseOver())
+            defaultAuthorNameTextBox.resetState();
+          }
+          if (settingsDSP.isMouseOver()){
             settingsMenue="display";
-          if (settingsSND.isMouseOver())
+            defaultAuthorNameTextBox.resetState();
+          }
+          if (settingsSND.isMouseOver()){
             settingsMenue="sound";
+            defaultAuthorNameTextBox.resetState();
+          }
           if (settingsOUT.isMouseOver())
             settingsMenue="outher";
 
           if (settingsBackButton.isMouseOver()) {//back button
+            defaultAuthorNameTextBox.resetState();
             if (prevousInGame) {
               Menue="pause";
               inGame=true;
@@ -2359,12 +2370,29 @@ void keyPressed() {// when a key is pressed
       if (Menue.equals("settings")) {
         if (key == ESC) {
           key = 0;  //clear the key so it doesnt close the program
+          defaultAuthorNameTextBox.resetState();
           if (prevousInGame) {
             Menue="pause";
             inGame=true;
             prevousInGame=false;
           } else {
             Menue ="main";
+          }
+        }
+        if (settingsMenue.equals("outher")) {
+          defaultAuthorNameTextBox.keyPressed();
+          if(!defaultAuthorNameTextBox.getContence().equals(defaultAuthor)){
+            JSONObject sv3=settings.getJSONObject(5);
+            String newName =  defaultAuthorNameTextBox.getContence();
+            
+            if(!newName.isEmpty()){
+              defaultAuthor = newName;
+            }else{
+              defaultAuthor = "can't be botherd to change it";
+            }
+            sv3.setString("default author", defaultAuthor);
+            settings.setJSONObject(5, sv3);
+            saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
           }
         }
       }
@@ -2636,9 +2664,39 @@ void keyReleased() {//when you release a key
         }
       }
     }
+    if(menue){
+      if (Menue.equals("settings")) {
+        if (settingsMenue.equals("outher")) {
+          defaultAuthorNameTextBox.keyReleased();
+        }
+      }
+    }
   }
   catch(Throwable e) {
     handleError(e);
+  }
+}
+
+void keyTyped(){
+  if(menue){
+    if (Menue.equals("settings")) {
+      if (settingsMenue.equals("outher")) {
+        defaultAuthorNameTextBox.keyTyped();
+        if(!defaultAuthorNameTextBox.getContence().equals(defaultAuthor)){
+          JSONObject sv3=settings.getJSONObject(5);
+          String newName =  defaultAuthorNameTextBox.getContence();
+          
+          if(!newName.isEmpty()){
+            defaultAuthor = newName;
+          }else{
+            defaultAuthor = "can't be botherd to change it";
+          }
+          sv3.setString("default author", defaultAuthor);
+          settings.setJSONObject(5, sv3);
+          saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
+        }
+      }
+    }
   }
 }
 
@@ -3062,6 +3120,7 @@ void drawSettings() {
     st_o_yes.draw();
     st_o_no.draw();
     st_o_diableTransitions.draw();
+    st_o_defaultAuthor.draw();
     
     
 
@@ -3073,6 +3132,7 @@ void drawSettings() {
     shadowOff.draw();
     disableMenuTransistionsButton.draw();
     enableMenuTransitionButton.draw();
+    defaultAuthorNameTextBox.draw();
     
 
     textSize(50*Scale);
@@ -3306,6 +3366,7 @@ void generateSettings() {
   sv3.setBoolean("3D shaows", true);
   sv3.setString("label","outher");
   sv3.setBoolean("disableMenuTransitions",false);
+  sv3.setString("default author", defaultAuthor);
   
   settings.setJSONObject(5, sv3);
 
@@ -3813,7 +3874,7 @@ void programLoad() {
   loadProgress++;
   shadow3D=sv3.getBoolean("3D shaows");
   disableMenuTransitions = sv3.getBoolean("disableMenuTransitions");
- 
+  defaultAuthor = sv3.getString("default author");
   loadProgress++;
 
   println("loading level progress");
@@ -4151,6 +4212,8 @@ void  initButtons() {
   lc_exitCancle = new UiButton(ui, 840, 400, 200, 50, "Cancle", #BB48ED, #4857ED).setStrokeWeight(10);
 
   lc_openLevelsFolder = new UiButton(ui, 1060, 650, 200, 40, "Open Folder", #BB48ED, #4857ED).setStrokeWeight(10);
+  
+  defaultAuthorNameTextBox = new UiTextBox(ui,900,330,340,40).setColors(#FFFFFF,0).setStrokeWeight(5).setTextSize(26).setPlaceHolder("Name Goes Here").setContence(defaultAuthor);
 }
 
 
@@ -4310,6 +4373,7 @@ void initText() {
   st_o_yes = new UiText(ui, "yes", 1190, 45, 20, LEFT, BOTTOM);
   st_o_no = new UiText(ui, "no", 1120, 45, 20, LEFT, BOTTOM);
   st_o_diableTransitions = new UiText(ui,"Disable Menu Transitions",40,280,40,LEFT,BOTTOM);
+  st_o_defaultAuthor = new UiText(ui,"Default Level Creator Author",40,350,40,LEFT,BOTTOM);
   st_snd_better = new UiText(ui, "better", 1190, 340, 20, LEFT, BOTTOM);
   st_snd_demonitized = new UiText(ui, "please don't\ndemonetize\nme youtube", 1070, 340, 20, LEFT, BOTTOM);
   st_snd_currentMusicVolume = new UiText(ui, "V", 700, 110, 40, LEFT, BOTTOM);
