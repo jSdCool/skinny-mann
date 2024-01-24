@@ -17,6 +17,7 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 -changed: new level complete sound (thanks SuperTylerMan)
 +added: new setting disable menu transitions
 +added: new setting default level creator author name
+-fied: level progression bug
 
 0.8.0_Early_Access
 -fixed: update screen button not being centered at all resolutions
