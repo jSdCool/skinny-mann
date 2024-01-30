@@ -84,7 +84,9 @@ void downloadUpdateFunction() {
     if (platform == WINDOWS) {
       Desktop.getDesktop().open(new File(appdata+"/CBi-games/skinny mann updater/run.cmd"));
     } else if (platform == LINUX) {
-      Desktop.getDesktop().open(new File(appdata+"/CBi-games/skinny mann updater/run.sh"));
+      ProcessBuilder pb = new ProcessBuilder(appdata+"/CBi-games/skinny mann updater/run.sh");
+      pb.directory(new File(appdata+"/CBi-games/skinny mann updater"));
+      Process p = pb.start();
     }
     //close the game
     exit(2);
