@@ -12,10 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.awt.Desktop;
 import javax.swing.*;
-import java.util.Set;
-import java.util.HashSet;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.Files;
 
 
 void settings() {//first function called

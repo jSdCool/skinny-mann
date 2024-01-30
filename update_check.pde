@@ -84,12 +84,13 @@ void downloadUpdateFunction() {
     if (platform == WINDOWS) {
       Desktop.getDesktop().open(new File(appdata+"/CBi-games/skinny mann updater/run.cmd"));
     } else if (platform == LINUX) {
-      //allow execution because linux is a bith wioth file permissions
-      
+      //allow execution because linux is a bitch with file permissions
+      //apperently this is how it has to be done
       ProcessBuilder permissionSet = new ProcessBuilder("chmod", "-R", "755" ,appdata+"/CBi-games/skinny mann updater/");
       permissionSet.directory(new File(appdata+"/CBi-games/skinny mann updater/"));
       permissionSet.start();
       
+      //run the script
       ProcessBuilder pb = new ProcessBuilder(appdata+"/CBi-games/skinny mann updater/run.sh");
       pb.directory(new File(appdata+"/CBi-games/skinny mann updater"));
       Process p = pb.start();
