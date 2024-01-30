@@ -7,26 +7,29 @@ void draw_updae_screen() {//the update screen
 
   updateOkButton.draw();
   updateGetButton.draw();
-  if (platform==WINDOWS)
+  if (platform!=MACOS) {//due to issudes cause by apple being shit faced parnoied loosers the upater does not work corretly on mac os
     downloadUpdateButton.draw();
-
+  }
   textAlign(LEFT);
 }
+long [] updateDownloadProgress = {1,0};
 
 void drawUpdateDownloadingScreen() {
   background(#EDEDED);
   fill(0);
   up_wait.draw();
+  fill(0);
+  rect(0.1*width,height/2-height*0.05,(float)((width*0.8)*((double)updateDownloadProgress[1]/updateDownloadProgress[0])),height*0.1);
 }
 ArrayList<String> fileIndex=new ArrayList<>();
 void updae_screen_click() {//the buttons on the update screen
   if (updateGetButton.isMouseOver()) {
-    link("http://cbi-games.glitch.me");//open CBi games in a web browser
+    link("http://cbi-games.org");//open CBi games in a web browser
   }
   if (updateOkButton.isMouseOver()) {
     Menue="main";//go to the main menue
   }
-  if (platform==WINDOWS&&downloadUpdateButton.isMouseOver()) {
+  if (platform!=MACOS && downloadUpdateButton.isMouseOver()) {
     Menue="downloading update";
     thread("downloadUpdateFunction");
   }
@@ -34,30 +37,56 @@ void updae_screen_click() {//the buttons on the update screen
 
 void downloadUpdateFunction() {
   try {
+    //get updater info from external file
     String updaterLinks[]=readFileFromGithub("https://raw.githubusercontent.com/jSdCool/CBI-games-version-checker/master/skinny_mann_updater_info").split("\n");
-    new File(System.getenv("AppData")+"/CBi-games/skinny mann updater").mkdirs();
-    DownloadFile.download(updaterLinks[0], System.getenv("AppData")+"/CBi-games/skinny mann updater/skinny mann updater.jar");
+    //make the folder for the updater
+    new File(appdata+"/CBi-games/skinny mann updater").mkdirs();
+    //download the updater
+    DownloadFile.download(updaterLinks[0], appdata+"/CBi-games/skinny mann updater/skinny mann updater.jar",updateDownloadProgress);
     int javaLevel=1;
+    //check if java was bundled with the game
     String sketchFolders[]=new File(sketchPath()).list();
     for (int i=0; i<sketchFolders.length; i++) {
       if (sketchFolders[i].equals("java"))
         javaLevel=2;
     }
-    saveStrings(System.getenv("AppData")+"/CBi-games/skinny mann updater/downloadInfo.txt", new String[]{updaterLinks[javaLevel], internetVersion, sketchPath()});
+    //save the info file that tells the updater where the game is located
+    saveStrings(appdata+"/CBi-games/skinny mann updater/downloadInfo.txt", new String[]{" ", (javaLevel == 2) ? "JE":"NJE", sketchPath()});
+
+    //if java was bundled assume that no compatble JVM exists on the system. copy the java instance used by the game so it can be used by the updater
     if (javaLevel==2) {
+      //index all the files in the java install
       scanForFiles(sketchPath()+"/java", "");
+      //copy them to the updater location
       for (int i=0; i<fileIndex.size(); i++) {
-        javaCopy(0, sketchPath()+"/java/"+fileIndex.get(i), System.getenv("AppData")+"/CBi-games/skinny mann updater/java/"+fileIndex.get(i));
+        javaCopy(0, sketchPath()+"/java/"+fileIndex.get(i), appdata+"/CBi-games/skinny mann updater/java/"+fileIndex.get(i));
       }
-      saveStrings(System.getenv("AppData")+"/CBi-games/skinny mann updater/run.cmd", new String[]{"@echo off", "title skinny mann updater launcher", "echo this window can be closed", "cd "+System.getenv("AppData")+"/CBi-games/skinny mann updater", "\""+System.getenv("AppData")+"/CBi-games/skinny mann updater/java/bin/javaw.exe\" -jar \"skinny mann updater.jar\"", "exit"});
+      //generate the script to run the updater as a seprate process
+      if (platform == WINDOWS) {
+        saveStrings(appdata+"/CBi-games/skinny mann updater/run.cmd", new String[]{"@echo off", "title skinny mann updater launcher", "echo this window can be closed", "cd \""+appdata+"/CBi-games/skinny mann updater\"", "\""+appdata+"/CBi-games/skinny mann updater/java/bin/javaw.exe\" -jar \"skinny mann updater.jar\"", "exit"});
+      } else if (platform == LINUX) {
+        saveStrings(appdata+"/CBi-games/skinny mann updater/run.sh", new String[]{"#!/bin/sh","echo skinny mann updater launcher", "cd \""+appdata+"/CBi-games/skinny mann updater\"", "\""+appdata+"/CBi-games/skinny mann updater/java/bin/java\" -jar \"skinny mann updater.jar\"", "echo this window can be closed"});
+      }
     } else {
-      saveStrings(System.getenv("AppData")+"/CBi-games/skinny mann updater/run.cmd", new String[]{"@echo off", "title skinny mann updater launcher", "echo this window can be closed", "cd "+System.getenv("AppData")+"/CBi-games/skinny mann updater", "javaw -jar \"skinny mann updater.jar\"", "exit"});
+      //generate the script to run the updater as a seprate process
+      if (platform == WINDOWS) {
+        saveStrings(appdata+"/CBi-games/skinny mann updater/run.cmd", new String[]{"@echo off", "title skinny mann updater launcher", "echo this window can be closed", "cd "+appdata+"/CBi-games/skinny mann updater", "javaw -jar \"skinny mann updater.jar\"", "exit"});
+      } else if (platform == LINUX) {
+        saveStrings(appdata+"/CBi-games/skinny mann updater/run.sh", new String[]{"#!/bin/sh","echo skinny mann updater launcher", "cd \""+appdata+"/CBi-games/skinny mann updater\"", "java -jar \"skinny mann updater.jar\"", "echo this window can be closed"});
+      }
     }
+    //wait 500ms to make shure everythingn is good and set
     int a=millis();
     while (a+500<=millis()) {
       random(1);
     }
-    Desktop.getDesktop().open(new File(System.getenv("AppData")+"/CBi-games/skinny mann updater/run.cmd"));
+    //execut the script
+    if (platform == WINDOWS) {
+      Desktop.getDesktop().open(new File(appdata+"/CBi-games/skinny mann updater/run.cmd"));
+    } else if (platform == LINUX) {
+      Desktop.getDesktop().open(new File(appdata+"/CBi-games/skinny mann updater/run.sh"));
+    }
+    //close the game
     exit(2);
   }
   catch(Throwable e) {
