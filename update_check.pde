@@ -86,7 +86,9 @@ void downloadUpdateFunction() {
     } else if (platform == LINUX) {
       //allow execution because linux is a bith wioth file permissions
       
-      Runtime.getRuntime().exec("chmod -R 755 "+appdata+"/CBi-games/skinny mann updater/");
+      ProcessBuilder permissionSet = new ProcessBuilder("chmod", "-R", "755" ,appdata+"/CBi-games/skinny mann updater/");
+      permissionSet.directory(new File(appdata+"/CBi-games/skinny mann updater/"));
+      permissionSet.start();
       
       ProcessBuilder pb = new ProcessBuilder(appdata+"/CBi-games/skinny mann updater/run.sh");
       pb.directory(new File(appdata+"/CBi-games/skinny mann updater"));
