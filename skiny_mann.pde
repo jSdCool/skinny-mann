@@ -127,6 +127,8 @@ UiText mm_title, mm_EarlyAccess, mm_version, ls_levelSelect, lsUGC_title, lsUGC_
 UiSlider musicVolumeSlider, SFXVolumeSlider, verticleEdgeScrollSlider, horozontalEdgeScrollSlider,narrationVolumeSlider;
 ArrayList<GlitchBox> glitchBoxes = new ArrayList<>();
 UiTextBox defaultAuthorNameTextBox;
+PlayerMovementManager playerMovementManager = new PlayerMovementManager();
+
 //▄
 
 
@@ -3723,6 +3725,7 @@ void sourceInitilize() {
   LogicComponent.source=this;
   Client.source=this;
   Server.source=this;
+  Player.source=this;
 }
 
 void networkError(Throwable error) {
