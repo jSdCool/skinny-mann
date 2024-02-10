@@ -2559,11 +2559,7 @@ void keyPressed() {// when a key is pressed
         }
       }
     }
-
     //System.out.println(keyCode);
-    if(key=='b'||key=='B'){
-      println("p"); //<>// //<>// //<>//
-    }
   }
   catch(Throwable e) {
     handleError(e);
