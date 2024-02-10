@@ -109,4 +109,8 @@ class Player extends Entity implements Serializable {
     verticalVelocity = v;
     return this;
   }
+  
+  public boolean in3D(){
+    return in3D;
+  }
 }

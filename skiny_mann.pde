@@ -128,6 +128,7 @@ UiSlider musicVolumeSlider, SFXVolumeSlider, verticleEdgeScrollSlider, horozonta
 ArrayList<GlitchBox> glitchBoxes = new ArrayList<>();
 UiTextBox defaultAuthorNameTextBox;
 PlayerMovementManager playerMovementManager = new PlayerMovementManager();
+CollisionDetection collisionDetection = new CollisionDetection();
 
 //▄
 
@@ -2561,7 +2562,7 @@ void keyPressed() {// when a key is pressed
 
     //System.out.println(keyCode);
     if(key=='b'||key=='B'){
-      println("p"); //<>//
+      println("p"); //<>// //<>// //<>//
     }
   }
   catch(Throwable e) {

@@ -21,4 +21,6 @@ abstract class Entity{
   
   //wether or not this entity colides with outher entityes 
   public abstract boolean collidesWithEntites();
+  
+  public abstract boolean in3D();
 }
