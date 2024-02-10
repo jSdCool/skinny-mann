@@ -130,7 +130,7 @@ class LogicButton extends StageComponent {//ground component
     return variable;
   }
 
-  /**this instance of this function al;lows the button to test if a player is standing on it
+  /**this instance of this function allows the portal to test if a player is standing on it
    
    @param data the index of the stage the button is in
    */
@@ -159,4 +159,12 @@ class LogicButton extends StageComponent {//ground component
       }
     }
   }
+  
+  public Collider2D getCollider2D(){
+    return null;
+  }
+  public Collider3D getCollider3D(){ 
+    return null;
+  }
+  
 }

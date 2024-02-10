@@ -130,4 +130,11 @@ class WritableSign extends StageComponent {
   String getData() {
     return contents;
   }
+  
+  public Collider2D getCollider2D(){
+    return null;
+  }
+  public Collider3D getCollider3D(){ 
+    return null;
+  }
 }
