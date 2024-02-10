@@ -1,6 +1,9 @@
 if you get a trojan waring from windows defender check this link
 https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-trojans
 
+0.9.0_Early_Access
+-changed: new collision detection system
+
 0.8.1_Early_Access
 +added: Universal error handler (crashes will now always show an error window)
 +added: grid mode indicator in level creator

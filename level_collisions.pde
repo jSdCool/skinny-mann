@@ -120,11 +120,12 @@ void stageLevelDraw() {
         float shadowAltitude=players[currentPlayer].y;
         boolean shadowHit=false;
         for (int i=0; i<500&&!shadowHit; i++) {//ray cast to find solid ground underneath the player
-          /*if (level_colide(players[currentPlayer].x, shadowAltitude+i, players[currentPlayer].z)) {
-            shadowAltitude+=i;
-            shadowHit=true;
-            continue;
-          }*/
+        Collider3D groundDetect = players[currentPlayer].getHitBox3D(0,i,0);
+          if (level_colide(groundDetect,level.stages.get(currentStageIndex))) {
+           shadowAltitude+=i;
+           shadowHit=true;
+           continue;
+           }
         }
         if (shadowHit) {//if solid ground was found under the player then draw the shadow
           translate(players[currentPlayer].x, shadowAltitude-1.1, players[currentPlayer].z);
@@ -382,468 +383,11 @@ void camera3DpositionNotSimulating() {
 void playerPhysics() {
   int calcingPlayer = currentPlayer;
 
-  //if (viewingItemContents) {//stop movment while intertacting with an object
-  //  player1_moving_right=false;
-  //  player1_moving_left=false;
-  //  player1_jumping=false;
-  //  WPressed=false;
-  //  SPressed=false;
-  //}
-  entityPhysics(players[calcingPlayer],level.stages.get(currentStageIndex));
-  if (!e3DMode) {
-    
-    //if (simulating||!levelCreator) {
-    //  if (player1_moving_right) {//move the player right
-    //    float newpos=players[calcingPlayer].getX()+mspc*0.4;//calculate new position
-    //    if (!level_colide(newpos+10, players[calcingPlayer].getY())) {//check if the player can walk up "stairs"
-    //      if (!level_colide(newpos+10, players[calcingPlayer].getY()-25)) {//check if there is something blocking the player 25 from his feet
-    //        if (!level_colide(newpos+10, players[calcingPlayer].getY()-50)) {//check if there is something blocking the player 50 from his feet
-    //          if (!level_colide(newpos+10, players[calcingPlayer].getY()-75)) {//check if there is something blocking the player 75 from his feet
-    //            players[calcingPlayer].setX(newpos);//move the player if all is good
-    //          }
-    //        }
-    //      }
-    //    } else if ((!level_colide(newpos+10, players[calcingPlayer].getY()-10)&&!level_colide(newpos+10, players[calcingPlayer].getY()-50)&&!level_colide(newpos+10, players[calcingPlayer].getY()-75))&&players[calcingPlayer].verticalVelocity<0.008) {//check if the new posaition would place the player inside of a wall
-    //      if (!level_colide(newpos+10, players[calcingPlayer].getY()-1)) {//autojump move the player up if they could concivaly go up a stair
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-1);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-2)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-2);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-3)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-3);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-4)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-4);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-5)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-5);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-6)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-6);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-7)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-7);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-8)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-8);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-9)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-9);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-10)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-10);
-    //      }
-    //    }
 
-    //    if (players[calcingPlayer].getAnimationCooldown()<=0) {//change the player pose to make them look like there waljking
-    //      players[calcingPlayer].setPose(players[calcingPlayer].getPose()+1);
-    //      players[calcingPlayer].setAnimationCooldown(4);
-    //      if (players[calcingPlayer].getPose()==13) {
-    //        players[calcingPlayer].setPose(1);
-    //      }
-    //    } else {
-    //      players[calcingPlayer].setAnimationCooldown(players[calcingPlayer].getAnimationCooldown()-0.05*mspc);//animation cooldown
-    //    }
-    //  }
-
-    //  if (player1_moving_left) {//player moving left
-    //    float newpos=players[calcingPlayer].getX()-mspc*0.4;//calculte new position
-    //    if (!level_colide(newpos-10, players[calcingPlayer].getY())) {//check if the player can walk up "stairs"
-    //      if (!level_colide(newpos-10, players[calcingPlayer].getY()-25)) {//check if there is something blocking the player 25 from his feet
-    //        if (!level_colide(newpos-10, players[calcingPlayer].getY()-50)) {//check if there is something blocking the player 50 from his feet
-    //          if (!level_colide(newpos-10, players[calcingPlayer].getY()-75)) {//check if there is something blocking the player 75 from his feet
-    //            players[calcingPlayer].setX(newpos);//move the player
-    //          }
-    //        }
-    //      }
-    //    } else if ((!level_colide(newpos-10, players[calcingPlayer].getY()-10)&&!level_colide(newpos-10, players[calcingPlayer].getY()-50)&&!level_colide(newpos-10, players[calcingPlayer].getY()-75))&&players[calcingPlayer].verticalVelocity<0.008) {//check if the new posaition would place the player inside of a wall
-    //      if (!level_colide(newpos+10, players[calcingPlayer].getY()-1)) {//autojump move the player up if they could concivaly go up a stair
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-1);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-2)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-2);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-3)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-3);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-4)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-4);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-5)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-5);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-6)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-6);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-7)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-7);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-8)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-8);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-9)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-9);
-    //      } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-10)) {
-    //        players[calcingPlayer].setX(newpos);
-    //        players[calcingPlayer].setY(players[calcingPlayer].getY()-10);
-    //      }
-    //    }
-
-    //    if (players[calcingPlayer].getAnimationCooldown()<=0) {//change the player pose to make them look lie there walking
-    //      players[calcingPlayer].setPose(players[calcingPlayer].getPose()-1);
-    //      players[calcingPlayer].setAnimationCooldown(4);
-    //      if (players[calcingPlayer].getPose()==0) {
-    //        players[calcingPlayer].setPose(12);
-    //      }
-    //    } else {
-    //      players[calcingPlayer].setAnimationCooldown(players[calcingPlayer].getAnimationCooldown()-0.05*mspc);//animation cooldown
-    //    }
-    //  }
-
-    //  if (!player1_moving_right&&!player1_moving_left) {//reset the player pose if the player is not moving
-    //    players[calcingPlayer].setPose(1);
-    //    players[calcingPlayer].setAnimationCooldown(4);
-    //  }
-    //}
-
-    //if (simulating||!levelCreator)
-    //  if (true) {//gravity
-    //    float pd = (players[calcingPlayer].verticalVelocity*mspc+0.5*gravity*(float)Math.pow(mspc, 2))+players[calcingPlayer].y;//calculate the new verticle position the player shoud be at
-
-    //    if ((!level_colide(players[calcingPlayer].getX()-10, pd)&&!level_colide(players[calcingPlayer].getX()-5, pd)&&!level_colide(players[calcingPlayer].getX(), pd)&&!level_colide(players[calcingPlayer].getX()+5, pd)&&!level_colide(players[calcingPlayer].getX()+10, pd))) {//check if that location would be inside of the ground
-    //      if ((!level_colide(players[calcingPlayer].getX()-10, pd-75-1)&&!level_colide(players[calcingPlayer].getX()-5, pd-75-1)&&!level_colide(players[calcingPlayer].getX(), pd-75-1)&&!level_colide(players[calcingPlayer].getX()+5, pd-75-1)&&!level_colide(players[calcingPlayer].getX()+10, pd-75-1))||players[calcingPlayer].verticalVelocity>0.001) {//check if that location would cause the player's head to be indide of something
-    //        players[calcingPlayer].verticalVelocity=players[calcingPlayer].verticalVelocity+gravity*mspc;//calculate the players new verticle velocity
-    //        players[calcingPlayer].y=pd;//update the postiton of the player
-    //      } else {
-    //        players[calcingPlayer].verticalVelocity=0;//stop the player's verticle motion
-    //      }
-    //    } else {
-    //      players[calcingPlayer].verticalVelocity=0;//stop the player's verticle motion
-    //    }
-    //  }
+  entityPhysics(players[calcingPlayer], level.stages.get(currentStageIndex));
 
 
-    //death plane
-    //if (player_kill(players[calcingPlayer].getX()-10, players[calcingPlayer].getY()+1)||player_kill(players[calcingPlayer].getX()-5, players[calcingPlayer].getY()+1)||player_kill(players[calcingPlayer].getX(), players[calcingPlayer].getY()+1)||player_kill(players[calcingPlayer].getX()+5, players[calcingPlayer].getY()+1)||player_kill(players[calcingPlayer].getX()+10, players[calcingPlayer].getY()+1)) {//if the player is on top of a death plane
-    //  dead=true;//kill the player
-    //  death_cool_down=0;
-    //}
-
-    //in ground detection and rectification
-    //if (!(!level_colide(players[calcingPlayer].getX()-10, players[calcingPlayer].getY())&&!level_colide(players[calcingPlayer].getX()-5, players[calcingPlayer].getY())&&!level_colide(players[calcingPlayer].getX(), players[calcingPlayer].getY())&&!level_colide(players[calcingPlayer].getX()+5, players[calcingPlayer].getY())&&!level_colide(players[calcingPlayer].getX()+10, players[calcingPlayer].getY()))) {//check if the player's position is in the ground
-    //  players[calcingPlayer].setY(players[calcingPlayer].getY()-1);//move the player up
-    //  players[calcingPlayer].verticalVelocity=0;//stop verticle veloicty
-    //}
-
-
-    //if (player1_jumping) {//jumping
-    //  if (!(!level_colide(players[calcingPlayer].getX()-10, players[calcingPlayer].getY()+2)&&!level_colide(players[calcingPlayer].getX()-5, players[calcingPlayer].getY()+2)&&!level_colide(players[calcingPlayer].getX(), players[calcingPlayer].getY()+2)&&!level_colide(players[calcingPlayer].getX()+5, players[calcingPlayer].getY()+2)&&!level_colide(players[calcingPlayer].getX()+10, players[calcingPlayer].getY()+2))) {//check if the player is on the ground
-    //    players[calcingPlayer].verticalVelocity=-0.75;  //if the player is on the ground and they are trying to jump then set thire verticle velocity
-    //  }
-    //} else if (players[calcingPlayer].verticalVelocity<0) {//if the player stops pressing space bar before they stop riseing then start moving the player down
-    //  players[calcingPlayer].verticalVelocity=0.01;
-    //}
-
-
-    //if (simulating||!levelCreator)
-    //  if (players[calcingPlayer].getX()-camPos>(1280-eadgeScroleDist)) {//move the camera if the player goes too close to the end of the screen
-    //    camPos=(int)(players[calcingPlayer].getX()-(1280-eadgeScroleDist));
-    //  }
-
-    //if (simulating||!levelCreator)
-    //  if (players[calcingPlayer].getX()-camPos<eadgeScroleDist&&camPos>0) {//move the camera if the player goes too close to the end of the screen
-    //    camPos=(int)(players[calcingPlayer].getX()-eadgeScroleDist);
-    //  }
-
-    //if (simulating||!levelCreator)
-    //  if (players[calcingPlayer].getY()+camPosY>720-eadgeScroleDistV&&camPosY>0) {//move the camera if the player goes too close to the end of the screen
-    //    camPosY-=players[calcingPlayer].getY()+camPosY-(720-eadgeScroleDistV);
-    //  }
-
-    //if (simulating||!levelCreator)
-    //  if (players[calcingPlayer].getY()+camPosY<eadgeScroleDistV+75) {//move the camera if the player goes too close to the end of the screen
-    //    camPosY-=players[calcingPlayer].getY()+camPosY-(eadgeScroleDistV+75);
-    //  }
-    //if (camPos<0)//prevent the camera from moving out of the valid areia
-    //  camPos=0;
-    //if (camPosY<0)
-    //  camPosY=0;
-  } else {//end of not 3D mode
-/*
-    if (simulating||!levelCreator) {
-      if (player1_moving_right) {//move the player right
-        float newpos=players[calcingPlayer].getX()+mspc*0.4;//calculate new position
-
-        if (!level_colide(newpos+10, players[calcingPlayer].getY(), players[calcingPlayer].z-7)&&!level_colide(newpos+10, players[calcingPlayer].getY(), players[calcingPlayer].z+7)) {//check if the player can walk up "stairs"
-          if (!level_colide(newpos+10, players[calcingPlayer].getY()-25, players[calcingPlayer].z-7)&&!level_colide(newpos+10, players[calcingPlayer].getY()-25, players[calcingPlayer].z+7)) {//check if there is something blocking the player 25 from his feet
-            if (!level_colide(newpos+10, players[calcingPlayer].getY()-50, players[calcingPlayer].z-7)&&!level_colide(newpos+10, players[calcingPlayer].getY()-50, players[calcingPlayer].z+7)) {//check if there is something blocking the player 50 from his feet
-              if (!level_colide(newpos+10, players[calcingPlayer].getY()-75, players[calcingPlayer].z-7)&&!level_colide(newpos+10, players[calcingPlayer].getY()-75, players[calcingPlayer].z+7)) {//check if there is something blocking the player 75 from his feet
-                players[calcingPlayer].setX(newpos);//move the player
-              }
-            }
-          }
-        } else if ((!level_colide(newpos+10, players[calcingPlayer].getY()-10, players[calcingPlayer].z)&&!level_colide(newpos+10, players[calcingPlayer].getY()-50, players[calcingPlayer].z)&&!level_colide(newpos+10, players[calcingPlayer].getY()-75, players[calcingPlayer].z))&&players[calcingPlayer].verticalVelocity<0.008) {//check if the new posaition would place the player inside of a wall
-          if (!level_colide(newpos+10, players[calcingPlayer].getY()-1, players[calcingPlayer].z)) {//autojump move the player up if they could concivaly go up a stair
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-1);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-2, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-2);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-3, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-3);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-4, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-4);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-5, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-5);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-6, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-6);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-7, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-7);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-8, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-8);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-9, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-9);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-10, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-10);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-11, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-11);
-          }
-        }
-
-        if (players[calcingPlayer].getAnimationCooldown()<=0) {//chmage the player pose to make them look like there waljking
-          players[calcingPlayer].setPose(players[calcingPlayer].getPose()+1);
-          players[calcingPlayer].setAnimationCooldown(4);
-          if (players[calcingPlayer].getPose()==13) {
-            players[calcingPlayer].setPose(1);
-          }
-        } else {
-          players[calcingPlayer].setAnimationCooldown(players[calcingPlayer].getAnimationCooldown()-0.05*mspc);//animation cooldown
-        }
-      }
-
-      if (player1_moving_left) {//player moving left
-        float newpos=players[calcingPlayer].getX()-mspc*0.4;//calculate new position
-        if (!level_colide(newpos-10, players[calcingPlayer].getY(), players[calcingPlayer].z-7)&&!level_colide(newpos-10, players[calcingPlayer].getY(), players[calcingPlayer].z+7)) {//check if the player can walk up "stairs"
-          if (!level_colide(newpos-10, players[calcingPlayer].getY()-25, players[calcingPlayer].z-7)&&!level_colide(newpos-10, players[calcingPlayer].getY()-25, players[calcingPlayer].z+7)) {//check if there is something blocking the player 25 from his feet
-            if (!level_colide(newpos-10, players[calcingPlayer].getY()-50, players[calcingPlayer].z-7)&&!level_colide(newpos-10, players[calcingPlayer].getY()-50, players[calcingPlayer].z+7)) {//check if there is something blocking the player 50 from his feet
-              if (!level_colide(newpos-10, players[calcingPlayer].getY()-75, players[calcingPlayer].z-7)&&!level_colide(newpos-10, players[calcingPlayer].getY()-75, players[calcingPlayer].z+7)) {//check if there is something blocking the player 75 from his feet
-                players[calcingPlayer].setX(newpos);//move the player
-              }
-            }
-          }
-        } else if ((!level_colide(newpos-10, players[calcingPlayer].getY()-10, players[calcingPlayer].z)&&!level_colide(newpos-10, players[calcingPlayer].getY()-50, players[calcingPlayer].z)&&!level_colide(newpos-10, players[calcingPlayer].getY()-75, players[calcingPlayer].z))&&players[calcingPlayer].verticalVelocity<0.008) {//check if the new posaition would place the player inside of a wall
-          if (!level_colide(newpos+10, players[calcingPlayer].getY()-1, players[calcingPlayer].z)) {//autojump move the player up if they could concivaly go up a stair
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-1);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-2, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-2);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-3, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-3);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-4, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-4);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-5, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-5);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-6, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-6);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-7, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-7);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-8, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-8);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-9, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-9);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-10, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-10);
-          } else if (!level_colide(newpos-10, players[calcingPlayer].getY()-11, players[calcingPlayer].z)) {
-            players[calcingPlayer].setX(newpos);
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-11);
-          }
-        }
-
-        if (players[calcingPlayer].getAnimationCooldown()<=0) {//change the playerb pose to make them look lie there walking
-          players[calcingPlayer].setPose(players[calcingPlayer].getPose()-1);
-          players[calcingPlayer].setAnimationCooldown(4);
-          if (players[calcingPlayer].getPose()==0) {
-            players[calcingPlayer].setPose(12);
-          }
-        } else {
-          players[calcingPlayer].setAnimationCooldown(players[calcingPlayer].getAnimationCooldown()-0.05*mspc);//animation cooldown
-        }
-      }
-
-      if (WPressed) {
-        float newpos=players[calcingPlayer].z-mspc*0.4;//calculate new position
-        if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY(), newpos-10)) {//check if the player can walk up "stairs"
-          if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-25, newpos-10)) {//check if there is something blocking the player 25 from his feet
-            if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-50, newpos-10)) {//check if there is something blocking the player 50 from his feet
-              if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-75, newpos-10)) {//check if there is something blocking the player 75 from his feet
-                players[calcingPlayer].z=newpos;//move the player
-              }
-            }
-          }
-        } else if ((!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-10, newpos-10)&&!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-50, newpos-10)&&!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-75, newpos-10))&&players[calcingPlayer].verticalVelocity<0.008) {//check if the new posaition would place the player inside of a wall
-          if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-1, newpos-10)) {//autojump move the player up if they could concivaly go up a stair
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-1);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-2, newpos-10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-2);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-3, newpos-10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-3);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-4, newpos-10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-4);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-5, newpos-10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-5);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-6, newpos-10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-6);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-7, newpos-10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-7);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-8, newpos-10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-8);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-9, newpos-10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-9);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-10, newpos-10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-10);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-11, newpos-10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-11);
-          }
-        }
-
-        if (players[calcingPlayer].getAnimationCooldown()<=0) {//change the playerb pose to make them look lie there walking
-          players[calcingPlayer].setPose(players[calcingPlayer].getPose()-1);
-          players[calcingPlayer].setAnimationCooldown(4);
-          if (players[calcingPlayer].getPose()==0) {
-            players[calcingPlayer].setPose(12);
-          }
-        } else {
-          players[calcingPlayer].setAnimationCooldown(players[calcingPlayer].getAnimationCooldown()-0.05*mspc);//animation cooldown
-        }
-      }
-
-      if (SPressed) {
-        float newpos=players[calcingPlayer].z+mspc*0.4;//calculate new position
-        if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY(), newpos+10)) {//check if the player can walk up "stairs"
-          if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-25, newpos+10)) {//check if there is something blocking the player 25 from his feet
-            if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-50, newpos+10)) {//check if there is something blocking the player 50 from his feet
-              if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-75, newpos+10)) {//check if there is something blocking the player 75 from his feet
-                players[calcingPlayer].z=newpos;//move the player
-              }
-            }
-          }
-        } else if ((!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-10, newpos+10)&&!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-50, newpos+10)&&!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-75, newpos+10))&&players[calcingPlayer].verticalVelocity<0.008) {//check if the new posaition would place the player inside of a wall
-          if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-1, newpos-10)) {//autojump move the player up if they could concivaly go up a stair
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-1);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-2, newpos+10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-2);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-3, newpos+10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-3);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-4, newpos+10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-4);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-5, newpos+10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-5);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-6, newpos+10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-6);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-7, newpos+10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-7);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-8, newpos+10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-8);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-9, newpos+10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-9);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-10, newpos+10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-10);
-          } else if (!level_colide(players[calcingPlayer].x, players[calcingPlayer].getY()-11, newpos+10)) {
-            players[calcingPlayer].z=newpos;
-            players[calcingPlayer].setY(players[calcingPlayer].getY()-11);
-          }
-        }
-
-        if (players[calcingPlayer].getAnimationCooldown()<=0) {//change the playerb pose to make them look lie there walking
-          players[calcingPlayer].setPose(players[calcingPlayer].getPose()-1);
-          players[calcingPlayer].setAnimationCooldown(4);
-          if (players[calcingPlayer].getPose()==0) {
-            players[calcingPlayer].setPose(12);
-          }
-        } else {
-          players[calcingPlayer].setAnimationCooldown(players[calcingPlayer].getAnimationCooldown()-0.05*mspc);//animation cooldown
-        }
-      }
-
-      if (!player1_moving_right&&!player1_moving_left&&!WPressed&&!SPressed) {//reset the player pose if the player is not moving
-        players[calcingPlayer].setPose(1);
-        players[calcingPlayer].setAnimationCooldown(4);
-      }
-    }
-
-
-    if (simulating||!levelCreator)
-      if (true) {//gravity
-        float pd = (players[calcingPlayer].verticalVelocity*mspc+0.5*gravity*(float)Math.pow(mspc, 2))+players[calcingPlayer].y;//calculate the new verticle position the player shoud be at
-
-        if (!level_colide(players[calcingPlayer].getX(), pd, players[calcingPlayer].z+7)&&!level_colide(players[calcingPlayer].getX(), pd, players[calcingPlayer].z-7)) {//check if that location would be inside of the ground
-          if ((!level_colide(players[calcingPlayer].getX()-10, pd-75-1, players[calcingPlayer].z)&&!level_colide(players[calcingPlayer].getX()-5, pd-75-1, players[calcingPlayer].z)&&!level_colide(players[calcingPlayer].getX(), pd-75-1, players[calcingPlayer].z)&&!level_colide(players[calcingPlayer].getX()+5, pd-75-1, players[calcingPlayer].z)&&!level_colide(players[calcingPlayer].getX()+10, pd-75-1, players[calcingPlayer].z))||players[calcingPlayer].verticalVelocity>0.001) {//check if that location would cause the player's head to be indide of something
-            players[calcingPlayer].verticalVelocity=players[calcingPlayer].verticalVelocity+gravity*mspc;//calculate the new verticle velocity
-            players[calcingPlayer].y=pd;//update position
-          } else {
-            players[calcingPlayer].verticalVelocity=0;//stop the player's verticle motion
-          }
-        } else {
-          players[calcingPlayer].verticalVelocity=0;//stop the player's verticle motion
-        }
-      }
-
-    //in ground detection and rectification
-    if (!(!level_colide(players[calcingPlayer].getX(), players[calcingPlayer].getY(), players[calcingPlayer].z+7)&&!level_colide(players[calcingPlayer].getX(), players[calcingPlayer].getY(), players[calcingPlayer].z-7))) {
-      players[calcingPlayer].setY(players[calcingPlayer].getY()-1);
-      players[calcingPlayer].verticalVelocity=0;
-    }
-
-    if (player1_jumping) {//jumping
-      if (!(!level_colide(players[calcingPlayer].getX(), players[calcingPlayer].y+2, players[calcingPlayer].z+7)&&!level_colide(players[calcingPlayer].getX(), players[calcingPlayer].y+2, players[calcingPlayer].z-7))) {//check if the player is standing on the ground
-        players[calcingPlayer].verticalVelocity=-0.75;  //if the player is on the ground and they are trying to jump then set thire verticle velocity
-      }
-    } else if (players[calcingPlayer].verticalVelocity<0) {//if the player stops pressing space bar then start moving the player down
-      players[calcingPlayer].verticalVelocity=0.01;
-    }*/
-  }//end of 3D mode
+  //code specific to the current player
   if (players[calcingPlayer].getY()>720) {//kill the player if they go below the stage
     dead=true;
     death_cool_down=0;
@@ -863,6 +407,7 @@ void playerPhysics() {
     setPlayerPosTo=false;
     players[calcingPlayer].verticalVelocity=0;
   }
+
   //////////////////////////////
   if ((!levelCreator && (level.multyplayerMode==1 || (level.multyplayerMode==2 && isHost))) || (levelCreator&&simulating)) {
     if (!logicTickingThread.isAlive()) {//if the ticking thread has stoped for some reason
@@ -892,7 +437,7 @@ void entityPhysics(Entity entity, Stage stage) {
     //I think this offset of aditinal 10 is hald the player hit box width
 
     if (simulating||!levelCreator) {
-      
+
       if (movement.right()) {//move the player right
         float offset  = mspc*0.4, newpos = entity.getX()+offset;
         Collider2D newboxPos = entity.getHitBox2D(offset, 0);
@@ -969,7 +514,7 @@ void entityPhysics(Entity entity, Stage stage) {
         //    d  =                      vi*t          + 0.5 * a * t^2
         float pd = (entity.getVerticalVelocity()*mspc + 0.5*gravity*(float)Math.pow(mspc, 2));//calculate the new verticle position the player shoud be at
         float newPos = pd +  entity.getY();
-        Collider2D newBox = entity.getHitBox2D(0, pd);
+        Collider2D newBox = entity.getHitBox2D(0, pd+0.5);
         if (!level_colide(newBox, stage)) {//check if that location would be inside of the ground or ceiling
           //if (entity.getVerticalVelocity()>0.001) {//check if that location would cause the player's head to be indide of something
           //if the new pos is not colliding with anything
@@ -993,7 +538,7 @@ void entityPhysics(Entity entity, Stage stage) {
     }
 
     //in ground detection and rectification
-    if (level_colide(entity.getHitBox2D(0, 0), stage)) {//check if the player's position is in the ground
+    if (level_colide(entity.getHitBox2D(0, 0.5), stage)) {//check if the player's position is in the ground
       entity.setY(entity.getY()-1);//move the player up
       entity.setVerticalVelocity(0);//stop the entity's verticle motion
     }
@@ -1032,8 +577,171 @@ void entityPhysics(Entity entity, Stage stage) {
       if (camPosY<0)
         camPosY=0;
     }
+  } else {//end of not in 3D mode
+    if (simulating||!levelCreator) {
+
+      if (movement.right()) {//move the player right
+        float offset  = mspc*0.4, newpos = entity.getX()+offset;
+        Collider3D newboxPos = entity.getHitBox3D(offset, 0, 0);
+
+        if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
+          entity.setX(newpos);//move the player
+        } else if (entity.getVerticalVelocity()<0.008) {//check if the new posaition would place the player inside of a wall
+          for (int i=1; i<11; i++) {//check to see if the player can walk up a "step"
+            newboxPos = entity.getHitBox3D(offset, -i, 0);
+            if (!level_colide(newboxPos, stage)) {
+              entity.setX(newpos);
+              break;
+            }
+          }
+        }
+
+        if (entity instanceof Player) {
+          Player player = (Player)entity;
+          if (player.getAnimationCooldown()<=0) {//change the player pose to make them look like there waljking
+            player.setPose(player.getPose()+1);
+            player.setAnimationCooldown(4);
+            if (player.getPose()==13) {
+              player.setPose(1);
+            }
+          } else {
+            player.setAnimationCooldown(player.getAnimationCooldown()-0.05*mspc);//animation cooldown
+          }
+        }
+      }
+
+      if (movement.left()) {//player moving left
+        float offset  = mspc*0.4, newpos = entity.getX()-offset;
+        Collider3D newboxPos = entity.getHitBox3D(-offset, 0, 0);
+        if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
+          entity.setX(newpos);//move the player
+        } else if (entity.getVerticalVelocity()<0.008) {//check if the new posaition would place the player inside of a wall
+          for (int i=1; i<11; i++) {//check to see if the player can walk up a "step"
+            newboxPos = entity.getHitBox3D(-offset, -i, 0);
+            if (!level_colide(newboxPos, stage)) {
+              entity.setX(newpos);
+              break;
+            }
+          }
+        }
+
+        if (entity instanceof Player) {
+          Player player = (Player)entity;
+          if (player.getAnimationCooldown()<=0) {//change the player pose to make them look like there waljking
+            player.setPose(player.getPose()-1);
+            player.setAnimationCooldown(4);
+            if (player.getPose()==0) {
+              player.setPose(12);
+            }
+          } else {
+            player.setAnimationCooldown(player.getAnimationCooldown()-0.05*mspc);//animation cooldown
+          }
+        }
+      }
+
+      if (movement.in()) {
+        float offset  = mspc*0.4, newpos = entity.getZ()-offset;
+        Collider3D newboxPos = entity.getHitBox3D(0, 0, -offset);
+        if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
+          entity.setZ(newpos);//move the player
+        } else if (entity.getVerticalVelocity()<0.008) {//check if the new posaition would place the player inside of a wall
+          for (int i=1; i<11; i++) {//check to see if the player can walk up a "step"
+            newboxPos = entity.getHitBox3D(0, -i, -offset);
+            if (!level_colide(newboxPos, stage)) {
+              entity.setZ(newpos);
+              break;
+            }
+          }
+        }
+
+        if (entity instanceof Player) {
+          Player player = (Player)entity;
+          if (player.getAnimationCooldown()<=0) {//change the player pose to make them look like there waljking
+            player.setPose(player.getPose()-1);
+            player.setAnimationCooldown(4);
+            if (player.getPose()==0) {
+              player.setPose(12);
+            }
+          } else {
+            player.setAnimationCooldown(player.getAnimationCooldown()-0.05*mspc);//animation cooldown
+          }
+        }
+      }
+
+      if (movement.out()) {
+        float offset  = mspc*0.4, newpos = entity.getZ()+offset;
+        Collider3D newboxPos = entity.getHitBox3D(0, 0, offset);
+
+        if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
+          entity.setZ(newpos);//move the player
+        } else if (entity.getVerticalVelocity()<0.008) {//check if the new posaition would place the player inside of a wall
+          for (int i=1; i<11; i++) {//check to see if the player can walk up a "step"
+            newboxPos = entity.getHitBox3D(0, -i, offset);
+            if (!level_colide(newboxPos, stage)) {
+              entity.setZ(newpos);
+              break;
+            }
+          }
+        }
+
+        if (entity instanceof Player) {
+          Player player = (Player)entity;
+          if (player.getAnimationCooldown()<=0) {//change the player pose to make them look like there waljking
+            player.setPose(player.getPose()+1);
+            player.setAnimationCooldown(4);
+            if (player.getPose()==13) {
+              player.setPose(1);
+            }
+          } else {
+            player.setAnimationCooldown(player.getAnimationCooldown()-0.05*mspc);//animation cooldown
+          }
+        }
+      }
+
+      if (entity instanceof Player) {
+        Player player = (Player)entity;
+        if (!movement.right() && !movement.left() && !movement.in() && !movement.out()) {//reset the player pose if the player is not moving
+          player.setPose(1);
+          player.setAnimationCooldown(4);
+        }
+      }
+    }
+
+    if (simulating||!levelCreator)
+      if (true) {//gravity
+        //    d  =                      vi*t          + 0.5 * a * t^2
+        float pd = (entity.getVerticalVelocity()*mspc + 0.5*gravity*(float)Math.pow(mspc, 2));//calculate the new verticle position the player shoud be at
+        float newPos = pd +  entity.getY();
+        Collider3D newboxPos = entity.getHitBox3D(0, pd+0.5, 0);
+        if (!level_colide(newboxPos, stage)) {//check if that location would be inside of the ground or ceiling
+          //           vf          =         vi                  +    a * t
+          entity.setVerticalVelocity(entity.getVerticalVelocity()+gravity*mspc);//calculate the players new verticle velocity
+          entity.setY(newPos);//update the postiton of the player
+        } else {
+          //if the new position would collide with something
+          entity.setVerticalVelocity(0);//stop the entity's verticle motion
+        }
+      }
+
+    //ground detetcion and reftification
+    if (level_colide(entity.getHitBox3D(0, 0.5, 0), stage)) {
+      entity.setY(entity.getY()-1);
+      entity.setVerticalVelocity(0);
+    }
+
+    if (movement.jump()) {//jumping
+      Collider3D groundDetect = entity.getHitBox3D(0, 2, 0);
+      if (level_colide(groundDetect, stage)) {//check if the player is standing on the ground
+        entity.setVerticalVelocity(-0.75);  //if the player is on the ground and they are trying to jump then set thire verticle velocity
+      }
+    } else if (entity.getVerticalVelocity()<0) {//if the player stops pressing space bar then start moving the player down
+      entity.setVerticalVelocity(0.01);
+    }
   }
+  //end of 3D physics
 }
+
+
 /**check if a point is inside of a solid object
  
  */
