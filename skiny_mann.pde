@@ -2300,13 +2300,13 @@ void keyPressed() {// when a key is pressed
         Menue="pause";
       }
       if (keyCode==65) {//if A is pressed
-        player1_moving_left=true;
+        playerMovementManager.setLeft(true);
       }
       if (keyCode==68) {//if D is pressed
-        player1_moving_right=true;
+        playerMovementManager.setRight(true);
       }
       if (keyCode==32) {//if space is pressed
-        player1_jumping=true;
+        playerMovementManager.setJump(true);
       }
       if (dev_mode) {//if in dev mode
         if (keyCode==81) {//if q is pressed print the player position
@@ -2318,13 +2318,12 @@ void keyPressed() {// when a key is pressed
       }
       if (e3DMode) {
         if (keyCode==87) {//w
-          WPressed=true;
+          playerMovementManager.setIn(true);
         }
         if (keyCode==83) {//s
-          SPressed=true;
+          playerMovementManager.setOut(true);
         }
-      }//end of 3d mode
-      if (e3DMode) {
+      //level creator camera controlls
         if (keyCode==65) {//if 'A' is pressed
           a3D=true;
         }
@@ -2568,32 +2567,29 @@ void keyPressed() {// when a key is pressed
   catch(Throwable e) {
     handleError(e);
   }
-  if (key =='l') {
-    killPhysics=true;
-  }
 }
 
 void keyReleased() {//when you release a key
   try {
     if (inGame||(levelCreator&&editingStage)) {//whehn in game
       if (keyCode==65) {//if A is released
-        player1_moving_left=false;
+        playerMovementManager.setLeft(false);
       }
       if (keyCode==68) {//if D is released
-        player1_moving_right=false;
+        playerMovementManager.setRight(false);
       }
       if (keyCode==32) {//if SPACE is released
-        player1_jumping=false;
+        playerMovementManager.setJump(false);
       }
       if (key=='e'||key=='E') {
         E_pressed=false;
       }
       if (e3DMode) {
         if (keyCode==87) {//w
-          WPressed=false;
+          playerMovementManager.setIn(false);
         }
         if (keyCode==83) {//s
-          SPressed=false;
+          playerMovementManager.setOut(false);
         }
       }//end of 3d mode
       if (e3DMode) {
@@ -3388,14 +3384,14 @@ void tutorialLogic() {
     currentTutorialSound=0;
     soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
     tutorialPos++;
-    player1_moving_left=false;
-    player1_moving_right=false;
-    player1_jumping=false;
+    playerMovementManager.setLeft(false);
+    playerMovementManager.setRight(false);
+    playerMovementManager.setJump(false);
   }
   if (tutorialPos==1) {
-    player1_moving_left=false;
-    player1_moving_right=false;
-    player1_jumping=false;
+    playerMovementManager.setLeft(false);
+    playerMovementManager.setRight(false);
+    playerMovementManager.setJump(false);
     if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
       currentTutorialSound=1;
       soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
@@ -3403,9 +3399,9 @@ void tutorialLogic() {
     }
   }
   if (tutorialPos==2) {
-    player1_moving_left=false;
-    player1_moving_right=false;
-    player1_jumping=false;
+    playerMovementManager.setLeft(false);
+    playerMovementManager.setRight(false);
+    playerMovementManager.setJump(false);
     if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
       loadLevel("data/levels/tutorial");
       inGame=true;
@@ -3416,9 +3412,9 @@ void tutorialLogic() {
     }
   }
   if (tutorialPos==3) {
-    player1_moving_left=false;
-    player1_moving_right=false;
-    player1_jumping=false;
+    playerMovementManager.setLeft(false);
+    playerMovementManager.setRight(false);
+    playerMovementManager.setJump(false);
     if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
       currentTutorialSound=3;
       soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
@@ -3426,9 +3422,9 @@ void tutorialLogic() {
     }
   }
   if (tutorialPos==4) {
-    player1_moving_left=false;
-    player1_moving_right=false;
-    player1_jumping=false;
+    playerMovementManager.setLeft(false);
+    playerMovementManager.setRight(false);
+    playerMovementManager.setJump(false);
     if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
       currentTutorialSound=4;
       soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
@@ -3436,8 +3432,8 @@ void tutorialLogic() {
     }
   }
   if (tutorialPos==5) {
-    player1_moving_left=false;
-    player1_jumping=false;
+    playerMovementManager.setLeft(false);
+    playerMovementManager.setJump(false);
     if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
       currentTutorialSound=5;
       soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
@@ -3445,7 +3441,7 @@ void tutorialLogic() {
     }
   }
   if (tutorialPos==6) {
-    player1_jumping=false;
+    playerMovementManager.setJump(false);
     if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
       currentTutorialSound=6;
       soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
@@ -3453,13 +3449,13 @@ void tutorialLogic() {
     }
   }
   if (tutorialPos==7) {
-    player1_jumping=false;
+    playerMovementManager.setJump(false);
     if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
       tutorialPos++;
     }
   }
   if (tutorialPos==8) {
-    player1_jumping=false;
+    playerMovementManager.setJump(false);
     if (players[currentPlayer].x>=1604) {
       currentTutorialSound=7;
       soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
@@ -3468,15 +3464,15 @@ void tutorialLogic() {
     }
   }
   if (tutorialPos==9) {
-    player1_moving_left=false;
-    player1_moving_right=false;
-    player1_jumping=false;
+    playerMovementManager.setLeft(false);
+    playerMovementManager.setRight(false);
+    playerMovementManager.setJump(false);
     if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
       tutorialPos++;
     }
   }
   if (tutorialPos==10) {
-    player1_jumping=false;
+    playerMovementManager.setJump(false);
     if (dead) {
       currentTutorialSound=8;
       soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
@@ -3498,9 +3494,9 @@ void tutorialLogic() {
     }
   }
   if (tutorialPos==13) {
-    player1_moving_left=false;
-    player1_moving_right=false;
-    player1_jumping=false;
+    playerMovementManager.setLeft(false);
+    playerMovementManager.setRight(false);
+    playerMovementManager.setJump(false);
     if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
       tutorialPos++;
       tutorialDrawLimit=28;
@@ -3515,9 +3511,9 @@ void tutorialLogic() {
     }
   }
   if (tutorialPos==15) {
-    player1_moving_left=false;
-    player1_moving_right=false;
-    player1_jumping=false;
+    playerMovementManager.setLeft(false);
+    playerMovementManager.setRight(false);
+    playerMovementManager.setJump(false);
     if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
       tutorialPos++;
     }
@@ -3552,9 +3548,9 @@ void tutorialLogic() {
     }
   }
   if (tutorialPos==20) {
-    player1_moving_left=false;
-    player1_moving_right=false;
-    player1_jumping=false;
+    playerMovementManager.setLeft(false);
+    playerMovementManager.setRight(false);
+    playerMovementManager.setJump(false);
     if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
       tutorialPos++;
       tutorialDrawLimit=600;
@@ -3582,9 +3578,9 @@ void tutorialLogic() {
   }
 
   if (tutorialPos==24) {
-    player1_moving_left=false;
-    player1_moving_right=false;
-    player1_jumping=false;
+    playerMovementManager.setLeft(false);
+    playerMovementManager.setRight(false);
+    playerMovementManager.setJump(false);
     if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
       soundHandler.setMusicVolume(musicVolume);
       tutorialMode=false;
