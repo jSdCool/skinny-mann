@@ -434,7 +434,6 @@ void entityPhysics(Entity entity, Stage stage) {
   }
 
   if (!entity.in3D()) {
-    //I think this offset of aditinal 10 is hald the player hit box width
 
     if (simulating||!levelCreator) {
 
@@ -709,6 +708,7 @@ void entityPhysics(Entity entity, Stage stage) {
 
     if (simulating||!levelCreator)
       if (true) {//gravity
+      
         //    d  =                      vi*t          + 0.5 * a * t^2
         float pd = (entity.getVerticalVelocity()*mspc + 0.5*gravity*(float)Math.pow(mspc, 2));//calculate the new verticle position the player shoud be at
         float newPos = pd +  entity.getY();
@@ -721,6 +721,7 @@ void entityPhysics(Entity entity, Stage stage) {
           //if the new position would collide with something
           entity.setVerticalVelocity(0);//stop the entity's verticle motion
         }
+        
       }
 
     //ground detetcion and reftification

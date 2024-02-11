@@ -2,7 +2,7 @@ import processing.core.*;
 class Collider2D {
   PVector[] vertices;
   PVector center;
-  private PVector min=new PVector(),max = new PVector();
+  protected PVector min=new PVector(),max = new PVector();
   public Collider2D(PVector[] vertices) {
     this.vertices=vertices;
     float cx=0, cy=0, cz=0;
@@ -41,6 +41,9 @@ class Collider2D {
   }
   
   void updateMin(){
+    if(vertices.length>0){
+      min = new PVector(vertices[0].x,vertices[0].y);
+    }
     for(PVector p:vertices){
       min.x = Math.min(p.x,min.x);
       min.y = Math.min(p.y,min.y);
@@ -48,6 +51,9 @@ class Collider2D {
   }
   
   void updateMax(){
+    if(vertices.length>0){
+      max = new PVector(vertices[0].x,vertices[0].y);
+    }
     for(PVector p:vertices){
       max.x = Math.max(p.x,max.x);
       max.y = Math.max(p.y,max.y);

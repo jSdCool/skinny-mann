@@ -2,9 +2,8 @@ import processing.core.*;
 import java.util.ArrayList;
 class CollisionDetection{
   public boolean collide2D(Collider2D c1, Collider2D c2){
-    
     //AABB
-    if(!AABB2D(c1,c1))
+    if(!AABB2D(c1,c2))
       return false;
     //GJK
     return GJK2D(c1,c2);
@@ -13,7 +12,7 @@ class CollisionDetection{
   public boolean collide3D(Collider3D c1, Collider3D c2){
     
     //AABB
-    if(!AABB3D(c1,c1))
+    if(!AABB3D(c1,c2))
       return false;
     //GJK
     return GJK3D(c1,c2);

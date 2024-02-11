@@ -11,7 +11,7 @@ class Collider3D{
   }
   
   private ArrayList<PVector> vertices = new ArrayList<>();
-  private PVector min=new PVector(),max = new PVector();
+  protected PVector min=new PVector(),max = new PVector();
   
   public PVector findFurthestPoint(PVector direction){
     PVector  maxPoint = null;
@@ -36,16 +36,24 @@ class Collider3D{
   }
   
   void updateMin(){
+    if(vertices.size()>0){
+      min = new PVector(vertices.get(0).x,vertices.get(0).y,vertices.get(0).z);
+    }
     for(PVector p:vertices){
       min.x = Math.min(p.x,min.x);
       min.y = Math.min(p.y,min.y);
+      min.z = Math.min(p.z,min.z);
     }
   }
   
   void updateMax(){
+    if(vertices.size()>0){
+      max = new PVector(vertices.get(0).x,vertices.get(0).y,vertices.get(0).z);
+    }
     for(PVector p:vertices){
       max.x = Math.max(p.x,max.x);
       max.y = Math.max(p.y,max.y);
+      max.z = Math.max(p.z,max.z);
     }
   }
 }
