@@ -1,6 +1,9 @@
 if you get a trojan waring from windows defender check this link
 https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-trojans
 
+0.8.2_Early_Access
+-fixed: coin placement preview was too small in 3D stages
+
 0.8.1_Early_Access
 +added: Universal error handler (crashes will now always show an error window)
 +added: grid mode indicator in level creator
