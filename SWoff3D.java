@@ -59,7 +59,8 @@ class SWoff3D extends StageComponent {//ground component
     if (!group.visable)
       return;
     source.draw3DSwitch2((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), source.Scale);
-    if (source.players[source.currentPlayer].x>=(x+group.xOffset)-10&&source.players[source.currentPlayer].x<=(x+group.xOffset)+10&&source.players[source.currentPlayer].y >=(y+group.yOffset)-10&&source.players[source.currentPlayer].y<= (y+group.yOffset)+2 && source.players[source.currentPlayer].z >= (z+group.zOffset)-10 && source.players[source.currentPlayer].z <= (z+group.zOffset)+10) {
+    Collider3D playerHitBox = source.players[source.currentPlayer].getHitBox3D(0,0,0);
+    if (source.collisionDetection.collide3D(playerHitBox,Collider3D.createBoxHitBox(x-10,y-10,z-10,20,10,20))) {
       source.e3DMode=false;
       source.WPressed=false;
       source.SPressed=false;

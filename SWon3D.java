@@ -52,7 +52,8 @@ class SWon3D extends StageComponent {//ground component
     if (!group.visable)
       return;
     source.draw3DSwitch1(((x+group.xOffset)-source.drawCamPosX), ((y+group.yOffset)+source.drawCamPosY), source.Scale);
-    if (source.players[source.currentPlayer].x>=(x+group.xOffset)-10&&source.players[source.currentPlayer].x<=(x+group.xOffset)+10&&source.players[source.currentPlayer].y >=(y+group.yOffset)-10&&source.players[source.currentPlayer].y<= (y+group.yOffset)+2) {
+    Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);
+    if (source.collisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x-10,y-10,20,10))) {
       source.players[source.currentPlayer].z=z;
       source.e3DMode=true;
       source.gmillis=source.millis()+1200;

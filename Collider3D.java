@@ -56,4 +56,20 @@ class Collider3D{
       max.z = Math.max(p.z,max.z);
     }
   }
+  
+  /**creates a 3d collider for the specified box range
+   mostly just for code readability
+   */
+  static Collider3D createBoxHitBox(float x,float y,float z,float dx,float dy,float dz){
+    return new Collider3D(new PVector[]{
+      new PVector(x,y,z),
+      new PVector(x+dx,y,z),
+      new PVector(x+dx,y+dy,z),
+      new PVector(x,y+dy,z),
+      new PVector(x,y+dy,z+dz),
+      new PVector(x+dx,y+dy,z+dz),
+      new PVector(x+dx,y,z+dz),
+      new PVector(x,y,z+dz)
+    });
+  }
 }
