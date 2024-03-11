@@ -566,21 +566,27 @@ void entityPhysics(Entity entity, Stage stage) {
     }
 
     //in ground detection and rectification
-    if (level_colide(entity.getHitBox2D(0, 0.5), stage)) {//check if the player's position is in the ground
+    boolean gdtre = false;
+    if(entity.collidesWithEntites()){
+      gdtre = entityCollide(entity,entity.getHitBox2D(0, 0.5),stage);
+    }
+    if (level_colide(entity.getHitBox2D(0, 0.5), stage) || gdtre) {//check if the player's position is in the ground
       //if the entity can coolide with other entites check if it is doing so, otherwise continue
-      if(!entity.collidesWithEntites() || !entityCollide(entity,entity.getHitBox2D(0, 0.5),stage)){
-        entity.setY(entity.getY()-1);//move the player up
-        entity.setVerticalVelocity(0);//stop the entity's verticle motion
+      
+      entity.setY(entity.getY()-1);//move the player up
+      entity.setVerticalVelocity(0);//stop the entity's verticle motion
+      //if colliding with another entity attempt to seperate
+      if(gdtre){
+         entity.setY(entity.getY()-random(0,7));
       }
+      
     }
 
     if (movement.jump()) {//jumping
       Collider2D groundDetect = entity.getHitBox2D(0, 2);
-      if (level_colide(groundDetect, stage)) {//check if the entiy is on the ground
-        //if the entity can coolide with other entites check if it is doing so, otherwise continue
-        if(!entity.collidesWithEntites() || !entityCollide(entity,groundDetect,stage)){
-          entity.setVerticalVelocity(-0.75);  //if the entity is on the ground and they are trying to jump then set thire verticle velocity
-        }
+      if (level_colide(groundDetect, stage)|| (entity.collidesWithEntites() && entityCollide(entity,groundDetect,stage))) {//check if the entiy is on the ground
+        entity.setVerticalVelocity(-0.75);  //if the entity is on the ground and they are trying to jump then set thire verticle velocity
+        
       }
     } else if (entity.getVerticalVelocity()<0) {//if the player stops pressing space bar before they stop riseing then start moving the player down
       entity.setVerticalVelocity(0.01);//make the entity move down

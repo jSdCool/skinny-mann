@@ -86,6 +86,18 @@ class SimpleEntity extends Entity{
   public void draw(skiny_mann context){
     context.fill(40);
     context.rect(context.Scale*(x-context.drawCamPosX),context.Scale*(y+context.drawCamPosY),40*context.Scale,40*context.Scale);
+    if(m.left()){
+      context.fill(130,130,0);
+      context.rect(context.Scale*(x-context.drawCamPosX),context.Scale*(y+context.drawCamPosY),10*context.Scale,40*context.Scale);
+    }
+    if(m.right()){
+      context.fill(0,130,0);
+      context.rect(context.Scale*(x-context.drawCamPosX+30),context.Scale*(y+context.drawCamPosY),10*context.Scale,40*context.Scale);
+    }
+    if(m.jump()){
+      context.fill(130,0,0);
+      context.rect(context.Scale*(x-context.drawCamPosX),context.Scale*(y+context.drawCamPosY),40*context.Scale,10*context.Scale);
+    }
     if(to ==0 ){
       to = 20;
       m.reset();
