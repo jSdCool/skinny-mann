@@ -16,7 +16,7 @@ void stageLevelDraw() {
     viewingItemContents=false;
     viewingItemIndex=-1;
   }
-  if (stage.type.equals("stage")) {//if tthe cuurent thing that is being drawn is a stage
+  if (stage.type.equals("stage")) {//if the cuurent thing that is being drawn is a stage
     SPressed=false;
     WPressed=false;
     e3DMode=false;//turn 3D mode off
@@ -38,6 +38,10 @@ void stageLevelDraw() {
       if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
         viewingItemIndex=i;//set the cuurent viewing item to this element
       }
+    }
+    //render all the Entites on this stage
+    for(int i=0;i<stage.entities.size();i++){
+      stage.entities.get(i).draw(this);
     }
     players[currentPlayer].in3D=false;
     if (clients.size()>0)
@@ -136,6 +140,12 @@ void stageLevelDraw() {
           translate(-players[currentPlayer].x, -(shadowAltitude-1), -players[currentPlayer].z);
         }
       }
+      
+      //render all the Entites on this stage
+      //TODO: respect wether the entoity is renderd in 3D or not
+      for(int i=0;i<stage.entities.size();i++){
+        stage.entities.get(i).draw3D(this);
+      }
     } else {//redner the level in 2D
       SPressed=false;
       WPressed=false;
@@ -157,6 +167,12 @@ void stageLevelDraw() {
         if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
           viewingItemIndex=i;//set the cuurent viewing item to this element
         }
+      }
+      
+      //render all the Entites on this stage
+      //TODO: respect wether the entoity is renderd in 3D or not
+      for(int i=0;i<stage.entities.size();i++){
+        stage.entities.get(i).draw(this);
       }
 
       players[currentPlayer].in3D=false;
@@ -400,6 +416,7 @@ void playerPhysics() {
     players[calcingPlayer].setX(respawnX);//move the player back to their spawnpoint
     players[calcingPlayer].setY(respawnY);
     players[calcingPlayer].z=respawnZ;
+    //set 3D mode based on last chekpoint pass
   }
   if (setPlayerPosTo) {//move the player to a position that is wanted
     players[calcingPlayer].setX(tpCords[0]).setY(tpCords[1]);
@@ -407,8 +424,14 @@ void playerPhysics() {
     setPlayerPosTo=false;
     players[calcingPlayer].verticalVelocity=0;
   }
+  
+  for(Stage stage: level.stages){
+    for(Entity entity: stage.entities){
+      entityPhysics(entity,stage);
+    }
+  }
 
-  //////////////////////////////
+  ////////////////////////////// Logic Thread monitroing 
   if ((!levelCreator && (level.multyplayerMode==1 || (level.multyplayerMode==2 && isHost))) || (levelCreator&&simulating)) {
     if (!logicTickingThread.isAlive()) {//if the ticking thread has stoped for some reason
       logicTickingThread=new LogicThread();
@@ -442,13 +465,15 @@ void entityPhysics(Entity entity, Stage stage) {
         Collider2D newboxPos = entity.getHitBox2D(offset, 0);
 
         if (!level_colide(newboxPos, stage)) {//check if the new posistion collids with anything
-          entity.setX(newpos);//move the player if all is good
-
+          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+            entity.setX(newpos);//move the player if all is good
+          }
           //if it does check if it can climb stairs
         } else if (entity.getVerticalVelocity()<0.008) {//check if the player is not falling
           for (int i=1; i<11; i++) {//check to see if the player can walk up a "step"
             newboxPos = entity.getHitBox2D(offset, -i);
             if (!level_colide(newboxPos, stage)) {
+              //maby allw use of entites as stairs
               entity.setX(newpos);
               break;
             }
@@ -473,7 +498,10 @@ void entityPhysics(Entity entity, Stage stage) {
         float offset  = mspc*0.4, newpos = entity.getX()-offset;
         Collider2D newboxPos = entity.getHitBox2D(-offset, 0);
         if (!level_colide(newboxPos, stage)) {//check if the new posistion collids with anything
-          entity.setX(newpos);//move the player if all is good
+          //if the entity can coolide with other entites check if it is doing so, otherwise continue
+          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+            entity.setX(newpos);//move the player if all is good
+          }
         } else if (entity.getVerticalVelocity()<0.008) {//check if the player is not falling
           //check to see if the player can walk up a "step"
           for (int i=1; i<11; i++) {//check to see if the player can walk up a "step"
@@ -515,14 +543,15 @@ void entityPhysics(Entity entity, Stage stage) {
         float newPos = pd +  entity.getY();
         Collider2D newBox = entity.getHitBox2D(0, pd+0.5);
         if (!level_colide(newBox, stage)) {//check if that location would be inside of the ground or ceiling
-          //if (entity.getVerticalVelocity()>0.001) {//check if that location would cause the player's head to be indide of something
-          //if the new pos is not colliding with anything
-          //           vf          =         vi                  +    a * t
-          entity.setVerticalVelocity(entity.getVerticalVelocity()+gravity*mspc);//calculate the players new verticle velocity
-          entity.setY(newPos);//update the postiton of the player
-          //} else {
-          //  players[calcingPlayer].verticalVelocity=0;//stop the player's verticle motion
-          //}
+          //if the entity can coolide with other entites check if it is doing so, otherwise continue
+          if(!entity.collidesWithEntites() || !entityCollide(entity,newBox,stage)){
+            //if the new pos is not colliding with anything
+            //           vf          =         vi                  +    a * t
+            entity.setVerticalVelocity(entity.getVerticalVelocity()+gravity*mspc);//calculate the players new verticle velocity
+            entity.setY(newPos);//update the postiton of the player
+          }else{
+            entity.setVerticalVelocity(0);
+          }
         } else {
           //if the new position would collide with something
           entity.setVerticalVelocity(0);//stop the entity's verticle motion
@@ -531,21 +560,27 @@ void entityPhysics(Entity entity, Stage stage) {
 
     //prbly should add a can be killed by this check
     Collider2D dethCheck = entity.getHitBox2D(0, 1);
-    if (player_kill(dethCheck, stage)) {//if the player is on top of a death plane
+    if (entity instanceof Player && player_kill(dethCheck, stage)) {//if the player is on top of a death plane
       dead=true;//kill the player
       death_cool_down=0;
     }
 
     //in ground detection and rectification
     if (level_colide(entity.getHitBox2D(0, 0.5), stage)) {//check if the player's position is in the ground
-      entity.setY(entity.getY()-1);//move the player up
-      entity.setVerticalVelocity(0);//stop the entity's verticle motion
+      //if the entity can coolide with other entites check if it is doing so, otherwise continue
+      if(!entity.collidesWithEntites() || !entityCollide(entity,entity.getHitBox2D(0, 0.5),stage)){
+        entity.setY(entity.getY()-1);//move the player up
+        entity.setVerticalVelocity(0);//stop the entity's verticle motion
+      }
     }
 
     if (movement.jump()) {//jumping
       Collider2D groundDetect = entity.getHitBox2D(0, 2);
       if (level_colide(groundDetect, stage)) {//check if the entiy is on the ground
-        entity.setVerticalVelocity(-0.75);  //if the entity is on the ground and they are trying to jump then set thire verticle velocity
+        //if the entity can coolide with other entites check if it is doing so, otherwise continue
+        if(!entity.collidesWithEntites() || !entityCollide(entity,groundDetect,stage)){
+          entity.setVerticalVelocity(-0.75);  //if the entity is on the ground and they are trying to jump then set thire verticle velocity
+        }
       }
     } else if (entity.getVerticalVelocity()<0) {//if the player stops pressing space bar before they stop riseing then start moving the player down
       entity.setVerticalVelocity(0.01);//make the entity move down
@@ -584,7 +619,10 @@ void entityPhysics(Entity entity, Stage stage) {
         Collider3D newboxPos = entity.getHitBox3D(offset, 0, 0);
 
         if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
-          entity.setX(newpos);//move the player
+          //if the entity can coolide with other entites check if it is doing so, otherwise continue
+          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+            entity.setX(newpos);//move the player
+          }
         } else if (entity.getVerticalVelocity()<0.008) {//check if the new posaition would place the player inside of a wall
           for (int i=1; i<11; i++) {//check to see if the player can walk up a "step"
             newboxPos = entity.getHitBox3D(offset, -i, 0);
@@ -613,7 +651,10 @@ void entityPhysics(Entity entity, Stage stage) {
         float offset  = mspc*0.4, newpos = entity.getX()-offset;
         Collider3D newboxPos = entity.getHitBox3D(-offset, 0, 0);
         if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
-          entity.setX(newpos);//move the player
+          //if the entity can coolide with other entites check if it is doing so, otherwise continue
+          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+            entity.setX(newpos);//move the player
+          }
         } else if (entity.getVerticalVelocity()<0.008) {//check if the new posaition would place the player inside of a wall
           for (int i=1; i<11; i++) {//check to see if the player can walk up a "step"
             newboxPos = entity.getHitBox3D(-offset, -i, 0);
@@ -642,7 +683,10 @@ void entityPhysics(Entity entity, Stage stage) {
         float offset  = mspc*0.4, newpos = entity.getZ()-offset;
         Collider3D newboxPos = entity.getHitBox3D(0, 0, -offset);
         if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
-          entity.setZ(newpos);//move the player
+          //if the entity can coolide with other entites check if it is doing so, otherwise continue
+          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+            entity.setZ(newpos);//move the player
+          }
         } else if (entity.getVerticalVelocity()<0.008) {//check if the new posaition would place the player inside of a wall
           for (int i=1; i<11; i++) {//check to see if the player can walk up a "step"
             newboxPos = entity.getHitBox3D(0, -i, -offset);
@@ -672,7 +716,10 @@ void entityPhysics(Entity entity, Stage stage) {
         Collider3D newboxPos = entity.getHitBox3D(0, 0, offset);
 
         if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
-          entity.setZ(newpos);//move the player
+          //if the entity can coolide with other entites check if it is doing so, otherwise continue
+          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+            entity.setZ(newpos);//move the player
+          }
         } else if (entity.getVerticalVelocity()<0.008) {//check if the new posaition would place the player inside of a wall
           for (int i=1; i<11; i++) {//check to see if the player can walk up a "step"
             newboxPos = entity.getHitBox3D(0, -i, offset);
@@ -714,9 +761,14 @@ void entityPhysics(Entity entity, Stage stage) {
         float newPos = pd +  entity.getY();
         Collider3D newboxPos = entity.getHitBox3D(0, pd+0.5, 0);
         if (!level_colide(newboxPos, stage)) {//check if that location would be inside of the ground or ceiling
-          //           vf          =         vi                  +    a * t
-          entity.setVerticalVelocity(entity.getVerticalVelocity()+gravity*mspc);//calculate the players new verticle velocity
-          entity.setY(newPos);//update the postiton of the player
+          //if the entity can coolide with other entites check if it is doing so, otherwise continue
+          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+            //           vf          =         vi                  +    a * t
+            entity.setVerticalVelocity(entity.getVerticalVelocity()+gravity*mspc);//calculate the players new verticle velocity
+            entity.setY(newPos);//update the postiton of the player
+          }else{
+            entity.setVerticalVelocity(0);
+          }
         } else {
           //if the new position would collide with something
           entity.setVerticalVelocity(0);//stop the entity's verticle motion
@@ -726,14 +778,20 @@ void entityPhysics(Entity entity, Stage stage) {
 
     //ground detetcion and reftification
     if (level_colide(entity.getHitBox3D(0, 0.5, 0), stage)) {
-      entity.setY(entity.getY()-1);
-      entity.setVerticalVelocity(0);
+      //if the entity can coolide with other entites check if it is doing so, otherwise continue
+      if(!entity.collidesWithEntites() || !entityCollide(entity,entity.getHitBox3D(0, 0.5, 0),stage)){
+        entity.setY(entity.getY()-1);
+        entity.setVerticalVelocity(0);
+      }
     }
 
     if (movement.jump()) {//jumping
       Collider3D groundDetect = entity.getHitBox3D(0, 2, 0);
       if (level_colide(groundDetect, stage)) {//check if the player is standing on the ground
-        entity.setVerticalVelocity(-0.75);  //if the player is on the ground and they are trying to jump then set thire verticle velocity
+        //if the entity can coolide with other entites check if it is doing so, otherwise continue
+        if(!entity.collidesWithEntites() || !entityCollide(entity,groundDetect,stage)){
+          entity.setVerticalVelocity(-0.75);  //if the player is on the ground and they are trying to jump then set thire verticle velocity
+        }
       }
     } else if (entity.getVerticalVelocity()<0) {//if the player stops pressing space bar then start moving the player down
       entity.setVerticalVelocity(0.01);
@@ -769,6 +827,38 @@ boolean level_colide(Collider3D hitbox, Stage stage) {//3d collions
       continue;
     if (collisionDetection.collide3D(hitbox, otherbox)) {//check if the objects collide
       return true;
+    }
+  }
+  return false;
+}
+
+boolean entityCollide(Entity self, Collider2D hitbox,Stage stage){
+  for(Entity other : stage.entities){
+    if(self == other)//dont check for collison with self
+      continue;
+    if(other.collidesWithEntites()){
+      Collider2D otherbox = other.getHitBox2D(0,0);
+      if (otherbox == null)//if the object has no collider then go to the next object
+        continue;
+      if (collisionDetection.collide2D(hitbox, otherbox)) {//check if the objects collide
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+boolean entityCollide(Entity self, Collider3D hitbox,Stage stage){
+  for(Entity other : stage.entities){
+    if(self == other)//dont check for collison with self
+      continue;
+    if(other.collidesWithEntites()){
+      Collider3D otherbox = other.getHitBox3D(0,0,0);
+      if (otherbox == null)//if the object has no collider then go to the next object
+        continue;
+      if (collisionDetection.collide3D(hitbox, otherbox)) {//check if the objects collide
+        return true;
+      }
     }
   }
   return false;

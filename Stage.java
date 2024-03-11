@@ -6,6 +6,7 @@ import java.util.ArrayList;
 class Stage implements Serializable {
   static transient skiny_mann source;
   public ArrayList<StageComponent> parts = new ArrayList<>(), interactables=new ArrayList<>();
+  public ArrayList<Entity> entities = new ArrayList<>();
   public boolean is3D=false;
   public String type, name;
   public int stageID, skyColor=-9131009;

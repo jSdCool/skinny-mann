@@ -113,4 +113,9 @@ class Player extends Entity implements Serializable {
   public boolean in3D(){
     return in3D;
   }
+  
+  //mabby implment theese later
+  public void draw(skiny_mann context){}
+  public void draw3D(skiny_mann context){}
+  public Entity create(float x,float y,float z){return null;}
 }

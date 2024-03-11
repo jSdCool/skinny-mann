@@ -23,4 +23,11 @@ abstract class Entity{
   public abstract boolean collidesWithEntites();
   
   public abstract boolean in3D();
+
+  //rener methods
+  public abstract void draw(skiny_mann context);
+  public abstract void draw3D(skiny_mann context);
+  
+  //factory methhod
+  public abstract Entity create(float x,float y,float z);
 }

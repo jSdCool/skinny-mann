@@ -1298,6 +1298,10 @@ void GUImouseClicked() {
         current.parts.add(new SoundBox((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY));
       }
     }
+    
+    if(placingSimpleEntity){
+      current.entities.add(new SimpleEntity((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY,0));
+    }
   }//end of eddit stage
 }
 
