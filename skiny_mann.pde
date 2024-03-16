@@ -1619,6 +1619,10 @@ void mouseClicked() {// when you click the mouse
         if (Menue.equals("update")) {//if that menue is update
           updae_screen_click(); //check the update clicks
         }
+        if (Menue.equals("downloading update")) {
+          updateDownloadingScreenClick();
+        }
+        
         if (Menue.equals("multiplayer strart")) {
           if (multyplayerExit.isMouseOver()) {
             Menue="main";

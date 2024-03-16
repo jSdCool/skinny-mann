@@ -3,6 +3,7 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 
 0.8.2_Early_Access
 -fixed: coin placement preview was too small in 3D stages
++changed: automatic update installer is now available on Mac OS for future versions
 
 0.8.1_Early_Access
 +added: Universal error handler (crashes will now always show an error window)
