@@ -4354,7 +4354,7 @@ void initText() {
   st_title = new UiText(ui, "Settings", 640, 720, 100, CENTER, BOTTOM);
   st_Hssr = new UiText(ui, "horozontal screen scrolling location", 40, 90, 40, LEFT, BOTTOM);
   st_Vssr = new UiText(ui, "vertical  screen scrolling location", 40, 160, 40, LEFT, BOTTOM);
-  st_gameplay = new UiText(ui, "Game Play", 640, -10, 50, CENTER, TOP);
+  st_gameplay = new UiText(ui, "Game Play", 640, 0, 50, CENTER, TOP);
   st_vsrp = new UiText(ui, "V", 700, 160, 40, LEFT, BOTTOM);
   st_hsrp = new UiText(ui, "V", 700, 90, 40, LEFT, BOTTOM);
   st_dsp_vsr = new UiText(ui, "verticle screen resolution (requires restart)", 40, 80, 40, LEFT, BOTTOM);
@@ -4366,8 +4366,8 @@ void initText() {
   st_dsp_720 = new UiText(ui, "720", 920, 45, 20, LEFT, BOTTOM);
   st_dsp_fsYes = new UiText(ui, "yes", 1190, 115, 20, LEFT, BOTTOM);
   st_dsp_fsNo = new UiText(ui, "no", 1120, 115, 20, LEFT, BOTTOM);
-  st_display = new UiText(ui, "Display", 640, -10, 50, CENTER, TOP);
-  st_sound = new UiText(ui, "Sound",640,-10,50,CENTER,TOP);
+  st_display = new UiText(ui, "Display", 640, 0, 50, CENTER, TOP);
+  st_sound = new UiText(ui, "Sound",640,0,50,CENTER,TOP);
   st_snd_narrationVol = new UiText(ui, "narration volume", 40, 250, 40, LEFT, BOTTOM);
   st_snd_currentNarrationVolume = new UiText(ui, "N", 700, 250, 40, LEFT, BOTTOM);
   st_o_displayFPS = new UiText(ui, "display fps", 40, 70, 40, LEFT, BOTTOM);
@@ -4384,7 +4384,7 @@ void initText() {
   st_snd_demonitized = new UiText(ui, "please don't\ndemonetize\nme youtube", 1070, 340, 20, LEFT, BOTTOM);
   st_snd_currentMusicVolume = new UiText(ui, "V", 700, 110, 40, LEFT, BOTTOM);
   st_snd_currentSoundsVolume = new UiText(ui, "B", 700, 180, 40, LEFT, BOTTOM);
-  st_other = new UiText(ui, "Outher", 640, -10, 50, CENTER, TOP);
+  st_other = new UiText(ui, "Outher", 640, 0, 50, CENTER, TOP);
   initMultyplayerScreenTitle = new UiText(ui, "Multiplayer", 640, 36, 50, CENTER, CENTER);
   mp_hostSeccion = new UiText(ui, "Host session", 640, 36, 50, CENTER, CENTER);
   mp_host_Name = new UiText(ui, "Name", 640, 93.6, 25, CENTER, CENTER);
