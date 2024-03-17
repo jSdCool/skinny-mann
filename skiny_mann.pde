@@ -1572,9 +1572,6 @@ void mouseClicked() {// when you click the mouse
               saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
             }
             
-            if(disableMenuTransistionsButton.isMouseOver()){
-              
-            }
             
             defaultAuthorNameTextBox.mouseClicked();
             
@@ -3881,6 +3878,8 @@ void programLoad() {
   shadow3D=sv3.getBoolean("3D shaows");
   disableMenuTransitions = sv3.getBoolean("disableMenuTransitions");
   defaultAuthor = sv3.getString("default author");
+  defaultAuthorNameTextBox.setContence(defaultAuthor);
+  author = defaultAuthor;
   loadProgress++;
 
   println("loading level progress");
