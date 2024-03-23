@@ -4090,7 +4090,7 @@ void programLoad() {
 //musicVolumeSlider,SFXVolumeSlider,verticleEdgeScrollSlider,horozontalEdgeScrollSlider;
 void  initButtons() {
   select_lvl_1=new UiButton(ui, (100), (100), (200), (100), "lvl 1", -59135, -1791).setStrokeWeight( (10));
-  select_lvl_back=new UiButton(ui, (100), (600), (200), (50), "back", -59135, -1791).setStrokeWeight( (10));
+  select_lvl_back=new UiButton(ui, (100), (600), (200), (50), "Back", -59135, -1791).setStrokeWeight( (10));
   select_lvl_2 =new UiButton(ui, (350), (100), (200), (100), "lvl 2", -59135, -1791).setStrokeWeight( (10));
   select_lvl_3 =new UiButton(ui, (600), (100), (200), (100), "lvl 3", -59135, -1791).setStrokeWeight( (10));
   select_lvl_4 =new UiButton(ui, (850), (100), (200), (100), "lvl 4", -59135, -1791).setStrokeWeight( (10));
@@ -4149,7 +4149,7 @@ void  initButtons() {
   pauseResumeButton = new UiButton(ui, 500, 200, 300, 60, "Resume", #FF1900, #FFF900).setStrokeWeight(10);
   pauseOptionsButton = new UiButton(ui, 500, 300, 300, 60, "Options", #FF1900, #FFF900).setStrokeWeight(10);
   pauseQuitButton = new UiButton(ui, 500, 400, 300, 60, "Quit", #FF1900, #FFF900).setStrokeWeight(10);
-  endOfLevelButton = new UiButton(ui, 550, 450, 200, 40, "continue", #FF1900, #FFF900).setStrokeWeight(10);
+  endOfLevelButton = new UiButton(ui, 550, 450, 200, 40, "Continue", #FF1900, #FFF900).setStrokeWeight(10);
   enableMenuTransitionButton = new UiButton(ui, (1130), (260), (40), (40), 255, 0).setStrokeWeight(5);
   disableMenuTransistionsButton = new UiButton(ui, (1200), (260), (40), (40), 255, 0).setStrokeWeight(5);
 
@@ -4169,24 +4169,24 @@ void  initButtons() {
   multyplayerHost = new UiButton(ui, 680, 300, 200, 50, "Host", #FF0004, #FFF300).setStrokeWeight(10);
   multyplayerExit = new UiButton(ui, 100, 600, 200, 50, "back", -59135, -1791).setStrokeWeight(10);
   multyplayerGo = new UiButton(ui, 640-100, 600, 200, 50, "GO", -59135, -1791).setStrokeWeight(10);
-  multyplayerLeave = new UiButton(ui, 10, 660, 200, 50, "leave", -59135, -1791).setStrokeWeight(10);
+  multyplayerLeave = new UiButton(ui, 10, 660, 200, 50, "Leave", -59135, -1791).setStrokeWeight(10);
 
-  multyplayerSpeedrun = new Button(this, width*0.18125, height*0.916666, width*0.19296875, height*0.0694444444, "speed run", -59135, -1791).setStrokeWeight(10*Scale);
+  multyplayerSpeedrun = new Button(this, width*0.18125, height*0.916666, width*0.19296875, height*0.0694444444, "Speed Run", -59135, -1791).setStrokeWeight(10*Scale);
   multyplayerCoop = new Button(this, width*0.38984375, height*0.916666, width*0.19375, height*0.0694444444, "co-op", -59135, -1791).setStrokeWeight(10*Scale);
   multyplayerUGC = new Button(this, width*0.59921875, height*0.916666, width*0.19296875, height*0.0694444444, "UGC", -59135, -1791).setStrokeWeight(10*Scale);
   multyplayerPlay = new Button(this, width*0.809375, height*0.916666, width*0.1828125, height*0.0694444444, "Play", -59135, -1791).setStrokeWeight(10*Scale);
   increaseTime = new Button(this, width*0.80546875, height*0.7, width*0.03, width*0.03, "^", -59135, -1791).setStrokeWeight(5*Scale);
   decreaseTime = new Button(this, width*0.96609375, height*0.7, width*0.03, width*0.03, "v", -59135, -1791).setStrokeWeight(5*Scale);
 
-  newBlueprint=new UiButton(ui, 200, 500, 200, 80, "new blueprint", #BB48ED, #4857ED).setStrokeWeight(10);
-  loadBlueprint=new UiButton(ui, 800, 500, 200, 80, "load blueprint", #BB48ED, #4857ED).setStrokeWeight(10);
+  newBlueprint=new UiButton(ui, 200, 500, 200, 80, "New Blueprint", #BB48ED, #4857ED).setStrokeWeight(10);
+  loadBlueprint=new UiButton(ui, 800, 500, 200, 80, "Load Blueprint", #BB48ED, #4857ED).setStrokeWeight(10);
   newLevelButton=new UiButton(ui, 200, 300, 200, 80, "NEW", #BB48ED, #4857ED).setStrokeWeight(10);
   loadLevelButton=new UiButton(ui, 800, 300, 200, 80, "LOAD", #BB48ED, #4857ED).setStrokeWeight(10);
 
   newStage=new UiButton(ui, 1200, 10, 60, 60, "+", #0092FF, 0).setStrokeWeight(3);
-  newFileCreate=new UiButton(ui, 300, 600, 200, 40, "create", #BB48ED, #4857ED).setStrokeWeight(5);
-  newFileBack=new UiButton(ui, 600, 600, 200, 40, "back", #BB48ED, #4857ED).setStrokeWeight(5);
-  chooseFileButton=new UiButton(ui, 300, 540, 200, 40, "choose file", #BB48ED, #4857ED).setStrokeWeight(5);
+  newFileCreate=new UiButton(ui, 300, 600, 200, 40, "Create", #BB48ED, #4857ED).setStrokeWeight(5);
+  newFileBack=new UiButton(ui, 600, 600, 200, 40, "Back", #BB48ED, #4857ED).setStrokeWeight(5);
+  chooseFileButton=new UiButton(ui, 300, 540, 200, 40, "Choose File", #BB48ED, #4857ED).setStrokeWeight(5);
   lc_newSoundAsSoundButton = new UiButton(ui,600,540,200,40,"Sound",#BB48ED, #4857ED).setStrokeWeight(5);
   lc_newSoundAsNarrationButton  = new UiButton(ui,820,540,200,40,"Narration",#BB48ED, #4857ED).setStrokeWeight(5);
 
@@ -4202,11 +4202,11 @@ void  initButtons() {
   new3DStage=new UiButton(ui, 600, 200, 80, 80, "3D", #BB48ED, #4857ED).setStrokeWeight(5);
   addSound=new UiButton(ui, 800, 200, 80, 80, #BB48ED, #4857ED).setStrokeWeight(5);
 
-  overview_saveLevel=new UiButton(ui, 60, 20, 50, 50, "save", #0092FF, 0).setStrokeWeight(5);
+  overview_saveLevel=new UiButton(ui, 60, 20, 50, 50, "Save", #0092FF, 0).setStrokeWeight(5);
   help=new UiButton(ui, 130, 20, 50, 50, " ? ", #0092FF, 0).setStrokeWeight(3);
   overviewUp=new UiButton(ui, 270, 20, 50, 50, " ^ ", #0092FF, 0).setStrokeWeight(3);
   overviewDown=new UiButton(ui, 200, 20, 50, 50, " v ", #0092FF, 0).setStrokeWeight(3);
-  createBlueprintGo=new UiButton(ui, 40, 400, 200, 40, "start", #BB48ED, #4857ED).setStrokeWeight(10);
+  createBlueprintGo=new UiButton(ui, 40, 400, 200, 40, "Start", #BB48ED, #4857ED).setStrokeWeight(10);
 
   lcLoadLevelButton=new UiButton(ui, 40, 400, 200, 40, "Load", #BB48ED, #4857ED).setStrokeWeight(10);
   lcNewLevelButton=new UiButton(ui, 40, 400, 200, 40, "Start", #BB48ED, #4857ED).setStrokeWeight(10);
