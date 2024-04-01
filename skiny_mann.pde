@@ -3873,6 +3873,8 @@ void programLoad() {
   shadow3D=sv3.getBoolean("3D shaows");
   disableMenuTransitions = sv3.getBoolean("disableMenuTransitions");
   defaultAuthor = sv3.getString("default author");
+  defaultAuthorNameTextBox.setContence(defaultAuthor);
+  author = defaultAuthor;
   loadProgress++;
 
   println("loading level progress");
