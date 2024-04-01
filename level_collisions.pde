@@ -839,6 +839,10 @@ boolean level_colide(Collider3D hitbox, Stage stage) {//3d collions
 }
 
 boolean entityCollide(Entity self, Collider2D hitbox,Stage stage){
+  return entityCollideObject(self,hitbox,stage) != null;
+}
+
+Collider2D entityCollideObject(Entity self, Collider2D hitbox,Stage stage){
   for(Entity other : stage.entities){
     if(self == other)//dont check for collison with self
       continue;
@@ -847,14 +851,18 @@ boolean entityCollide(Entity self, Collider2D hitbox,Stage stage){
       if (otherbox == null)//if the object has no collider then go to the next object
         continue;
       if (collisionDetection.collide2D(hitbox, otherbox)) {//check if the objects collide
-        return true;
+        return otherbox;
       }
     }
   }
-  return false;
+  return null;
 }
 
 boolean entityCollide(Entity self, Collider3D hitbox,Stage stage){
+  return entityCollideObject(self, hitbox, stage) != null;
+}
+
+Collider3D entityCollideObject(Entity self, Collider3D hitbox,Stage stage){
   for(Entity other : stage.entities){
     if(self == other)//dont check for collison with self
       continue;
@@ -863,11 +871,11 @@ boolean entityCollide(Entity self, Collider3D hitbox,Stage stage){
       if (otherbox == null)//if the object has no collider then go to the next object
         continue;
       if (collisionDetection.collide3D(hitbox, otherbox)) {//check if the objects collide
-        return true;
+        return otherbox;
       }
     }
   }
-  return false;
+  return null;
 }
 
 /**check if entity hitbox is touching a death plane

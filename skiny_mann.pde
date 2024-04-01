@@ -2300,13 +2300,13 @@ void keyPressed() {// when a key is pressed
         Menue="pause";
       }
       if (keyCode==65) {//if A is pressed
-        player1_moving_left=true;
+        playerMovementManager.setLeft(true);
       }
       if (keyCode==68) {//if D is pressed
-        player1_moving_right=true;
+        playerMovementManager.setRight(true);
       }
       if (keyCode==32) {//if space is pressed
-        player1_jumping=true;
+        playerMovementManager.setJump(true);
       }
       if (dev_mode) {//if in dev mode
         if (keyCode==81) {//if q is pressed print the player position
