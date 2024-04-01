@@ -3376,7 +3376,7 @@ void chechMark(float x, float y) {
 
 void tutorialLogic() {
   if (tutorialPos==0) {
-    soundHandler.setMusicVolume(0.01);
+    soundHandler.setMusicVolume(0.01*musicVolume);
     currentTutorialSound=0;
     soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
     tutorialPos++;
