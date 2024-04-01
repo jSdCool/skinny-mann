@@ -60,6 +60,10 @@ class Collider2D {
     }
   }
   
+  PVector getCenter(){
+    return center.copy();
+  }
+  
   /**creates a 2d collider for the specified box range
    mostly just for code readability
    */

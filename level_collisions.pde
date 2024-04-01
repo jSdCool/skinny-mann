@@ -566,20 +566,35 @@ void entityPhysics(Entity entity, Stage stage) {
     }
 
     //in ground detection and rectification
-    boolean gdtre = false;
-    if(entity.collidesWithEntites()){
-      gdtre = entityCollide(entity,entity.getHitBox2D(0, 0.5),stage);
-    }
-    if (level_colide(entity.getHitBox2D(0, 0.5), stage) || gdtre) {//check if the player's position is in the ground
+    if (level_colide(entity.getHitBox2D(0, 0.5), stage)) {//check if the player's position is in the ground
       //if the entity can coolide with other entites check if it is doing so, otherwise continue
       
       entity.setY(entity.getY()-1);//move the player up
       entity.setVerticalVelocity(0);//stop the entity's verticle motion
-      //if colliding with another entity attempt to seperate
-      if(gdtre){
-         entity.setY(entity.getY()-random(0,7));
-      }
       
+    }
+    
+    if(entity.collidesWithEntites()){
+      //if colliding with other entitys
+      Collider2D hb = entity.getHitBox2D(0, 0.5);
+      Collider2D otherEntity = entityCollideObject(entity,hb,stage);
+      //if there was a collision
+      if(otherEntity != null){
+        //if your center is gerter y then the other
+        if(otherEntity.getCenter().y < hb.getCenter().y){
+          //if the new position would not collide with terrain
+          if(level_colide(entity.getHitBox2D(0, 2), stage)){
+            entity.setY(entity.getY()+1);//move the entity down
+            entity.setVerticalVelocity(0);//stop the entity's verticle motion
+          }
+        }else{
+          //if the new position would not collide with terrain
+          if(level_colide(entity.getHitBox2D(0, -2), stage)){
+            entity.setY(entity.getY()-1);//move the entity up
+            entity.setVerticalVelocity(0);//stop the entity's verticle motion
+          }
+        }
+      }
     }
 
     if (movement.jump()) {//jumping
