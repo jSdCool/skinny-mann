@@ -70,7 +70,7 @@ class Holo extends StageComponent {//ground component
     if (!group.visable)
       return;
     source.fill(ccolor);
-    source.rect(source.Scale*((x+group.xOffset)-source.drawCamPosX)-1, source.Scale*((y+group.yOffset)+source.drawCamPosY)-1, source.Scale*dx+2, source.Scale*dy+2);
+    source.rect(source.Scale*((x+group.xOffset)-source.drawCamPosX)-0.02f, source.Scale*((y+group.yOffset)+source.drawCamPosY)-0.02f, source.Scale*dx+0.04f, source.Scale*dy+0.04f);
   }
 
   void draw3D() {

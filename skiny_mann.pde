@@ -108,7 +108,7 @@ ArrayList<Client> clients= new ArrayList<>();
 int camPos=0, camPosY=0, death_cool_down, start_down, port=9367, scroll_left, scroll_right, respawnX=20, respawnY=700, respawnZ=150, spdelay=0, vres, hres, respawnStage, stageIndex, coinCount=0, eadgeScroleDist=100, esdPos=800, setPlayerPosX, setPlayerPosY, setPlayerPosZ, gmillis=0, coinRotation=0, vesdPos=800, eadgeScroleDistV=100, settingsVersion=4, musVolSllid=800, sfxVolSllid=800, currentStageIndex, tutorialDrawLimit=0, displayTextUntill=0, tutorialPos=0, currentTutorialSound, tutorialNarrationMode=0, UGC_lvl_indx, selectedIndex=-1, viewingItemIndex=-1, drawCamPosX=0, drawCamPosY=0, currentPlayer=0, currentNumberOfPlayers=10, startTime, bestTime=0, sessionTime=600000, timerEndTime, startingDepth=0, totalDepth=300, grid_size=10, current3DTransformMode=1, currentBluieprintIndex=0, logicBoardIndex=0, Color=0, RedPos=0, BluePos=0, GreenPos=0, RC=0, GC=0, BC=0, triangleMode=0, transformComponentNumber=0, preSI=0, overviewSelection=-1, filesScrole=0, connectingFromIndex=0, movingLogicIndex=0, loadProgress=0, totalLoad=55;//int
 JSONArray  settings, levelProgress, colors;
 Button select_lvl_1, select_lvl_back, select_lvl_2, select_lvl_3, select_lvl_4, select_lvl_5, select_lvl_6, sdSlider, enableFPS, disableFPS, enableDebug, disableDebug, sttingsGPL, settingsDSP, settingsOUT, rez720, rez900, rez1080, rez1440, rez4k, fullScreenOn, fullScreenOff, vsdSlider, MusicSlider, SFXSlider, shadowOn, shadowOff, narrationMode1, narrationMode0, select_lvl_UGC, UGC_open_folder, UGC_lvls_next, UGC_lvls_prev, UGC_lvl_play, levelcreatorLink, select_lvl_7, select_lvl_8, select_lvl_9, select_lvl_10, playButton, joinButton, settingsButton, howToPlayButton, exitButton, downloadUpdateButton, updateGetButton, updateOkButton, dev_main, dev_quit, dev_levels, dev_tutorial, dev_settings, dev_UGC, dev_multiplayer, multyplayerJoin, multyplayerHost, multyplayerExit, multyplayerGo, multyplayerLeave, multyplayerSpeedrun, multyplayerCoop, multyplayerUGC, multyplayerPlay, increaseTime, decreaseTime, pauseRestart, newLevelButton, loadLevelButton, newStage, newFileCreate, newFileBack, edditStage, setMainStage, selectStage, new2DStage, new3DStage, overview_saveLevel, help, newBlueprint, loadBlueprint, createBlueprintGo, addSound, overviewUp, overviewDown, chooseFileButton, lcLoadLevelButton, lcNewLevelButton, dev_levelCreator, lc_backButton, lcOverviewExitButton, lc_exitConfirm, lc_exitCancle, lc_openLevelsFolder, settingsBackButton, pauseResumeButton, pauseOptionsButton, pauseQuitButton, endOfLevelButton,select_lvl_11,select_lvl_12,settingsSND,lc_newSoundAsSoundButton,lc_newSoundAsNarrationButton,disableMenuTransistionsButton,enableMenuTransitionButton;//button
-String[] musicTracks ={"data/music/track1.wav", "data/music/track2.wav", "data/music/track3.wav"}, sfxTracks={"data/sounds/level complete.wav"}, compatibleVersions={"0.7.0_Early_Access", "0.7.1_Early_Access","0.8.0_Early_Access","0.8.1_Early_Access","0.9.0_Early_Access"};
+String[] musicTracks ={"data/music/track1.wav", "data/music/track2.wav", "data/music/track3.wav"}, sfxTracks={"data/sounds/level complete.wav"}, compatibleVersions={"0.7.0_Early_Access", "0.7.1_Early_Access","0.8.0_Early_Access","0.8.1_Early_Access","0.8.2_Early_Access","0.9.0_Early_Access"};
 SoundHandler soundHandler;
 Level level;
 JSONObject portalStage1, portalStage2;
@@ -1576,10 +1576,7 @@ void mouseClicked() {// when you click the mouse
               settings.setJSONObject(5, sv3);
               saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
             }
-            
-            if(disableMenuTransistionsButton.isMouseOver()){
-              
-            }
+
             
             defaultAuthorNameTextBox.mouseClicked();
             
@@ -2303,13 +2300,13 @@ void keyPressed() {// when a key is pressed
         Menue="pause";
       }
       if (keyCode==65) {//if A is pressed
-        playerMovementManager.setLeft(true);
+        player1_moving_left=true;
       }
       if (keyCode==68) {//if D is pressed
-        playerMovementManager.setRight(true);
+        player1_moving_right=true;
       }
       if (keyCode==32) {//if space is pressed
-        playerMovementManager.setJump(true);
+        player1_jumping=true;
       }
       if (dev_mode) {//if in dev mode
         if (keyCode==81) {//if q is pressed print the player position
@@ -4086,7 +4083,7 @@ void programLoad() {
 //musicVolumeSlider,SFXVolumeSlider,verticleEdgeScrollSlider,horozontalEdgeScrollSlider;
 void  initButtons() {
   select_lvl_1=new UiButton(ui, (100), (100), (200), (100), "lvl 1", -59135, -1791).setStrokeWeight( (10));
-  select_lvl_back=new UiButton(ui, (100), (600), (200), (50), "back", -59135, -1791).setStrokeWeight( (10));
+  select_lvl_back=new UiButton(ui, (100), (600), (200), (50), "Back", -59135, -1791).setStrokeWeight( (10));
   select_lvl_2 =new UiButton(ui, (350), (100), (200), (100), "lvl 2", -59135, -1791).setStrokeWeight( (10));
   select_lvl_3 =new UiButton(ui, (600), (100), (200), (100), "lvl 3", -59135, -1791).setStrokeWeight( (10));
   select_lvl_4 =new UiButton(ui, (850), (100), (200), (100), "lvl 4", -59135, -1791).setStrokeWeight( (10));
@@ -4137,15 +4134,15 @@ void  initButtons() {
   joinButton=new UiButton(ui, 540, 390, 200, 50, "Multiplayer", #FF1900, #FFF900).setStrokeWeight(10);
   settingsButton=new UiButton(ui, 540, 550, 200, 50, "Settings", #FF1900, #FFF900).setStrokeWeight(10);
   howToPlayButton=new UiButton(ui, 540, 630, 200, 50, "Tutorial", #FF1900, #FFF900).setStrokeWeight(10);
-  downloadUpdateButton=new UiButton(ui, 390, 350*Scale, 500*Scale2, 50*Scale, "Download & Install", #FF0004, #FFF300).setStrokeWeight(10);
+  downloadUpdateButton=new UiButton(ui, 390, 350, 500, 50, "Download & Install", #FF0004, #FFF300).setStrokeWeight(10);
   updateGetButton=new UiButton(ui, 390, 150, 500, 50, "Get it", #FF0004, #FFF300).setStrokeWeight(10);
-  updateOkButton=new UiButton(ui, 390, 250, 500, 50, "Ok", #FF0004, #FFF300).setStrokeWeight(10*Scale);
+  updateOkButton=new UiButton(ui, 390, 250, 500, 50, "Ok", #FF0004, #FFF300).setStrokeWeight(10);
   pauseRestart=new UiButton(ui, 500, 100, 300, 60, "Restart", #FF0004, #FFF300).setStrokeWeight(10);
   settingsBackButton = new UiButton(ui, 40, 620, 200, 50, "Back", #FF1900, #FFF900).setStrokeWeight(10);
   pauseResumeButton = new UiButton(ui, 500, 200, 300, 60, "Resume", #FF1900, #FFF900).setStrokeWeight(10);
   pauseOptionsButton = new UiButton(ui, 500, 300, 300, 60, "Options", #FF1900, #FFF900).setStrokeWeight(10);
   pauseQuitButton = new UiButton(ui, 500, 400, 300, 60, "Quit", #FF1900, #FFF900).setStrokeWeight(10);
-  endOfLevelButton = new UiButton(ui, 550, 450, 200, 40, "continue", #FF1900, #FFF900).setStrokeWeight(10);
+  endOfLevelButton = new UiButton(ui, 550, 450, 200, 40, "Continue", #FF1900, #FFF900).setStrokeWeight(10);
   enableMenuTransitionButton = new UiButton(ui, (1130), (260), (40), (40), 255, 0).setStrokeWeight(5);
   disableMenuTransistionsButton = new UiButton(ui, (1200), (260), (40), (40), 255, 0).setStrokeWeight(5);
 
@@ -4165,24 +4162,24 @@ void  initButtons() {
   multyplayerHost = new UiButton(ui, 680, 300, 200, 50, "Host", #FF0004, #FFF300).setStrokeWeight(10);
   multyplayerExit = new UiButton(ui, 100, 600, 200, 50, "back", -59135, -1791).setStrokeWeight(10);
   multyplayerGo = new UiButton(ui, 640-100, 600, 200, 50, "GO", -59135, -1791).setStrokeWeight(10);
-  multyplayerLeave = new UiButton(ui, 10, 660, 200, 50, "leave", -59135, -1791).setStrokeWeight(10);
+  multyplayerLeave = new UiButton(ui, 10, 660, 200, 50, "Leave", -59135, -1791).setStrokeWeight(10);
 
-  multyplayerSpeedrun = new Button(this, width*0.18125, height*0.916666, width*0.19296875, height*0.0694444444, "speed run", -59135, -1791).setStrokeWeight(10*Scale);
+  multyplayerSpeedrun = new Button(this, width*0.18125, height*0.916666, width*0.19296875, height*0.0694444444, "Speed Run", -59135, -1791).setStrokeWeight(10*Scale);
   multyplayerCoop = new Button(this, width*0.38984375, height*0.916666, width*0.19375, height*0.0694444444, "co-op", -59135, -1791).setStrokeWeight(10*Scale);
   multyplayerUGC = new Button(this, width*0.59921875, height*0.916666, width*0.19296875, height*0.0694444444, "UGC", -59135, -1791).setStrokeWeight(10*Scale);
   multyplayerPlay = new Button(this, width*0.809375, height*0.916666, width*0.1828125, height*0.0694444444, "Play", -59135, -1791).setStrokeWeight(10*Scale);
   increaseTime = new Button(this, width*0.80546875, height*0.7, width*0.03, width*0.03, "^", -59135, -1791).setStrokeWeight(5*Scale);
   decreaseTime = new Button(this, width*0.96609375, height*0.7, width*0.03, width*0.03, "v", -59135, -1791).setStrokeWeight(5*Scale);
 
-  newBlueprint=new UiButton(ui, 200, 500, 200, 80, "new blueprint", #BB48ED, #4857ED).setStrokeWeight(10);
-  loadBlueprint=new UiButton(ui, 800, 500, 200, 80, "load blueprint", #BB48ED, #4857ED).setStrokeWeight(10);
+  newBlueprint=new UiButton(ui, 200, 500, 200, 80, "New Blueprint", #BB48ED, #4857ED).setStrokeWeight(10);
+  loadBlueprint=new UiButton(ui, 800, 500, 200, 80, "Load Blueprint", #BB48ED, #4857ED).setStrokeWeight(10);
   newLevelButton=new UiButton(ui, 200, 300, 200, 80, "NEW", #BB48ED, #4857ED).setStrokeWeight(10);
   loadLevelButton=new UiButton(ui, 800, 300, 200, 80, "LOAD", #BB48ED, #4857ED).setStrokeWeight(10);
 
   newStage=new UiButton(ui, 1200, 10, 60, 60, "+", #0092FF, 0).setStrokeWeight(3);
-  newFileCreate=new UiButton(ui, 300, 600, 200, 40, "create", #BB48ED, #4857ED).setStrokeWeight(5);
-  newFileBack=new UiButton(ui, 600, 600, 200, 40, "back", #BB48ED, #4857ED).setStrokeWeight(5);
-  chooseFileButton=new UiButton(ui, 300, 540, 200, 40, "choose file", #BB48ED, #4857ED).setStrokeWeight(5);
+  newFileCreate=new UiButton(ui, 300, 600, 200, 40, "Create", #BB48ED, #4857ED).setStrokeWeight(5);
+  newFileBack=new UiButton(ui, 600, 600, 200, 40, "Back", #BB48ED, #4857ED).setStrokeWeight(5);
+  chooseFileButton=new UiButton(ui, 300, 540, 200, 40, "Choose File", #BB48ED, #4857ED).setStrokeWeight(5);
   lc_newSoundAsSoundButton = new UiButton(ui,600,540,200,40,"Sound",#BB48ED, #4857ED).setStrokeWeight(5);
   lc_newSoundAsNarrationButton  = new UiButton(ui,820,540,200,40,"Narration",#BB48ED, #4857ED).setStrokeWeight(5);
 
@@ -4198,11 +4195,11 @@ void  initButtons() {
   new3DStage=new UiButton(ui, 600, 200, 80, 80, "3D", #BB48ED, #4857ED).setStrokeWeight(5);
   addSound=new UiButton(ui, 800, 200, 80, 80, #BB48ED, #4857ED).setStrokeWeight(5);
 
-  overview_saveLevel=new UiButton(ui, 60, 20, 50, 50, "save", #0092FF, 0).setStrokeWeight(5);
+  overview_saveLevel=new UiButton(ui, 60, 20, 50, 50, "Save", #0092FF, 0).setStrokeWeight(5);
   help=new UiButton(ui, 130, 20, 50, 50, " ? ", #0092FF, 0).setStrokeWeight(3);
   overviewUp=new UiButton(ui, 270, 20, 50, 50, " ^ ", #0092FF, 0).setStrokeWeight(3);
   overviewDown=new UiButton(ui, 200, 20, 50, 50, " v ", #0092FF, 0).setStrokeWeight(3);
-  createBlueprintGo=new UiButton(ui, 40, 400, 200, 40, "start", #BB48ED, #4857ED).setStrokeWeight(10);
+  createBlueprintGo=new UiButton(ui, 40, 400, 200, 40, "Start", #BB48ED, #4857ED).setStrokeWeight(10);
 
   lcLoadLevelButton=new UiButton(ui, 40, 400, 200, 40, "Load", #BB48ED, #4857ED).setStrokeWeight(10);
   lcNewLevelButton=new UiButton(ui, 40, 400, 200, 40, "Start", #BB48ED, #4857ED).setStrokeWeight(10);
@@ -4318,7 +4315,6 @@ void turnThingsOff() {
   placingPlaySoundLogic=false;
   placingPulse=false;
   placingRandom=false;
-  placingSimpleEntity=false;
 }
 
 void fileSelected(File selection) {
@@ -4350,7 +4346,7 @@ void initText() {
   st_title = new UiText(ui, "Settings", 640, 720, 100, CENTER, BOTTOM);
   st_Hssr = new UiText(ui, "horozontal screen scrolling location", 40, 90, 40, LEFT, BOTTOM);
   st_Vssr = new UiText(ui, "vertical  screen scrolling location", 40, 160, 40, LEFT, BOTTOM);
-  st_gameplay = new UiText(ui, "Game Play", 640, -10, 50, CENTER, TOP);
+  st_gameplay = new UiText(ui, "Game Play", 640, 0, 50, CENTER, TOP);
   st_vsrp = new UiText(ui, "V", 700, 160, 40, LEFT, BOTTOM);
   st_hsrp = new UiText(ui, "V", 700, 90, 40, LEFT, BOTTOM);
   st_dsp_vsr = new UiText(ui, "verticle screen resolution (requires restart)", 40, 80, 40, LEFT, BOTTOM);
@@ -4362,8 +4358,8 @@ void initText() {
   st_dsp_720 = new UiText(ui, "720", 920, 45, 20, LEFT, BOTTOM);
   st_dsp_fsYes = new UiText(ui, "yes", 1190, 115, 20, LEFT, BOTTOM);
   st_dsp_fsNo = new UiText(ui, "no", 1120, 115, 20, LEFT, BOTTOM);
-  st_display = new UiText(ui, "Display", 640, -10, 50, CENTER, TOP);
-  st_sound = new UiText(ui, "Sound",640,-10,50,CENTER,TOP);
+  st_display = new UiText(ui, "Display", 640, 0, 50, CENTER, TOP);
+  st_sound = new UiText(ui, "Sound",640,0,50,CENTER,TOP);
   st_snd_narrationVol = new UiText(ui, "narration volume", 40, 250, 40, LEFT, BOTTOM);
   st_snd_currentNarrationVolume = new UiText(ui, "N", 700, 250, 40, LEFT, BOTTOM);
   st_o_displayFPS = new UiText(ui, "display fps", 40, 70, 40, LEFT, BOTTOM);
@@ -4380,7 +4376,7 @@ void initText() {
   st_snd_demonitized = new UiText(ui, "please don't\ndemonetize\nme youtube", 1070, 340, 20, LEFT, BOTTOM);
   st_snd_currentMusicVolume = new UiText(ui, "V", 700, 110, 40, LEFT, BOTTOM);
   st_snd_currentSoundsVolume = new UiText(ui, "B", 700, 180, 40, LEFT, BOTTOM);
-  st_other = new UiText(ui, "Outher", 640, -10, 50, CENTER, TOP);
+  st_other = new UiText(ui, "Outher", 640, 0, 50, CENTER, TOP);
   initMultyplayerScreenTitle = new UiText(ui, "Multiplayer", 640, 36, 50, CENTER, CENTER);
   mp_hostSeccion = new UiText(ui, "Host session", 640, 36, 50, CENTER, CENTER);
   mp_host_Name = new UiText(ui, "Name", 640, 93.6, 25, CENTER, CENTER);

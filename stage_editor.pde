@@ -790,9 +790,9 @@ void stageEditGUI() {
       }
       if (drawCoins) {//if adding coins
         if (grid_mode) {//display a coin
-          drawCoin((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale);
+          drawCoin((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale*3);
         } else {
-          drawCoin((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale);
+          drawCoin((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale*3);
         }
       }
       if (drawingSign) {//if adding coins

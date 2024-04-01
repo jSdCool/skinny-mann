@@ -4,6 +4,14 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 0.9.0_Early_Access
 -changed: new collision detection system
 
+0.8.2_Early_Access
+-fixed: coin placement preview was too small in 3D stages
++changed: automatic update installer is now available on Mac OS for future versions
+-fixed: settings menu titles attempting to displaying above the window
+-fixed: default level creator author name not being presistant through game restarts
+-changed: capitlized text on certan buttons
+-changed: reduced certain strage components overscan
+
 0.8.1_Early_Access
 +added: Universal error handler (crashes will now always show an error window)
 +added: grid mode indicator in level creator
