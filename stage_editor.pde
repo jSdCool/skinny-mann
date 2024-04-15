@@ -345,6 +345,14 @@ void stageEditGUI() {
     if (deleteing&&delete) {//if attempting to delete something
       int index=colid_index(mouseX/Scale+camPos, mouseY/Scale-camPosY, current);//get the index of the elemtn the mouse is currently over
       if (index==-1) {//if the mouse was over nothing then do nothing
+        Collider2D c2D = Collider2D.createRectHitbox(mouseX/Scale+camPos-0.5f,mouseY/Scale-camPosY-0.5f,1,1);
+        //check for collision with entities
+        for(int i=0;i<current.entities.size();i++){
+          if(collisionDetection.collide2D(current.entities.get(i).getHitBox2D(0,0),c2D)){
+            current.entities.remove(i);
+            break;
+          }
+        }
       } else {
         StageComponent removed = current.parts.remove(index);//remove the object the mosue was over
         if (current.interactables.contains(removed)) {
@@ -717,6 +725,14 @@ void stageEditGUI() {
       if (deleteing&&delete) {//if deleting things
         int index=colid_index(mouseX/Scale+camPos, mouseY/Scale-camPosY, level.stages.get(currentStageIndex));//figure out what thing the mouse is over
         if (index==-1) {//if the mouse is over nothing then do nothing
+          Collider2D c2D = Collider2D.createRectHitbox(mouseX/Scale+camPos-0.5f,mouseY/Scale-camPosY-0.5f,1,1);
+          //check for collision with entities
+          for(int i=0;i<current.entities.size();i++){
+            if(collisionDetection.collide2D(current.entities.get(i).getHitBox2D(0,0),c2D)){
+              current.entities.remove(i);
+              break;
+            }
+          }
         } else {
           StageComponent removed = current.parts.remove(index);//remove the object the mosue was over
           if (current.interactables.contains(removed)) {
@@ -1794,6 +1810,14 @@ void mouseClicked3D() {
           current.interactables.remove(removed);
         }
         break;
+      }else{
+        Collider3D c3D = Collider3D.createBoxHitBox(testPoint.x-0.5, testPoint.y-0.5, testPoint.z-0.5,1,1,1);
+        for(int j=0;j<current.entities.size();j++){
+          if(collisionDetection.collide3D(current.entities.get(j).getHitBox3D(0,0,0),c3D)){
+            current.entities.remove(j);
+            return;
+          }
+        }
       }
     }
   }

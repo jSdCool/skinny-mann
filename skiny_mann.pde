@@ -83,7 +83,7 @@ void setup() {//seccond function called
     println("initilizing CBi sphere");
     initializeSphere(ptsW, ptsH);
     textureSphere(200, 200, 200, CBi);
-    entityRegistry.add(new SimpleEntity(0,0,0));
+    entityRegistry.put("simple entity",new SimpleEntity(0,0,0));
     thread("programLoad");
   }
   catch(Throwable e) {
@@ -130,7 +130,7 @@ ArrayList<GlitchBox> glitchBoxes = new ArrayList<>();
 UiTextBox defaultAuthorNameTextBox;
 PlayerMovementManager playerMovementManager = new PlayerMovementManager();
 CollisionDetection collisionDetection = new CollisionDetection();
-ArrayList<Entity> entityRegistry = new ArrayList<>();
+HashMap<String,StageEntity> entityRegistry = new HashMap<>();
 boolean placingSimpleEntity = false;
 //▄
 

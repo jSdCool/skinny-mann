@@ -1,6 +1,10 @@
 import java.util.Random;
-class SimpleEntity extends Entity{
+import processing.data.*;
+class SimpleEntity extends StageEntity{
   public SimpleEntity(float x,float y,float z){
+    spawnX=x;
+    spawnY=y;
+    spawnZ=z;
     setX(x);
     setY(y);
     setZ(z);
@@ -8,6 +12,20 @@ class SimpleEntity extends Entity{
   
   public Entity create(float x,float y,float z){
     return new SimpleEntity(x,y,z);
+  }
+  
+  public StageEntity create(JSONObject input){
+    return new SimpleEntity(input.getFloat("x"),input.getFloat("y"),input.getFloat("z"));
+  }
+  
+  public JSONObject save(){
+    JSONObject output = new JSONObject();
+    output.setString("type","simple entity");
+    output.setFloat("x",spawnX);
+    output.setFloat("y",spawnY);
+    output.setFloat("z",spawnZ);
+    
+    return output;
   }
   int to =0;
   MovementManager m  = new MovementManager(){
@@ -31,7 +49,9 @@ class SimpleEntity extends Entity{
   }
   
   float x,y,z;
+  float spawnX,spawnY,spawnZ;
   float vVelcoity;
+  boolean dead = false;
   
   public float getX(){
     return x;
@@ -59,7 +79,7 @@ class SimpleEntity extends Entity{
   }
   
   public boolean collidesWithEntites(){
-    return true;
+    return false;
   }
   
   public Collider3D getHitBox3D(float offsetX,float offsetY,float offsetZ){
@@ -70,8 +90,8 @@ class SimpleEntity extends Entity{
    return Collider2D.createRectHitbox(x+offsetX,y+offsetY,40,40); 
   }
   
-  public boolean in3D(){
-    return false;
+  public boolean in3D(boolean playerIn3D){
+    return playerIn3D;
   }
   
   public float getVerticalVelocity(){
@@ -110,5 +130,25 @@ class SimpleEntity extends Entity{
     context.translate(x+20,y+20,z+20);
     context.box(40);
     context.translate(-x-20,-y-20,-z-20);
+    if(to ==0 ){
+      to = 20;
+      m.reset();
+    }
+    to--;
+  }
+  
+  public void kill(){
+    dead=true;
+  }
+  
+  public boolean isDead(){
+    return dead;
+  }
+  
+  public void respawn(){
+    dead=false;
+    setX(spawnX);
+    setY(spawnY);
+    setZ(spawnZ);
   }
 }

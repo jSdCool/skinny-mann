@@ -174,6 +174,7 @@ class Level implements Serializable {
     source.respawnY=(int)RespawnY;
     source.respawnStage=source.currentStageIndex;
     logicBoards.get(loadBoard).superTick();
+    respawnEntities();
   }
 
   void reloadCoins() {
@@ -270,5 +271,11 @@ class Level implements Serializable {
       }
     }
     return names;
+  }
+  
+  void respawnEntities(){
+    for(Stage s : stages){
+      s.respawnEntities();
+    }
   }
 }

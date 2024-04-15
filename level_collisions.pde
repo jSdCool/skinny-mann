@@ -451,12 +451,20 @@ void entityPhysics(Entity entity, Stage stage) {
   if (movement instanceof NoMovementManager) {
     return;
   }
+  
+  //if the entity is dead then do not calculate physics on them
+  if (entity instanceof Killable){
+    Killable k = (Killable) entity;
+    if(k.isDead()){
+      return;
+    }
+  }
 
   if (viewingItemContents && movement instanceof PlayerMovementManager) {//stop movment while intertacting with an object
     movement.reset();
   }
 
-  if (!entity.in3D()) {
+  if (!entity.in3D(e3DMode)) {
 
     if (simulating||!levelCreator) {
 
@@ -560,9 +568,14 @@ void entityPhysics(Entity entity, Stage stage) {
 
     //prbly should add a can be killed by this check
     Collider2D dethCheck = entity.getHitBox2D(0, 1);
-    if (entity instanceof Player && player_kill(dethCheck, stage)) {//if the player is on top of a death plane
-      dead=true;//kill the player
-      death_cool_down=0;
+    if ((entity instanceof Player || entity instanceof Killable )&& player_kill(dethCheck, stage)) {//if the player is on top of a death plane
+      if (entity instanceof Killable){
+        Killable k = (Killable) entity;
+        k.kill();
+      }else{
+        dead=true;//kill the player
+        death_cool_down=0;
+      }
     }
 
     //in ground detection and rectification
@@ -632,6 +645,7 @@ void entityPhysics(Entity entity, Stage stage) {
       if (camPosY<0)
         camPosY=0;
     }
+    
   } else {//end of not in 3D mode
     if (simulating||!levelCreator) {
 
@@ -800,11 +814,34 @@ void entityPhysics(Entity entity, Stage stage) {
     //ground detetcion and reftification
     if (level_colide(entity.getHitBox3D(0, 0.5, 0), stage)) {
       //if the entity can coolide with other entites check if it is doing so, otherwise continue
-      if(!entity.collidesWithEntites() || !entityCollide(entity,entity.getHitBox3D(0, 0.5, 0),stage)){
         entity.setY(entity.getY()-1);
         entity.setVerticalVelocity(0);
-      }
+      
     }
+    /*//entity on entity collisoion 
+    if(entity.collidesWithEntites()){
+      //if colliding with other entitys
+      Collider2D hb = entity.getHitBox2D(0, 0.5);
+      Collider2D otherEntity = entityCollideObject(entity,hb,stage);
+      //if there was a collision
+      if(otherEntity != null){
+        //if your center is gerter y then the other
+        if(otherEntity.getCenter().y < hb.getCenter().y){
+          //if the new position would not collide with terrain
+          if(level_colide(entity.getHitBox2D(0, 2), stage)){
+            entity.setY(entity.getY()+1);//move the entity down
+            entity.setVerticalVelocity(0);//stop the entity's verticle motion
+          }
+        }else{
+          //if the new position would not collide with terrain
+          if(level_colide(entity.getHitBox2D(0, -2), stage)){
+            entity.setY(entity.getY()-1);//move the entity up
+            entity.setVerticalVelocity(0);//stop the entity's verticle motion
+          }
+        }
+      }
+    }*/
+    
 
     if (movement.jump()) {//jumping
       Collider3D groundDetect = entity.getHitBox3D(0, 2, 0);
@@ -819,6 +856,14 @@ void entityPhysics(Entity entity, Stage stage) {
     }
   }
   //end of 3D physics
+  
+  //if an entity can be killed and is below 720 kill it
+  if (entity instanceof Killable){
+      Killable k = (Killable) entity;
+      if(entity.getY() > 720){
+        k.kill();
+      }
+    }
 }
 
 

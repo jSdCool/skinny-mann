@@ -22,7 +22,7 @@ abstract class Entity{
   //wether or not this entity colides with outher entityes 
   public abstract boolean collidesWithEntites();
   
-  public abstract boolean in3D();
+  public abstract boolean in3D(boolean playerIn3D);
 
   //rener methods
   public abstract void draw(skiny_mann context);

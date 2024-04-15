@@ -110,7 +110,7 @@ class Player extends Entity implements Serializable {
     return this;
   }
   
-  public boolean in3D(){
+  public boolean in3D(boolean playerIn3D){
     return in3D;
   }
   
