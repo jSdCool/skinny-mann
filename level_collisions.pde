@@ -407,6 +407,9 @@ void playerPhysics() {
   if (players[calcingPlayer].getY()>720) {//kill the player if they go below the stage
     dead=true;
     death_cool_down=0;
+    if(!levelCreator){
+      stats.incrementTimesDied();
+    }
   }
 
   if (dead) {//if the player is dead
@@ -575,6 +578,9 @@ void entityPhysics(Entity entity, Stage stage) {
       }else{
         dead=true;//kill the player
         death_cool_down=0;
+        if(!levelCreator){
+          stats.incrementTimesDied();
+        }
       }
     }
 

@@ -38,10 +38,16 @@ class SoundBox extends StageComponent {
           if(sound.isNarration){
             if (!(source.soundHandler.isNarrationPlaying(sound.sound))) {
               source.soundHandler.playNarration(sound.sound);
+              if(!source.levelCreator){
+                source.stats.incrementSoundBoxesUsed();
+              }
             }
           }else{
             if (!(source.soundHandler.isPlaying(sound.sound)||source.soundHandler.isInQueue(sound.sound))) {
               source.soundHandler.addToQueue(sound.sound);
+              if(!source.levelCreator){
+                source.stats.incrementSoundBoxesUsed();
+              }
             }
           }
         }

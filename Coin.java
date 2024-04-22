@@ -75,6 +75,9 @@ class Coin extends StageComponent {//ground component
       if (!source.selectingBlueprint && source.collisionDetection.collide2D(playerHitBox,new CircleCollider(new PVector(x,y),14))) {
         source.coins.set(coinId, true);
         source.coinCount++;
+        if(!source.levelCreator){
+          source.stats.incrementCollectedCoins();
+        }
       }
     }
   }
@@ -104,6 +107,9 @@ class Coin extends StageComponent {//ground component
       if (!source.selectingBlueprint && source.collisionDetection.collide3D(playerHitBox, new SphereCollider(new PVector(x,y,z),14))) {
         source.coins.set(coinId, true);
         source.coinCount++;
+        if(!source.levelCreator){
+          source.stats.incrementCollectedCoins();
+        }
       }
     }
   }

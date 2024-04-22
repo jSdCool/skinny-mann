@@ -64,8 +64,15 @@ class LogicButton extends StageComponent {//ground component
     if (source.level.multyplayerMode!=2) {
 
       if (variable!=-1) {
-        if (source.players[source.currentPlayer].x>=(x+group.xOffset)-10&&source.players[source.currentPlayer].x<=(x+group.xOffset)+10&&source.players[source.currentPlayer].y >=(y+group.yOffset)-10&&source.players[source.currentPlayer].y<= (y+group.yOffset)+2) {
+        state=source.level.variables.get(variable);
+        Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);
+        if (source.collisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x+group.xOffset-10,y+group.yOffset-10,20,10))) {
           source.level.variables.set(variable, true);
+          if(!state){
+            if(!source.levelCreator){
+              source.stats.incrementButtonsActivated();
+            }
+          }
         } else {
           source.level.variables.set(variable, false);
         }
@@ -85,8 +92,15 @@ class LogicButton extends StageComponent {//ground component
     if (source.level.multyplayerMode!=2) {
 
       if (variable!=-1) {
-        if (source.players[source.currentPlayer].x>=(x+group.xOffset)-10&&source.players[source.currentPlayer].x<=(x+group.xOffset)+10&&source.players[source.currentPlayer].y >=(y+group.yOffset)-10&&source.players[source.currentPlayer].y<= (y+group.yOffset)+2 && source.players[source.currentPlayer].z >= (z+group.zOffset)-10 && source.players[source.currentPlayer].z <= (z+group.zOffset)+10) {
+        state=source.level.variables.get(variable);
+        Collider3D playerHitBox = source.players[source.currentPlayer].getHitBox3D(0,0,0);
+        if (source.collisionDetection.collide3D(playerHitBox,Collider3D.createBoxHitBox(x+group.xOffset-10,y+group.yOffset-10,z+group.zOffset-10,20,10,20))) {
           source.level.variables.set(variable, true);
+          if(!state){
+            if(!source.levelCreator){
+              source.stats.incrementButtonsActivated();
+            }
+          }
         } else {
           source.level.variables.set(variable, false);
         }

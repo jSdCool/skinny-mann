@@ -65,6 +65,9 @@ class WritableSign extends StageComponent {
       if (source.E_pressed) {
         source.E_pressed=false;
         source.viewingItemContents=true;
+        if(!source.levelCreator){
+          source.stats.incrementSignsRead();
+        }
       }
     }
   }
@@ -83,6 +86,9 @@ class WritableSign extends StageComponent {
       if (source.E_pressed) {
         source.E_pressed=false;
         source.viewingItemContents=true;
+        if(!source.levelCreator){
+          source.stats.incrementSignsRead();
+        }
       }
     }
   }

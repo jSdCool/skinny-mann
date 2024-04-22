@@ -88,6 +88,10 @@ class Interdimentional_Portal extends StageComponent {//ground component
         source.tpCords[0]=(int)linkX;
         source.tpCords[1]=(int)linkY+48;
         source.gmillis=source.millis()+850;
+        
+        if(!source.levelCreator){
+          source.stats.incrementPortalsUsed();
+        }
       }
     }
   }
@@ -126,6 +130,9 @@ class Interdimentional_Portal extends StageComponent {//ground component
         source.tpCords[0]=(int)linkX;
         source.tpCords[1]=(int)linkY;
         source.gmillis=source.millis()+850;
+        if(!source.levelCreator){
+          source.stats.incrementPortalsUsed();
+        }
       }
     }
   }
