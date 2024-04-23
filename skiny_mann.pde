@@ -2819,25 +2819,34 @@ void loadLevel(String path) {
 
 int curMills=0, lasMills=0, mspc=0;
 
+/**physics thread main loop
+*/
 void thrdCalc2() {
 
+  //while the thread should be active
   while (loopThread2) {
+    //calculate how long has passed since the last time the loop started
     curMills=millis();
     mspc=curMills-lasMills;
+    
+    //run tutorial logic if in the tutorial
     if (tutorialMode) {
       tutorialLogic();
     }
+    //if in game or in the levelcreator while editing a stage 
     if (inGame||(levelCreator&&editingStage)) {
+      //calcualte a frame of player physics
       try {
         playerPhysics();
       }
       catch(Throwable e) {
+        e.printStackTrace();
       }
     } else {
       if (logicTickingThread.isAlive()) {//if the ticking thread is running when we dont want it to be
         logicTickingThread.shouldRun=false;//then stop it
       }
-      random(10);//some how make it so it doesent stop the thread
+      random(10);//some how make it so processing doesent stop the thread(also increase CPU useage :D )
     }
     lasMills=curMills;
     //println(mspc);

@@ -399,9 +399,7 @@ void camera3DpositionNotSimulating() {
 void playerPhysics() {
   int calcingPlayer = currentPlayer;
 
-
   entityPhysics(players[calcingPlayer], level.stages.get(currentStageIndex));
-
 
   //code specific to the current player
   if (players[calcingPlayer].getY()>720) {//kill the player if they go below the stage
@@ -468,7 +466,7 @@ void entityPhysics(Entity entity, Stage stage) {
   }
 
   if (!entity.in3D(e3DMode)) {
-
+    
     if (simulating||!levelCreator) {
 
       if (movement.right()) {//move the player right
@@ -546,7 +544,7 @@ void entityPhysics(Entity entity, Stage stage) {
         }
       }
     }
-
+    
     if (simulating||!levelCreator)
       if (true) {//gravity
         //    d  =                      vi*t          + 0.5 * a * t^2
@@ -568,7 +566,7 @@ void entityPhysics(Entity entity, Stage stage) {
           entity.setVerticalVelocity(0);//stop the entity's verticle motion
         }
       }
-
+    
     //prbly should add a can be killed by this check
     Collider2D dethCheck = entity.getHitBox2D(0, 1);
     if ((entity instanceof Player || entity instanceof Killable )&& player_kill(dethCheck, stage)) {//if the player is on top of a death plane
@@ -583,7 +581,7 @@ void entityPhysics(Entity entity, Stage stage) {
         }
       }
     }
-
+    
     //in ground detection and rectification
     if (level_colide(entity.getHitBox2D(0, 0.5), stage)) {//check if the player's position is in the ground
       //if the entity can coolide with other entites check if it is doing so, otherwise continue
@@ -615,7 +613,7 @@ void entityPhysics(Entity entity, Stage stage) {
         }
       }
     }
-
+    
     if (movement.jump()) {//jumping
       Collider2D groundDetect = entity.getHitBox2D(0, 2);
       if (level_colide(groundDetect, stage)|| (entity.collidesWithEntites() && entityCollide(entity,groundDetect,stage))) {//check if the entiy is on the ground
@@ -951,8 +949,11 @@ boolean player_kill(Collider2D hitbox, Stage stage) {
   for (int i=0; stageLoopCondishen(i, stage); i++) {
     StageComponent part = stage.parts.get(i);
     //if this part is a deth plane a nd the hitbox position is colliding with it
-    if (part instanceof DethPlane && collisionDetection.collide2D(hitbox, part.getCollider2D())) {
-      return true;
+    if (part instanceof DethPlane){
+      Collider2D dhb = part.getCollider2D();
+      if(dhb!=null && collisionDetection.collide2D(hitbox, dhb)) {
+        return true;
+      }
     }
   }
 
