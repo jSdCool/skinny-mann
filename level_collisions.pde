@@ -427,8 +427,8 @@ void playerPhysics() {
   }
   
   for(Stage stage: level.stages){
-    for(Entity entity: stage.entities){
-      entityPhysics(entity,stage);
+    for(int i=0;i<stage.entities.size();i++){
+      entityPhysics(stage.entities.get(i),stage);
     }
   }
 
@@ -470,7 +470,7 @@ void entityPhysics(Entity entity, Stage stage) {
     if (simulating||!levelCreator) {
 
       if (movement.right()) {//move the player right
-        float offset  = mspc*0.4, newpos = entity.getX()+offset;
+        float offset  = mspc*((entity instanceof StageEntity)? 0.2: 0.4), newpos = entity.getX()+offset;
         Collider2D newboxPos = entity.getHitBox2D(offset, 0);
 
         if (!level_colide(newboxPos, stage)) {//check if the new posistion collids with anything
@@ -504,7 +504,7 @@ void entityPhysics(Entity entity, Stage stage) {
       }
 
       if (movement.left()) {//player moving left
-        float offset  = mspc*0.4, newpos = entity.getX()-offset;
+        float offset  = mspc*((entity instanceof StageEntity)? 0.2: 0.4), newpos = entity.getX()-offset;
         Collider2D newboxPos = entity.getHitBox2D(-offset, 0);
         if (!level_colide(newboxPos, stage)) {//check if the new posistion collids with anything
           //if the entity can coolide with other entites check if it is doing so, otherwise continue
@@ -654,7 +654,7 @@ void entityPhysics(Entity entity, Stage stage) {
     if (simulating||!levelCreator) {
 
       if (movement.right()) {//move the player right
-        float offset  = mspc*0.4, newpos = entity.getX()+offset;
+        float offset  = mspc*((entity instanceof StageEntity)? 0.2: 0.4), newpos = entity.getX()+offset;
         Collider3D newboxPos = entity.getHitBox3D(offset, 0, 0);
 
         if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
@@ -687,7 +687,7 @@ void entityPhysics(Entity entity, Stage stage) {
       }
 
       if (movement.left()) {//player moving left
-        float offset  = mspc*0.4, newpos = entity.getX()-offset;
+        float offset  = mspc*((entity instanceof StageEntity)? 0.2: 0.4), newpos = entity.getX()-offset;
         Collider3D newboxPos = entity.getHitBox3D(-offset, 0, 0);
         if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
           //if the entity can coolide with other entites check if it is doing so, otherwise continue
@@ -719,7 +719,7 @@ void entityPhysics(Entity entity, Stage stage) {
       }
 
       if (movement.in()) {
-        float offset  = mspc*0.4, newpos = entity.getZ()-offset;
+        float offset  = mspc*((entity instanceof StageEntity)? 0.2: 0.4), newpos = entity.getZ()-offset;
         Collider3D newboxPos = entity.getHitBox3D(0, 0, -offset);
         if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
           //if the entity can coolide with other entites check if it is doing so, otherwise continue
@@ -751,7 +751,7 @@ void entityPhysics(Entity entity, Stage stage) {
       }
 
       if (movement.out()) {
-        float offset  = mspc*0.4, newpos = entity.getZ()+offset;
+        float offset  = mspc*((entity instanceof StageEntity)? 0.4: 0.4), newpos = entity.getZ()+offset;
         Collider3D newboxPos = entity.getHitBox3D(0, 0, offset);
 
         if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"

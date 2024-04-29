@@ -83,7 +83,11 @@ void setup() {//seccond function called
     println("initilizing CBi sphere");
     initializeSphere(ptsW, ptsH);
     textureSphere(200, 200, 200, CBi);
-    entityRegistry.put("simple entity",new SimpleEntity(0,0,0));
+    
+    //add entites to the entity regisrty
+    entityRegistry.put("simple entity",new SimpleEntity(0,0,0,null));
+    entityRegistry.put("goon",new Goon(0,0,0,null));
+    //start the load thread
     thread("programLoad");
   }
   catch(Throwable e) {
@@ -133,7 +137,7 @@ PlayerMovementManager playerMovementManager = new PlayerMovementManager();
 CollisionDetection collisionDetection = new CollisionDetection();
 HashMap<String,StageEntity> entityRegistry = new HashMap<>();
 StatisticManager stats;
-boolean placingSimpleEntity = false;
+boolean placingGoon = false;
 //▄
 
 
@@ -1163,6 +1167,7 @@ void draw() {// the function that is called every fraim
     catch(Exception e) {
     }
   }
+  
 }
 
 
@@ -3756,6 +3761,7 @@ void sourceInitilize() {
   Client.source=this;
   Server.source=this;
   Player.source=this;
+  StageEntityCollisionManager.set(this);
 }
 
 void networkError(Throwable error) {
@@ -4358,6 +4364,7 @@ void turnThingsOff() {
   placingPlaySoundLogic=false;
   placingPulse=false;
   placingRandom=false;
+  placingGoon=false;
 }
 
 void fileSelected(File selection) {

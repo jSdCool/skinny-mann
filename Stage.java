@@ -82,7 +82,7 @@ class Stage implements Serializable {
             //if the current thing is an entity, load it
             StageEntity ent = source.entityRegistry.get(otype);
             if(ent!=null){
-              entities.add(ent.create(ob));
+              entities.add(ent.create(ob,this));
             }
           }
           

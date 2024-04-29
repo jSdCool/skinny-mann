@@ -1,7 +1,8 @@
 import java.util.Random;
 import processing.data.*;
 class SimpleEntity extends StageEntity{
-  public SimpleEntity(float x,float y,float z){
+  public SimpleEntity(float x,float y,float z,Stage stage){
+    super(stage);
     spawnX=x;
     spawnY=y;
     spawnZ=z;
@@ -11,11 +12,11 @@ class SimpleEntity extends StageEntity{
   }
   
   public Entity create(float x,float y,float z){
-    return new SimpleEntity(x,y,z);
+    return new SimpleEntity(x,y,z,null);
   }
   
-  public StageEntity create(JSONObject input){
-    return new SimpleEntity(input.getFloat("x"),input.getFloat("y"),input.getFloat("z"));
+  public StageEntity create(JSONObject input,Stage stage){
+    return new SimpleEntity(input.getFloat("x"),input.getFloat("y"),input.getFloat("z"),stage);
   }
   
   public JSONObject save(){

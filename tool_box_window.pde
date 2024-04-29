@@ -10,7 +10,7 @@ class ToolBox extends PApplet {
   int rsp=0, gsp=0, bsp=0, selectedColor=0, millisOffset, variableScroll=0, groupScroll=0;
   String page="colors", newGroopName="";
   Button colorPage, toolsPage, draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, toggle3DMode, switch3D1, switch3D2, saveLevel, exitStageEdit, sign, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, playSound, nextSound, prevSound, checkpointButton, playPauseButton, groundButton, goalButton, deleteButton, movePlayerButton, gridModeButton, holoButton, connectLogicButton, moveComponentsButton, andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, logicButtonButton, runLoad, delayButton, zOffsetButton, logicHelpButton, move3DButton, size3DButton, set3DButton, read3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, playLogicSoundButton, pulseButton, randomButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton;
-  Button simpleEntity;
+  Button goonEntity;
   boolean typingSign=false, settingSkyColor=false, typingGroopName=false;
 
   public void settings() {
@@ -63,8 +63,7 @@ class ToolBox extends PApplet {
     logicButtonButton=new Button(this, 100, 200, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("place button");
     move3DButton=new Button(this, 160, 200, 50, 50, "move", 255, 203).setStrokeWeight(5).setHoverText("move things in 3D");
     size3DButton=new Button(this, 220, 200, 50, 50, "size", 255, 203).setStrokeWeight(5).setHoverText("resize things in 3D");
-    
-    simpleEntity = new Button(this,280,200,50,50,255,203).setStrokeWeight(5);//tmp
+    goonEntity = new Button(this,280,200,50,50,255,203).setStrokeWeight(5).setHoverText("Goon");
 
     //logic editor tools
     connectLogicButton=new Button(this, 40, 40+100, 50, 50, "connect", 255, 203).setStrokeWeight(5).setHoverText("connect logic nodes");
@@ -380,12 +379,12 @@ class ToolBox extends PApplet {
               drawSpeakericon(this, playSound.x+playSound.lengthX/2, playSound.y+playSound.lengthY/2, 0.5);
               
               //tmp
-              if(placingSimpleEntity){
-                simpleEntity.setColor(255, #F2F258);
+              if(placingGoon){
+                goonEntity.setColor(255, #F2F258);
               } else {
-                simpleEntity.setColor(255, 203);
+                goonEntity.setColor(255, 203);
               }
-              simpleEntity.draw();
+              goonEntity.draw();
             }//end of level is not 3D
 
             if (drawingSign) {
@@ -596,12 +595,12 @@ class ToolBox extends PApplet {
               placeBlueprint.draw();
               
               //tmp
-              if(placingSimpleEntity){
-                simpleEntity.setColor(255, #F2F258);
+              if(placingGoon){
+                goonEntity.setColor(255, #F2F258);
               } else {
-                simpleEntity.setColor(255, 203);
+                goonEntity.setColor(255, 203);
               }
-              simpleEntity.draw();
+              goonEntity.draw();
               
               textAlign(LEFT, BOTTOM);
               toggle3DMode.drawHoverText();
@@ -1787,11 +1786,9 @@ class ToolBox extends PApplet {
               turnThingsOff();
               placingSound=true;
             }
-            
-            //tmp
-            if(simpleEntity.isMouseOver()){
+            if(goonEntity.isMouseOver()){
               turnThingsOff();
-              placingSimpleEntity=true;
+              placingGoon=true;
             }
           }
 
@@ -1876,11 +1873,10 @@ class ToolBox extends PApplet {
                 placingLogicButton=true;
               }
              
-              //tmp
-              if(simpleEntity.isMouseOver()){
-              turnThingsOff();
-              placingSimpleEntity=true;
-            }
+              if(goonEntity.isMouseOver()){
+                turnThingsOff();
+                placingGoon=true;
+              }
             } else {
               if (toggle3DMode.isMouseOver()) {
                 e3DMode=false;

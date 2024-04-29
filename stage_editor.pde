@@ -1315,8 +1315,8 @@ void GUImouseClicked() {
       }
     }
     
-    if(placingSimpleEntity){
-      current.entities.add(new SimpleEntity((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY,0));
+    if(placingGoon){
+      current.entities.add(new Goon((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY,0,current));
     }
   }//end of eddit stage
 }
