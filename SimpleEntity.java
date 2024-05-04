@@ -152,4 +152,12 @@ class SimpleEntity extends StageEntity{
     setY(spawnY);
     setZ(spawnZ);
   }
+  
+  public PlayerIniteractionResult playerInteraction(Collider2D playerHitBox){
+    return null;
+  }
+  
+  public PlayerIniteractionResult playerInteraction(Collider3D playerHitBox){
+    return null;
+  }
 }

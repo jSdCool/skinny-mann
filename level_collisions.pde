@@ -40,8 +40,9 @@ void stageLevelDraw() {
       }
     }
     //render all the Entites on this stage
-    for(int i=0;i<stage.entities.size();i++){
-      stage.entities.get(i).draw(this);
+    for (int i=0; i<stage.entities.size(); i++) {
+      if(!stage.entities.get(i).isDead())//if not dead
+        stage.entities.get(i).draw(this);
     }
     players[currentPlayer].in3D=false;
     if (clients.size()>0)
@@ -124,12 +125,12 @@ void stageLevelDraw() {
         float shadowAltitude=players[currentPlayer].y;
         boolean shadowHit=false;
         for (int i=0; i<500&&!shadowHit; i++) {//ray cast to find solid ground underneath the player
-        Collider3D groundDetect = players[currentPlayer].getHitBox3D(0,i,0);
-          if (level_colide(groundDetect,level.stages.get(currentStageIndex))) {
-           shadowAltitude+=i;
-           shadowHit=true;
-           continue;
-           }
+          Collider3D groundDetect = players[currentPlayer].getHitBox3D(0, i, 0);
+          if (level_colide(groundDetect, level.stages.get(currentStageIndex))) {
+            shadowAltitude+=i;
+            shadowHit=true;
+            continue;
+          }
         }
         if (shadowHit) {//if solid ground was found under the player then draw the shadow
           translate(players[currentPlayer].x, shadowAltitude-1.1, players[currentPlayer].z);
@@ -140,11 +141,12 @@ void stageLevelDraw() {
           translate(-players[currentPlayer].x, -(shadowAltitude-1), -players[currentPlayer].z);
         }
       }
-      
+
       //render all the Entites on this stage
       //TODO: respect wether the entoity is renderd in 3D or not
-      for(int i=0;i<stage.entities.size();i++){
-        stage.entities.get(i).draw3D(this);
+      for (int i=0; i<stage.entities.size(); i++) {
+        if(!stage.entities.get(i).isDead())//if not dead
+          stage.entities.get(i).draw3D(this);
       }
     } else {//redner the level in 2D
       SPressed=false;
@@ -168,10 +170,10 @@ void stageLevelDraw() {
           viewingItemIndex=i;//set the cuurent viewing item to this element
         }
       }
-      
+
       //render all the Entites on this stage
       //TODO: respect wether the entoity is renderd in 3D or not
-      for(int i=0;i<stage.entities.size();i++){
+      for (int i=0; i<stage.entities.size(); i++) {
         stage.entities.get(i).draw(this);
       }
 
@@ -405,8 +407,39 @@ void playerPhysics() {
   if (players[calcingPlayer].getY()>720) {//kill the player if they go below the stage
     dead=true;
     death_cool_down=0;
-    if(!levelCreator){
+    if (!levelCreator) {
       stats.incrementTimesDied();
+    }
+  }
+
+  //test for entity interactions
+  Collider2D player2DHitbox = players[calcingPlayer].getHitBox2D(0, 0);
+  Collider3D player3DHitbox = players[calcingPlayer].getHitBox3D(0, 0, 0);
+  PlayerIniteractionResult result = null;
+  for (int i=0; i<level.stages.get(currentStageIndex).entities.size(); i++) {
+    if (!level.stages.get(currentStageIndex).entities.get(i).isDead()) {
+      if (e3DMode) {//3d mdoe
+        Collider3D enitiyHitBox = level.stages.get(currentStageIndex).entities.get(i).getHitBox3D(0, 0, 0);
+        if (enitiyHitBox!=null && collisionDetection.collide3D(player3DHitbox, enitiyHitBox)) {
+          //if collideing
+          result = level.stages.get(currentStageIndex).entities.get(i).playerInteraction(player3DHitbox);
+        }
+      } else {//not 3D mode
+        Collider2D entityHitBox = level.stages.get(currentStageIndex).entities.get(i).getHitBox2D(0, 0);
+        if (entityHitBox !=null && collisionDetection.collide2D(player2DHitbox, entityHitBox)) {
+          //if collideing
+          result = level.stages.get(currentStageIndex).entities.get(i).playerInteraction(player2DHitbox);
+        }
+      }
+      if (result!=null) {
+        if (result.isKill()) {
+          dead=true;
+          death_cool_down=0;
+          if (!levelCreator) {
+            stats.incrementTimesDied();
+          }
+        }
+      }
     }
   }
 
@@ -425,14 +458,14 @@ void playerPhysics() {
     setPlayerPosTo=false;
     players[calcingPlayer].verticalVelocity=0;
   }
-  
-  for(Stage stage: level.stages){
-    for(int i=0;i<stage.entities.size();i++){
-      entityPhysics(stage.entities.get(i),stage);
+
+  for (Stage stage : level.stages) {
+    for (int i=0; i<stage.entities.size(); i++) {
+      entityPhysics(stage.entities.get(i), stage);
     }
   }
 
-  ////////////////////////////// Logic Thread monitroing 
+  ////////////////////////////// Logic Thread monitroing
   if ((!levelCreator && (level.multyplayerMode==1 || (level.multyplayerMode==2 && isHost))) || (levelCreator&&simulating)) {
     if (!logicTickingThread.isAlive()) {//if the ticking thread has stoped for some reason
       logicTickingThread=new LogicThread();
@@ -452,11 +485,11 @@ void entityPhysics(Entity entity, Stage stage) {
   if (movement instanceof NoMovementManager) {
     return;
   }
-  
+
   //if the entity is dead then do not calculate physics on them
-  if (entity instanceof Killable){
+  if (entity instanceof Killable) {
     Killable k = (Killable) entity;
-    if(k.isDead()){
+    if (k.isDead()) {
       return;
     }
   }
@@ -466,7 +499,7 @@ void entityPhysics(Entity entity, Stage stage) {
   }
 
   if (!entity.in3D(e3DMode)) {
-    
+
     if (simulating||!levelCreator) {
 
       if (movement.right()) {//move the player right
@@ -474,7 +507,7 @@ void entityPhysics(Entity entity, Stage stage) {
         Collider2D newboxPos = entity.getHitBox2D(offset, 0);
 
         if (!level_colide(newboxPos, stage)) {//check if the new posistion collids with anything
-          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+          if (!entity.collidesWithEntites() || !entityCollide(entity, newboxPos, stage)) {
             entity.setX(newpos);//move the player if all is good
           }
           //if it does check if it can climb stairs
@@ -508,7 +541,7 @@ void entityPhysics(Entity entity, Stage stage) {
         Collider2D newboxPos = entity.getHitBox2D(-offset, 0);
         if (!level_colide(newboxPos, stage)) {//check if the new posistion collids with anything
           //if the entity can coolide with other entites check if it is doing so, otherwise continue
-          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+          if (!entity.collidesWithEntites() || !entityCollide(entity, newboxPos, stage)) {
             entity.setX(newpos);//move the player if all is good
           }
         } else if (entity.getVerticalVelocity()<0.008) {//check if the player is not falling
@@ -544,7 +577,7 @@ void entityPhysics(Entity entity, Stage stage) {
         }
       }
     }
-    
+
     if (simulating||!levelCreator)
       if (true) {//gravity
         //    d  =                      vi*t          + 0.5 * a * t^2
@@ -553,12 +586,12 @@ void entityPhysics(Entity entity, Stage stage) {
         Collider2D newBox = entity.getHitBox2D(0, pd+0.5);
         if (!level_colide(newBox, stage)) {//check if that location would be inside of the ground or ceiling
           //if the entity can coolide with other entites check if it is doing so, otherwise continue
-          if(!entity.collidesWithEntites() || !entityCollide(entity,newBox,stage)){
+          if (!entity.collidesWithEntites() || !entityCollide(entity, newBox, stage)) {
             //if the new pos is not colliding with anything
             //           vf          =         vi                  +    a * t
             entity.setVerticalVelocity(entity.getVerticalVelocity()+gravity*mspc);//calculate the players new verticle velocity
             entity.setY(newPos);//update the postiton of the player
-          }else{
+          } else {
             entity.setVerticalVelocity(0);
           }
         } else {
@@ -566,59 +599,57 @@ void entityPhysics(Entity entity, Stage stage) {
           entity.setVerticalVelocity(0);//stop the entity's verticle motion
         }
       }
-    
+
     //prbly should add a can be killed by this check
     Collider2D dethCheck = entity.getHitBox2D(0, 1);
     if ((entity instanceof Player || entity instanceof Killable )&& player_kill(dethCheck, stage)) {//if the player is on top of a death plane
-      if (entity instanceof Killable){
+      if (entity instanceof Killable) {
         Killable k = (Killable) entity;
         k.kill();
-      }else{
+      } else {
         dead=true;//kill the player
         death_cool_down=0;
-        if(!levelCreator){
+        if (!levelCreator) {
           stats.incrementTimesDied();
         }
       }
     }
-    
+
     //in ground detection and rectification
     if (level_colide(entity.getHitBox2D(0, 0.5), stage)) {//check if the player's position is in the ground
       //if the entity can coolide with other entites check if it is doing so, otherwise continue
-      
+
       entity.setY(entity.getY()-1);//move the player up
       entity.setVerticalVelocity(0);//stop the entity's verticle motion
-      
     }
-    
-    if(entity.collidesWithEntites()){
+
+    if (entity.collidesWithEntites()) {
       //if colliding with other entitys
       Collider2D hb = entity.getHitBox2D(0, 0.5);
-      Collider2D otherEntity = entityCollideObject(entity,hb,stage);
+      Collider2D otherEntity = entityCollideObject(entity, hb, stage);
       //if there was a collision
-      if(otherEntity != null){
+      if (otherEntity != null) {
         //if your center is gerter y then the other
-        if(otherEntity.getCenter().y < hb.getCenter().y){
+        if (otherEntity.getCenter().y < hb.getCenter().y) {
           //if the new position would not collide with terrain
-          if(level_colide(entity.getHitBox2D(0, 2), stage)){
+          if (level_colide(entity.getHitBox2D(0, 2), stage)) {
             entity.setY(entity.getY()+1);//move the entity down
             entity.setVerticalVelocity(0);//stop the entity's verticle motion
           }
-        }else{
+        } else {
           //if the new position would not collide with terrain
-          if(level_colide(entity.getHitBox2D(0, -2), stage)){
+          if (level_colide(entity.getHitBox2D(0, -2), stage)) {
             entity.setY(entity.getY()-1);//move the entity up
             entity.setVerticalVelocity(0);//stop the entity's verticle motion
           }
         }
       }
     }
-    
+
     if (movement.jump()) {//jumping
       Collider2D groundDetect = entity.getHitBox2D(0, 2);
-      if (level_colide(groundDetect, stage)|| (entity.collidesWithEntites() && entityCollide(entity,groundDetect,stage))) {//check if the entiy is on the ground
+      if (level_colide(groundDetect, stage)|| (entity.collidesWithEntites() && entityCollide(entity, groundDetect, stage))) {//check if the entiy is on the ground
         entity.setVerticalVelocity(-0.75);  //if the entity is on the ground and they are trying to jump then set thire verticle velocity
-        
       }
     } else if (entity.getVerticalVelocity()<0) {//if the player stops pressing space bar before they stop riseing then start moving the player down
       entity.setVerticalVelocity(0.01);//make the entity move down
@@ -649,7 +680,6 @@ void entityPhysics(Entity entity, Stage stage) {
       if (camPosY<0)
         camPosY=0;
     }
-    
   } else {//end of not in 3D mode
     if (simulating||!levelCreator) {
 
@@ -659,7 +689,7 @@ void entityPhysics(Entity entity, Stage stage) {
 
         if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
           //if the entity can coolide with other entites check if it is doing so, otherwise continue
-          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+          if (!entity.collidesWithEntites() || !entityCollide(entity, newboxPos, stage)) {
             entity.setX(newpos);//move the player
           }
         } else if (entity.getVerticalVelocity()<0.008) {//check if the new posaition would place the player inside of a wall
@@ -691,7 +721,7 @@ void entityPhysics(Entity entity, Stage stage) {
         Collider3D newboxPos = entity.getHitBox3D(-offset, 0, 0);
         if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
           //if the entity can coolide with other entites check if it is doing so, otherwise continue
-          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+          if (!entity.collidesWithEntites() || !entityCollide(entity, newboxPos, stage)) {
             entity.setX(newpos);//move the player
           }
         } else if (entity.getVerticalVelocity()<0.008) {//check if the new posaition would place the player inside of a wall
@@ -723,7 +753,7 @@ void entityPhysics(Entity entity, Stage stage) {
         Collider3D newboxPos = entity.getHitBox3D(0, 0, -offset);
         if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
           //if the entity can coolide with other entites check if it is doing so, otherwise continue
-          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+          if (!entity.collidesWithEntites() || !entityCollide(entity, newboxPos, stage)) {
             entity.setZ(newpos);//move the player
           }
         } else if (entity.getVerticalVelocity()<0.008) {//check if the new posaition would place the player inside of a wall
@@ -756,7 +786,7 @@ void entityPhysics(Entity entity, Stage stage) {
 
         if (!level_colide(newboxPos, stage)) {//check if the player can walk up "stairs"
           //if the entity can coolide with other entites check if it is doing so, otherwise continue
-          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+          if (!entity.collidesWithEntites() || !entityCollide(entity, newboxPos, stage)) {
             entity.setZ(newpos);//move the player
           }
         } else if (entity.getVerticalVelocity()<0.008) {//check if the new posaition would place the player inside of a wall
@@ -794,64 +824,62 @@ void entityPhysics(Entity entity, Stage stage) {
 
     if (simulating||!levelCreator)
       if (true) {//gravity
-      
+
         //    d  =                      vi*t          + 0.5 * a * t^2
         float pd = (entity.getVerticalVelocity()*mspc + 0.5*gravity*(float)Math.pow(mspc, 2));//calculate the new verticle position the player shoud be at
         float newPos = pd +  entity.getY();
         Collider3D newboxPos = entity.getHitBox3D(0, pd+0.5, 0);
         if (!level_colide(newboxPos, stage)) {//check if that location would be inside of the ground or ceiling
           //if the entity can coolide with other entites check if it is doing so, otherwise continue
-          if(!entity.collidesWithEntites() || !entityCollide(entity,newboxPos,stage)){
+          if (!entity.collidesWithEntites() || !entityCollide(entity, newboxPos, stage)) {
             //           vf          =         vi                  +    a * t
             entity.setVerticalVelocity(entity.getVerticalVelocity()+gravity*mspc);//calculate the players new verticle velocity
             entity.setY(newPos);//update the postiton of the player
-          }else{
+          } else {
             entity.setVerticalVelocity(0);
           }
         } else {
           //if the new position would collide with something
           entity.setVerticalVelocity(0);//stop the entity's verticle motion
         }
-        
       }
 
     //ground detetcion and reftification
     if (level_colide(entity.getHitBox3D(0, 0.5, 0), stage)) {
       //if the entity can coolide with other entites check if it is doing so, otherwise continue
-        entity.setY(entity.getY()-1);
-        entity.setVerticalVelocity(0);
-      
+      entity.setY(entity.getY()-1);
+      entity.setVerticalVelocity(0);
     }
-    /*//entity on entity collisoion 
-    if(entity.collidesWithEntites()){
-      //if colliding with other entitys
-      Collider2D hb = entity.getHitBox2D(0, 0.5);
-      Collider2D otherEntity = entityCollideObject(entity,hb,stage);
-      //if there was a collision
-      if(otherEntity != null){
-        //if your center is gerter y then the other
-        if(otherEntity.getCenter().y < hb.getCenter().y){
-          //if the new position would not collide with terrain
-          if(level_colide(entity.getHitBox2D(0, 2), stage)){
-            entity.setY(entity.getY()+1);//move the entity down
-            entity.setVerticalVelocity(0);//stop the entity's verticle motion
-          }
-        }else{
-          //if the new position would not collide with terrain
-          if(level_colide(entity.getHitBox2D(0, -2), stage)){
-            entity.setY(entity.getY()-1);//move the entity up
-            entity.setVerticalVelocity(0);//stop the entity's verticle motion
-          }
-        }
-      }
-    }*/
-    
+    /*//entity on entity collisoion
+     if(entity.collidesWithEntites()){
+     //if colliding with other entitys
+     Collider2D hb = entity.getHitBox2D(0, 0.5);
+     Collider2D otherEntity = entityCollideObject(entity,hb,stage);
+     //if there was a collision
+     if(otherEntity != null){
+     //if your center is gerter y then the other
+     if(otherEntity.getCenter().y < hb.getCenter().y){
+     //if the new position would not collide with terrain
+     if(level_colide(entity.getHitBox2D(0, 2), stage)){
+     entity.setY(entity.getY()+1);//move the entity down
+     entity.setVerticalVelocity(0);//stop the entity's verticle motion
+     }
+     }else{
+     //if the new position would not collide with terrain
+     if(level_colide(entity.getHitBox2D(0, -2), stage)){
+     entity.setY(entity.getY()-1);//move the entity up
+     entity.setVerticalVelocity(0);//stop the entity's verticle motion
+     }
+     }
+     }
+     }*/
+
 
     if (movement.jump()) {//jumping
       Collider3D groundDetect = entity.getHitBox3D(0, 2, 0);
       if (level_colide(groundDetect, stage)) {//check if the player is standing on the ground
         //if the entity can coolide with other entites check if it is doing so, otherwise continue
-        if(!entity.collidesWithEntites() || !entityCollide(entity,groundDetect,stage)){
+        if (!entity.collidesWithEntites() || !entityCollide(entity, groundDetect, stage)) {
           entity.setVerticalVelocity(-0.75);  //if the player is on the ground and they are trying to jump then set thire verticle velocity
         }
       }
@@ -860,14 +888,14 @@ void entityPhysics(Entity entity, Stage stage) {
     }
   }
   //end of 3D physics
-  
+
   //if an entity can be killed and is below 720 kill it
-  if (entity instanceof Killable){
-      Killable k = (Killable) entity;
-      if(entity.getY() > 720){
-        k.kill();
-      }
+  if (entity instanceof Killable) {
+    Killable k = (Killable) entity;
+    if (entity.getY() > 720) {
+      k.kill();
     }
+  }
 }
 
 
@@ -902,16 +930,16 @@ boolean level_colide(Collider3D hitbox, Stage stage) {//3d collions
   return false;
 }
 
-boolean entityCollide(Entity self, Collider2D hitbox,Stage stage){
-  return entityCollideObject(self,hitbox,stage) != null;
+boolean entityCollide(Entity self, Collider2D hitbox, Stage stage) {
+  return entityCollideObject(self, hitbox, stage) != null;
 }
 
-Collider2D entityCollideObject(Entity self, Collider2D hitbox,Stage stage){
-  for(Entity other : stage.entities){
-    if(self == other)//dont check for collison with self
+Collider2D entityCollideObject(Entity self, Collider2D hitbox, Stage stage) {
+  for (Entity other : stage.entities) {
+    if (self == other)//dont check for collison with self
       continue;
-    if(other.collidesWithEntites()){
-      Collider2D otherbox = other.getHitBox2D(0,0);
+    if (other.collidesWithEntites()) {
+      Collider2D otherbox = other.getHitBox2D(0, 0);
       if (otherbox == null)//if the object has no collider then go to the next object
         continue;
       if (collisionDetection.collide2D(hitbox, otherbox)) {//check if the objects collide
@@ -922,16 +950,16 @@ Collider2D entityCollideObject(Entity self, Collider2D hitbox,Stage stage){
   return null;
 }
 
-boolean entityCollide(Entity self, Collider3D hitbox,Stage stage){
+boolean entityCollide(Entity self, Collider3D hitbox, Stage stage) {
   return entityCollideObject(self, hitbox, stage) != null;
 }
 
-Collider3D entityCollideObject(Entity self, Collider3D hitbox,Stage stage){
-  for(Entity other : stage.entities){
-    if(self == other)//dont check for collison with self
+Collider3D entityCollideObject(Entity self, Collider3D hitbox, Stage stage) {
+  for (Entity other : stage.entities) {
+    if (self == other)//dont check for collison with self
       continue;
-    if(other.collidesWithEntites()){
-      Collider3D otherbox = other.getHitBox3D(0,0,0);
+    if (other.collidesWithEntites()) {
+      Collider3D otherbox = other.getHitBox3D(0, 0, 0);
       if (otherbox == null)//if the object has no collider then go to the next object
         continue;
       if (collisionDetection.collide3D(hitbox, otherbox)) {//check if the objects collide
@@ -949,9 +977,9 @@ boolean player_kill(Collider2D hitbox, Stage stage) {
   for (int i=0; stageLoopCondishen(i, stage); i++) {
     StageComponent part = stage.parts.get(i);
     //if this part is a deth plane a nd the hitbox position is colliding with it
-    if (part instanceof DethPlane){
+    if (part instanceof DethPlane) {
       Collider2D dhb = part.getCollider2D();
-      if(dhb!=null && collisionDetection.collide2D(hitbox, dhb)) {
+      if (dhb!=null && collisionDetection.collide2D(hitbox, dhb)) {
         return true;
       }
     }

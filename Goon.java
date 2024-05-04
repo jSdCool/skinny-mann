@@ -151,5 +151,21 @@ class Goon extends StageEntity{
     return data;
   }
   
+  public PlayerIniteractionResult playerInteraction(Collider2D playerHitBox){
+    
+    //if the player hits the kill Entity box section
+    if(new CollisionDetection().collide2D(playerHitBox,Collider2D.createRectHitbox(x-12,y-50,24,10))){
+      //kill this entity
+      kill();
+      return null;
+    }
+    
+    return new PlayerIniteractionResult().setKill();
+  }
+  
+  public PlayerIniteractionResult playerInteraction(Collider3D playerHitBox){
+    return null;
+  }
+  
   
 }

@@ -15,5 +15,8 @@ abstract class StageEntity extends Entity implements Killable{
   
   public abstract StageEntity create(JSONObject input,Stage stage);
   
+  public abstract PlayerIniteractionResult playerInteraction(Collider2D playerHitBox);
+  public abstract PlayerIniteractionResult playerInteraction(Collider3D playerHitBox);
+  
   
 }

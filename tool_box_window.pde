@@ -441,6 +441,7 @@ class ToolBox extends PApplet {
             sign.drawHoverText();
             select.drawHoverText();
             logicButtonButton.drawHoverText();
+            goonEntity.drawHoverText();
           }//end of not 3d mode
 
           saveLevel.drawHoverText();
@@ -784,6 +785,7 @@ class ToolBox extends PApplet {
               if (selectingBlueprint && blueprints.length != 0) {
                 placeBlueprint3DButton.drawHoverText();
               }
+              goonEntity.drawHoverText();
             }
           }//end of if stage is 3D
 
