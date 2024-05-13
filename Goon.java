@@ -117,7 +117,7 @@ class Goon extends StageEntity{
     context.rect((localX-10)*Scale,(loaclY-15)*Scale,20*Scale,20*Scale);
     
     //legs
-    context.fill(88,88,88);
+    context.fill(70,70,70);
     context.rect((localX-10)*Scale,(loaclY+5)*Scale,5*Scale,10*Scale);
     context.rect((localX+5)*Scale,(loaclY+5)*Scale,5*Scale,10*Scale);
     
