@@ -127,7 +127,7 @@ void stageLevelDraw() {
         for (int i=0; i<500&&!shadowHit; i++) {//ray cast to find solid ground underneath the player
           Collider3D groundDetect = players[currentPlayer].getHitBox3D(0, i, 0);
           if (level_colide(groundDetect, level.stages.get(currentStageIndex))) {
-            shadowAltitude+=i;
+            shadowAltitude+=i-1;
             shadowHit=true;
             continue;
           }
@@ -138,7 +138,7 @@ void stageLevelDraw() {
           rotateX(radians(90));
           ellipse(0, 0, 40, 40);
           rotateX(radians(-90));
-          translate(-players[currentPlayer].x, -(shadowAltitude-1), -players[currentPlayer].z);
+          translate(-players[currentPlayer].x, -(shadowAltitude-2), -players[currentPlayer].z);
         }
       }
 
