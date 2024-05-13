@@ -70,7 +70,7 @@ void stageLevelDraw() {
 
 
       if ((simulating&&levelCreator)||!levelCreator)
-        camera3DpositionSimulating();
+        camera3DpositionSimulating(stage);
       else
         camera3DpositionNotSimulating();
 
@@ -316,7 +316,7 @@ void blueprintEditDraw() {
   }
 }
 
-void camera3DpositionSimulating() {
+void camera3DpositionSimulating(Stage stage) {
   cam3Dx=players[currentPlayer].x;
   cam3Dy=players[currentPlayer].y;
   cam3Dz=players[currentPlayer].z;
@@ -342,10 +342,21 @@ void camera3DpositionSimulating() {
   }
   //xangle=205;
   //yangle=15;
-  DY=sin(radians(yangle))*dist;
-  hd=cos(radians(yangle))*dist;
-  DX=sin(radians(xangle))*hd;
-  DZ=cos(radians(xangle))*hd;
+  
+  //do this later, seems to cause a little lag
+  //check if a peice of terain would be intersecting the camera
+  //for(int i=100;i<dist;i++){
+    //calculate the eye position of the camera
+    DY=sin(radians(yangle))*dist;
+    hd=cos(radians(yangle))*dist;
+    DX=sin(radians(xangle))*hd;
+    DZ=cos(radians(xangle))*hd;
+    //check if that position is inside of terain
+    //Collider3D checkBox = Collider3D.createBoxHitBox(cam3Dx+DX-1, cam3Dy-DY-1, cam3Dz-DZ-1,3,3,3);
+    //if(level_colide(checkBox,stage)){
+    //  break;
+    //}
+//}
 }
 
 void camera3DpositionNotSimulating() {
