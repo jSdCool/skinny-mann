@@ -435,13 +435,14 @@ class ToolBox extends PApplet {
               draw_holoTriangle.drawHoverText();
               draw_dethPlane.drawHoverText();
               placeBlueprint.drawHoverText();
+              goonEntity.drawHoverText();
             }//end of level is not 3D
             playSound.drawHoverText();
 
             sign.drawHoverText();
             select.drawHoverText();
             logicButtonButton.drawHoverText();
-            goonEntity.drawHoverText();
+            
           }//end of not 3d mode
 
           saveLevel.drawHoverText();
@@ -595,13 +596,6 @@ class ToolBox extends PApplet {
               }
               placeBlueprint.draw();
               
-              //tmp
-              if(placingGoon){
-                goonEntity.setColor(255, #F2F258);
-              } else {
-                goonEntity.setColor(255, 203);
-              }
-              goonEntity.draw();
               
               textAlign(LEFT, BOTTOM);
               toggle3DMode.drawHoverText();
@@ -785,7 +779,7 @@ class ToolBox extends PApplet {
               if (selectingBlueprint && blueprints.length != 0) {
                 placeBlueprint3DButton.drawHoverText();
               }
-              goonEntity.drawHoverText();
+              
             }
           }//end of if stage is 3D
 

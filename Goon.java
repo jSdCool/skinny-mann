@@ -101,15 +101,25 @@ class Goon extends StageEntity{
     //face
     context.fill(255,0xBA,0x6B);
     context.rect((localX-15)*Scale,(loaclY-30)*Scale,30*Scale,15*Scale);
+    context.fill(0);
+    //sun glasses
+    context.rect((localX-15)*Scale,(loaclY-27)*Scale,30*Scale,2*Scale);
+    if(mm.right()){
+      context.rect((localX-10)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
+      context.rect((localX+5)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
+    }else{
+      context.rect((localX-15)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
+      context.rect((localX+0)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
+    }
     
     //shirt
     context.fill(21,18,15);
     context.rect((localX-10)*Scale,(loaclY-15)*Scale,20*Scale,20*Scale);
     
     //legs
-  context.fill(88,88,88);
-  context.rect((localX-10)*Scale,(loaclY+5)*Scale,5*Scale,10*Scale);
-  context.rect((localX+5)*Scale,(loaclY+5)*Scale,5*Scale,10*Scale);
+    context.fill(88,88,88);
+    context.rect((localX-10)*Scale,(loaclY+5)*Scale,5*Scale,10*Scale);
+    context.rect((localX+5)*Scale,(loaclY+5)*Scale,5*Scale,10*Scale);
     
   }
   
