@@ -345,6 +345,28 @@ void camera3DpositionSimulating(Stage stage) {
   
   //do this later, seems to cause a little lag
   //check if a peice of terain would be intersecting the camera
+  
+  //ray casts are dum do this instead:
+  //binary search tree
+  
+  //create a hit box for the entire range of camera positions
+  //if it collides
+  //split the box in 2
+  //select the box closest to the player
+  
+  //loop
+    //check if the selected box collides with the level
+    //if so split that box in 2
+    //if not split the box not selected in 2
+    
+    //if at the final level return the number
+    
+    //select the new split box that is closest to the player
+    //restart loop
+    
+   //if the box did not collide
+   //retun 700
+  
   //for(int i=100;i<dist;i++){
     //calculate the eye position of the camera
     DY=sin(radians(yangle))*dist;
