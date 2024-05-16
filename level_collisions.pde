@@ -39,6 +39,7 @@ void stageLevelDraw() {
         viewingItemIndex=i;//set the cuurent viewing item to this element
       }
     }
+    noStroke();
     //render all the Entites on this stage
     for (int i=0; i<stage.entities.size(); i++) {
       if(!stage.entities.get(i).isDead())//if not dead
@@ -144,6 +145,7 @@ void stageLevelDraw() {
 
       //render all the Entites on this stage
       //TODO: respect wether the entoity is renderd in 3D or not
+      noStroke();
       for (int i=0; i<stage.entities.size(); i++) {
         if(!stage.entities.get(i).isDead())//if not dead
           stage.entities.get(i).draw3D(this);
@@ -173,6 +175,7 @@ void stageLevelDraw() {
 
       //render all the Entites on this stage
       //TODO: respect wether the entoity is renderd in 3D or not
+      noStroke();
       for (int i=0; i<stage.entities.size(); i++) {
         stage.entities.get(i).draw(this);
       }
