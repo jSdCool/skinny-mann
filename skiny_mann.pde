@@ -112,7 +112,7 @@ ArrayList<Client> clients= new ArrayList<>();
 
 int camPos=0, camPosY=0, death_cool_down, start_down, port=9367, scroll_left, scroll_right, respawnX=20, respawnY=700, respawnZ=150, spdelay=0, vres, hres, respawnStage, stageIndex, coinCount=0, eadgeScroleDist=100, esdPos=800, setPlayerPosX, setPlayerPosY, setPlayerPosZ, gmillis=0, coinRotation=0, vesdPos=800, eadgeScroleDistV=100, settingsVersion=4, musVolSllid=800, sfxVolSllid=800, currentStageIndex, tutorialDrawLimit=0, displayTextUntill=0, tutorialPos=0, currentTutorialSound, tutorialNarrationMode=0, UGC_lvl_indx, selectedIndex=-1, viewingItemIndex=-1, drawCamPosX=0, drawCamPosY=0, currentPlayer=0, currentNumberOfPlayers=10, startTime, bestTime=0, sessionTime=600000, timerEndTime, startingDepth=0, totalDepth=300, grid_size=10, current3DTransformMode=1, currentBluieprintIndex=0, logicBoardIndex=0, Color=0, RedPos=0, BluePos=0, GreenPos=0, RC=0, GC=0, BC=0, triangleMode=0, transformComponentNumber=0, preSI=0, overviewSelection=-1, filesScrole=0, connectingFromIndex=0, movingLogicIndex=0, loadProgress=0, totalLoad=55;//int
 JSONArray  settings, levelProgress, colors;
-Button select_lvl_1, select_lvl_back, select_lvl_2, select_lvl_3, select_lvl_4, select_lvl_5, select_lvl_6, sdSlider, enableFPS, disableFPS, enableDebug, disableDebug, sttingsGPL, settingsDSP, settingsOUT, rez720, rez900, rez1080, rez1440, rez4k, fullScreenOn, fullScreenOff, vsdSlider, MusicSlider, SFXSlider, shadowOn, shadowOff, narrationMode1, narrationMode0, select_lvl_UGC, UGC_open_folder, UGC_lvls_next, UGC_lvls_prev, UGC_lvl_play, levelcreatorLink, select_lvl_7, select_lvl_8, select_lvl_9, select_lvl_10, playButton, joinButton, settingsButton, howToPlayButton, exitButton, downloadUpdateButton, updateGetButton, updateOkButton, dev_main, dev_quit, dev_levels, dev_tutorial, dev_settings, dev_UGC, dev_multiplayer, multyplayerJoin, multyplayerHost, multyplayerExit, multyplayerGo, multyplayerLeave, multyplayerSpeedrun, multyplayerCoop, multyplayerUGC, multyplayerPlay, increaseTime, decreaseTime, pauseRestart, newLevelButton, loadLevelButton, newStage, newFileCreate, newFileBack, edditStage, setMainStage, selectStage, new2DStage, new3DStage, overview_saveLevel, help, newBlueprint, loadBlueprint, createBlueprintGo, addSound, overviewUp, overviewDown, chooseFileButton, lcLoadLevelButton, lcNewLevelButton, dev_levelCreator, lc_backButton, lcOverviewExitButton, lc_exitConfirm, lc_exitCancle, lc_openLevelsFolder, settingsBackButton, pauseResumeButton, pauseOptionsButton, pauseQuitButton, endOfLevelButton,select_lvl_11,select_lvl_12,settingsSND,lc_newSoundAsSoundButton,lc_newSoundAsNarrationButton,disableMenuTransistionsButton,enableMenuTransitionButton;//button
+Button select_lvl_1, select_lvl_back, select_lvl_2, select_lvl_3, select_lvl_4, select_lvl_5, select_lvl_6, sdSlider, enableFPS, disableFPS, enableDebug, disableDebug, sttingsGPL, settingsDSP, settingsOUT, rez720, rez900, rez1080, rez1440, rez4k, fullScreenOn, fullScreenOff, vsdSlider, MusicSlider, SFXSlider, shadowOn, shadowOff, narrationMode1, narrationMode0, select_lvl_UGC, UGC_open_folder, UGC_lvls_next, UGC_lvls_prev, UGC_lvl_play, levelcreatorLink, select_lvl_7, select_lvl_8, select_lvl_9, select_lvl_10, playButton, joinButton, settingsButton, howToPlayButton, exitButton, downloadUpdateButton, updateGetButton, updateOkButton, dev_main, dev_quit, dev_levels, dev_tutorial, dev_settings, dev_UGC, dev_multiplayer, multyplayerJoin, multyplayerHost, multyplayerExit, multyplayerGo, multyplayerLeave, multyplayerSpeedrun, multyplayerCoop, multyplayerUGC, multyplayerPlay, increaseTime, decreaseTime, pauseRestart, newLevelButton, loadLevelButton, newStage, newFileCreate, newFileBack, edditStage, setMainStage, selectStage, new2DStage, new3DStage, overview_saveLevel, help, newBlueprint, loadBlueprint, createBlueprintGo, addSound, overviewUp, overviewDown, chooseFileButton, lcLoadLevelButton, lcNewLevelButton, dev_levelCreator, lc_backButton, lcOverviewExitButton, lc_exitConfirm, lc_exitCancle, lc_openLevelsFolder, settingsBackButton, pauseResumeButton, pauseOptionsButton, pauseQuitButton, endOfLevelButton,select_lvl_11,select_lvl_12,settingsSND,lc_newSoundAsSoundButton,lc_newSoundAsNarrationButton,disableMenuTransistionsButton,enableMenuTransitionButton,select_lvl_13,select_lvl_14,select_lvl_next;//button
 String[] musicTracks ={"data/music/track1.wav", "data/music/track2.wav", "data/music/track3.wav"}, sfxTracks={"data/sounds/level complete.wav"}, compatibleVersions={"0.7.0_Early_Access", "0.7.1_Early_Access","0.8.0_Early_Access","0.8.1_Early_Access","0.8.2_Early_Access","0.9.0_Early_Access"};
 SoundHandler soundHandler;
 Level level;
@@ -233,10 +233,13 @@ void draw() {// the function that is called every fraim
           drawMainMenu(true);
         }
         if (Menue.equals("level select")) {//if selecting level
-          drawLevelSelect(true);
+          drawLevelSelect(true,0);
         }
         if (Menue.equals("level select UGC")) {
           drawLevelSelectUGC();
+        }
+        if(Menue.equals("level select 2")){
+         drawLevelSelect2(true); 
         }
         if (Menue.equals("pause")) {//when in the pause emnue cancle all motion
           player1_moving_right=false;
@@ -1277,6 +1280,11 @@ void mouseClicked() {// when you click the mouse
             menue=false;
             initMenuTransition(Transitions.LEVEL_SELECT_TO_MAIN);
           }
+          if (select_lvl_next.isMouseOver()) {
+            Menue="level select 2";
+            menue=false;
+            initMenuTransition(Transitions.LEVEL_SELECT_TO_LEVEL_SELECT_2);
+          }
           if (select_lvl_UGC.isMouseOver()) {
             Menue="level select UGC";
             menue=false;
@@ -1289,6 +1297,26 @@ void mouseClicked() {// when you click the mouse
 
           return;
         }
+        if (Menue.equals("level select 2")) {//if that menue is level select
+          int progress=levelProgress.getJSONObject(0).getInt("progress")+1;
+          if (select_lvl_13.isMouseOver()&&progress>=13) {
+            loadLevel("data/levels/level-13");
+            menue=false;
+            inGame=true;
+          }
+          if (select_lvl_2.isMouseOver()&&progress>=14) {
+            loadLevel("data/levels/level-14");
+            menue=false;
+            inGame=true;
+          }
+          
+          if (select_lvl_back.isMouseOver()) {
+            Menue="level select";
+            menue=false;
+            initMenuTransition(Transitions.LEVEL_SELECT_2_TO_LEVEL_SELECT);
+          }
+        }
+        
         if (Menue.equals("level select UGC")) {
           if (select_lvl_back.isMouseOver()) {
             Menue="level select";
@@ -3261,14 +3289,18 @@ void drawSettings() {
   settingsBackButton.draw();
 }//end of draw settings
 
-void drawLevelSelect(boolean bcakground) {
+void drawLevelSelect(boolean bcakground,int gc) {
   levelCompleteSoundPlayed=false;
   if (bcakground)
     background(7646207);
-  fill(-16732415);
-  stroke(-16732415);
+  if(bcakground){
+    fill(-16732415);
+    stroke(-16732415);
+  }else{
+    fill(gc);
+  }
   strokeWeight(0);
-  rect(0, height/2, width, height/2);//green rectangle
+  rect(0, height/2, width, height);//green rectangle
   fill(0);
   ls_levelSelect.draw();
   int progress=levelProgress.getJSONObject(0).getInt("progress")+1;
@@ -3341,6 +3373,30 @@ void drawLevelSelect(boolean bcakground) {
   select_lvl_12.draw();
   select_lvl_back.draw();
   select_lvl_UGC.draw();
+  select_lvl_next.draw();
+}
+
+void drawLevelSelect2(boolean bcakground){
+  levelCompleteSoundPlayed=false;
+  if (bcakground)
+    background(#66696F);
+  fill(0);
+  ls_levelSelect.draw();
+  int progress=levelProgress.getJSONObject(0).getInt("progress")+1;
+  if (progress<13) {
+    select_lvl_13.setColor(#B40F00, #B4AF00);
+  } else {
+    select_lvl_13.setColor(-59135, -1791);
+  }
+  if (progress<14) {
+    select_lvl_14.setColor(#B40F00, #B4AF00);
+  } else {
+    select_lvl_14.setColor(-59135, -1791);
+  }
+  
+  select_lvl_13.draw();
+  select_lvl_14.draw();
+  select_lvl_back.draw();
 }
 
 void drawLevelSelectUGC() {
@@ -4133,6 +4189,7 @@ void programLoad() {
 void  initButtons() {
   select_lvl_1=new UiButton(ui, (100), (100), (200), (100), "lvl 1", -59135, -1791).setStrokeWeight( (10));
   select_lvl_back=new UiButton(ui, (100), (600), (200), (50), "Back", -59135, -1791).setStrokeWeight( (10));
+  select_lvl_next=new UiButton(ui, (600), (600), (200), (50), "Next", -59135, -1791).setStrokeWeight( (10));
   select_lvl_2 =new UiButton(ui, (350), (100), (200), (100), "lvl 2", -59135, -1791).setStrokeWeight( (10));
   select_lvl_3 =new UiButton(ui, (600), (100), (200), (100), "lvl 3", -59135, -1791).setStrokeWeight( (10));
   select_lvl_4 =new UiButton(ui, (850), (100), (200), (100), "lvl 4", -59135, -1791).setStrokeWeight( (10));
@@ -4194,6 +4251,8 @@ void  initButtons() {
   endOfLevelButton = new UiButton(ui, 550, 450, 200, 40, "Continue", #FF1900, #FFF900).setStrokeWeight(10);
   enableMenuTransitionButton = new UiButton(ui, (1130), (260), (40), (40), 255, 0).setStrokeWeight(5);
   disableMenuTransistionsButton = new UiButton(ui, (1200), (260), (40), (40), 255, 0).setStrokeWeight(5);
+  select_lvl_13 = new UiButton(ui, (100), (100), (200), (100), "lvl 13", -59135, -1791).setStrokeWeight( (10));
+  select_lvl_14 = new UiButton(ui, (350), (100), (200), (100), "lvl 14", -59135, -1791).setStrokeWeight( (10));
 
 
 

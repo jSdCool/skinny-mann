@@ -494,11 +494,17 @@ void playerPhysics() {
     setPlayerPosTo=false;
     players[calcingPlayer].verticalVelocity=0;
   }
-
-  for (Stage stage : level.stages) {
-    for (int i=0; i<stage.entities.size(); i++) {
-      entityPhysics(stage.entities.get(i), stage);
+    
+  if(level.multyplayerMode==2 && (isHost||levelCreator)){
+    for (Stage stage : level.stages) {
+      for (int i=0; i<stage.entities.size(); i++) {
+        entityPhysics(stage.entities.get(i), stage);
+      }
     }
+  }else if(level.multyplayerMode!=2){
+    for (int i=0; i<level.stages.get(currentStageIndex).entities.size(); i++) {
+        entityPhysics(level.stages.get(currentStageIndex).entities.get(i), level.stages.get(currentStageIndex));
+      }
   }
 
   ////////////////////////////// Logic Thread monitroing
