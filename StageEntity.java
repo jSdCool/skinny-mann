@@ -1,5 +1,6 @@
 import processing.data.*;
-abstract class StageEntity extends Entity implements Killable{
+import java.io.Serializable;
+abstract class StageEntity extends Entity implements Killable,Serializable{
   
   StageEntity(Stage stage){
     this.stage=stage;

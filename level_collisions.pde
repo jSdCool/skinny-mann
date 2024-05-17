@@ -467,6 +467,7 @@ void playerPhysics() {
           result = level.stages.get(currentStageIndex).entities.get(i).playerInteraction(player2DHitbox);
         }
       }
+      
       if (result!=null) {
         if (result.isKill()) {
           dead=true;
@@ -474,6 +475,14 @@ void playerPhysics() {
           if (!levelCreator) {
             stats.incrementTimesDied();
           }
+          break;
+        }
+      }
+      if(level.multyplayerMode==2 && !isHost){
+        //if the entitie was killed
+        if(level.stages.get(currentStageIndex).entities.get(i).isDead()){
+          //inform the server of the death
+          clients.get(0).dataToSend.add(new KillEntityDataPacket(currentStageIndex,i));
         }
       }
     }

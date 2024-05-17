@@ -431,7 +431,7 @@ void draw() {// the function that is called every fraim
               multyplayerSpeedrun.setColor(-59135, -35185);
               multyplayerCoop.setColor(-59135, -1791);
               multyplayerUGC.setColor(-59135, -1791);
-              int numOfBuiltInLevels=12;
+              int numOfBuiltInLevels=14;
               calcTextSize("level 30", width*0.1);
               textAlign(CENTER, CENTER);
               for (int i=0; i<numOfBuiltInLevels; i++) {
@@ -1775,7 +1775,7 @@ void mouseClicked() {// when you click the mouse
             if (mouseX>=width*0.171875 && mouseX<= width*0.8 && mouseY >=height*0.09 && mouseY <=height*0.91666) {//if the mouse is in the area to select a level
               int slotSelected=(int)( (mouseY - height*0.09)/(height*0.8127777777/16));
               if (multyplayerSelectionLevels.equals("speed")) {
-                if (slotSelected<=11) {//set speed run max levels here for selection
+                if (slotSelected<=13) {//set speed run max levels here for selection
                   multyplayerSelectedLevelPath="data/levels/level-"+(slotSelected+1);
                   genSelectedInfo(multyplayerSelectedLevelPath, false);
                 }
