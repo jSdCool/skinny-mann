@@ -799,9 +799,9 @@ void stageEditGUI() {
       }
       if (check_point) {//if adding checkoint
         if (grid_mode) {//display a checkoint
-          drawCheckPoint((Math.round((mouseX/Scale+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round((mouseY/Scale-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale);
+          drawCheckPoint((Math.round((mouseX/Scale+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round((mouseY/Scale-camPosY)*1.0/grid_size)*grid_size+camPosY));
         } else {
-          drawCheckPoint((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale);
+          drawCheckPoint((int)(mouseX/Scale), (int)(mouseY/Scale));
         }
       }
       if (drawCoins) {//if adding coins

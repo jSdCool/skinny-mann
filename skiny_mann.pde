@@ -690,6 +690,7 @@ void draw() {// the function that is called every fraim
             renderBlueprint();//render blueprint
           }
         }
+        engageHUDPosition();
       }
 
       if (levelOverview) {//if on the level overview
@@ -944,6 +945,7 @@ void draw() {// the function that is called every fraim
         }
         blueprintEditDraw();//draw the accual blueprint
         stageEditGUI();//overlays when placing things
+        engageHUDPosition();
       }//end of edit blueprint
 
       if (editinglogicBoard) {//if editing a logic board
