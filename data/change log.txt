@@ -6,6 +6,7 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 +added: new NPC system
 +added: NPC enemy Goon
 +added: level 13
+-fixed: check point preview no being in correct position while on 3D stage
 
 0.8.2_Early_Access
 -fixed: coin placement preview was too small in 3D stages

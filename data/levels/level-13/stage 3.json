@@ -345,7 +345,7 @@
     "group": 1
   },
   {
-    "contents": "You Found It\nNow return to the Pizza\nplace for your reward",
+    "contents": "You Found It!!\nNow return to the Pizza\nplace for your reward",
     "x": 6560,
     "y": -210,
     "type": "WritableSign",
