@@ -23,11 +23,11 @@ class SoundBox extends StageComponent {
     }
   }
 
-  void draw() {
+  void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
-    source.drawSoundBox((x+group.xOffset)*source.Scale-source.drawCamPosX*source.Scale, (y+group.yOffset)*source.Scale+source.drawCamPosY*source.Scale);
+    source.drawSoundBox((x+group.xOffset)*source.Scale-source.drawCamPosX*source.Scale, (y+group.yOffset)*source.Scale+source.drawCamPosY*source.Scale,render);
     Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);
     if (source.collisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x-30,y-30,60,60))) {
       source.displayText="Press E";
@@ -56,6 +56,8 @@ class SoundBox extends StageComponent {
       }
     }
   }
+  
+  void draw3D(PGraphics render){}
 
   boolean colide(float x, float y, boolean c) {
     Group group=getGroup();

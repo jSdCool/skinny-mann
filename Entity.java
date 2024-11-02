@@ -1,3 +1,4 @@
+import processing.core.*;
 abstract class Entity{
   //entity specific movemnt manger. responcable for storing movement commands
   public abstract MovementManager getMovementmanager();

@@ -56,7 +56,7 @@ class LogicButton extends StageComponent {//ground component
     return part;
   }
 
-  void draw() {
+  void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -81,10 +81,10 @@ class LogicButton extends StageComponent {//ground component
     if (variable!=-1) {
       state=source.level.variables.get(variable);
     }
-    source.drawLogicButton(source, ((x+group.xOffset)-source.drawCamPosX)*source.Scale, ((y+group.yOffset)+source.drawCamPosY)*source.Scale, source.Scale, state);
+    source.drawLogicButton(((x+group.xOffset)-source.drawCamPosX)*source.Scale, ((y+group.yOffset)+source.drawCamPosY)*source.Scale, source.Scale, state,render);
   }
 
-  void draw3D() {
+  void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -109,7 +109,7 @@ class LogicButton extends StageComponent {//ground component
     if (variable!=-1) {
       state=source.level.variables.get(variable);
     }
-    source.drawLogicButton((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 1, state);
+    source.drawLogicButton((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 1, state,render);
   }
 
   boolean colide(float x, float y, boolean c) {

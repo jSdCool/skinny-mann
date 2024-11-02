@@ -34,7 +34,7 @@ void stageLevelDraw() {
         stroke(#0A03FF);//give that element a yellow border
         strokeWeight(2);
       }
-      stage.parts.get(i).draw();//draw the element
+      stage.parts.get(i).draw(g);//draw the element
       if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
         viewingItemIndex=i;//set the cuurent viewing item to this element
       }
@@ -43,7 +43,7 @@ void stageLevelDraw() {
     //render all the Entites on this stage
     for (int i=0; i<stage.entities.size(); i++) {
       if(!stage.entities.get(i).isDead())//if not dead
-        stage.entities.get(i).draw(this);
+        stage.entities.get(i).draw(this,g);
     }
     players[currentPlayer].in3D=false;
     if (clients.size()>0)
@@ -51,7 +51,7 @@ void stageLevelDraw() {
         if (i==currentPlayer)
           continue;
         if (players[i].stage==currentStageIndex&&clients.get(0).viablePlayers[i]) {//if this player is on the same stage as the userser then
-          draw_mann(Scale*(players[i].getX()-drawCamPosX), Scale*(players[i].getY()+drawCamPosY), players[i].getPose(), Scale*players[i].getScale(), players[i].getColor());//draw the outher players
+          draw_mann(Scale*(players[i].getX()-drawCamPosX), Scale*(players[i].getY()+drawCamPosY), players[i].getPose(), Scale*players[i].getScale(), players[i].getColor(),g);//draw the outher players
           fill(255);
           textSize(15*Scale);
           textAlign(CENTER, CENTER);
@@ -59,7 +59,7 @@ void stageLevelDraw() {
         }
       }
 
-    draw_mann(Scale*(players[currentPlayer].getX()-drawCamPosX), Scale*(players[currentPlayer].getY()+drawCamPosY), players[currentPlayer].getPose(), Scale*players[currentPlayer].getScale(), players[currentPlayer].getColor());//draw this users player
+    draw_mann(Scale*(players[currentPlayer].getX()-drawCamPosX), Scale*(players[currentPlayer].getY()+drawCamPosY), players[currentPlayer].getPose(), Scale*players[currentPlayer].getScale(), players[currentPlayer].getColor(),g);//draw this users player
     players[currentPlayer].stage=currentStageIndex;
     //====================================================================================================================================================================================================
     //====================================================================================================================================================================================================
@@ -90,7 +90,7 @@ void stageLevelDraw() {
           stroke(#FFFF00);//give that element a blue border
           strokeWeight(2);
         }
-        stage.parts.get(i).draw3D();//draw the element in 3D
+        stage.parts.get(i).draw3D(g);//draw the element in 3D
         if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
           viewingItemIndex=i;//set the cuurent viewing item to this element
         }
@@ -102,7 +102,7 @@ void stageLevelDraw() {
             continue;
           if (players[i].stage==currentStageIndex&&i!=currentPlayer&&clients.get(0).viablePlayers[i]) {//if this player is on the same stage as the userser then
             if (players[i].in3D) {
-              draw_mann_3D(players[i].x, players[i].y, players[i].z, players[i].getPose(), players[i].getScale(), players[i].getColor());//draw the players in 3D
+              draw_mann_3D(players[i].x, players[i].y, players[i].z, players[i].getPose(), players[i].getScale(), players[i].getColor(),g);//draw the players in 3D
               fill(255);
               textSize(15*Scale);
               textAlign(CENTER, CENTER);
@@ -110,7 +110,7 @@ void stageLevelDraw() {
               text(players[i].name, (players[i].getX()), (players[i].getY()-85));
               translate(0, 0, -players[i].z);
             } else {
-              draw_mann((players[i].getX()), (players[i].getY()), players[i].getPose(), players[i].getScale(), players[i].getColor());//draw the outher players in 2D
+              draw_mann((players[i].getX()), (players[i].getY()), players[i].getPose(), players[i].getScale(), players[i].getColor(),g);//draw the outher players in 2D
               fill(255);
               textSize(15);
               textAlign(CENTER, CENTER);
@@ -119,7 +119,7 @@ void stageLevelDraw() {
           }
         }
 
-      draw_mann_3D(players[currentPlayer].x, players[currentPlayer].y, players[currentPlayer].z, players[currentPlayer].getPose(), players[currentPlayer].getScale(), players[currentPlayer].getColor());//draw the player
+      draw_mann_3D(players[currentPlayer].x, players[currentPlayer].y, players[currentPlayer].z, players[currentPlayer].getPose(), players[currentPlayer].getScale(), players[currentPlayer].getColor(),g);//draw the player
       players[currentPlayer].stage=currentStageIndex;
 
       if (shadow3D) {//if the 3D shadow is enabled
@@ -148,7 +148,7 @@ void stageLevelDraw() {
       noStroke();
       for (int i=0; i<stage.entities.size(); i++) {
         if(!stage.entities.get(i).isDead())//if not dead
-          stage.entities.get(i).draw3D(this);
+          stage.entities.get(i).draw3D(this,g);
       }
     } else {//redner the level in 2D
       SPressed=false;
@@ -167,7 +167,7 @@ void stageLevelDraw() {
           stroke(#0A03FF);//give that element a yellow border
           strokeWeight(2);
         }
-        stage.parts.get(i).draw();//draw the element
+        stage.parts.get(i).draw(g);//draw the element
         if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
           viewingItemIndex=i;//set the cuurent viewing item to this element
         }
@@ -177,7 +177,7 @@ void stageLevelDraw() {
       //TODO: respect wether the entoity is renderd in 3D or not
       noStroke();
       for (int i=0; i<stage.entities.size(); i++) {
-        stage.entities.get(i).draw(this);
+        stage.entities.get(i).draw(this,g);
       }
 
       players[currentPlayer].in3D=false;
@@ -186,14 +186,14 @@ void stageLevelDraw() {
           if (i==currentPlayer)
             continue;
           if (players[i].stage==currentStageIndex&&!players[i].in3D&&clients.get(0).viablePlayers[i]) {//if this player is on the same stage as the userser then
-            draw_mann(Scale*(players[i].getX()-camPos), Scale*(players[i].getY()+camPosY), players[i].getPose(), Scale*players[i].getScale(), players[i].getColor());//draw the outher players
+            draw_mann(Scale*(players[i].getX()-camPos), Scale*(players[i].getY()+camPosY), players[i].getPose(), Scale*players[i].getScale(), players[i].getColor(),g);//draw the outher players
             fill(255);
             textSize(15*Scale);
             textAlign(CENTER, CENTER);
             text(players[i].name, Scale*(players[i].getX()-drawCamPosX), Scale*(players[i].getY()+drawCamPosY-Scale*85));
           }
         }
-      draw_mann(Scale*(players[currentPlayer].getX()-camPos), Scale*(players[currentPlayer].getY()+camPosY), players[currentPlayer].getPose(), Scale*players[currentPlayer].getScale(), players[currentPlayer].getColor());//draw the player
+      draw_mann(Scale*(players[currentPlayer].getX()-camPos), Scale*(players[currentPlayer].getY()+camPosY), players[currentPlayer].getPose(), Scale*players[currentPlayer].getScale(), players[currentPlayer].getColor(),g);//draw the player
       players[currentPlayer].stage=currentStageIndex;
     }
   }
@@ -250,7 +250,7 @@ void blueprintEditDraw() {
         stroke(#0A03FF);
         strokeWeight(2);
       }
-      workingBlueprint.parts.get(i).draw();//draw sll the elements in the blueprint
+      workingBlueprint.parts.get(i).draw(g);//draw sll the elements in the blueprint
       if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
         viewingItemIndex=i;//set the cuurent viewing item to this element
       }
@@ -290,7 +290,7 @@ void blueprintEditDraw() {
           stroke(#0A03FF);
           strokeWeight(2);
         }
-        workingBlueprint.parts.get(i).draw3D();//draw sll the elements in the blueprint
+        workingBlueprint.parts.get(i).draw3D(g);//draw sll the elements in the blueprint
         if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
           viewingItemIndex=i;//set the cuurent viewing item to this element
         }
@@ -310,7 +310,7 @@ void blueprintEditDraw() {
           stroke(#0A03FF);
           strokeWeight(2);
         }
-        workingBlueprint.parts.get(i).draw();//draw sll the elements in the blueprint
+        workingBlueprint.parts.get(i).draw(g);//draw sll the elements in the blueprint
         if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
           viewingItemIndex=i;//set the cuurent viewing item to this element
         }

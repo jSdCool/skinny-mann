@@ -49,16 +49,14 @@ class WritableSign extends StageComponent {
     return e;
   }
 
-  void draw() {
+  void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
-    source.drawSign(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale);
+    source.drawSign(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale,render);
 
     Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);
     if (source.collisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x-35,y-40,70,40))) {//display the press e message to the player
-      source.fill(255);
-      source.textSize(source.Scale*20);
       source.displayText="Press E";
       source.displayTextUntill=source.millis()+100;
 
@@ -71,16 +69,14 @@ class WritableSign extends StageComponent {
       }
     }
   }
-  void draw3D() {
+  void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
-    source.drawSign((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), source.Scale);
+    source.drawSign((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), source.Scale,render);
 
      Collider3D playerHitBox = source.players[source.currentPlayer].getHitBox3D(0,0,0);
     if (source.collisionDetection.collide3D(playerHitBox,Collider3D.createBoxHitBox(x-35,y-40,z-20,70,40,40))) {
-      source.fill(255);
-      source.textSize(source.Scale*20);
       source.displayText="Press E";
       source.displayTextUntill=source.millis()+100;
       if (source.E_pressed) {

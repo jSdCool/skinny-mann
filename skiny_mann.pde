@@ -746,23 +746,23 @@ void draw() {// the function that is called every fraim
             String displayName=level.stages.get(i+ filesScrole).name, type=level.stages.get(i+ filesScrole).type;//get the name and type of the stages
             text(displayName, 80*Scale, (130+60*(i))*Scale);//display the name
             if (type.equals("stage")) {//if it is a stage then display the stage icon
-              drawWorldSymbol(20*Scale, (90+60*(i))*Scale);
+              drawWorldSymbol(20*Scale, (90+60*(i))*Scale,g);
             }
             if (type.equals("3Dstage")) {
-              draw3DStageIcon(43*Scale, (100+60*i)*Scale, 0.7*Scale);
+              draw3DStageIcon(43*Scale, (100+60*i)*Scale, 0.7*Scale,g);
             }
           } else if (i+ filesScrole<level.stages.size()+level.sounds.size()) {//if the thing is in the range of sounds
             fill(0);
             String displayName=level.sounds.get(keys[i+ filesScrole-level.stages.size()]).name, type=level.sounds.get(keys[i+ filesScrole-level.stages.size()]).type;//get the name and type of a sound in the level
             text(displayName, 80*Scale, (130+60*(i))*Scale);//display the name
             if (type.equals("sound")) {//if the thing is a sound then display the sound icon
-              drawSpeakericon(this, 40*Scale, (110+60*(i))*Scale, 0.5*Scale);
+              drawSpeakericon(40*Scale, (110+60*(i))*Scale, 0.5*Scale,g);
             }
           } else {
             fill(0);
             String displayName=level.logicBoards.get(i+ filesScrole-(level.stages.size()+level.sounds.size())).name;//get the name of the logic board
             text(displayName, 80*Scale, (130+60*(i))*Scale);//display the name
-            logicIcon(40*Scale, (100+60*i)*Scale, 1*Scale);
+            logicIcon(40*Scale, (100+60*i)*Scale, 1*Scale,g);
           }
         }
 
@@ -808,7 +808,7 @@ void draw() {// the function that is called every fraim
         addSound.draw();
         newFileCreate.draw();
         newFileBack.draw();
-        drawSpeakericon(this, addSound.x+addSound.lengthX/2, addSound.y+addSound.lengthY/2, 1*Scale);
+        drawSpeakericon(addSound.x+addSound.lengthX/2, addSound.y+addSound.lengthY/2, 1*Scale,g);
         fill(0);
 
         if (newFileType.equals("sound")) {//if the selected type is sound
@@ -863,23 +863,23 @@ void draw() {// the function that is called every fraim
             String displayName=level.stages.get(i+ filesScrole).name, type=level.stages.get(i+ filesScrole).type;//get the name and type of the stages
             text(displayName, 80*Scale, (130+60*(i))*Scale);//display the name
             if (type.equals("stage")) {//if it is a stage then display the stage icon
-              drawWorldSymbol(20*Scale, (90+60*(i))*Scale);
+              drawWorldSymbol(20*Scale, (90+60*(i))*Scale,g);
             }
             if (type.equals("3Dstage")) {
-              draw3DStageIcon(43*Scale, (100+60*i)*Scale, 0.7*Scale);
+              draw3DStageIcon(43*Scale, (100+60*i)*Scale, 0.7*Scale,g);
             }
           } else if (i+ filesScrole<level.stages.size()+level.sounds.size()) {//if the thing is not a stage type
             fill(0);
             String displayName=level.sounds.get(keys[i+ filesScrole-level.stages.size()]).name, type=level.sounds.get(keys[i+ filesScrole-level.stages.size()]).type;//get the name and type of a sound in the level
             text(displayName, 80*Scale, (130+60*(i))*Scale);//display the name
             if (type.equals("sound")) {//if the thing is a sound then display the sound icon
-              drawSpeakericon(this, 40*Scale, (110+60*(i))*Scale, 0.5*Scale);
+              drawSpeakericon(40*Scale, (110+60*(i))*Scale, 0.5*Scale,g);
             }
           } else {
             fill(0);
             String displayName=level.logicBoards.get(i+ filesScrole-(level.stages.size()+level.sounds.size())).name;//get the name of the logic board
             text(displayName, 80*Scale, (130+60*(i))*Scale);//display the name
-            logicIcon(40*Scale, (100+60*i)*Scale, 1*Scale);
+            logicIcon(40*Scale, (100+60*i)*Scale, 1*Scale,g);
           }
         }
         fill(0);
@@ -1017,7 +1017,7 @@ void draw() {// the function that is called every fraim
     }
     
     if (settingPlayerSpawn && levelCreator) {
-      draw_mann(mouseX, mouseY, 1, Scale, 0);
+      draw_mann(mouseX, mouseY, 1, Scale, 0,g);
       fill(0);
       settingPlayerSpawnText.draw();
     }
@@ -3102,8 +3102,8 @@ void drawMainMenu(boolean background) {
   fill(-16732415);
   stroke(-16732415);
   rect(0, height/2, width, height/2);//green rectangle
-  draw_mann(200*Scale, 360*Scale, 1, 4*Scale, 0);
-  draw_mann(1080*Scale, 360*Scale, 1, 4*Scale, 1);
+  draw_mann(ui.topX()+200*ui.scale(), ui.topY()+360*ui.scale(), 1, 4*ui.scale(), 0,g);
+  draw_mann(ui.topX()+1080*ui.scale(), ui.topY()+360*ui.scale(), 1, 4*ui.scale(), 1,g);
 
   playButton.draw();
   exitButton.draw();
