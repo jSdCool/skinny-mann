@@ -46,18 +46,18 @@ class Goal extends StageComponent {//ground component
     return part;
   }
 
-  void draw() {
+  void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
     float x2 = (x+group.xOffset)-source.drawCamPosX, y2 = (y+group.yOffset);
-    source.fill(255);
-    source.rect(source.Scale*x2, source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
-    source.rect(source.Scale*(x2+100), source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
-    source.rect(source.Scale*(x2+200), source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
-    source.fill(0);
-    source.rect(source.Scale*(x2+50), source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
-    source.rect(source.Scale*(x2+150), source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
+    render.fill(255);
+    render.rect(source.Scale*x2, source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
+    render.rect(source.Scale*(x2+100), source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
+    render.rect(source.Scale*(x2+200), source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
+    render.fill(0);
+    render.rect(source.Scale*(x2+50), source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
+    render.rect(source.Scale*(x2+150), source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
 
     Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);
 
@@ -73,7 +73,7 @@ class Goal extends StageComponent {//ground component
     }
   }
 
-  void draw3D() {
+  void draw3D(PGraphics render) {
   }
 
   boolean colide(float x, float y, boolean c) {

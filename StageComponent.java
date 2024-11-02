@@ -9,11 +9,9 @@ abstract class StageComponent implements Serializable {//the base class for all 
   public int ccolor, group=-1;
   public String type;
   
-  void draw() {
-  }
+  abstract void draw(PGraphics render);
   
-  void draw3D() {
-  }
+  abstract void draw3D(PGraphics render);
   
   //used for mouse click detecteion
   boolean colide(float x, float y, boolean c) {

@@ -55,7 +55,7 @@ class Coin extends StageComponent {//ground component
     return part;
   }
 
-  void draw() {
+  void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -70,7 +70,7 @@ class Coin extends StageComponent {//ground component
     }
     float x2=(x+group.xOffset)-source.drawCamPosX;
     if (!collected) {
-      source.drawCoin(source.Scale*x2, source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*3);
+      source.drawCoin(source.Scale*x2, source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*3,render);
       Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);
       if (!source.selectingBlueprint && source.collisionDetection.collide2D(playerHitBox,new CircleCollider(new PVector(x,y),14))) {
         source.coins.set(coinId, true);
@@ -82,7 +82,7 @@ class Coin extends StageComponent {//ground component
     }
   }
 
-  void draw3D() {
+  void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -97,11 +97,11 @@ class Coin extends StageComponent {//ground component
     }
 
     if (!collected) {
-      source.translate((x+group.xOffset), (y+group.yOffset), (z+group.zOffset));
-      source.rotateY(source.radians(source.coinRotation));
-      source.shape(source.coin3D);
-      source.rotateY(source.radians(-source.coinRotation));
-      source.translate(-(x+group.xOffset), -(y+group.yOffset), -(z+group.zOffset));
+      render.translate((x+group.xOffset), (y+group.yOffset), (z+group.zOffset));
+      render.rotateY(source.radians(source.coinRotation));
+      render.shape(source.coin3D);
+      render.rotateY(source.radians(-source.coinRotation));
+      render.translate(-(x+group.xOffset), -(y+group.yOffset), -(z+group.zOffset));
 
       Collider3D playerHitBox = source.players[source.currentPlayer].getHitBox3D(0,0,0);
       if (!source.selectingBlueprint && source.collisionDetection.collide3D(playerHitBox, new SphereCollider(new PVector(x,y,z),14))) {
