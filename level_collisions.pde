@@ -83,45 +83,27 @@ void stageLevelDraw() {
         coinRotation-=360;
       drawCamPosX=camPos;//versions of the camera position variblaes that only get updated once every frame and not on every physics tick
       drawCamPosY=camPosY;
-      for (int i=0; stageLoopCondishen(i, stage); i++) {//loop through all elements in the stage
-        strokeWeight(0);
-        noStroke();
-        if (selectedIndex==i) {//if the current element is the element the mouse is hovering over while the selection tool is active
-          stroke(#FFFF00);//give that element a blue border
-          strokeWeight(2);
-        }
-        stage.parts.get(i).draw3D(g);//draw the element in 3D
-        if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
-          viewingItemIndex=i;//set the cuurent viewing item to this element
-        }
-      }
+      
+      
       players[currentPlayer].in3D=true;
-      if (clients.size()>0)
-        for (int i=currentNumberOfPlayers-1; i>=0; i--) {
-          if (i==currentPlayer)
-            continue;
-          if (players[i].stage==currentStageIndex&&i!=currentPlayer&&clients.get(0).viablePlayers[i]) {//if this player is on the same stage as the userser then
-            if (players[i].in3D) {
-              draw_mann_3D(players[i].x, players[i].y, players[i].z, players[i].getPose(), players[i].getScale(), players[i].getColor(),g);//draw the players in 3D
-              fill(255);
-              textSize(15*Scale);
-              textAlign(CENTER, CENTER);
-              translate(0, 0, players[i].z);
-              text(players[i].name, (players[i].getX()), (players[i].getY()-85));
-              translate(0, 0, -players[i].z);
-            } else {
-              draw_mann((players[i].getX()), (players[i].getY()), players[i].getPose(), players[i].getScale(), players[i].getColor(),g);//draw the outher players in 2D
-              fill(255);
-              textSize(15);
-              textAlign(CENTER, CENTER);
-              text(players[i].name, players[i].getX(), players[i].getY()-85);
-            }
-          }
-        }
-
-      draw_mann_3D(players[currentPlayer].x, players[currentPlayer].y, players[currentPlayer].z, players[currentPlayer].getPose(), players[currentPlayer].getScale(), players[currentPlayer].getColor(),g);//draw the player
+      
       players[currentPlayer].stage=currentStageIndex;
+      
+      lightDir.set(sin(radians(30)) * 160, 160, cos(radians(30)) * 160);
+      shadowMap.beginDraw();
+      shadowMap.camera(lightDir.x, lightDir.y, lightDir.z, 0, 0, 0, 0, 1, 0);
+      shadowMap.background(0xffffffff); // Will set the depth to 1.0 (maximum depth)
+      render3DLevel(shadowMap,stage);
+      shadowMap.endDraw();
+      shadowMap.updatePixels();
+      
+      shader(shadowShader);
+      perepLightingPass();
+      
+      render3DLevel(g,stage);
 
+      resetShader();
+      
       if (shadow3D) {//if the 3D shadow is enabled
         float shadowAltitude=players[currentPlayer].y;
         boolean shadowHit=false;
@@ -143,13 +125,7 @@ void stageLevelDraw() {
         }
       }
 
-      //render all the Entites on this stage
-      //TODO: respect wether the entoity is renderd in 3D or not
-      noStroke();
-      for (int i=0; i<stage.entities.size(); i++) {
-        if(!stage.entities.get(i).isDead())//if not dead
-          stage.entities.get(i).draw3D(this,g);
-      }
+      
     } else {//redner the level in 2D
       SPressed=false;
       WPressed=false;
@@ -226,6 +202,94 @@ void stageLevelDraw() {
     disEngageHUDPosition();//rest the hud condishen
   }
 }
+
+void render3DLevel(PGraphics render,Stage stage){
+  for (int i=0; stageLoopCondishen(i, stage); i++) {//loop through all elements in the stage
+    render.strokeWeight(0);
+    render.noStroke();
+    if (selectedIndex==i) {//if the current element is the element the mouse is hovering over while the selection tool is active
+      render.stroke(#FFFF00);//give that element a blue border
+      render.strokeWeight(2);
+    }
+    stage.parts.get(i).draw3D(render);//draw the element in 3D
+    if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
+      viewingItemIndex=i;//set the cuurent viewing item to this element
+    }
+  }
+  if (clients.size()>0)
+    for (int i=currentNumberOfPlayers-1; i>=0; i--) {
+      if (i==currentPlayer)
+        continue;
+      if (players[i].stage==currentStageIndex&&i!=currentPlayer&&clients.get(0).viablePlayers[i]) {//if this player is on the same stage as the userser then
+        if (players[i].in3D) {
+          draw_mann_3D(players[i].x, players[i].y, players[i].z, players[i].getPose(), players[i].getScale(), players[i].getColor(),render);//draw the players in 3D
+          render.fill(255);
+          render.textSize(15*Scale);
+          render.textAlign(CENTER, CENTER);
+          render.translate(0, 0, players[i].z);
+          render.text(players[i].name, (players[i].getX()), (players[i].getY()-85));
+          render.translate(0, 0, -players[i].z);
+        } else {
+          draw_mann((players[i].getX()), (players[i].getY()), players[i].getPose(), players[i].getScale(), players[i].getColor(),render);//draw the outher players in 2D
+          render.fill(255);
+          render.textSize(15);
+          render.textAlign(CENTER, CENTER);
+          render.text(players[i].name, players[i].getX(), players[i].getY()-85);
+        }
+      }
+    }
+
+  draw_mann_3D(players[currentPlayer].x, players[currentPlayer].y, players[currentPlayer].z, players[currentPlayer].getPose(), players[currentPlayer].getScale(), players[currentPlayer].getColor(),render);//draw the player
+  
+  //render all the Entites on this stage
+  //TODO: respect wether the entoity is renderd in 3D or not
+  render.noStroke();
+  for (int i=0; i<stage.entities.size(); i++) {
+    if(!stage.entities.get(i).isDead())//if not dead
+      stage.entities.get(i).draw3D(this,render);
+  }
+}
+
+void perepLightingPass(){
+   // Bias matrix to move homogeneous shadowCoords into the UV texture space
+    PMatrix3D shadowTransform = new PMatrix3D(
+        0.5, 0.0, 0.0, 0.5, 
+        0.0, 0.5, 0.0, 0.5, 
+        0.0, 0.0, 0.5, 0.5, 
+        0.0, 0.0, 0.0, 1.0
+    );
+
+    // Apply project modelview matrix from the shadow pass (light direction)
+    shadowTransform.apply(((PGraphicsOpenGL)shadowMap).projmodelview);
+
+    // Apply the inverted modelview matrix from the default pass to get the original vertex
+    // positions inside the shader. This is needed because Processing is pre-multiplying
+    // the vertices by the modelview matrix (for better performance).
+    PMatrix3D modelviewInv = ((PGraphicsOpenGL)g).modelviewInv;
+    shadowTransform.apply(modelviewInv);
+
+    // Convert column-minor PMatrix to column-major GLMatrix and send it to the shader.
+    // PShader.set(String, PMatrix3D) doesn't convert the matrix for some reason.
+    shadowShader.set("shadowTransform", new PMatrix3D(
+        shadowTransform.m00, shadowTransform.m10, shadowTransform.m20, shadowTransform.m30, 
+        shadowTransform.m01, shadowTransform.m11, shadowTransform.m21, shadowTransform.m31, 
+        shadowTransform.m02, shadowTransform.m12, shadowTransform.m22, shadowTransform.m32, 
+        shadowTransform.m03, shadowTransform.m13, shadowTransform.m23, shadowTransform.m33
+    ));
+
+    // Calculate light direction normal, which is the transpose of the inverse of the
+    // modelview matrix and send it to the default shader.
+    float lightNormalX = lightDir.x * modelviewInv.m00 + lightDir.y * modelviewInv.m10 + lightDir.z * modelviewInv.m20;
+    float lightNormalY = lightDir.x * modelviewInv.m01 + lightDir.y * modelviewInv.m11 + lightDir.z * modelviewInv.m21;
+    float lightNormalZ = lightDir.x * modelviewInv.m02 + lightDir.y * modelviewInv.m12 + lightDir.z * modelviewInv.m22;
+    float normalLength = sqrt(lightNormalX * lightNormalX + lightNormalY * lightNormalY + lightNormalZ * lightNormalZ);
+    shadowShader.set("lightDirection", lightNormalX / -normalLength, lightNormalY / -normalLength, lightNormalZ / -normalLength);
+
+    // Send the shadowmap to the default shader
+    shadowShader.set("shadowMap", shadowMap);
+}
+
+
 /**draws all the elements of a blueprint
  
  */

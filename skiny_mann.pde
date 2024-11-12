@@ -157,6 +157,10 @@ void draw() {// the function that is called every fraim
     coursorr="";
     coursor=false;
   }
+  if(requestDepthBufferInit){
+    requestDepthBufferInit=false;
+    initDepthBuffer();
+  }
 
   try {//catch all fatal errors and display them
 
@@ -4179,12 +4183,33 @@ void programLoad() {
   
   println("loading stats");
   stats = new StatisticManager(appdata+"/CBi-games/skinny mann/stats.json",this);
+  loadProgress++;
+  println("loading shaders");
+  depthBufferShader = loadShader("shaders/depthBufferFrag.glsl","shaders/depthBufferVert.glsl");
+  shadowShader = loadShader("shaders/shadowMapFrag.glsl","shaders/shadowMapVert.glsl");
+
+  requestDepthBufferInit = true;
+  //this init can only happen on the main render thread
 
   println("starting physics thread");
   thread("thrdCalc2");
   loaded=true;
   println("loading complete");
   println(loadProgress);
+}
+
+void initDepthBuffer(){
+  //TODO load shadow resultion 
+  shadowMap = createGraphics(2048, 2048, P3D);
+
+  shadowMap.noSmooth(); // Antialiasing on the shadowMap leads to weird artifacts
+  //shadowMap.loadPixels(); // Will interfere with noSmooth() (probably a bug in Processing)
+  //shadowMap.beginDraw();
+  //shadowMap.noStroke();
+  shadowMap.shader(depthBufferShader);
+  //TODO: set the area coverd by shadows here
+  shadowMap.ortho(-200, 200, -200, 200, 10, 400); // Setup orthogonal view matrix for the directional light
+  //shadowMap.endDraw();
 }
 
 //musicVolumeSlider,SFXVolumeSlider,verticleEdgeScrollSlider,horozontalEdgeScrollSlider;
