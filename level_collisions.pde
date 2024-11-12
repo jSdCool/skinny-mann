@@ -89,9 +89,10 @@ void stageLevelDraw() {
       
       players[currentPlayer].stage=currentStageIndex;
       
-      lightDir.set(sin(radians(30)) * 160, 160, cos(radians(30)) * 160);
+      lightDir.set(-0.8, -1, 0.35);
+      lightDir.mult(500);
       shadowMap.beginDraw();
-      shadowMap.camera(lightDir.x, lightDir.y, lightDir.z, 0, 0, 0, 0, 1, 0);
+      shadowMap.camera(cam3Dx+lightDir.x, cam3Dy+lightDir.y, cam3Dz+lightDir.z, cam3Dx, cam3Dy, cam3Dz, 0, 1, 0);
       shadowMap.background(0xffffffff); // Will set the depth to 1.0 (maximum depth)
       render3DLevel(shadowMap,stage);
       shadowMap.endDraw();

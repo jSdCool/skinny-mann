@@ -1059,6 +1059,10 @@ void draw() {// the function that is called every fraim
     if (millis()<gmillis) {
       glitchEffect();
     }
+    
+    if(shadowMap!=null){
+      image(shadowMap,0,height/2,width/2,height/2);
+    }
 
     if (displayTextUntill>=millis()) {
       fill(255);
@@ -4204,12 +4208,12 @@ void initDepthBuffer(){
 
   shadowMap.noSmooth(); // Antialiasing on the shadowMap leads to weird artifacts
   //shadowMap.loadPixels(); // Will interfere with noSmooth() (probably a bug in Processing)
-  //shadowMap.beginDraw();
+  shadowMap.beginDraw();
   //shadowMap.noStroke();
   shadowMap.shader(depthBufferShader);
   //TODO: set the area coverd by shadows here
-  shadowMap.ortho(-200, 200, -200, 200, 10, 400); // Setup orthogonal view matrix for the directional light
-  //shadowMap.endDraw();
+  shadowMap.ortho(-500, 500, -500, 500, 10, 2500); // Setup orthogonal view matrix for the directional light
+  shadowMap.endDraw();
 }
 
 //musicVolumeSlider,SFXVolumeSlider,verticleEdgeScrollSlider,horozontalEdgeScrollSlider;
