@@ -31,8 +31,16 @@ void main(void) {
 	   
 	   //TODO: check if the projected coord is outside of the texture and render full brightness outside of the texture 
 
-       // I used step() instead of branching, should be much faster this way
-       for(int n = 0; n < 9; ++n)
+       
+	   int n = 0;
+	   //check if the mapped UV cord is outside of the texture without using branching 
+	   n += int(min(1,int(shadowCoordProj.x > 1)+int(shadowCoordProj.y > 1)+int(shadowCoordProj.x < 0)+int(shadowCoordProj.y < 0)))*9;
+	   //if n is 9 then make visibility imediatly max as we are skipping the for loop
+	   visibility += n;
+	   //this makes anything outside of the area renderd in the depth buffer automotiacly not in shadow
+	   
+	   // I used step() instead of branching, should be much faster this way
+       for(; n < 9; ++n)
            visibility += step(shadowCoordProj.z, unpackDepth(texture2D(shadowMap, shadowCoordProj.xy + poissonDisk[n] / 512.0)));//edge dithering
 
        gl_FragColor = vec4(vertColor.rgb * min(visibility * 0.05556, lightIntensity), vertColor.a);

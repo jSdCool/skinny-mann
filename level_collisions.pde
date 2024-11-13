@@ -98,6 +98,7 @@ void stageLevelDraw() {
       shadowMap.endDraw();
       shadowMap.updatePixels();
       
+      
       shader(shadowShader);
       perepLightingPass();
       

@@ -9,7 +9,7 @@ class ToolBox extends PApplet {
   public int redVal=0, greenVal=0, blueVal=0, CC=0;
   int rsp=0, gsp=0, bsp=0, selectedColor=0, millisOffset, variableScroll=0, groupScroll=0;
   String page="colors", newGroopName="";
-  Button colorPage, toolsPage, draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, toggle3DMode, switch3D1, switch3D2, saveLevel, exitStageEdit, sign, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, playSound, nextSound, prevSound, checkpointButton, playPauseButton, groundButton, goalButton, deleteButton, movePlayerButton, gridModeButton, holoButton, connectLogicButton, moveComponentsButton, andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, logicButtonButton, runLoad, delayButton, zOffsetButton, logicHelpButton, move3DButton, size3DButton, set3DButton, read3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, playLogicSoundButton, pulseButton, randomButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton,showShadowMapButton;
+  Button colorPage, toolsPage, draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, toggle3DMode, switch3D1, switch3D2, saveLevel, exitStageEdit, sign, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, playSound, nextSound, prevSound, checkpointButton, playPauseButton, groundButton, goalButton, deleteButton, movePlayerButton, gridModeButton, holoButton, connectLogicButton, moveComponentsButton, andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, logicButtonButton, runLoad, delayButton, zOffsetButton, logicHelpButton, move3DButton, size3DButton, set3DButton, read3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, playLogicSoundButton, pulseButton, randomButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton;
   Button goonEntity;
   boolean typingSign=false, settingSkyColor=false, typingGroopName=false;
 
@@ -26,7 +26,6 @@ class ToolBox extends PApplet {
     stageSettings=new Button(this, 365, 50, 100, 50, "stage settings");
     variablesAndGroups=new Button(this, 470, 50, 100, 50, "variables/groups");
     levelSettingsPage=new Button(this, 575, 50, 100, 50, "level settings");
-    showShadowMapButton = new Button(this,720,50,100,50,"Shadow Map");
 
     prevousPlayerButton=new Button(this, 330, 105, 28, 28, "<");
     nextPlayerButton=new Button(this, 400, 105, 28, 28, ">");
@@ -189,7 +188,6 @@ class ToolBox extends PApplet {
         stageSettings.draw();
         variablesAndGroups.draw();
         levelSettingsPage.draw();
-        showShadowMapButton.draw();
         if (settingSkyColor)
           setSkyColor.draw();
       }//end of if page is colors
@@ -1599,15 +1597,6 @@ class ToolBox extends PApplet {
           respawnEntitiesButton.draw();
         }
       }//end of page is level settings
-      if (page.equals("shadow map")) {
-        image(shadowMap,0,0,width,height);
-        colorPage.draw();
-        toolsPage.draw();
-        selectionPage.draw();
-        stageSettings.draw();
-        variablesAndGroups.draw();
-        levelSettingsPage.draw();
-      }
     } else {
       background(200);
       fill(0);
@@ -1676,9 +1665,6 @@ class ToolBox extends PApplet {
       }
       if (levelSettingsPage.isMouseOver()) {
         page="level settings";
-      }
-      if(showShadowMapButton.isMouseOver()){
-        page = "shadow map";
       }
 
       if (page.equals("tools")) {
