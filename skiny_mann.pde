@@ -4217,7 +4217,8 @@ void initDepthBuffer(){
   //shadowMap.noStroke();
   shadowMap.shader(depthBufferShader);
   //TODO: set the area coverd by shadows here
-  shadowMap.ortho(-1000, 1000, -1000, 1000, 10, 10000); // Setup orthogonal view matrix for the directional light
+  int shadowMapClibBoxSize = 2000;
+  shadowMap.ortho(-shadowMapClibBoxSize, shadowMapClibBoxSize, -shadowMapClibBoxSize, shadowMapClibBoxSize, 1, 13000); // Setup orthogonal view matrix for the directional light
   shadowMap.endDraw();
 }
 
