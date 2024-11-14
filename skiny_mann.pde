@@ -4210,6 +4210,10 @@ void programLoad() {
 void initDepthBuffer(){
   //TODO load shadow resultion 
   shadowMap = createGraphics(2048, 2048, P3D);
+  
+  //set the light direction
+  lightDir.set(-0.8, -1, 0.35);
+  lightDir.mult(800);
 
   shadowMap.noSmooth(); // Antialiasing on the shadowMap leads to weird artifacts
   //shadowMap.loadPixels(); // Will interfere with noSmooth() (probably a bug in Processing)
