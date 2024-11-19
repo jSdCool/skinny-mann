@@ -23,28 +23,13 @@ void settings() {//first function called
   }
   try {
     println("attempting to load settings");
-    try {
-      settings =loadJSONArray(appdata+"/CBi-games/skinny mann/settings.json");//load the settings
-      JSONObject vers=settings.getJSONObject(0);
-      if (vers.getInt("settings version")!=settingsVersion) {
-        generateSettings();
-      }
-      println("settings found");
-    }
-    catch(Throwable e) {
-      println("an error occored finding the settings file generating new file");
-      generateSettings();
-    }
-
-    JSONObject rez=settings.getJSONObject(2);//get the screen resolutipon
-    fs=rez.getBoolean("full_Screen");
-    if (!fs) {//check for fullscreeen
-      vres = rez.getInt("v-res");//if no fulll screen then set the resolution
-      hres = rez.getInt("h-res");
-      Scale=rez.getFloat("scale");
-      size(hres, vres, P3D);
+    settings = new Settings(appdata+"/CBi-games/skinny mann/settings.json");
+    
+    if (!settings.getFullScreen()) {//check for fullscreeen
+      //Scale=rez.getFloat("scale");//TODO, replace scale
+      size(settings.getResolutionHorozontal(), settings.getResolutionVertical(), P3D);
     } else {
-      fullScreen(P3D, rez.getInt("full_Screen_diplay"));//if full screen then turn full screen on
+      fullScreen(P3D, settings.getFullScreenScreen());//if full screen then turn full screen on
     }
     println("loading window icon");
     PJOGL.setIcon("data/assets/skinny mann face.PNG");
@@ -63,10 +48,9 @@ void setup() {//seccond function called
     frameRate(60);//limet the frame reate
     background(0);
     if (fs) {//get and set some data if in fullscreen
-      hres=width;
-      vres=height;
-      Scale=vres/720.0;
-      Scale2=hres/1280.0;
+      Scale=height/720.0;
+    }else{
+      Scale = settings.getScale();
     }
     ui=new UiFrame(this, 1280, 720);
     println(height+" "+Scale);//debung info
@@ -105,13 +89,13 @@ boolean menue =true, inGame=false, player1_moving_right=false, player1_moving_le
  String Menue ="creds"/*,level="n"*/, version="0.9.0_Early_Access", EDITOR_version="0.2.0_EAc", ip="localhost", name="can't_be_botherd_to_chane_it", input, file_path, rootPath, stageType="", settingsMenue="game play", author="", displayText="", GAME_version=version, internetVersion, cursor="", disconnectReason="", multyplayerSelectionLevels="speed", multyplayerSelectedLevelPath, appdata, coursorr="", new_name, newFileName="", newFileType="2D", fileToCoppyPath="",defaultAuthor = "can't be botherd to change it";
 ArrayList<Boolean> coins;
 ArrayList<String> UGCNames = new ArrayList<>(), playerNames=new ArrayList<>();
-float Scale =1, Scale2=1, musicVolume=1, sfxVolume=1, gravity=0.001, downX, downY, upX, upY,narrationVolume=1,blueprintPlacemntX,blueprintPlacemntY,blueprintPlacemntZ;
+float Scale, gravity=0.001, downX, downY, upX, upY, blueprintPlacemntX,blueprintPlacemntY,blueprintPlacemntZ;
 Player players[] =new Player[10];
 
 ArrayList<Client> clients= new ArrayList<>();
 
-int camPos=0, camPosY=0, death_cool_down, start_down, port=9367, scroll_left, scroll_right, respawnX=20, respawnY=700, respawnZ=150, spdelay=0, vres, hres, respawnStage, stageIndex, coinCount=0, eadgeScroleDist=100, esdPos=800, setPlayerPosX, setPlayerPosY, setPlayerPosZ, gmillis=0, coinRotation=0, vesdPos=800, eadgeScroleDistV=100, settingsVersion=4, musVolSllid=800, sfxVolSllid=800, currentStageIndex, tutorialDrawLimit=0, displayTextUntill=0, tutorialPos=0, currentTutorialSound, tutorialNarrationMode=0, UGC_lvl_indx, selectedIndex=-1, viewingItemIndex=-1, drawCamPosX=0, drawCamPosY=0, currentPlayer=0, currentNumberOfPlayers=10, startTime, bestTime=0, sessionTime=600000, timerEndTime, startingDepth=0, totalDepth=300, grid_size=10, current3DTransformMode=1, currentBluieprintIndex=0, logicBoardIndex=0, Color=0, RedPos=0, BluePos=0, GreenPos=0, RC=0, GC=0, BC=0, triangleMode=0, transformComponentNumber=0, preSI=0, overviewSelection=-1, filesScrole=0, connectingFromIndex=0, movingLogicIndex=0, loadProgress=0, totalLoad=55;//int
-JSONArray  settings, levelProgress, colors;
+int camPos=0, camPosY=0, death_cool_down, start_down, port=9367, scroll_left, scroll_right, respawnX=20, respawnY=700, respawnZ=150, spdelay=0, respawnStage, stageIndex, coinCount=0, setPlayerPosX, setPlayerPosY, setPlayerPosZ, gmillis=0, coinRotation=0, currentStageIndex, tutorialDrawLimit=0, displayTextUntill=0, tutorialPos=0, currentTutorialSound, UGC_lvl_indx, selectedIndex=-1, viewingItemIndex=-1, drawCamPosX=0, drawCamPosY=0, currentPlayer=0, currentNumberOfPlayers=10, startTime, bestTime=0, sessionTime=600000, timerEndTime, startingDepth=0, totalDepth=300, grid_size=10, current3DTransformMode=1, currentBluieprintIndex=0, logicBoardIndex=0, Color=0, RedPos=0, BluePos=0, GreenPos=0, RC=0, GC=0, BC=0, triangleMode=0, transformComponentNumber=0, preSI=0, overviewSelection=-1, filesScrole=0, connectingFromIndex=0, movingLogicIndex=0, loadProgress=0, totalLoad=55;//int
+JSONArray colors,levelProgress,scolors;
 Button select_lvl_1, select_lvl_back, select_lvl_2, select_lvl_3, select_lvl_4, select_lvl_5, select_lvl_6, sdSlider, enableFPS, disableFPS, enableDebug, disableDebug, sttingsGPL, settingsDSP, settingsOUT, rez720, rez900, rez1080, rez1440, rez4k, fullScreenOn, fullScreenOff, vsdSlider, MusicSlider, SFXSlider, shadowOn, shadowOff, narrationMode1, narrationMode0, select_lvl_UGC, UGC_open_folder, UGC_lvls_next, UGC_lvls_prev, UGC_lvl_play, levelcreatorLink, select_lvl_7, select_lvl_8, select_lvl_9, select_lvl_10, playButton, joinButton, settingsButton, howToPlayButton, exitButton, downloadUpdateButton, updateGetButton, updateOkButton, dev_main, dev_quit, dev_levels, dev_tutorial, dev_settings, dev_UGC, dev_multiplayer, multyplayerJoin, multyplayerHost, multyplayerExit, multyplayerGo, multyplayerLeave, multyplayerSpeedrun, multyplayerCoop, multyplayerUGC, multyplayerPlay, increaseTime, decreaseTime, pauseRestart, newLevelButton, loadLevelButton, newStage, newFileCreate, newFileBack, edditStage, setMainStage, selectStage, new2DStage, new3DStage, overview_saveLevel, help, newBlueprint, loadBlueprint, createBlueprintGo, addSound, overviewUp, overviewDown, chooseFileButton, lcLoadLevelButton, lcNewLevelButton, dev_levelCreator, lc_backButton, lcOverviewExitButton, lc_exitConfirm, lc_exitCancle, lc_openLevelsFolder, settingsBackButton, pauseResumeButton, pauseOptionsButton, pauseQuitButton, endOfLevelButton,select_lvl_11,select_lvl_12,settingsSND,lc_newSoundAsSoundButton,lc_newSoundAsNarrationButton,disableMenuTransistionsButton,enableMenuTransitionButton,select_lvl_13,select_lvl_14,select_lvl_next;//button
 String[] musicTracks ={"data/music/track1.wav", "data/music/track2.wav", "data/music/track3.wav"}, sfxTracks={"data/sounds/level complete.wav"}, compatibleVersions={"0.7.0_Early_Access", "0.7.1_Early_Access","0.8.0_Early_Access","0.8.1_Early_Access","0.8.2_Early_Access","0.9.0_Early_Access"};
 SoundHandler soundHandler;
@@ -1071,7 +1055,7 @@ void draw() {// the function that is called every fraim
       game_displayText.draw();
     }
     
-    if(soundHandler!=null && narrationVolume< 0.2 && soundHandler.anyNarrationPlaying()){
+    if(soundHandler!=null && settings.getSoundNarrationVolume()< 0.2 && soundHandler.anyNarrationPlaying()){
       fill(255);
       narrationCaptionText.draw();
     }
@@ -1409,7 +1393,7 @@ void mouseClicked() {// when you click the mouse
               stats.incrementGamesQuit();
               stats.save();
             }
-            soundHandler.setMusicVolume(musicVolume);
+            soundHandler.setMusicVolume(settings.getSoundMusicVolume());
             coinCount=0;
           }
           if (multiplayer) {
@@ -3441,48 +3425,6 @@ void drawLevelSelectUGC() {
   }
 }
 
-void generateSettings() {
-  showSettingsAfterStart=true;
-  settings=new JSONArray();
-  JSONObject scrolling = new JSONObject(), rez=new JSONObject(), header=new JSONObject(), debug=new JSONObject(), sound=new JSONObject(), sv3=new JSONObject();
-  header.setInt("settings version", 4);
-  settings.setJSONObject(0, header);
-
-  scrolling.setString("label", "scroling location");
-  scrolling.setFloat("horozontal", 360);
-  scrolling.setFloat("vertical", 250);
-  settings.setJSONObject(1, scrolling);
-
-  rez.setString("label", "resolution stuff");
-  rez.setInt("v-res", 720);
-  rez.setInt("h-res", 720*16/9);
-  rez.setFloat("scale", 1);
-  rez.setBoolean("full_Screen", false);
-  rez.setInt("full_Screen_diplay", 1);
-  settings.setJSONObject(2, rez);
-
-  debug.setBoolean("fps", true);
-  debug.setString("label", "debug stuffs");
-  debug.setBoolean("debug info", false);
-  settings.setJSONObject(3, debug);
-
-  sound.setFloat("music volume", 1);
-  sound.setFloat("SFX volume", 1);
-  sound.setString("label", "music and sound volume");
-  sound.setFloat("narration volume",1);
-  sound.setInt("narrationMode", 0);
-  settings.setJSONObject(4, sound);
-
-  sv3.setBoolean("3D shaows", true);
-  sv3.setString("label","outher");
-  sv3.setBoolean("disableMenuTransitions",false);
-  sv3.setString("default author", defaultAuthor);
-  
-  settings.setJSONObject(5, sv3);
-
-  saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-}
-
 void chechMark(float x, float y) {
   line(x-15*Scale, y, x, y+15*Scale);
   line(x+25*Scale, y-15*Scale, x, y+15*Scale);
@@ -3966,30 +3908,25 @@ void programLoad() {
   loadProgress++;
   coin3D.scale(3);
 
-  println("loading settings");
-  JSONObject scroll=settings.getJSONObject(1);//load in the settings
-  loadProgress++;
-  eadgeScroleDist=scroll.getInt("horozontal");
-  esdPos=(int)(((eadgeScroleDist-100.0)/530)*440+800);
-  eadgeScroleDistV=scroll.getInt("vertical");
-  vesdPos=(int)(((eadgeScroleDistV-100.0)/250)*440+800);
-  JSONObject debug=settings.getJSONObject(3);
-  loadProgress++;
-  displayFPS=debug.getBoolean("fps");
-  displayDebugInfo=debug.getBoolean("debug info");
-  JSONObject sound=settings.getJSONObject(4);
-  loadProgress++;
-  musicVolume=sound.getFloat("music volume");
-  sfxVolume=sound.getFloat("SFX volume");
-  narrationVolume = sound.getFloat("narration volume");
-  tutorialNarrationMode=sound.getInt("narrationMode");
-  JSONObject sv3=settings.getJSONObject(5);
-  loadProgress++;
-  shadow3D=sv3.getBoolean("3D shaows");
-  disableMenuTransitions = sv3.getBoolean("disableMenuTransitions");
-  defaultAuthor = sv3.getString("default author");
-  defaultAuthorNameTextBox.setContence(defaultAuthor);
-  author = defaultAuthor;
+  //eadgeScroleDist=scroll.getInt("horozontal");
+  //esdPos=(int)(((eadgeScroleDist-100.0)/530)*440+800);
+  //eadgeScroleDistV=scroll.getInt("vertical");
+  //vesdPos=(int)(((eadgeScroleDistV-100.0)/250)*440+800);
+  
+  
+  //displayFPS=debug.getBoolean("fps");
+  //displayDebugInfo=debug.getBoolean("debug info");
+  
+  //musicVolume=sound.getFloat("music volume");
+  //sfxVolume=sound.getFloat("SFX volume");
+  //narrationVolume = sound.getFloat("narration volume");
+  //tutorialNarrationMode=sound.getInt("narrationMode");
+  
+  //shadow3D=sv3.getBoolean("3D shaows");
+  //disableMenuTransitions = sv3.getBoolean("disableMenuTransitions");
+  //defaultAuthor = sv3.getString("default author");
+  defaultAuthorNameTextBox.setContence(settings.getDefaultAuthor());
+  author = settings.getDefaultAuthor();
   loadProgress++;
 
   println("loading level progress");
@@ -4140,9 +4077,9 @@ void programLoad() {
   soundHandler = soundBuilder.build();//finilze the sound handler. this is what accualy loads the sound files
   loadProgress++;
 
-  soundHandler.setMusicVolume(musicVolume);
-  soundHandler.setSoundsVolume(sfxVolume);
-  soundHandler.setNarrationVolume(narrationVolume);
+  soundHandler.setMusicVolume(settings.getSoundMusicVolume());
+  soundHandler.setSoundsVolume(settings.getSoundSoundVolume());
+  soundHandler.setNarrationVolume(settings.getSoundNarrationVolume());
   
   
   
@@ -4178,11 +4115,11 @@ void programLoad() {
   loadProgress++;
   LevelCreatorLogo.scale(3*Scale);
 
-  musicVolumeSlider.setValue(musicVolume*100);
-  SFXVolumeSlider.setValue(sfxVolume*100);
-  narrationVolumeSlider.setValue(narrationVolume*100);
-  verticleEdgeScrollSlider.setValue(eadgeScroleDistV);
-  horozontalEdgeScrollSlider.setValue(eadgeScroleDist);
+  musicVolumeSlider.setValue(settings.getSoundMusicVolume()*100);
+  SFXVolumeSlider.setValue(settings.getSoundSoundVolume()*100);
+  narrationVolumeSlider.setValue(settings.getSoundNarrationVolume()*100);
+  verticleEdgeScrollSlider.setValue(settings.getSrollVertical());
+  horozontalEdgeScrollSlider.setValue(settings.getScrollHorozontal());
   
   String[] rawGlitchBoxes = loadStrings("data/glitch.txt");
   loadProgress++;
