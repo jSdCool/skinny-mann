@@ -30,6 +30,7 @@ class Settings{
   
   
   private String saveFilePath;
+  private boolean settingsAfterStart = false;
   
   Settings(String path){
     JSONArray file;
@@ -38,7 +39,11 @@ class Settings{
     try(InputStream in = new FileInputStream(path)){
       file = new JSONArray(PApplet.createReader(in));
     }catch(IOException e){
-      throw new RuntimeException("Error loading settings",e);
+      settingsAfterStart=true;
+      System.out.println("problem loading settings, resetting to defaults");
+      save();
+      e.printStackTrace();
+      return;
     }
     
     
@@ -46,6 +51,8 @@ class Settings{
     int inputVersion = o1.getInt("settings version");
     if(inputVersion != version){
       save();
+      settingsAfterStart=true;
+      System.out.println("A duffrent settings version was detected. resetting to defult settings");
       //set the go to seeting screen by default value
       return;
     }
@@ -203,6 +210,83 @@ class Settings{
   public String getDefaultAuthor(){
     return defaultAuthor;
   }
+  
+   public void setScrollHorozontal(int scrollHorozontal){
+     this.scrollHorozontal = scrollHorozontal;
+     adjustStats();
+   }
+   public void setScrollVertical(int scrollVertical){
+     this.scrollVertical = scrollVertical;
+     adjustStats();
+   }
+  
+   public void setResolutionHorozontal(int resolutionHorozontal){
+     this.resolutionHorozontal=resolutionHorozontal;
+     adjustStats();
+   }
+   public void setResolutionVertical(int resolutionVertical){
+     this.resolutionVertical=resolutionVertical;
+     adjustStats();
+   }
+   public void setFullScreen(boolean fullScreen){
+     this.fullScreen=fullScreen;
+     adjustStats();
+   }
+   public void setFullScreenScreen(int fullScreenScreen){
+     this.fullScreenScreen=fullScreenScreen;
+     adjustStats();
+   }
+   public void setScale(float scale){
+     this.scale=scale;
+     adjustStats();
+   }
+  
+   public void setDebufFPS(boolean debugFPS){
+     this.debugFPS=debugFPS;
+     adjustStats();
+   }
+   public void setDebugInfo(boolean debugInfo){
+     this.debugInfo=debugInfo;
+     adjustStats();
+   }
+  
+   public void setSoundMusicVolume(float soundMusicVolume){
+     this.soundMusicVolume=soundMusicVolume;
+     adjustStats();
+   }
+   public void setSoundSoundVoljuume(float soundSoundVolume){
+     this.soundSoundVolume=soundSoundVolume;
+     adjustStats();
+   }
+   public void setSoundNarrationVolume(float soundNarrationVolume){
+     this.soundNarrationVolume=soundNarrationVolume;
+     adjustStats();
+   }
+   public void setSoundNarrationMode(int soundNarrationMode){
+     this.soundNarrationMode=soundNarrationMode;
+     adjustStats();
+   }
+  
+   public void setShadows(boolean shadows){
+     this.shadows=shadows;
+     adjustStats();
+   }
+   public void setDisableMenuTransitions(boolean disableMenuTransitions){
+     this.disableMenuTransitions=disableMenuTransitions;
+     adjustStats();
+   }
+   public void setDefaultAuthor(String defaultAuthor){
+     this.defaultAuthor=defaultAuthor;
+     adjustStats();
+   }
+   
+   public boolean getSettingsAfterStart(){
+     return settingsAfterStart;
+   }
+   
+   private void adjustStats(){
+     StatisticManager.getInstace().incrementSettingsChnaged();
+   }
   
   
 }
