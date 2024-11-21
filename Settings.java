@@ -211,12 +211,14 @@ class Settings{
     return defaultAuthor;
   }
   
-   public void setScrollHorozontal(int scrollHorozontal){
+   public void setScrollHorozontal(int scrollHorozontal, boolean stats){
      this.scrollHorozontal = scrollHorozontal;
+     if(stats)
      adjustStats();
    }
-   public void setScrollVertical(int scrollVertical){
+   public void setScrollVertical(int scrollVertical, boolean stats){
      this.scrollVertical = scrollVertical;
+     if(stats)
      adjustStats();
    }
   
@@ -227,6 +229,14 @@ class Settings{
    public void setResolutionVertical(int resolutionVertical){
      this.resolutionVertical=resolutionVertical;
      adjustStats();
+   }
+   
+   public void setResolution(int hrez,int vrez){
+     resolutionHorozontal = hrez;
+     resolutionVertical = vrez;
+     scale = vrez/720.0f;
+     adjustStats();
+     
    }
    public void setFullScreen(boolean fullScreen){
      this.fullScreen=fullScreen;
@@ -241,7 +251,7 @@ class Settings{
      adjustStats();
    }
   
-   public void setDebufFPS(boolean debugFPS){
+   public void setDebugFPS(boolean debugFPS){
      this.debugFPS=debugFPS;
      adjustStats();
    }
@@ -250,16 +260,19 @@ class Settings{
      adjustStats();
    }
   
-   public void setSoundMusicVolume(float soundMusicVolume){
+   public void setSoundMusicVolume(float soundMusicVolume, boolean stats){
      this.soundMusicVolume=soundMusicVolume;
+     if(stats)
      adjustStats();
    }
-   public void setSoundSoundVoljuume(float soundSoundVolume){
+   public void setSoundSoundVolume(float soundSoundVolume, boolean stats){
      this.soundSoundVolume=soundSoundVolume;
+     if(stats)
      adjustStats();
    }
-   public void setSoundNarrationVolume(float soundNarrationVolume){
+   public void setSoundNarrationVolume(float soundNarrationVolume, boolean stats){
      this.soundNarrationVolume=soundNarrationVolume;
+     if(stats)
      adjustStats();
    }
    public void setSoundNarrationMode(int soundNarrationMode){

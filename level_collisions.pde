@@ -105,7 +105,7 @@ void stageLevelDraw() {
 
       resetShader();
       
-      if (shadow3D) {//if the 3D shadow is enabled
+      if (settings.getShadows()) {//if the 3D shadow is enabled
         float shadowAltitude=players[currentPlayer].y;
         boolean shadowHit=false;
         for (int i=0; i<500&&!shadowHit; i++) {//ray cast to find solid ground underneath the player
@@ -773,23 +773,23 @@ void entityPhysics(Entity entity, Stage stage) {
 
     if (movement instanceof PlayerMovementManager) {
       if (simulating||!levelCreator)
-        if (entity.getX()-camPos>(1280-eadgeScroleDist)) {//move the camera if the player goes too close to the end of the screen
-          camPos=(int)(entity.getX()-(1280-eadgeScroleDist));
+        if (entity.getX()-camPos>(1280-settings.getScrollHorozontal())) {//move the camera if the player goes too close to the end of the screen
+          camPos=(int)(entity.getX()-(1280-settings.getScrollHorozontal()));
         }
 
       if (simulating||!levelCreator)
-        if (entity.getX()-camPos<eadgeScroleDist&&camPos>0) {//move the camera if the player goes too close to the end of the screen
-          camPos=(int)(entity.getX()-eadgeScroleDist);
+        if (entity.getX()-camPos<settings.getScrollHorozontal()&&camPos>0) {//move the camera if the player goes too close to the end of the screen
+          camPos=(int)(entity.getX()-settings.getScrollHorozontal());
         }
 
       if (simulating||!levelCreator)
-        if (entity.getY()+camPosY>720-eadgeScroleDistV&&camPosY>0) {//move the camera if the player goes too close to the end of the screen
-          camPosY-=entity.getY()+camPosY-(720-eadgeScroleDistV);
+        if (entity.getY()+camPosY>720-settings.getSrollVertical()&&camPosY>0) {//move the camera if the player goes too close to the end of the screen
+          camPosY-=entity.getY()+camPosY-(720-settings.getSrollVertical());
         }
 
       if (simulating||!levelCreator)
-        if (entity.getY()+camPosY<eadgeScroleDistV+75) {//move the camera if the player goes too close to the end of the screen
-          camPosY-=entity.getY()+camPosY-(eadgeScroleDistV+75);
+        if (entity.getY()+camPosY<settings.getSrollVertical()+75) {//move the camera if the player goes too close to the end of the screen
+          camPosY-=entity.getY()+camPosY-(settings.getSrollVertical()+75);
         }
       if (camPos<0)//prevent the camera from moving out of the valid areia
         camPos=0;

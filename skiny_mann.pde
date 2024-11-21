@@ -47,7 +47,7 @@ void setup() {//seccond function called
   try {
     frameRate(60);//limet the frame reate
     background(0);
-    if (fs) {//get and set some data if in fullscreen
+    if (settings.getFullScreen()) {//get and set some data if in fullscreen
       Scale=height/720.0;
     }else{
       Scale = settings.getScale();
@@ -85,7 +85,7 @@ PImage CBi;
 PShape coin3D, redArrow, greenArrow, blueArrow, yellowArrow, redScaler, greenScaler, blueScaler, yellowScaler, LevelCreatorLogo;
 
 PApplet primaryWindow=this;
-boolean menue =true, inGame=false, player1_moving_right=false, player1_moving_left=false, dev_mode=true, player1_jumping=false, dead=false, level_complete=false, reset_spawn=false, fs, E_pressed=false, loopThread2=true, showSettingsAfterStart=false, displayFPS=true, displayDebugInfo=false, prevousInGame=false, setPlayerPosTo=false, e3DMode=false, checkpointIn3DStage=false, WPressed=false, SPressed=false, levelCompleteSoundPlayed=false, tutorialMode=false, shadow3D=true, UGC_lvl=false, levelCompatible=false, editingBlueprint=false, viewingItemContents=false, selecting=false, s3D=false, w3D=false, shift3D=false, space3D=false, d3D=false, a3D=false, cam_down=false, cam_up=false, cam_right=false, cam_left=false, isHost=false, killPhysics=false, enteringName=false, enteringPort=false, enteringIP=false, multiplayer=false, clientQuitting=false, waitingForReady=false, loaded=false, reachedEnd=false, editingStage=false, simulating=false, ground=false, check_point=false, goal=false, deleteing=false, moving_player=false, grid_mode=false, holo_gram=false, drawCoins=false, drawingPortal=false, sloap=false, holoTriangle=false, dethPlane=false, selectingBlueprint=false, placingSound=false, drawingSign=false, placingLogicButton=false, draw3DSwitch1=false, draw3DSwitch2=false, editinglogicBoard=false, connectingLogic=false, moveLogicComponents=false, placingAndGate=false, placingOrGate=false, placingXorGate=false, placingNandGate=false, placingNorGate=false, placingXnorGate=false, placingOnSingal=false, placingReadVariable=false, placingSetVaravle=false, placingSetVisibility=false, placingXOffset=false, placingYOffset=false, placingDelay=false, placingZOffset=false, placing3Dsetter=false, placing3Dreader=false, placingPlaySoundLogic=false, placingPulse=false, placingRandom=false, saveColors=false, levelOverview=false, drawingPortal3=false, placingTestLogic=false, settingPlayerSpawn=false, levelCreator=false, drawing=false, draw=false, delete=false, translateXaxis=false, translateYaxis=false, translateZaxis=false, drawingPortal2=false, startup=false, loading=false, newLevel=false, newFile=false, creatingNewBlueprint=false, entering_name=false, loadingBlueprint=false, entering_file_path=false, coursor=false, connecting=false, movingLogicComponent=false, exitLevelCreator=false, levelNotFound=false, transitioningMenu=false,newSoundAsNarration =false,newBlueprintIs3D = false;
+boolean menue =true, inGame=false, player1_moving_right=false, player1_moving_left=false, dev_mode=true, player1_jumping=false, dead=false, level_complete=false, reset_spawn=false, E_pressed=false, loopThread2=true, prevousInGame=false, setPlayerPosTo=false, e3DMode=false, checkpointIn3DStage=false, WPressed=false, SPressed=false, levelCompleteSoundPlayed=false, tutorialMode=false, UGC_lvl=false, levelCompatible=false, editingBlueprint=false, viewingItemContents=false, selecting=false, s3D=false, w3D=false, shift3D=false, space3D=false, d3D=false, a3D=false, cam_down=false, cam_up=false, cam_right=false, cam_left=false, isHost=false, killPhysics=false, enteringName=false, enteringPort=false, enteringIP=false, multiplayer=false, clientQuitting=false, waitingForReady=false, loaded=false, reachedEnd=false, editingStage=false, simulating=false, ground=false, check_point=false, goal=false, deleteing=false, moving_player=false, grid_mode=false, holo_gram=false, drawCoins=false, drawingPortal=false, sloap=false, holoTriangle=false, dethPlane=false, selectingBlueprint=false, placingSound=false, drawingSign=false, placingLogicButton=false, draw3DSwitch1=false, draw3DSwitch2=false, editinglogicBoard=false, connectingLogic=false, moveLogicComponents=false, placingAndGate=false, placingOrGate=false, placingXorGate=false, placingNandGate=false, placingNorGate=false, placingXnorGate=false, placingOnSingal=false, placingReadVariable=false, placingSetVaravle=false, placingSetVisibility=false, placingXOffset=false, placingYOffset=false, placingDelay=false, placingZOffset=false, placing3Dsetter=false, placing3Dreader=false, placingPlaySoundLogic=false, placingPulse=false, placingRandom=false, saveColors=false, levelOverview=false, drawingPortal3=false, placingTestLogic=false, settingPlayerSpawn=false, levelCreator=false, drawing=false, draw=false, delete=false, translateXaxis=false, translateYaxis=false, translateZaxis=false, drawingPortal2=false, startup=false, loading=false, newLevel=false, newFile=false, creatingNewBlueprint=false, entering_name=false, loadingBlueprint=false, entering_file_path=false, coursor=false, connecting=false, movingLogicComponent=false, exitLevelCreator=false, levelNotFound=false, transitioningMenu=false,newSoundAsNarration =false,newBlueprintIs3D = false;
  String Menue ="creds"/*,level="n"*/, version="0.9.0_Early_Access", EDITOR_version="0.2.0_EAc", ip="localhost", name="can't_be_botherd_to_chane_it", input, file_path, rootPath, stageType="", settingsMenue="game play", author="", displayText="", GAME_version=version, internetVersion, cursor="", disconnectReason="", multyplayerSelectionLevels="speed", multyplayerSelectedLevelPath, appdata, coursorr="", new_name, newFileName="", newFileType="2D", fileToCoppyPath="",defaultAuthor = "can't be botherd to change it";
 ArrayList<Boolean> coins;
 ArrayList<String> UGCNames = new ArrayList<>(), playerNames=new ArrayList<>();
@@ -181,7 +181,7 @@ void draw() {// the function that is called every fraim
               if (!inver.equals(version)) {//if an update exists
                 Menue="update";//go to update menue
               } else {//if no update exists go to main menue
-                if (showSettingsAfterStart) {
+                if (settings.getSettingsAfterStart()) {
                   menue=false;
                   Menue="settings";
                   initMenuTransition(Transitions.LOGO_TO_SETTINGS);
@@ -196,7 +196,7 @@ void draw() {// the function that is called every fraim
             }
             catch(Throwable e) {//if an error occors or no return then go to main menue
               println(e);//print to console the cause of the error
-              if (showSettingsAfterStart) {
+              if (settings.getSettingsAfterStart()) {
                 menue=false;
                 Menue="settings";
                 initMenuTransition(Transitions.LOGO_TO_SETTINGS);
@@ -583,7 +583,7 @@ void draw() {// the function that is called every fraim
         newBlueprint.draw();
         loadBlueprint.draw();
         lc_backButton.draw();
-        if (fs) {//if in full screen mode then display this warning
+        if (settings.getFullScreen()) {//if in full screen mode then display this warning
           fill(0);
           lc_fullScreenWarning.draw();
         }
@@ -1012,12 +1012,12 @@ void draw() {// the function that is called every fraim
     }
 
 
-    if (displayFPS) {
+    if (settings.getDebugFPS()) {
       fill(255);
       fpsText.setText("FPS: "+ frameRate);
       fpsText.draw();
     }
-    if (displayDebugInfo) {
+    if (settings.getDebugInfo()) {
       fill(255);
       if (players[currentPlayer]!=null) {
         dbg_mspc.setText("mspc: "+ mspc);
@@ -1414,102 +1414,52 @@ void mouseClicked() {// when you click the mouse
             verticleEdgeScrollSlider.mouseClicked();
             horozontalEdgeScrollSlider.mouseClicked();
             if (horozontalEdgeScrollSlider.button.isMouseOver()) {
-              eadgeScroleDist=(int)horozontalEdgeScrollSlider.getValue();
-              JSONObject scroll=settings.getJSONObject(1);
-              scroll.setInt("horozontal", (int)horozontalEdgeScrollSlider.getValue());
-              settings.setJSONObject(1, scroll);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setScrollHorozontal((int)horozontalEdgeScrollSlider.getValue(),true);
+              settings.save();
             }
 
             if (verticleEdgeScrollSlider.button.isMouseOver()) {
-              eadgeScroleDistV=(int)verticleEdgeScrollSlider.getValue();
-              JSONObject scroll=settings.getJSONObject(1);
-              scroll.setInt("vertical", (int)verticleEdgeScrollSlider.getValue());
-              settings.setJSONObject(1, scroll);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setScrollVertical((int)verticleEdgeScrollSlider.getValue(),true);
+              settings.save();
             }
           }//end of game play settings
 
           if (settingsMenue.equals("display")) {
-            JSONObject rez=settings.getJSONObject(2);
             String arat = "16:9";
             if (rez4k.isMouseOver()) {//2160 resolution button
-              rez.setInt("v-res", 2160);
-              if (arat.equals("16:9")) {
-                rez.setInt("h-res", 2160*16/9);
-              }
-              rez.setFloat("scale", 2160/720.0);
-
-              settings.setJSONObject(2, rez);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setResolution(1260,2160*16/9);
+              settings.save();
             }
 
             if (rez1440.isMouseOver()) {// 1440 resolition button
-              rez.setInt("v-res", 1440);
-              if (arat.equals("16:9")) {
-                rez.setInt("h-res", 1440*16/9);
-              }
-              rez.setFloat("scale", 1440/720.0);
-
-              settings.setJSONObject(2, rez);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setResolution(1440,1440*16/9);
+              settings.save();
             }
 
             if (rez1080.isMouseOver()) {// 1080 resolution button
-              rez.setInt("v-res", 1080);
-              if (arat.equals("16:9")) {
-                rez.setInt("h-res", 1080*16/9);
-              }
-              rez.setFloat("scale", 1080/720.0);
-
-              settings.setJSONObject(2, rez);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setResolution(1080,1080*16/9);
+              settings.save();
             }
 
             if (rez900.isMouseOver()) {////900 resolution button
-              rez.setInt("v-res", 900);
-              if (arat.equals("16:9")) {
-                rez.setInt("h-res", 900*16/9);
-              }
-              rez.setFloat("scale", 900/720.0);
-
-              settings.setJSONObject(2, rez);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setResolution(900,900*16/9);
+              settings.save();
             }
 
             if (rez720.isMouseOver()) {// 720 resolution button
-              rez.setInt("v-res", 720);
-              if (arat.equals("16:9")) {
-                rez.setInt("h-res", 720*16/9);
-              }
-              rez.setFloat("scale", 720/720.0);
-
-              settings.setJSONObject(2, rez);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setResolution(720,720*16/9);
+              settings.save();
             }
 
 
             if (fullScreenOn.isMouseOver()) {//turn full screen on button
-              rez.setBoolean("full_Screen", true);
-
-              settings.setJSONObject(2, rez);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setFullScreen(true);
+              settings.save();
             }
 
             if (fullScreenOff.isMouseOver()) {//turn fullscreen off button
-              rez.setBoolean("full_Screen", false);
-
-              settings.setJSONObject(2, rez);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setFullScreen(false);
+              settings.save();
             }
           }//end of display settings menue
 
@@ -1520,115 +1470,68 @@ void mouseClicked() {// when you click the mouse
             narrationVolumeSlider.mouseClicked();
             
             if (musicVolumeSlider.button.isMouseOver()) {
-              musicVolume=musicVolumeSlider.getValue()/100.0;
-              JSONObject scroll=settings.getJSONObject(4);
-              scroll.setFloat("music volume", musicVolumeSlider.getValue()/100.0);
-              settings.setJSONObject(4, scroll);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              soundHandler.setMusicVolume(musicVolume);
-              stats.incrementSettingsChnaged();
+              settings.setSoundMusicVolume(musicVolumeSlider.getValue()/100.0,true);
+              soundHandler.setMusicVolume(settings.getSoundMusicVolume());
+              settings.save();
             }
             if (SFXVolumeSlider.button.isMouseOver()) {
-              sfxVolume=SFXVolumeSlider.getValue()/100.0;
-              JSONObject scroll=settings.getJSONObject(4);
-              scroll.setFloat("SFX volume", SFXVolumeSlider.getValue()/100.0);
-              settings.setJSONObject(4, scroll);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              soundHandler.setSoundsVolume(sfxVolume);
-              stats.incrementSettingsChnaged();
+              settings.setSoundSoundVolume(SFXVolumeSlider.getValue()/100.0,true);
+              soundHandler.setSoundsVolume(settings.getSoundSoundVolume());
+              settings.save();
+              
             }
             if (narrationVolumeSlider.button.isMouseOver()) {
-              narrationVolume=narrationVolumeSlider.getValue()/100.0;
-              JSONObject scroll=settings.getJSONObject(4);
-              scroll.setFloat("narration volume", narrationVolumeSlider.getValue()/100.0);
-              settings.setJSONObject(4, scroll);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              soundHandler.setNarrationVolume(narrationVolume);
-              stats.incrementSettingsChnaged();
+              settings.setSoundNarrationVolume(narrationVolumeSlider.getValue()/100.0,true);
+              soundHandler.setNarrationVolume(settings.getSoundNarrationVolume());
+              settings.save();
+
             }
             
             if (narrationMode0.isMouseOver()) {
-              JSONObject sv3=settings.getJSONObject(4);
-              sv3.setInt("narrationMode", 0);
-              tutorialNarrationMode=0;
-              settings.setJSONObject(4, sv3);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setSoundNarrationMode(0);
+              settings.save();
             }
             if (narrationMode1.isMouseOver()) {
-              JSONObject sv3=settings.getJSONObject(4);
-              sv3.setInt("narrationMode", 1);
-              tutorialNarrationMode=1;
-              settings.setJSONObject(4, sv3);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setSoundNarrationMode(1);
+              settings.save();
             }
             
           }//end of sound settings
           if (settingsMenue.equals("outher")) {
-            JSONObject debug=settings.getJSONObject(3);
             if (enableFPS.isMouseOver()) {
-              debug.setBoolean("fps", true);
-              displayFPS=true;
-              settings.setJSONObject(3, debug);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setDebugFPS(true);
+              settings.save();
             }
             if (disableFPS.isMouseOver()) {
-              debug.setBoolean("fps", false);
-              displayFPS=false;
-              settings.setJSONObject(3, debug);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setDebugFPS(false);
+              settings.save();
             }
             if (enableDebug.isMouseOver()) {
-              debug.setBoolean("debug info", true);
-              displayDebugInfo=true;
-              settings.setJSONObject(3, debug);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setDebugInfo(true);
+              settings.save();
             }
             if (disableDebug.isMouseOver()) {
-              debug.setBoolean("debug info", false);
-              displayDebugInfo=false;
-              settings.setJSONObject(3, debug);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setDebugFPS(false);
+              settings.save();
             }
             
             if (shadowOn.isMouseOver()) {
-              JSONObject sv3=settings.getJSONObject(5);
-              sv3.setBoolean("3D shaows", true);
-              shadow3D=true;
-              settings.setJSONObject(5, sv3);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setShadows(true);
+              settings.save();
             }
             if (shadowOff.isMouseOver()) {
-              JSONObject sv3=settings.getJSONObject(5);
-              sv3.setBoolean("3D shaows", false);
-              shadow3D=false;
-              settings.setJSONObject(5, sv3);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setShadows(false);
+              settings.save();
             }
             
             if(enableMenuTransitionButton.isMouseOver()){
-              JSONObject sv3=settings.getJSONObject(5);
-              sv3.setBoolean("disableMenuTransitions", false);
-              disableMenuTransitions=false;
-              settings.setJSONObject(5, sv3);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setDisableMenuTransitions(false);
+              settings.save();
             }
             
             if(disableMenuTransistionsButton.isMouseOver()){
-              JSONObject sv3=settings.getJSONObject(5);
-              sv3.setBoolean("disableMenuTransitions", true);
-              disableMenuTransitions=true;
-              settings.setJSONObject(5, sv3);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              stats.incrementSettingsChnaged();
+              settings.setDisableMenuTransitions(true);
+              settings.save();
             }
 
             
@@ -1666,7 +1569,7 @@ void mouseClicked() {// when you click the mouse
           }
         }
 
-        //back button for the old how to play menue
+        //back button for the old how to play menue NOT REMOVING THIS!
         if (Menue.equals("how to play")) {//if that menue is how to play
           if (mouseX >= 40*Scale && mouseX <= 240*Scale && mouseY >= 610*Scale && mouseY <= 660*Scale) {//back button
             Menue ="main";
@@ -2442,7 +2345,6 @@ void keyPressed() {// when a key is pressed
         if (settingsMenue.equals("outher")) {
           defaultAuthorNameTextBox.keyPressed();
           if(!defaultAuthorNameTextBox.getContence().equals(defaultAuthor)){
-            JSONObject sv3=settings.getJSONObject(5);
             String newName =  defaultAuthorNameTextBox.getContence();
             
             if(!newName.isEmpty()){
@@ -2450,9 +2352,8 @@ void keyPressed() {// when a key is pressed
             }else{
               defaultAuthor = "can't be botherd to change it";
             }
-            sv3.setString("default author", defaultAuthor);
-            settings.setJSONObject(5, sv3);
-            saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
+            settings.setDefaultAuthor(defaultAuthor);
+            settings.save();
           }
         }
       }
@@ -2740,7 +2641,6 @@ void keyTyped(){
       if (settingsMenue.equals("outher")) {
         defaultAuthorNameTextBox.keyTyped();
         if(!defaultAuthorNameTextBox.getContence().equals(defaultAuthor)){
-          JSONObject sv3=settings.getJSONObject(5);
           String newName =  defaultAuthorNameTextBox.getContence();
           
           if(!newName.isEmpty()){
@@ -2748,9 +2648,8 @@ void keyTyped(){
           }else{
             defaultAuthor = "can't be botherd to change it";
           }
-          sv3.setString("default author", defaultAuthor);
-          settings.setJSONObject(5, sv3);
-          saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
+          settings.setDefaultAuthor(defaultAuthor);
+          settings.save();
         }
       }
     }
@@ -2773,20 +2672,13 @@ void mouseDragged() {
           verticleEdgeScrollSlider.mouseDragged();
           horozontalEdgeScrollSlider.mouseDragged();
           if (horozontalEdgeScrollSlider.button.isMouseOver()) {
-            eadgeScroleDist=(int)horozontalEdgeScrollSlider.getValue();
-            JSONObject scroll=settings.getJSONObject(1);
-            scroll.setInt("horozontal", (int)horozontalEdgeScrollSlider.getValue());
-            settings.setJSONObject(1, scroll);
-            saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
+            settings.setScrollHorozontal((int)horozontalEdgeScrollSlider.getValue(),false);
+            settings.save();
           }
 
           if (verticleEdgeScrollSlider.button.isMouseOver()) {
-
-            eadgeScroleDistV=(int)verticleEdgeScrollSlider.getValue();
-            JSONObject scroll=settings.getJSONObject(1);
-            scroll.setInt("vertical", (int)verticleEdgeScrollSlider.getValue());
-            settings.setJSONObject(1, scroll);
-            saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
+              settings.setScrollVertical((int)verticleEdgeScrollSlider.getValue(),false);
+              settings.save();
           }
         }
         
@@ -2797,28 +2689,19 @@ void mouseDragged() {
             narrationVolumeSlider.mouseDragged();
             
             if (musicVolumeSlider.button.isMouseOver()) {
-              musicVolume=musicVolumeSlider.getValue()/100.0;
-              JSONObject scroll=settings.getJSONObject(4);
-              scroll.setFloat("music volume", musicVolumeSlider.getValue()/100.0);
-              settings.setJSONObject(4, scroll);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              soundHandler.setMusicVolume(musicVolume);
+              settings.setSoundMusicVolume(musicVolumeSlider.getValue()/100.0,false);
+              soundHandler.setMusicVolume(settings.getSoundMusicVolume());
+              settings.save();
             }
             if (SFXVolumeSlider.button.isMouseOver()) {
-              sfxVolume=SFXVolumeSlider.getValue()/100.0;
-              JSONObject scroll=settings.getJSONObject(4);
-              scroll.setFloat("SFX volume", SFXVolumeSlider.getValue()/100.0);
-              settings.setJSONObject(4, scroll);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              soundHandler.setSoundsVolume(sfxVolume);
+              settings.setSoundSoundVolume(SFXVolumeSlider.getValue()/100.0,false);
+              soundHandler.setSoundsVolume(settings.getSoundSoundVolume());
+              settings.save();
             }
             if (narrationVolumeSlider.button.isMouseOver()) {
-              narrationVolume=narrationVolumeSlider.getValue()/100.0;
-              JSONObject scroll=settings.getJSONObject(4);
-              scroll.setFloat("narration volume", narrationVolumeSlider.getValue()/100.0);
-              settings.setJSONObject(4, scroll);
-              saveJSONArray(settings, appdata+"/CBi-games/skinny mann/settings.json");
-              soundHandler.setNarrationVolume(narrationVolume);
+              settings.setSoundNarrationVolume(narrationVolumeSlider.getValue()/100.0,false);
+              soundHandler.setNarrationVolume(settings.getSoundNarrationVolume());
+              settings.save();
             }
             
         }
@@ -3160,9 +3043,9 @@ void drawSettings() {
     st_sound.draw();
     st_snd_musicVol.draw();
     st_snd_SFXvol.draw();
-    st_snd_currentMusicVolume.setText((int)(musicVolume*100)+"");
-    st_snd_currentSoundsVolume.setText((int)(sfxVolume*100)+"");
-    st_snd_currentNarrationVolume.setText((int)(narrationVolume*100)+"");
+    st_snd_currentMusicVolume.setText((int)(settings.getSoundMusicVolume()*100)+"");
+    st_snd_currentSoundsVolume.setText((int)(settings.getSoundSoundVolume()*100)+"");
+    st_snd_currentNarrationVolume.setText((int)(settings.getSoundNarrationVolume()*100)+"");
     st_snd_currentMusicVolume.draw();
     st_snd_currentSoundsVolume.draw();
     st_snd_better.draw();
@@ -3208,36 +3091,27 @@ void drawSettings() {
   }//end of outher settings
 
   //end of check boxes and stuffs
-
-  settings =loadJSONArray(appdata+"/CBi-games/skinny mann/settings.json");
-
   strokeWeight(5*Scale);
   stroke(255, 0, 0);
   if (true) {
-    JSONObject rez=settings.getJSONObject(2);
-    int vres = rez.getInt("v-res");
-    //  String arat = rez.getString("aspect ratio");
-    boolean fus = rez.getBoolean("full_Screen");
-
-
     if (settingsMenue.equals("display")) {
-      if (vres==720) {
+      if (settings.getResolutionVertical()==720) {
         chechMark(rez720.x+rez720.lengthX/2, rez720.y+rez720.lengthY/2);
       }
-      if (vres==900) {
+      if (settings.getResolutionVertical()==900) {
         chechMark(rez900.x+rez900.lengthX/2, rez900.y+rez900.lengthY/2);
       }
-      if (vres==1080) {
+      if (settings.getResolutionVertical()==1080) {
         chechMark(rez1080.x+rez1080.lengthX/2, rez1080.y+rez1080.lengthY/2);
       }
-      if (vres==1440) {
+      if (settings.getResolutionVertical()==1440) {
         chechMark(rez1440.x+rez1440.lengthX/2, rez1440.y+rez1440.lengthY/2);
       }
-      if (vres==2160) {
+      if (settings.getResolutionVertical()==2160) {
         chechMark(rez4k.x+rez4k.lengthX/2, rez4k.y+rez4k.lengthY/2);
       }
 
-      if (!fus) {
+      if (!settings.getFullScreen()) {
         chechMark(fullScreenOff.x+fullScreenOff.lengthX/2, fullScreenOff.y+fullScreenOff.lengthY/2);
       } else {
         chechMark(fullScreenOn.x+fullScreenOn.lengthX/2, fullScreenOn.y+fullScreenOn.lengthY/2);
@@ -3245,32 +3119,32 @@ void drawSettings() {
     }//end of display settings checkmarks
     
     if (settingsMenue.equals("sound")) {
-      if (tutorialNarrationMode==0) {
+      if (settings.getSoundNarrationMode()==0) {
         chechMark(narrationMode0.x+narrationMode0.lengthX/2, narrationMode0.y+narrationMode0.lengthY/2);
-      } else if (tutorialNarrationMode==1) {
+      } else if (settings.getSoundNarrationMode()==1) {
         chechMark(narrationMode1.x+narrationMode1.lengthX/2, narrationMode1.y+narrationMode1.lengthY/2);
       }
     }
     if (settingsMenue.equals("outher")) {
       //enableFPS,disableFPS,enableDebug,disableDebug
-      if (!displayFPS) {
+      if (!settings.getDebugInfo()) {
         chechMark(disableFPS.x+disableFPS.lengthX/2, disableFPS.y+disableFPS.lengthY/2);
       } else {
         chechMark(enableFPS.x+enableFPS.lengthX/2, enableFPS.y+enableFPS.lengthY/2);
       }
-      if (!displayDebugInfo) {
+      if (!settings.getDebugInfo()) {
         chechMark(disableDebug.x+disableDebug.lengthX/2, disableDebug.y+disableDebug.lengthY/2);
       } else {
         chechMark(enableDebug.x+enableDebug.lengthX/2, enableDebug.y+enableDebug.lengthY/2);
       }
 
-      if (!shadow3D) {
+      if (settings.getShadows()) {
         chechMark(shadowOff.x+shadowOff.lengthX/2, shadowOff.y+shadowOff.lengthY/2);
       } else {
         chechMark(shadowOn.x+shadowOn.lengthX/2, shadowOn.y+shadowOn.lengthY/2);
       }
       
-      if(!disableMenuTransitions){
+      if(!settings.getDisableMenuTransitions()){
         chechMark(enableMenuTransitionButton.x+enableMenuTransitionButton.lengthX/2, enableMenuTransitionButton.y+enableMenuTransitionButton.lengthY/2);
       } else {
         chechMark(disableMenuTransistionsButton.x+disableMenuTransistionsButton.lengthX/2, disableMenuTransistionsButton.y+disableMenuTransistionsButton.lengthY/2);
@@ -3432,9 +3306,9 @@ void chechMark(float x, float y) {
 
 void tutorialLogic() {
   if (tutorialPos==0) {
-    soundHandler.setMusicVolume(0.01*musicVolume);
+    soundHandler.setMusicVolume(0.01*settings.getSoundMusicVolume());
     currentTutorialSound=0;
-    soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+    soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
     tutorialPos++;
     playerMovementManager.setLeft(false);
     playerMovementManager.setRight(false);
@@ -3444,9 +3318,9 @@ void tutorialLogic() {
     playerMovementManager.setLeft(false);
     playerMovementManager.setRight(false);
     playerMovementManager.setJump(false);
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       currentTutorialSound=1;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
       tutorialPos++;
     }
   }
@@ -3454,12 +3328,12 @@ void tutorialLogic() {
     playerMovementManager.setLeft(false);
     playerMovementManager.setRight(false);
     playerMovementManager.setJump(false);
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       loadLevel("data/levels/tutorial");
       inGame=true;
       tutorialDrawLimit=3;
       currentTutorialSound=2;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
       tutorialPos++;
     }
   }
@@ -3467,9 +3341,9 @@ void tutorialLogic() {
     playerMovementManager.setLeft(false);
     playerMovementManager.setRight(false);
     playerMovementManager.setJump(false);
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       currentTutorialSound=3;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
       tutorialPos++;
     }
   }
@@ -3477,32 +3351,32 @@ void tutorialLogic() {
     playerMovementManager.setLeft(false);
     playerMovementManager.setRight(false);
     playerMovementManager.setJump(false);
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       currentTutorialSound=4;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
       tutorialPos++;
     }
   }
   if (tutorialPos==5) {
     playerMovementManager.setLeft(false);
     playerMovementManager.setJump(false);
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       currentTutorialSound=5;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
       tutorialPos++;
     }
   }
   if (tutorialPos==6) {
     playerMovementManager.setJump(false);
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       currentTutorialSound=6;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
       tutorialPos++;
     }
   }
   if (tutorialPos==7) {
     playerMovementManager.setJump(false);
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       tutorialPos++;
     }
   }
@@ -3510,7 +3384,7 @@ void tutorialLogic() {
     playerMovementManager.setJump(false);
     if (players[currentPlayer].x>=1604) {
       currentTutorialSound=7;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
       tutorialPos++;
       tutorialDrawLimit=14;
     }
@@ -3519,7 +3393,7 @@ void tutorialLogic() {
     playerMovementManager.setLeft(false);
     playerMovementManager.setRight(false);
     playerMovementManager.setJump(false);
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       tutorialPos++;
     }
   }
@@ -3527,21 +3401,21 @@ void tutorialLogic() {
     playerMovementManager.setJump(false);
     if (dead) {
       currentTutorialSound=8;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
       tutorialPos++;
     }
   }
   if (tutorialPos==11) {
     if (players[currentPlayer].x>=1819) {
       currentTutorialSound=9;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
       tutorialPos++;
     }
   }
   if (tutorialPos==12) {
     if (players[currentPlayer].x>=3875) {
       currentTutorialSound=10;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
       tutorialPos++;
     }
   }
@@ -3549,7 +3423,7 @@ void tutorialLogic() {
     playerMovementManager.setLeft(false);
     playerMovementManager.setRight(false);
     playerMovementManager.setJump(false);
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       tutorialPos++;
       tutorialDrawLimit=28;
     }
@@ -3558,7 +3432,7 @@ void tutorialLogic() {
   if (tutorialPos==14) {
     if (players[currentPlayer].x>=5338) {
       currentTutorialSound=11;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
       tutorialPos++;
     }
   }
@@ -3566,7 +3440,7 @@ void tutorialLogic() {
     playerMovementManager.setLeft(false);
     playerMovementManager.setRight(false);
     playerMovementManager.setJump(false);
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       tutorialPos++;
     }
   }
@@ -3574,20 +3448,20 @@ void tutorialLogic() {
   if (tutorialPos==16) {
     if (coinCount>=10) {
       currentTutorialSound=12;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
       tutorialPos++;
     }
   }
   if (tutorialPos==17) {
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       currentTutorialSound=13;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
       tutorialPos++;
       coinCount=0;
     }
   }
   if (tutorialPos==18) {
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       tutorialPos++;
       tutorialDrawLimit=51;
     }
@@ -3596,14 +3470,14 @@ void tutorialLogic() {
     if (players[currentPlayer].x>=7315) {
       tutorialPos++;
       currentTutorialSound=14;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
     }
   }
   if (tutorialPos==20) {
     playerMovementManager.setLeft(false);
     playerMovementManager.setRight(false);
     playerMovementManager.setJump(false);
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       tutorialPos++;
       tutorialDrawLimit=600;
     }
@@ -3612,11 +3486,11 @@ void tutorialLogic() {
     if (currentStageIndex==1) {
       tutorialPos++;
       currentTutorialSound=15;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
     }
   }
   if (tutorialPos==22) {
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
       tutorialPos++;
     }
   }
@@ -3625,7 +3499,7 @@ void tutorialLogic() {
       println((players[currentPlayer].x >= 6739)+" "+(currentStageIndex == 1)+" "+(players[currentPlayer].x <= 7000)+" "+players[currentPlayer].x);
       tutorialPos++;
       currentTutorialSound=16;
-      soundHandler.playNarration(tutorialNarration[tutorialNarrationMode][currentTutorialSound]);
+      soundHandler.playNarration(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound]);
     }
   }
 
@@ -3633,8 +3507,8 @@ void tutorialLogic() {
     playerMovementManager.setLeft(false);
     playerMovementManager.setRight(false);
     playerMovementManager.setJump(false);
-    if (!soundHandler.isNarrationPlaying(tutorialNarration[tutorialNarrationMode][currentTutorialSound])) {
-      soundHandler.setMusicVolume(musicVolume);
+    if (!soundHandler.isNarrationPlaying(tutorialNarration[settings.getSoundNarrationMode()][currentTutorialSound])) {
+      soundHandler.setMusicVolume(settings.getSoundMusicVolume());
       tutorialMode=false;
     }
   }
