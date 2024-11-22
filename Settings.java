@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.File;
 class Settings{
-  private static final int version = 4;
+  private static final int version = 5;
   
   private int scrollHorozontal = 360;
   private int scrollVertical = 250;
@@ -24,7 +24,7 @@ class Settings{
   private float soundNarrationVolume = 1;
   private int soundNarrationMode = 0;
   
-  private boolean shadows = true;
+  private int shadows = 3;
   private boolean disableMenuTransitions = false;
   private String defaultAuthor = "can't_be_botherd_to_chane_it";
   
@@ -92,7 +92,7 @@ class Settings{
   }
   
   private void loadOtherSettings(JSONObject data){
-    shadows = data.getBoolean("3D shaows");
+    shadows = data.getInt("3D shaows");
     disableMenuTransitions = data.getBoolean("disableMenuTransitions");
     defaultAuthor = data.getString("default author");
   }
@@ -150,7 +150,7 @@ class Settings{
   
   private JSONObject saveTheRest(){
     JSONObject data = new JSONObject();
-    data.setBoolean("3D shaows",shadows);
+    data.setInt("3D shaows",shadows);
     data.setBoolean("disableMenuTransitions",disableMenuTransitions);
     data.setString("default author",defaultAuthor);
     data.setString("label","outher");
@@ -201,7 +201,7 @@ class Settings{
     return soundNarrationMode;
   }
   
-  public boolean getShadows(){
+  public int getShadows(){
     return shadows;
   }
   public boolean getDisableMenuTransitions(){
@@ -280,7 +280,7 @@ class Settings{
      adjustStats();
    }
   
-   public void setShadows(boolean shadows){
+   public void setShadows(int shadows){
      this.shadows=shadows;
      adjustStats();
    }

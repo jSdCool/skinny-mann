@@ -1516,11 +1516,11 @@ void mouseClicked() {// when you click the mouse
             }
             
             if (shadowOn.isMouseOver()) {
-              settings.setShadows(true);
+              settings.setShadows(1);
               settings.save();
             }
             if (shadowOff.isMouseOver()) {
-              settings.setShadows(false);
+              settings.setShadows(0);
               settings.save();
             }
             
@@ -3138,7 +3138,7 @@ void drawSettings() {
         chechMark(enableDebug.x+enableDebug.lengthX/2, enableDebug.y+enableDebug.lengthY/2);
       }
 
-      if (settings.getShadows()) {
+      if (settings.getShadows()==1) {
         chechMark(shadowOff.x+shadowOff.lengthX/2, shadowOff.y+shadowOff.lengthY/2);
       } else {
         chechMark(shadowOn.x+shadowOn.lengthX/2, shadowOn.y+shadowOn.lengthY/2);
@@ -4020,6 +4020,25 @@ void programLoad() {
 
 void initDepthBuffer(){
   //TODO load shadow resultion 
+  int bufferSize;
+  switch(settings.getShadows()){
+    case 2: 
+      bufferSize =1024;
+      break;
+    case 3:
+      bufferSize = 2048;
+      break;
+    case 4:
+      bufferSize = 4096;
+      break;
+    case 5: 
+      bufferSize = 6114;
+      break;
+    case 6:
+      bufferSize = 8192;
+    default:
+      bufferSize = 512;
+  };
   shadowMap = createGraphics(2048, 2048, P3D);
   
   //set the light direction

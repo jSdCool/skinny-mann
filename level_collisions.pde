@@ -89,23 +89,25 @@ void stageLevelDraw() {
       
       players[currentPlayer].stage=currentStageIndex;
       
-      
-      shadowMap.beginDraw();
-      shadowMap.camera(cam3Dx+lightDir.x, cam3Dy+lightDir.y, cam3Dz+lightDir.z, cam3Dx, cam3Dy, cam3Dz, 0, 1, 0);
-      shadowMap.background(0xffffffff); // Will set the depth to 1.0 (maximum depth)
-      render3DLevel(shadowMap,stage);
-      shadowMap.endDraw();
-      shadowMap.updatePixels();
-      
-      
-      shader(shadowShader);
-      perepLightingPass();
-      
+      //if proper shadows are enabled
+      if( settings.getShadows() > 1){
+        shadowMap.beginDraw();
+        shadowMap.camera(cam3Dx+lightDir.x, cam3Dy+lightDir.y, cam3Dz+lightDir.z, cam3Dx, cam3Dy, cam3Dz, 0, 1, 0);
+        shadowMap.background(0xffffffff); // Will set the depth to 1.0 (maximum depth)
+        render3DLevel(shadowMap,stage);
+        shadowMap.endDraw();
+        shadowMap.updatePixels();
+        
+        shader(shadowShader);
+        perepLightingPass();
+      }
       render3DLevel(g,stage);
-
-      resetShader();
       
-      if (settings.getShadows()) {//if the 3D shadow is enabled
+      if( settings.getShadows() > 1){
+        resetShader();
+      }
+      
+      if (settings.getShadows() == 1) {//if the 3D shadow is enabled
         float shadowAltitude=players[currentPlayer].y;
         boolean shadowHit=false;
         for (int i=0; i<500&&!shadowHit; i++) {//ray cast to find solid ground underneath the player
