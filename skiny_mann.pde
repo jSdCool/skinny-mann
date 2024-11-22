@@ -1511,7 +1511,7 @@ void mouseClicked() {// when you click the mouse
               settings.save();
             }
             if (disableDebug.isMouseOver()) {
-              settings.setDebugFPS(false);
+              settings.setDebugInfo(false);
               settings.save();
             }
             
@@ -3127,7 +3127,7 @@ void drawSettings() {
     }
     if (settingsMenue.equals("outher")) {
       //enableFPS,disableFPS,enableDebug,disableDebug
-      if (!settings.getDebugInfo()) {
+      if (!settings.getDebugFPS()) {
         chechMark(disableFPS.x+disableFPS.lengthX/2, disableFPS.y+disableFPS.lengthY/2);
       } else {
         chechMark(enableFPS.x+enableFPS.lengthX/2, enableFPS.y+enableFPS.lengthY/2);
@@ -4039,7 +4039,8 @@ void initDepthBuffer(){
     default:
       bufferSize = 512;
   };
-  shadowMap = createGraphics(2048, 2048, P3D);
+  shadowMap = createGraphics(bufferSize, bufferSize, P3D);
+  println(bufferSize);
   
   //set the light direction
   lightDir.set(-0.8, -1, 0.35);
