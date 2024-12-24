@@ -42,8 +42,8 @@ void stageLevelDraw() {
     noStroke();
     //render all the Entites on this stage
     for (int i=0; i<stage.entities.size(); i++) {
-      if(!stage.entities.get(i).isDead())//if not dead
-        stage.entities.get(i).draw(this,g);
+      if (!stage.entities.get(i).isDead())//if not dead
+        stage.entities.get(i).draw(this, g);
     }
     players[currentPlayer].in3D=false;
     if (clients.size()>0)
@@ -51,7 +51,7 @@ void stageLevelDraw() {
         if (i==currentPlayer)
           continue;
         if (players[i].stage==currentStageIndex&&clients.get(0).viablePlayers[i]) {//if this player is on the same stage as the userser then
-          draw_mann(Scale*(players[i].getX()-drawCamPosX), Scale*(players[i].getY()+drawCamPosY), players[i].getPose(), Scale*players[i].getScale(), players[i].getColor(),g);//draw the outher players
+          draw_mann(Scale*(players[i].getX()-drawCamPosX), Scale*(players[i].getY()+drawCamPosY), players[i].getPose(), Scale*players[i].getScale(), players[i].getColor(), g);//draw the outher players
           fill(255);
           textSize(15*Scale);
           textAlign(CENTER, CENTER);
@@ -59,7 +59,7 @@ void stageLevelDraw() {
         }
       }
 
-    draw_mann(Scale*(players[currentPlayer].getX()-drawCamPosX), Scale*(players[currentPlayer].getY()+drawCamPosY), players[currentPlayer].getPose(), Scale*players[currentPlayer].getScale(), players[currentPlayer].getColor(),g);//draw this users player
+    draw_mann(Scale*(players[currentPlayer].getX()-drawCamPosX), Scale*(players[currentPlayer].getY()+drawCamPosY), players[currentPlayer].getPose(), Scale*players[currentPlayer].getScale(), players[currentPlayer].getColor(), g);//draw this users player
     players[currentPlayer].stage=currentStageIndex;
     //====================================================================================================================================================================================================
     //====================================================================================================================================================================================================
@@ -83,30 +83,32 @@ void stageLevelDraw() {
         coinRotation-=360;
       drawCamPosX=camPos;//versions of the camera position variblaes that only get updated once every frame and not on every physics tick
       drawCamPosY=camPosY;
-      
-      
+
+
       players[currentPlayer].in3D=true;
-      
+
       players[currentPlayer].stage=currentStageIndex;
-      
+
       //if proper shadows are enabled
-      if( settings.getShadows() > 1){
+      if ( settings.getShadows() > 1) {
         shadowMap.beginDraw();
         shadowMap.camera(cam3Dx+lightDir.x, cam3Dy+lightDir.y, cam3Dz+lightDir.z, cam3Dx, cam3Dy, cam3Dz, 0, 1, 0);
         shadowMap.background(0xffffffff); // Will set the depth to 1.0 (maximum depth)
-        render3DLevel(shadowMap,stage);
+        //render to the depth buffer
+        render3DLevel(shadowMap, stage);
         shadowMap.endDraw();
-        shadowMap.updatePixels();
-        
+        //shadowMap.updatePixels();
+
+
         shader(shadowShader);
         perepLightingPass();
       }
-      render3DLevel(g,stage);
-      
-      if( settings.getShadows() > 1){
+      render3DLevel(g, stage);
+
+      if ( settings.getShadows() > 1) {
         resetShader();
       }
-      
+
       if (settings.getShadows() == 1) {//if the 3D shadow is enabled
         float shadowAltitude=players[currentPlayer].y;
         boolean shadowHit=false;
@@ -127,8 +129,6 @@ void stageLevelDraw() {
           translate(-players[currentPlayer].x, -(shadowAltitude-2), -players[currentPlayer].z);
         }
       }
-
-      
     } else {//redner the level in 2D
       SPressed=false;
       WPressed=false;
@@ -156,7 +156,7 @@ void stageLevelDraw() {
       //TODO: respect wether the entoity is renderd in 3D or not
       noStroke();
       for (int i=0; i<stage.entities.size(); i++) {
-        stage.entities.get(i).draw(this,g);
+        stage.entities.get(i).draw(this, g);
       }
 
       players[currentPlayer].in3D=false;
@@ -165,14 +165,14 @@ void stageLevelDraw() {
           if (i==currentPlayer)
             continue;
           if (players[i].stage==currentStageIndex&&!players[i].in3D&&clients.get(0).viablePlayers[i]) {//if this player is on the same stage as the userser then
-            draw_mann(Scale*(players[i].getX()-camPos), Scale*(players[i].getY()+camPosY), players[i].getPose(), Scale*players[i].getScale(), players[i].getColor(),g);//draw the outher players
+            draw_mann(Scale*(players[i].getX()-camPos), Scale*(players[i].getY()+camPosY), players[i].getPose(), Scale*players[i].getScale(), players[i].getColor(), g);//draw the outher players
             fill(255);
             textSize(15*Scale);
             textAlign(CENTER, CENTER);
             text(players[i].name, Scale*(players[i].getX()-drawCamPosX), Scale*(players[i].getY()+drawCamPosY-Scale*85));
           }
         }
-      draw_mann(Scale*(players[currentPlayer].getX()-camPos), Scale*(players[currentPlayer].getY()+camPosY), players[currentPlayer].getPose(), Scale*players[currentPlayer].getScale(), players[currentPlayer].getColor(),g);//draw the player
+      draw_mann(Scale*(players[currentPlayer].getX()-camPos), Scale*(players[currentPlayer].getY()+camPosY), players[currentPlayer].getPose(), Scale*players[currentPlayer].getScale(), players[currentPlayer].getColor(), g);//draw the player
       players[currentPlayer].stage=currentStageIndex;
     }
   }
@@ -206,7 +206,7 @@ void stageLevelDraw() {
   }
 }
 
-void render3DLevel(PGraphics render,Stage stage){
+void render3DLevel(PGraphics render, Stage stage) {
   for (int i=0; stageLoopCondishen(i, stage); i++) {//loop through all elements in the stage
     render.strokeWeight(0);
     render.noStroke();
@@ -225,7 +225,7 @@ void render3DLevel(PGraphics render,Stage stage){
         continue;
       if (players[i].stage==currentStageIndex&&i!=currentPlayer&&clients.get(0).viablePlayers[i]) {//if this player is on the same stage as the userser then
         if (players[i].in3D) {
-          draw_mann_3D(players[i].x, players[i].y, players[i].z, players[i].getPose(), players[i].getScale(), players[i].getColor(),render);//draw the players in 3D
+          draw_mann_3D(players[i].x, players[i].y, players[i].z, players[i].getPose(), players[i].getScale(), players[i].getColor(), render);//draw the players in 3D
           render.fill(255);
           render.textSize(15*Scale);
           render.textAlign(CENTER, CENTER);
@@ -233,7 +233,7 @@ void render3DLevel(PGraphics render,Stage stage){
           render.text(players[i].name, (players[i].getX()), (players[i].getY()-85));
           render.translate(0, 0, -players[i].z);
         } else {
-          draw_mann((players[i].getX()), (players[i].getY()), players[i].getPose(), players[i].getScale(), players[i].getColor(),render);//draw the outher players in 2D
+          draw_mann((players[i].getX()), (players[i].getY()), players[i].getPose(), players[i].getScale(), players[i].getColor(), render);//draw the outher players in 2D
           render.fill(255);
           render.textSize(15);
           render.textAlign(CENTER, CENTER);
@@ -242,54 +242,231 @@ void render3DLevel(PGraphics render,Stage stage){
       }
     }
 
-  draw_mann_3D(players[currentPlayer].x, players[currentPlayer].y, players[currentPlayer].z, players[currentPlayer].getPose(), players[currentPlayer].getScale(), players[currentPlayer].getColor(),render);//draw the player
-  
+  draw_mann_3D(players[currentPlayer].x, players[currentPlayer].y, players[currentPlayer].z, players[currentPlayer].getPose(), players[currentPlayer].getScale(), players[currentPlayer].getColor(), render);//draw the player
+
   //render all the Entites on this stage
   //TODO: respect wether the entoity is renderd in 3D or not
   render.noStroke();
   for (int i=0; i<stage.entities.size(); i++) {
-    if(!stage.entities.get(i).isDead())//if not dead
-      stage.entities.get(i).draw3D(this,render);
+    if (!stage.entities.get(i).isDead())//if not dead
+      stage.entities.get(i).draw3D(this, render);
   }
 }
 
-void perepLightingPass(){
-   // Bias matrix to move homogeneous shadowCoords into the UV texture space
-    PMatrix3D shadowTransform = new PMatrix3D(
-        0.5, 0.0, 0.0, 0.5, 
-        0.0, 0.5, 0.0, 0.5, 
-        0.0, 0.0, 0.5, 0.5, 
-        0.0, 0.0, 0.0, 1.0
-    );
+void perepLightingPass() {
+  int halfBuffer = shadowMap.width/2;
+  //split the high res shadow map into serveal smaller ones
+  subShadowMaps[0].beginDraw();
+  subShadowMaps[0].image(/*shadowShaderOutputSampledDepthInfo? uvTester :*/ shadowMap, 0, 0);
+  subShadowMaps[0].endDraw();
+  subShadowMaps[1].beginDraw();
+  subShadowMaps[1].image(/*shadowShaderOutputSampledDepthInfo? uvTester :*/ shadowMap, -halfBuffer, 0);
+  subShadowMaps[1].endDraw();
+  subShadowMaps[2].beginDraw();
+  subShadowMaps[2].image(/*shadowShaderOutputSampledDepthInfo? uvTester :*/ shadowMap, -halfBuffer, -halfBuffer);
+  subShadowMaps[2].endDraw();
+  subShadowMaps[3].beginDraw();
+  subShadowMaps[3].image(/*shadowShaderOutputSampledDepthInfo? uvTester :*/ shadowMap, 0, -halfBuffer);
+  subShadowMaps[3].endDraw();
 
-    // Apply project modelview matrix from the shadow pass (light direction)
-    shadowTransform.apply(((PGraphicsOpenGL)shadowMap).projmodelview);
+  // Bias matrix to move homogeneous shadowCoords into the UV texture space
+  //TODO: make this an array
+  PMatrix3D shadowTransform[] = new PMatrix3D[4];
+  shadowTransform[0] = new PMatrix3D(
+    0.5, 0.0, 0.0, 0.5,
+    0.0, 0.5, 0.0, 0.5,
+    0.0, 0.0, 0.5, 0.5,
+    0.0, 0.0, 0.0, 1.0
+  );
+  shadowTransform[1] = new PMatrix3D(
+    0.5, 0.0, 0.0, 0.5,
+    0.0, 0.5, 0.0, 0.5,
+    0.0, 0.0, 0.5, 0.5,
+    0.0, 0.0, 0.0, 1.0
+  );
+  shadowTransform[2] = new PMatrix3D(
+    0.5, 0.0, 0.0, 0.5,
+    0.0, 0.5, 0.0, 0.5,
+    0.0, 0.0, 0.5, 0.5,
+    0.0, 0.0, 0.0, 1.0
+  );
+  shadowTransform[3] = new PMatrix3D(
+    0.5, 0.0, 0.0, 0.5,
+    0.0, 0.5, 0.0, 0.5,
+    0.0, 0.0, 0.5, 0.5,
+    0.0, 0.0, 0.0, 1.0
+  );
+  
+  PMatrix3D oldShadowTransform= new PMatrix3D(
+    0.5, 0.0, 0.0, 0.5,
+    0.0, 0.5, 0.0, 0.5,
+    0.0, 0.0, 0.5, 0.5,
+    0.0, 0.0, 0.0, 1.0
+  );
+  //lightDir.set(-0.8, -1, 0.35);
+  //lightDir.mult(800);
+  
+  //note: light dir might have to be changed to a normalized verion of lightDir
+  PVector uve = new PVector(-0.8,0,0.35);
+  PVector superNormalLight = PVector.div(lightDir,lightDir.magSq());
+  
+  //calculate the vecators for the supporting plane the camera is being moved in
+  PVector v1 = PVector.sub(uve,PVector.mult(superNormalLight,PVector.dot(uve,lightDir)));
+  v1.normalize();
+  PVector v2 = PVector.cross(lightDir,v1,null);
+  v2.normalize();
+  
+  //calculate the direction vectors
+  PVector d0 = PVector.add(PVector.mult(v1,cos(3*PI/4)),PVector.mult(v2,sin(3*PI/4)));
+  PVector d1 = PVector.add(PVector.mult(v1,cos(PI/4)),PVector.mult(v2,sin(PI/4)));
+  PVector d2 = PVector.add(PVector.mult(v1,cos(-PI/4)),PVector.mult(v2,sin(-PI/4)));
+  PVector d3 = PVector.add(PVector.mult(v1,cos(-3*PI/4)),PVector.mult(v2,sin(-3*PI/4)));
+  
+  d0.normalize();
+  d1.normalize();
+  d2.normalize();
+  d3.normalize();
+  
+  float plainerDist = sqrt(2*pow(2000/2,2));
+  
+  d0.mult(plainerDist);
+  d1.mult(plainerDist);
+  d2.mult(plainerDist);
+  d3.mult(plainerDist);
 
-    // Apply the inverted modelview matrix from the default pass to get the original vertex
-    // positions inside the shader. This is needed because Processing is pre-multiplying
-    // the vertices by the modelview matrix (for better performance).
-    PMatrix3D modelviewInv = ((PGraphicsOpenGL)g).modelviewInv;
-    shadowTransform.apply(modelviewInv);
+  cameraMatrixMap.beginDraw();
+  cameraMatrixMap.camera(cam3Dx+lightDir.x+d0.x, cam3Dy+lightDir.y+d0.y, cam3Dz+lightDir.z+d0.z, cam3Dx+d0.x, cam3Dy+d0.y, cam3Dz+d0.z, 0, 1, 0);
+  // Apply project modelview matrix from the shadow pass (light direction)
+  shadowTransform[0].apply(((PGraphicsOpenGL)cameraMatrixMap).projmodelview);
+  
+  cameraMatrixMap.camera(cam3Dx+lightDir.x+d1.x, cam3Dy+lightDir.y+d1.y, cam3Dz+lightDir.z+d1.z, cam3Dx+d1.x, cam3Dy+d1.y, cam3Dz+d1.z, 0, 1, 0);
+  // Apply project modelview matrix from the shadow pass (light direction)
+  shadowTransform[1].apply(((PGraphicsOpenGL)cameraMatrixMap).projmodelview);
+  
+  cameraMatrixMap.camera(cam3Dx+lightDir.x+d2.x, cam3Dy+lightDir.y+d2.y, cam3Dz+lightDir.z+d2.z, cam3Dx+d2.x, cam3Dy+d2.y, cam3Dz+d2.z, 0, 1, 0);
+  // Apply project modelview matrix from the shadow pass (light direction)
+  shadowTransform[2].apply(((PGraphicsOpenGL)cameraMatrixMap).projmodelview);
+  
+  cameraMatrixMap.camera(cam3Dx+lightDir.x+d3.x, cam3Dy+lightDir.y+d3.y, cam3Dz+lightDir.z+d3.z, cam3Dx+d3.x, cam3Dy+d3.y, cam3Dz+d3.z, 0, 1, 0);
+  // Apply project modelview matrix from the shadow pass (light direction)
+  shadowTransform[3].apply(((PGraphicsOpenGL)cameraMatrixMap).projmodelview);
+  cameraMatrixMap.endDraw();
+  
+  oldShadowTransform.apply(((PGraphicsOpenGL)shadowMap).projmodelview);
+  
+  //fill(200,0,0);
+  //translate(lightDir.x,lightDir.y,lightDir.z);
+  
+  //box(20);
+  //translate(d0.x,d0.y,d0.z);
+  //box(20);
+  //translate(-d0.x,-d0.y,-d0.z);
+  //fill(255,0,0);
+  //translate(d1.x,d1.y,d1.z);
+  //box(20);
+  //translate(-d1.x,-d1.y,-d1.z);
+  
+  //translate(d2.x,d2.y,d2.z);
+  //box(20);
+  //translate(-d2.x,-d2.y,-d2.z);
+  
+  //translate(d3.x,d3.y,d3.z);
+  //box(20);
+  //translate(-d3.x,-d3.y,-d3.z);
+  
+  //fill(255,140);//shadowMapClibBoxSize
+  //rotateY(atan2(lightDir.x,lightDir.z));
+  //rotateX(atan2(dist(0,0,lightDir.x,lightDir.z),lightDir.y));
+  //translate(0,-300,0);
+  //box(2000,500,2000);
+  //translate(0,300,0);
+  //fill(255,255,0);
+  
+  //translate(-500,0,500);
+  //box(20);
+  //translate(500,0,-500);
+  
+  //translate(500,0,500);
+  //box(20);
+  //translate(-500,0,-500);
+  
+  //translate(500,0,-500);
+  //box(20);
+  //translate(-500,0,500);
+  //translate(-500,0,-500);
+  //box(20);
+  //translate(500,0,500);
+  
+  //rotateX(-atan2(dist(0,0,lightDir.x,lightDir.z),lightDir.y));
+  //rotateY(-atan2(lightDir.x,lightDir.z));
+  
+  //translate(-lightDir.x,-lightDir.y,-lightDir.z);
+  
+  //strokeWeight(5);
+  //stroke(0,0,255);
+  //line(0,0,0,lightDir.x,lightDir.y,lightDir.z);
 
-    // Convert column-minor PMatrix to column-major GLMatrix and send it to the shader.
-    // PShader.set(String, PMatrix3D) doesn't convert the matrix for some reason.
-    shadowShader.set("shadowTransform", new PMatrix3D(
-        shadowTransform.m00, shadowTransform.m10, shadowTransform.m20, shadowTransform.m30, 
-        shadowTransform.m01, shadowTransform.m11, shadowTransform.m21, shadowTransform.m31, 
-        shadowTransform.m02, shadowTransform.m12, shadowTransform.m22, shadowTransform.m32, 
-        shadowTransform.m03, shadowTransform.m13, shadowTransform.m23, shadowTransform.m33
+  // Apply the inverted modelview matrix from the default pass to get the original vertex
+  // positions inside the shader. This is needed because Processing is pre-multiplying
+  // the vertices by the modelview matrix (for better performance).
+  PMatrix3D modelviewInv = ((PGraphicsOpenGL)g).modelviewInv;
+  shadowTransform[0].apply(modelviewInv);
+  shadowTransform[1].apply(modelviewInv);
+  shadowTransform[2].apply(modelviewInv);
+  shadowTransform[3].apply(modelviewInv);
+  oldShadowTransform.apply(modelviewInv);
+
+  // Convert column-minor PMatrix to column-major GLMatrix and send it to the shader.
+  // PShader.set(String, PMatrix3D) doesn't convert the matrix for some reason.
+  shadowShader.set("shadowTransform0", new PMatrix3D(
+    shadowTransform[0].m00, shadowTransform[0].m10, shadowTransform[0].m20, shadowTransform[0].m30,
+    shadowTransform[0].m01, shadowTransform[0].m11, shadowTransform[0].m21, shadowTransform[0].m31,
+    shadowTransform[0].m02, shadowTransform[0].m12, shadowTransform[0].m22, shadowTransform[0].m32,
+    shadowTransform[0].m03, shadowTransform[0].m13, shadowTransform[0].m23, shadowTransform[0].m33
+    ));
+  shadowShader.set("shadowTransform1", new PMatrix3D(
+    shadowTransform[1].m00, shadowTransform[1].m10, shadowTransform[1].m20, shadowTransform[1].m30,
+    shadowTransform[1].m01, shadowTransform[1].m11, shadowTransform[1].m21, shadowTransform[1].m31,
+    shadowTransform[1].m02, shadowTransform[1].m12, shadowTransform[1].m22, shadowTransform[1].m32,
+    shadowTransform[1].m03, shadowTransform[1].m13, shadowTransform[1].m23, shadowTransform[1].m33
+    ));
+  shadowShader.set("shadowTransform2", new PMatrix3D(
+    shadowTransform[2].m00, shadowTransform[2].m10, shadowTransform[2].m20, shadowTransform[2].m30,
+    shadowTransform[2].m01, shadowTransform[2].m11, shadowTransform[2].m21, shadowTransform[2].m31,
+    shadowTransform[2].m02, shadowTransform[2].m12, shadowTransform[2].m22, shadowTransform[2].m32,
+    shadowTransform[2].m03, shadowTransform[2].m13, shadowTransform[2].m23, shadowTransform[2].m33
+    ));  
+  shadowShader.set("shadowTransform3", new PMatrix3D(
+    shadowTransform[3].m00, shadowTransform[3].m10, shadowTransform[3].m20, shadowTransform[3].m30,
+    shadowTransform[3].m01, shadowTransform[3].m11, shadowTransform[3].m21, shadowTransform[3].m31,
+    shadowTransform[3].m02, shadowTransform[3].m12, shadowTransform[3].m22, shadowTransform[3].m32,
+    shadowTransform[3].m03, shadowTransform[3].m13, shadowTransform[3].m23, shadowTransform[3].m33
+    ));
+    
+    shadowShader.set("oldShadowTransform", new PMatrix3D(
+    oldShadowTransform.m00, oldShadowTransform.m10, oldShadowTransform.m20, oldShadowTransform.m30,
+    oldShadowTransform.m01, oldShadowTransform.m11, oldShadowTransform.m21, oldShadowTransform.m31,
+    oldShadowTransform.m02, oldShadowTransform.m12, oldShadowTransform.m22, oldShadowTransform.m32,
+    oldShadowTransform.m03, oldShadowTransform.m13, oldShadowTransform.m23, oldShadowTransform.m33
     ));
 
-    // Calculate light direction normal, which is the transpose of the inverse of the
-    // modelview matrix and send it to the default shader.
-    float lightNormalX = lightDir.x * modelviewInv.m00 + lightDir.y * modelviewInv.m10 + lightDir.z * modelviewInv.m20;
-    float lightNormalY = lightDir.x * modelviewInv.m01 + lightDir.y * modelviewInv.m11 + lightDir.z * modelviewInv.m21;
-    float lightNormalZ = lightDir.x * modelviewInv.m02 + lightDir.y * modelviewInv.m12 + lightDir.z * modelviewInv.m22;
-    float normalLength = sqrt(lightNormalX * lightNormalX + lightNormalY * lightNormalY + lightNormalZ * lightNormalZ);
-    shadowShader.set("lightDirection", lightNormalX / -normalLength, lightNormalY / -normalLength, lightNormalZ / -normalLength);
+  // Calculate light direction normal, which is the transpose of the inverse of the
+  // modelview matrix and send it to the default shader.
+  float lightNormalX = lightDir.x * modelviewInv.m00 + lightDir.y * modelviewInv.m10 + lightDir.z * modelviewInv.m20;
+  float lightNormalY = lightDir.x * modelviewInv.m01 + lightDir.y * modelviewInv.m11 + lightDir.z * modelviewInv.m21;
+  float lightNormalZ = lightDir.x * modelviewInv.m02 + lightDir.y * modelviewInv.m12 + lightDir.z * modelviewInv.m22;
+  float normalLength = sqrt(lightNormalX * lightNormalX + lightNormalY * lightNormalY + lightNormalZ * lightNormalZ);
+  shadowShader.set("lightDirection", lightNormalX / -normalLength, lightNormalY / -normalLength, lightNormalZ / -normalLength);
 
-    // Send the shadowmap to the default shader
-    shadowShader.set("shadowMap", shadowMap);
+
+  //TODO: send each section of the shadow map to the shader
+  // Send the shadowmap to the default shader
+  shadowShader.set("shadowMap0", subShadowMaps[0]);
+  shadowShader.set("shadowMap1", subShadowMaps[3]);
+  shadowShader.set("shadowMap2", subShadowMaps[2]);
+  shadowShader.set("shadowMap3", subShadowMaps[1]);
+  
+  shadowShader.set("outputSampledValue",shadowShaderOutputSampledDepthInfo);
 }
 
 
@@ -412,43 +589,43 @@ void camera3DpositionSimulating(Stage stage) {
   }
   //xangle=205;
   //yangle=15;
-  
+
   //do this later, seems to cause a little lag
   //check if a peice of terain would be intersecting the camera
-  
+
   //ray casts are dum do this instead:
   //binary search tree
-  
+
   //create a hit box for the entire range of camera positions
   //if it collides
   //split the box in 2
   //select the box closest to the player
-  
+
   //loop
-    //check if the selected box collides with the level
-    //if so split that box in 2
-    //if not split the box not selected in 2
-    
-    //if at the final level return the number
-    
-    //select the new split box that is closest to the player
-    //restart loop
-    
-   //if the box did not collide
-   //retun 700
-  
+  //check if the selected box collides with the level
+  //if so split that box in 2
+  //if not split the box not selected in 2
+
+  //if at the final level return the number
+
+  //select the new split box that is closest to the player
+  //restart loop
+
+  //if the box did not collide
+  //retun 700
+
   //for(int i=100;i<dist;i++){
-    //calculate the eye position of the camera
-    DY=sin(radians(yangle))*dist;
-    hd=cos(radians(yangle))*dist;
-    DX=sin(radians(xangle))*hd;
-    DZ=cos(radians(xangle))*hd;
-    //check if that position is inside of terain
-    //Collider3D checkBox = Collider3D.createBoxHitBox(cam3Dx+DX-1, cam3Dy-DY-1, cam3Dz-DZ-1,3,3,3);
-    //if(level_colide(checkBox,stage)){
-    //  break;
-    //}
-//}
+  //calculate the eye position of the camera
+  DY=sin(radians(yangle))*dist;
+  hd=cos(radians(yangle))*dist;
+  DX=sin(radians(xangle))*hd;
+  DZ=cos(radians(xangle))*hd;
+  //check if that position is inside of terain
+  //Collider3D checkBox = Collider3D.createBoxHitBox(cam3Dx+DX-1, cam3Dy-DY-1, cam3Dz-DZ-1,3,3,3);
+  //if(level_colide(checkBox,stage)){
+  //  break;
+  //}
+  //}
 }
 
 void camera3DpositionNotSimulating() {
@@ -534,7 +711,7 @@ void playerPhysics() {
           result = level.stages.get(currentStageIndex).entities.get(i).playerInteraction(player2DHitbox);
         }
       }
-      
+
       if (result!=null) {
         if (result.isKill()) {
           dead=true;
@@ -545,11 +722,11 @@ void playerPhysics() {
           break;
         }
       }
-      if(level.multyplayerMode==2 && !isHost){
+      if (level.multyplayerMode==2 && !isHost) {
         //if the entitie was killed
-        if(level.stages.get(currentStageIndex).entities.get(i).isDead()){
+        if (level.stages.get(currentStageIndex).entities.get(i).isDead()) {
           //inform the server of the death
-          clients.get(0).dataToSend.add(new KillEntityDataPacket(currentStageIndex,i));
+          clients.get(0).dataToSend.add(new KillEntityDataPacket(currentStageIndex, i));
         }
       }
     }
@@ -570,17 +747,17 @@ void playerPhysics() {
     setPlayerPosTo=false;
     players[calcingPlayer].verticalVelocity=0;
   }
-    
-  if(level.multyplayerMode==2 && (isHost||levelCreator)){
+
+  if (level.multyplayerMode==2 && (isHost||levelCreator)) {
     for (Stage stage : level.stages) {
       for (int i=0; i<stage.entities.size(); i++) {
         entityPhysics(stage.entities.get(i), stage);
       }
     }
-  }else if(level.multyplayerMode!=2){
+  } else if (level.multyplayerMode!=2) {
     for (int i=0; i<level.stages.get(currentStageIndex).entities.size(); i++) {
-        entityPhysics(level.stages.get(currentStageIndex).entities.get(i), level.stages.get(currentStageIndex));
-      }
+      entityPhysics(level.stages.get(currentStageIndex).entities.get(i), level.stages.get(currentStageIndex));
+    }
   }
 
   ////////////////////////////// Logic Thread monitroing

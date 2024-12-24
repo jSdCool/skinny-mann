@@ -1,8 +1,11 @@
 PShader shadowShader;
 PShader depthBufferShader;
-PGraphics shadowMap;
+PGraphics shadowMap, cameraMatrixMap;
+PGraphics[] subShadowMaps = new PGraphics[4];
 PImage shadowMapCopy = createImage(100,100,ARGB);
+PImage uvTester;
 boolean requestDepthBufferInit = false ;
 boolean showDepthBuffer = false;
+boolean shadowShaderOutputSampledDepthInfo = false;
 PVector lightDir = new PVector();
 Settings settings;

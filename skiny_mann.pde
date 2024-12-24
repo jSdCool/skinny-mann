@@ -2519,6 +2519,13 @@ void keyPressed() {// when a key is pressed
     if(keyCode == 108){//F12
       showDepthBuffer = !showDepthBuffer;
     }
+    if(keyCode == 107){
+      shadowShaderOutputSampledDepthInfo = !shadowShaderOutputSampledDepthInfo;
+    }
+    if(keyCode == 106){
+      shadowShader = loadShader("shaders/shadowMapFrag.glsl","shaders/shadowMapVert.glsl");
+      println("Relaoded Shaders");
+    }
     
     //System.out.println(keyCode);
   }
@@ -3777,6 +3784,14 @@ String formatMillis(int millis) {
 
 
 void programLoad() {
+  //do this first becasue it causes a momentary freez on the render thread that we want to avoid later in the animation
+  println("loading shaders");
+  depthBufferShader = loadShader("shaders/depthBufferFrag.glsl","shaders/depthBufferVert.glsl");
+  shadowShader = loadShader("shaders/shadowMapFrag.glsl","shaders/shadowMapVert.glsl");
+
+  requestDepthBufferInit = true;
+  //this init can only happen on the main render thread
+  
   println("loading 3D coin modle");
   coin3D=loadShape("data/modles/coin/tinker.obj");
   loadProgress++;
@@ -4004,12 +4019,8 @@ void programLoad() {
   println("loading stats");
   stats = new StatisticManager(appdata+"/CBi-games/skinny mann/stats.json",this);
   loadProgress++;
-  println("loading shaders");
-  depthBufferShader = loadShader("shaders/depthBufferFrag.glsl","shaders/depthBufferVert.glsl");
-  shadowShader = loadShader("shaders/shadowMapFrag.glsl","shaders/shadowMapVert.glsl");
-
-  requestDepthBufferInit = true;
-  //this init can only happen on the main render thread
+ 
+  uvTester = loadImage("data/assets/ic.png");
 
   println("starting physics thread");
   thread("thrdCalc2");
@@ -4040,6 +4051,12 @@ void initDepthBuffer(){
       bufferSize = 512;
   };
   shadowMap = createGraphics(bufferSize, bufferSize, P3D);
+  subShadowMaps[0] = createGraphics(bufferSize/2, bufferSize/2, P3D);
+  subShadowMaps[1] = createGraphics(bufferSize/2, bufferSize/2, P3D);
+  subShadowMaps[2] = createGraphics(bufferSize/2, bufferSize/2, P3D);
+  subShadowMaps[3] = createGraphics(bufferSize/2, bufferSize/2, P3D);
+  cameraMatrixMap = createGraphics(bufferSize/2, bufferSize/2, P3D);
+  
   println(bufferSize);
   
   //set the light direction
@@ -4055,6 +4072,15 @@ void initDepthBuffer(){
   int shadowMapClibBoxSize = 2000;
   shadowMap.ortho(-shadowMapClibBoxSize, shadowMapClibBoxSize, -shadowMapClibBoxSize, shadowMapClibBoxSize, 1, 13000); // Setup orthogonal view matrix for the directional light
   shadowMap.endDraw();
+  subShadowMaps[0].noSmooth();
+  subShadowMaps[1].noSmooth();
+  subShadowMaps[2].noSmooth();
+  subShadowMaps[3].noSmooth();
+  
+  cameraMatrixMap.beginDraw();
+  cameraMatrixMap.ortho(-shadowMapClibBoxSize/2, shadowMapClibBoxSize/2, -shadowMapClibBoxSize/2, shadowMapClibBoxSize/2, 1, 13000);
+  cameraMatrixMap.endDraw();
+  
 }
 
 //musicVolumeSlider,SFXVolumeSlider,verticleEdgeScrollSlider,horozontalEdgeScrollSlider;
