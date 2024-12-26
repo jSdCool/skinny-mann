@@ -88,6 +88,11 @@ void stageLevelDraw() {
       players[currentPlayer].in3D=true;
 
       players[currentPlayer].stage=currentStageIndex;
+      
+      float ppx =  players[currentPlayer].getX(), ppy =  players[currentPlayer].getY(), ppz = players[currentPlayer].getZ();
+      int ppp =  players[currentPlayer].getPose();
+      float pps =  players[currentPlayer].getScale();
+      int ppc =  players[currentPlayer].getColor();
 
       //if proper shadows are enabled
       if ( settings.getShadows() > 1) {
@@ -95,7 +100,7 @@ void stageLevelDraw() {
         shadowMap.camera(cam3Dx+lightDir.x, cam3Dy+lightDir.y, cam3Dz+lightDir.z, cam3Dx, cam3Dy, cam3Dz, 0, 1, 0);
         shadowMap.background(0xffffffff); // Will set the depth to 1.0 (maximum depth)
         //render to the depth buffer
-        render3DLevel(shadowMap, stage);
+        render3DLevel(shadowMap, stage,ppx,ppy,ppz,ppp,pps,ppc);
         shadowMap.endDraw();
         //shadowMap.updatePixels();
 
@@ -103,7 +108,7 @@ void stageLevelDraw() {
         shader(shadowShader);
         perepLightingPass();
       }
-      render3DLevel(g, stage);
+      render3DLevel(g, stage,ppx,ppy,ppz,ppp,pps,ppc);
 
       if ( settings.getShadows() > 1) {
         resetShader();
@@ -206,7 +211,7 @@ void stageLevelDraw() {
   }
 }
 
-void render3DLevel(PGraphics render, Stage stage) {
+void render3DLevel(PGraphics render, Stage stage,float playerX,float playerY, float playerZ,int playerPose,float playerScale,int playerColor) {
   for (int i=0; stageLoopCondishen(i, stage); i++) {//loop through all elements in the stage
     render.strokeWeight(0);
     render.noStroke();
@@ -242,7 +247,7 @@ void render3DLevel(PGraphics render, Stage stage) {
       }
     }
 
-  draw_mann_3D(players[currentPlayer].x, players[currentPlayer].y, players[currentPlayer].z, players[currentPlayer].getPose(), players[currentPlayer].getScale(), players[currentPlayer].getColor(), render);//draw the player
+  draw_mann_3D(playerX, playerY, playerZ, playerPose, playerScale, playerColor, render);//draw the player
 
   //render all the Entites on this stage
   //TODO: respect wether the entoity is renderd in 3D or not
@@ -306,7 +311,7 @@ void perepLightingPass() {
   //lightDir.set(-0.8, -1, 0.35);
   //lightDir.mult(800);
   
-  //note: light dir might have to be changed to a normalized verion of lightDir
+  
   PVector uve = new PVector(-0.8,0,0.35);
   PVector superNormalLight = PVector.div(lightDir,lightDir.magSq());
   
@@ -353,58 +358,6 @@ void perepLightingPass() {
   cameraMatrixMap.endDraw();
   
   oldShadowTransform.apply(((PGraphicsOpenGL)shadowMap).projmodelview);
-  
-  //fill(200,0,0);
-  //translate(lightDir.x,lightDir.y,lightDir.z);
-  
-  //box(20);
-  //translate(d0.x,d0.y,d0.z);
-  //box(20);
-  //translate(-d0.x,-d0.y,-d0.z);
-  //fill(255,0,0);
-  //translate(d1.x,d1.y,d1.z);
-  //box(20);
-  //translate(-d1.x,-d1.y,-d1.z);
-  
-  //translate(d2.x,d2.y,d2.z);
-  //box(20);
-  //translate(-d2.x,-d2.y,-d2.z);
-  
-  //translate(d3.x,d3.y,d3.z);
-  //box(20);
-  //translate(-d3.x,-d3.y,-d3.z);
-  
-  //fill(255,140);//shadowMapClibBoxSize
-  //rotateY(atan2(lightDir.x,lightDir.z));
-  //rotateX(atan2(dist(0,0,lightDir.x,lightDir.z),lightDir.y));
-  //translate(0,-300,0);
-  //box(2000,500,2000);
-  //translate(0,300,0);
-  //fill(255,255,0);
-  
-  //translate(-500,0,500);
-  //box(20);
-  //translate(500,0,-500);
-  
-  //translate(500,0,500);
-  //box(20);
-  //translate(-500,0,-500);
-  
-  //translate(500,0,-500);
-  //box(20);
-  //translate(-500,0,500);
-  //translate(-500,0,-500);
-  //box(20);
-  //translate(500,0,500);
-  
-  //rotateX(-atan2(dist(0,0,lightDir.x,lightDir.z),lightDir.y));
-  //rotateY(-atan2(lightDir.x,lightDir.z));
-  
-  //translate(-lightDir.x,-lightDir.y,-lightDir.z);
-  
-  //strokeWeight(5);
-  //stroke(0,0,255);
-  //line(0,0,0,lightDir.x,lightDir.y,lightDir.z);
 
   // Apply the inverted modelview matrix from the default pass to get the original vertex
   // positions inside the shader. This is needed because Processing is pre-multiplying
@@ -441,13 +394,6 @@ void perepLightingPass() {
     shadowTransform[3].m01, shadowTransform[3].m11, shadowTransform[3].m21, shadowTransform[3].m31,
     shadowTransform[3].m02, shadowTransform[3].m12, shadowTransform[3].m22, shadowTransform[3].m32,
     shadowTransform[3].m03, shadowTransform[3].m13, shadowTransform[3].m23, shadowTransform[3].m33
-    ));
-    
-    shadowShader.set("oldShadowTransform", new PMatrix3D(
-    oldShadowTransform.m00, oldShadowTransform.m10, oldShadowTransform.m20, oldShadowTransform.m30,
-    oldShadowTransform.m01, oldShadowTransform.m11, oldShadowTransform.m21, oldShadowTransform.m31,
-    oldShadowTransform.m02, oldShadowTransform.m12, oldShadowTransform.m22, oldShadowTransform.m32,
-    oldShadowTransform.m03, oldShadowTransform.m13, oldShadowTransform.m23, oldShadowTransform.m33
     ));
 
   // Calculate light direction normal, which is the transpose of the inverse of the

@@ -5,7 +5,6 @@ uniform mat4 shadowTransform0;
 uniform mat4 shadowTransform1;
 uniform mat4 shadowTransform2;
 uniform mat4 shadowTransform3;
-uniform mat4 oldShadowTransform;
 uniform vec3 lightDirection;
 
 attribute vec4 vertex;
@@ -17,7 +16,6 @@ varying vec4 shadowCoord0;
 varying vec4 shadowCoord1;
 varying vec4 shadowCoord2;
 varying vec4 shadowCoord3;
-varying vec4 oldShadowCoords;
 varying float lightIntensity;
 
 void main() {
@@ -28,7 +26,6 @@ void main() {
    shadowCoord1 = shadowTransform1 * (vertPosition + vec4(vertNormal, 0.0)); // Normal bias removes the shadow acne
    shadowCoord2 = shadowTransform2 * (vertPosition + vec4(vertNormal, 0.0)); // Normal bias removes the shadow acne
    shadowCoord3 = shadowTransform3 * (vertPosition + vec4(vertNormal, 0.0)); // Normal bias removes the shadow acne
-   oldShadowCoords = oldShadowTransform * (vertPosition + vec4(vertNormal, 0.0));
    lightIntensity = 0.5 + dot(-lightDirection, vertNormal) * 0.5;
    gl_Position = transform * vertex;
    
