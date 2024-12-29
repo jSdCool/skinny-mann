@@ -1,4 +1,5 @@
 import processing.data.*;
+import processing.core.*;
 class Goon extends StageEntity{
   Goon(float x,float y, float z,Stage stage){
     super(stage);
@@ -86,44 +87,44 @@ class Goon extends StageEntity{
   }
 
   //rener methods
-  public void draw(skiny_mann context){
+  public void draw(skiny_mann context,PGraphics render){
     float localX = x-context.drawCamPosX;
     float loaclY = y+context.drawCamPosY;
     float Scale = context.Scale;
     //hat
-    context.fill(59,59,59);
-    context.rect((localX-10)*Scale,(loaclY-50)*Scale,20*Scale,5*Scale);
-    context.rect((localX-12.5f)*Scale,(loaclY-45)*Scale,25*Scale,5*Scale);
-    context.fill(255);
-    context.rect((localX-15)*Scale,(loaclY-40)*Scale,30*Scale,5*Scale);
-    context.fill(0);
-    context.rect((localX-17.5f)*Scale,(loaclY-35)*Scale,35*Scale,5*Scale);
+    render.fill(59,59,59);
+    render.rect((localX-10)*Scale,(loaclY-50)*Scale,20*Scale,5*Scale);
+    render.rect((localX-12.5f)*Scale,(loaclY-45)*Scale,25*Scale,5*Scale);
+    render.fill(255);
+    render.rect((localX-15)*Scale,(loaclY-40)*Scale,30*Scale,5*Scale);
+    render.fill(0);
+    render.rect((localX-17.5f)*Scale,(loaclY-35)*Scale,35*Scale,5*Scale);
     //face
-    context.fill(255,0xBA,0x6B);
-    context.rect((localX-15)*Scale,(loaclY-30)*Scale,30*Scale,15*Scale);
-    context.fill(0);
+    render.fill(255,0xBA,0x6B);
+    render.rect((localX-15)*Scale,(loaclY-30)*Scale,30*Scale,15*Scale);
+    render.fill(0);
     //sun glasses
-    context.rect((localX-15)*Scale,(loaclY-27)*Scale,30*Scale,2*Scale);
+    render.rect((localX-15)*Scale,(loaclY-27)*Scale,30*Scale,2*Scale);
     if(mm.right()){
-      context.rect((localX-10)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
-      context.rect((localX+5)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
+      render.rect((localX-10)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
+      render.rect((localX+5)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
     }else{
-      context.rect((localX-15)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
-      context.rect((localX+0)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
+      render.rect((localX-15)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
+      render.rect((localX+0)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
     }
     
     //shirt
-    context.fill(21,18,15);
-    context.rect((localX-10)*Scale,(loaclY-15)*Scale,20*Scale,20*Scale);
+    render.fill(21,18,15);
+    render.rect((localX-10)*Scale,(loaclY-15)*Scale,20*Scale,20*Scale);
     
     //legs
-    context.fill(70,70,70);
-    context.rect((localX-10)*Scale,(loaclY+5)*Scale,5*Scale,10*Scale);
-    context.rect((localX+5)*Scale,(loaclY+5)*Scale,5*Scale,10*Scale);
+    render.fill(70,70,70);
+    render.rect((localX-10)*Scale,(loaclY+5)*Scale,5*Scale,10*Scale);
+    render.rect((localX+5)*Scale,(loaclY+5)*Scale,5*Scale,10*Scale);
     
   }
   
-  public void draw3D(skiny_mann context){
+  public void draw3D(skiny_mann context,PGraphics render){
     
   }
   

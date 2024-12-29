@@ -53,23 +53,23 @@ class DethPlane extends StageComponent {//ground component
     return part;
   }
 
-  void draw() {
+  void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
-    source.fill(-114431);
-    source.rect(source.Scale*((x+group.xOffset)-source.drawCamPosX)-0.02f, source.Scale*((y+group.yOffset)+source.drawCamPosY)-0.02f, source.Scale*dx+0.04f, source.Scale*dy+0.04f);
+    render.fill(-114431);
+    render.rect(source.Scale*((x+group.xOffset)-source.drawCamPosX)-0.02f, source.Scale*((y+group.yOffset)+source.drawCamPosY)-0.02f, source.Scale*dx+0.04f, source.Scale*dy+0.04f);
   }
 
-  void draw3D() {
+  void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
-    source.fill(-114431);
-    source.strokeWeight(0);
-    source.translate((x+group.xOffset)+dx/2, (y+group.yOffset)+dy/2, (z+group.zOffset)+dz/2);
-    source.box(dx, dy, dz);
-    source.translate(-1*((x+group.xOffset)+dx/2), -1*((y+group.yOffset)+dy/2), -1*((z+group.zOffset)+dz/2));
+    render.fill(-114431);
+    render.strokeWeight(0);
+    render.translate((x+group.xOffset)+dx/2, (y+group.yOffset)+dy/2, (z+group.zOffset)+dz/2);
+    render.box(dx, dy, dz);
+    render.translate(-1*((x+group.xOffset)+dx/2), -1*((y+group.yOffset)+dy/2), -1*((z+group.zOffset)+dz/2));
   }
 
   boolean colide(float x, float y, boolean c) {

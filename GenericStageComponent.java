@@ -6,6 +6,14 @@ import java.util.ArrayList;
 /** I have no idea why this class exsists
 */
 class GenericStageComponent extends StageComponent {
+  void draw(PGraphics render){
+    
+  }
+  
+  void draw3D(PGraphics render){
+    
+  }
+  
   StageComponent copy() {
     return this;
   }

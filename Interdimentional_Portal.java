@@ -55,17 +55,17 @@ class Interdimentional_Portal extends StageComponent {//ground component
     return part;
   }
 
-  void draw() {
+  void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
     Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0, 0);
-    source.drawPortal(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*1);
+    source.drawPortal(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*1,render);
     //if the player is colliding with the portal
     if (source.collisionDetection.collide2D(playerHitBox, Collider2D.createRectHitbox(x-25, y-50, 50, 100))) {
       //display the "Press E" text
-      source.fill(255);
-      source.textSize(source.Scale*20);
+      render.fill(255);
+      render.textSize(source.Scale*20);
       source.displayText="Press E";
       source.displayTextUntill=source.millis()+100;
 
@@ -77,7 +77,7 @@ class Interdimentional_Portal extends StageComponent {//ground component
         source.stageIndex=linkIndex;
         source.currentStageIndex=linkIndex;
 
-        source.background(0);
+        render.background(0);
         if (linkZ!=-1) {
           source.setPlayerPosZ=(int)linkZ;
           source.players[source.currentPlayer].z=linkZ;
@@ -96,19 +96,19 @@ class Interdimentional_Portal extends StageComponent {//ground component
     }
   }
 
-  void draw3D() {
+  void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
 
     Collider3D playerHitbox = source.players[source.currentPlayer].getHitBox3D(0, 0, 0);
 
-    source.translate(0, 0, z);
-    source.drawPortal((x+group.xOffset), (y+group.yOffset), 1);
-    source.translate(0, 0, -z);
+    render.translate(0, 0, z);
+    source.drawPortal((x+group.xOffset), (y+group.yOffset), 1,render);
+    render.translate(0, 0, -z);
     if (source.collisionDetection.collide3D(playerHitbox, Collider3D.createBoxHitBox(x-25, y-50, z-20, 50, 100, 20))) {
-      source.fill(255);
-      source.textSize(20);
+      render.fill(255);
+      render.textSize(20);
       source.displayText="Press E";
       source.displayTextUntill=source.millis()+100;
 
@@ -119,7 +119,7 @@ class Interdimentional_Portal extends StageComponent {//ground component
         source.stageIndex=linkIndex;
         source.currentStageIndex=linkIndex;
 
-        source.background(0);
+        render.background(0);
         if (linkZ!=-1) {
           source.setPlayerPosZ=(int)linkZ;
           source.players[source.currentPlayer].z=linkZ;

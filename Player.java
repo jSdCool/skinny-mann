@@ -115,7 +115,7 @@ class Player extends Entity implements Serializable {
   }
   
   //mabby implment theese later
-  public void draw(skiny_mann context){}
-  public void draw3D(skiny_mann context){}
+  public void draw(skiny_mann context,PGraphics render){}
+  public void draw3D(skiny_mann context,PGraphics render){}
   public Entity create(float x,float y,float z){return null;}
 }

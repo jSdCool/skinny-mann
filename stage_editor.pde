@@ -364,25 +364,25 @@ void stageEditGUI() {
 
     if (drawCoins) {//if adding coins
       if (grid_mode) {//if grid mode is on
-        drawCoin((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, 3*Scale);//draw gid aligmed coin
+        drawCoin((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, 3*Scale,g);//draw gid aligmed coin
       } else {
-        drawCoin((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, 3*Scale);//draw coin
+        drawCoin((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, 3*Scale,g);//draw coin
       }
     }
 
     if (drawingPortal) {//if adding portal part 1
       if (grid_mode) {//if gridmode is on
-        drawPortal((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, 1*Scale);//draw a grid aligned portal
+        drawPortal((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, 1*Scale,g);//draw a grid aligned portal
       } else {
-        drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, 1*Scale);//draw a portal
+        drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, 1*Scale,g);//draw a portal
       }
     }
 
     if (drawingPortal3) {//if drawing portal part 3
       if (grid_mode) {//if gridmode is on
-        drawPortal((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale);//draw a grid aligned portal
+        drawPortal((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale,g);//draw a grid aligned portal
       } else {
-        drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, 1);//draw a portal
+        drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, 1,g);//draw a portal
       }
     }
 
@@ -509,30 +509,30 @@ void stageEditGUI() {
     }
     if (check_point) {//if  checkpoint
       if (grid_mode) {//draw checkoint
-        drawCheckPoint((Math.round((mouseX/Scale+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round((mouseY/Scale-camPosY)*1.0/grid_size)*grid_size+camPosY));
+        drawCheckPoint((Math.round((mouseX/Scale+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round((mouseY/Scale-camPosY)*1.0/grid_size)*grid_size+camPosY),g);
       } else {
-        drawCheckPoint((int)(mouseX/Scale), (int)(mouseY/Scale));
+        drawCheckPoint((int)(mouseX/Scale), (int)(mouseY/Scale),g);
       }
     }
     if (drawingSign) {//if sign
       if (grid_mode) {//draw a sign
-        drawSign((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale);
+        drawSign((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale,g);
       } else {
-        drawSign((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale);
+        drawSign((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale,g);
       }
     }
     if (placingSound) {//if placing soundboxes
       if (grid_mode) {//draw a sound box
-        drawSoundBox((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale);
+        drawSoundBox((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale,g);
       } else {
-        drawSoundBox((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale);
+        drawSoundBox((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale,g);
       }
     }
     if (placingLogicButton) {//if placing a logic button
       if (grid_mode) {//draw the switch
-        drawLogicButton(primaryWindow, (Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale, false);
+        drawLogicButton((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale, false,g);
       } else {
-        drawLogicButton(primaryWindow, (int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale, false);
+        drawLogicButton((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale, false,g);
       }
     }
     if (placingLogicButton&&draw) {//if attempting to add a logic button
@@ -743,16 +743,16 @@ void stageEditGUI() {
       }
       if (draw3DSwitch1) {//if drawing a 3d switch
         if (grid_mode) {//draw the switch
-          draw3DSwitch1((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY), Scale);
+          draw3DSwitch1((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY), Scale,g);
         } else {
-          draw3DSwitch1((int)(mouseX/Scale), (int)(mouseY/Scale), Scale);
+          draw3DSwitch1((int)(mouseX/Scale), (int)(mouseY/Scale), Scale,g);
         }
       }
       if (draw3DSwitch2) {//if drawing a 3d switch
         if (grid_mode) {//draw the switch
-          draw3DSwitch2((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY), Scale);
+          draw3DSwitch2((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY), Scale,g);
         } else {
-          draw3DSwitch2((int)(mouseX/Scale), (int)(mouseY/Scale), Scale);
+          draw3DSwitch2((int)(mouseX/Scale), (int)(mouseY/Scale), Scale,g);
         }
       }
       if (draw3DSwitch1&&draw) {//if attempting to add a 3D switch
@@ -784,45 +784,45 @@ void stageEditGUI() {
 
       if (drawingPortal) {//if placing a portal
         if (grid_mode) {//diaply the portal
-          drawPortal((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale);
+          drawPortal((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale,g);
         } else {
-          drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale);
+          drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale,g);
         }
       }
 
       if (drawingPortal3) {//if placing a portal part 3
         if (grid_mode) {//display the portal
-          drawPortal((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale);
+          drawPortal((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale,g);
         } else {
-          drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale);
+          drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale,g);
         }
       }
       if (check_point) {//if adding checkoint
         if (grid_mode) {//display a checkoint
-          drawCheckPoint((Math.round((mouseX/Scale+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round((mouseY/Scale-camPosY)*1.0/grid_size)*grid_size+camPosY));
+          drawCheckPoint((Math.round((mouseX/Scale+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round((mouseY/Scale-camPosY)*1.0/grid_size)*grid_size+camPosY),g);
         } else {
-          drawCheckPoint((int)(mouseX/Scale), (int)(mouseY/Scale));
+          drawCheckPoint((int)(mouseX/Scale), (int)(mouseY/Scale),g);
         }
       }
       if (drawCoins) {//if adding coins
         if (grid_mode) {//display a coin
-          drawCoin((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale*3);
+          drawCoin((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale*3,g);
         } else {
-          drawCoin((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale*3);
+          drawCoin((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale*3,g);
         }
       }
       if (drawingSign) {//if adding coins
         if (grid_mode) {//display a coin
-          drawSign((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale);
+          drawSign((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale,g);
         } else {
-          drawSign((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale);
+          drawSign((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale,g);
         }
       }
       if (placingLogicButton) {//if placing a logic button
         if (grid_mode) {//draw the switch
-          drawLogicButton(primaryWindow, (Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale, false);
+          drawLogicButton((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale, false,g);
         } else {
-          drawLogicButton(primaryWindow, (int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale, false);
+          drawLogicButton((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale, false,g);
         }
       }
       if (placingLogicButton&&draw) {//if attempting to add a logic button
@@ -1882,13 +1882,13 @@ void generateDisplayBlueprint3D() {
 
 void renderBlueprint() {//render the blueprint on top of the stage
   for (int i=0; i<displayBlueprint.parts.size(); i++) {
-    displayBlueprint.parts.get(i).draw();
+    displayBlueprint.parts.get(i).draw(g);
   }
 }
 
 void renderBlueprint3D() {//render the blueprint on top of the stage
   for (int i=0; i<displayBlueprint.parts.size(); i++) {
-    displayBlueprint.parts.get(i).draw3D();
+    displayBlueprint.parts.get(i).draw3D(g);
   }
 }
 
