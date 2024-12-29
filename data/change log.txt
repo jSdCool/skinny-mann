@@ -3,6 +3,10 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 
 0.9.1_Early_Access
 -fixed: all muisc after the first music track would ignore the set volume
+-changed: 3D Shadow setting now has 5 values
+-changed: settings version has been increased
+-added: new shadow type
+-added: loading text to startup logo
 
 0.9.0_Early_Access
 -changed: new collision detection system

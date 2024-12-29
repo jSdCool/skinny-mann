@@ -12,3 +12,4 @@ Settings settings;
 
 Button shadows0, shadows1, shadows2, shadows3, shadows4;
 UiText st_o_shadowsOff, st_o_shadowsOld, st_o_shadowsLow, st_o_shadowsMedium, st_o_shadowsHigh;
+UiText loadingText;
