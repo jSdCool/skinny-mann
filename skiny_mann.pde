@@ -74,7 +74,7 @@ void setup() {//seccond function called
     //start the load thread
     thread("programLoad");
     
-    hint(ENABLE_KEY_REPEAT);
+    
   }
   catch(Throwable e) {
     println("an error occored in the setup function");
@@ -222,6 +222,7 @@ void draw() {// the function that is called every fraim
         }
 
         if (Menue.equals("main")) {//if on main menue
+          hint(DISABLE_KEY_REPEAT);
           drawMainMenu(true);
         }
         if (Menue.equals("level select")) {//if selecting level
@@ -241,6 +242,7 @@ void draw() {// the function that is called every fraim
 
 
         if (Menue.equals("settings")) {//the settings menue
+          hint(ENABLE_KEY_REPEAT);
           drawSettings();
         }
 
@@ -263,6 +265,7 @@ void draw() {// the function that is called every fraim
 
         if (Menue.equals("multiplayer strart")) {
           background(#FF8000);
+          hint(ENABLE_KEY_REPEAT);
           fill(0);
           initMultyplayerScreenTitle.draw();
 
@@ -497,6 +500,7 @@ void draw() {// the function that is called every fraim
 
 
       if (inGame) {
+        hint(DISABLE_KEY_REPEAT);
         //================================================================================================
         background(7646207);
         stageLevelDraw();
@@ -562,6 +566,7 @@ void draw() {// the function that is called every fraim
       //level creator here
     } else {
       if (startup) {//if on the startup screen
+        hint(ENABLE_KEY_REPEAT);
         background(#48EDD8);
         translate(width/2, 150*Scale, 0);
         rotateX(PI);
@@ -686,6 +691,7 @@ void draw() {// the function that is called every fraim
       }
 
       if (levelOverview) {//if on the level overview
+        hint(DISABLE_KEY_REPEAT);
         background(#0092FF);
         fill(#7CC7FF);
         stroke(#7CC7FF);
@@ -776,6 +782,7 @@ void draw() {// the function that is called every fraim
       }//end of level over view
 
       if (newFile) {//if on the new file screen
+        hint(ENABLE_KEY_REPEAT);
         background(#0092FF);
         stroke(0);
         strokeWeight(2*Scale);
