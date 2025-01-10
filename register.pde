@@ -58,6 +58,7 @@ void registerThings(){
   SerialRegistry.register(LevelDownloadInfo.ID,LevelDownloadInfo::new);
   SerialRegistry.register(LevelFileComponentData.ID,LevelFileComponentData::new);
   SerialRegistry.register(LoadLevelRequest.ID,LoadLevelRequest::new);
+  SerialRegistry.register(LogicBoard.ID,LogicBoard::new);
   SerialRegistry.register(MultyPlayerEntityInfo.ID,MultyPlayerEntityInfo::new);
   SerialRegistry.register(NetworkDataPacket.ID,NetworkDataPacket::new);
   SerialRegistry.register(NoMovementManager.ID,NoMovementManager::new);
