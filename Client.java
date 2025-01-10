@@ -5,8 +5,8 @@ class Client extends Thread {
   static transient skiny_mann source;
   int playernumber, blockSize=10240, currentDownloadIndex, currentDownloadblock;
   Socket socket;
-  ObjectOutputStream output;
-  ObjectInputStream input;
+  ObjectSerializingOutputStream output;
+  ObjectDeserializingInputStream input;
   String ip="uninitilized", name="uninitilized";
   ArrayList<DataPacket> dataToSend=new ArrayList<>();
   NetworkDataPacket toSend=new NetworkDataPacket(), recieved;
@@ -31,8 +31,8 @@ class Client extends Thread {
     System.out.println("creating new client");
     try {
       socket=s;
-      output=new ObjectOutputStream(socket.getOutputStream());
-      input = new ObjectInputStream(socket.getInputStream());
+      output=new ObjectSerializingOutputStream(socket.getOutputStream());
+      input = new ObjectDeserializingInputStream(socket.getInputStream());
       socket.setSoTimeout(5000);
     }
     catch(Exception i) {
@@ -66,15 +66,14 @@ class Client extends Thread {
       while (socket.isConnected()&&!socket.isClosed()) {
         //send data to client
         //System.out.println("sending "+source.frameCount);
-        output.writeObject(toSend);
+        output.write(toSend);
         sent=System.nanoTime();
         output.flush();
-        output.reset();
         rs=(double)(sent/1000000-processStart/1000000);
         //System.out.println("send to recieve: "+sr+"\nrecieve to send: "+rs);
 
         //recieve data from client
-        Object rawInput = input.readObject();
+        Object rawInput = input.readSerializedObject();
         processStart=System.nanoTime();
         sr=(double)(processStart/1000000-sent/1000000);
         //System.out.println("recieved "+source.frameCount);
@@ -176,10 +175,6 @@ class Client extends Thread {
       i.printStackTrace();
       //source.networkError(i);
     }
-    catch(ClassNotFoundException c) {
-      c.printStackTrace();
-      //source.networkError(c);
-    }
   }
 
   void joined() {
@@ -188,7 +183,7 @@ class Client extends Thread {
       double sr=0, rs=0;
       while (socket.isConnected()&&!socket.isClosed()) {
         //recieve data from server
-        Object rawInput = input.readObject();
+        Object rawInput = input.readSerializedObject();
         processStart=System.nanoTime();
         sr=(double)(processStart/1000000-sent/1000000);
         //process input
@@ -326,10 +321,9 @@ class Client extends Thread {
 
         //send data to server
         //System.out.println("sending "+source.frameCount);
-        output.writeObject(toSend);
+        output.write(toSend);
         sent=System.nanoTime();
         output.flush();
-        output.reset();
 
         rs=(double)(sent/1000000-processStart/1000000);
         //System.out.println("send to recieve: "+sr+"\nrecieve to send: "+rs);
@@ -340,9 +334,6 @@ class Client extends Thread {
     }
     catch(IOException i) {
       source.networkError(i);
-    }
-    catch(ClassNotFoundException c) {
-      source.networkError(c);
     }
   }
 
