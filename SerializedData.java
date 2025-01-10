@@ -147,6 +147,9 @@ public class SerializedData {
      * @return the serial representation of the passed in string
      */
     public static SerializedData ofString(String s){
+        if(s==null){
+          s = "";
+        }
         byte[] sb = s.getBytes();
         ArrayList<Byte> gb = new ArrayList<>(sb.length);
         for(byte b: sb){

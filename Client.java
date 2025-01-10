@@ -175,6 +175,9 @@ class Client extends Thread {
       i.printStackTrace();
       //source.networkError(i);
     }
+    catch(Exception e){
+      e.printStackTrace();
+    }
   }
 
   void joined() {
@@ -334,6 +337,9 @@ class Client extends Thread {
     }
     catch(IOException i) {
       source.networkError(i);
+    }
+    catch(Exception e){
+      source.networkError(e);
     }
   }
 

@@ -36,9 +36,9 @@ class SelectedLevelInfo extends DataPacket {
   @Override
   public SerializedData serialize() {
     SerializedData data = new SerializedData(id());
-    data.addObject(SerializedData.ofString(name));
-    data.addObject(SerializedData.ofString(author));
-    data.addObject(SerializedData.ofString(gameVersion));
+    data.addObject(SerializedData.ofString(name!=null?name:""));
+    data.addObject(SerializedData.ofString(author!=null?author:""));
+    data.addObject(SerializedData.ofString(gameVersion!=null?gameVersion:""));
     data.addInt(multyplayerMode);
     data.addInt(maxPlayers);
     data.addInt(minPlayers);
