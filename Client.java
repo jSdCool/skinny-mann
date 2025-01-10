@@ -394,11 +394,16 @@ class Client extends Thread {
     return out;
   }
 
+  /**called by the client to initiate requesting the next level component from the server
+  */
   void getNextLevelComponent() {
+    //if this is the first thing to be rquested
     if (currentDownloadIndex==-1) {
+      
       currentDownloadIndex=0;
       currentDownloadblock=0;
-      if (ldi.files.length==0) {//if there are no file to download
+      if (ldi.files.length==0) {//if there are no files to download
+        //load the level that was downloaded and send the ready signal to the server
         source.loadLevel(source.rootPath);
         source.bestTime=0;
         dataToSend.add(new BestScore(source.name, source.bestTime));
@@ -406,17 +411,23 @@ class Client extends Thread {
         downloadingLevel=false;
         return;
       }
+      //alocate the memory for the file to download
       currentDownloadingFile=new byte[ldi.realSize[currentDownloadIndex]];
-    } else {
+    } else {//if this is not the first time this method was called
+      //set the block to download to the next one
       currentDownloadblock++;
+      //if the next block is outside the number of blocks that file has
       if (currentDownloadblock==ldi.fileSizes[currentDownloadIndex]) {
         //save that file to the disc
         source.saveBytes(source.rootPath+ldi.files[currentDownloadIndex], currentDownloadingFile);
 
+        //reset the block index to 0 and increase the file index
         currentDownloadblock=0;
         currentDownloadIndex++;
+        //if the file index is the same the the number of total files to download
         if (currentDownloadIndex==ldi.fileSizes.length) {
           //your done downloading
+          //load the level and send the ready signal to the server
           source.loadLevel(source.rootPath);
           source.bestTime=0;
           dataToSend.add(new BestScore(source.name, source.bestTime));
@@ -426,11 +437,12 @@ class Client extends Thread {
           ldi=null;
           return;
         }
+        //allocate the space for the next file to download
         currentDownloadingFile=new byte[ldi.realSize[currentDownloadIndex]];
       }
     }
     //you now have the next segemnt to download
-
+    //request that block from the server
     dataToSend.add(new RequestLevelFileComponent(currentDownloadIndex, currentDownloadblock));//request that segment
   }
 }
