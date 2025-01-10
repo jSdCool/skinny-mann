@@ -290,7 +290,9 @@ class Client extends Thread {
             blockSize=ldi.blockSize;
 
             source.rootPath=source.appdata+"/CBi-games/skinny mann/UGC/levels/"+ldi.level.name+generateRandomString(20);
+            source.level = ldi.level;
             ldi.level.save();
+            source.level = null;
             currentDownloadIndex=-1;
             currentDownloadblock=-1;
             getNextLevelComponent();
