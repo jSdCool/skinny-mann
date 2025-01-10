@@ -75,7 +75,7 @@ class Client extends Thread {
         Object rawInput = input.readSerializedObject();
 
         
-        //process input
+        //process input data from client
         recieved=(NetworkDataPacket)rawInput;
         for (int i=0; i<recieved.data.size(); i++) {
           DataPacket di = recieved.data.get(i);
@@ -129,6 +129,8 @@ class Client extends Thread {
             source.level.stages.get(ke.getStage()).entities.get(ke.getIndex()).kill();
           }
         }
+        
+        //prepair data to send client
 
         ArrayList<String> names=new ArrayList<>();
         names.add(source.name);
@@ -142,6 +144,7 @@ class Client extends Thread {
           }
         }
         if (source.inGame) {
+          //collect info about which shirt colors are currenly in use
           viablePlayers=new boolean[10];
           viablePlayers[0]=true;
           for (int i=0; i<source.clients.size(); i++) {
@@ -154,7 +157,7 @@ class Client extends Thread {
           if (source.level.multyplayerMode==2) {
             dataToSend.add(new CoOpStateInfo(source.level.variables, source.level.groups, source.level_complete));
             
-            //send the lient info aboutb all entities in the level                            
+            //send the client info about all entities in the level                            
             for(int i=0;i<source.level.stages.size();i++){
               for(int j=0;j<source.level.stages.get(i).entities.size();j++){
                 dataToSend.add(new MultyPlayerEntityInfo(i,j,source.level.stages.get(i).entities.get(j)));
