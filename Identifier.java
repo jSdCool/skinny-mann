@@ -19,6 +19,7 @@ public class Identifier {
             throw new RuntimeException("Identifier contains too many colon chars");
         for(String s:parts){
             if(!isValidString(s)){
+                System.err.println("Invalid Identifier: "+id);
                 throw new RuntimeException("Invalid char in Identifier! all chars in Identifiers must be [0-9 A-Z a-z - _]\n"+id);
             }
         }

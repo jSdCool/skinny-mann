@@ -1,7 +1,7 @@
 
 class SelectedLevelInfo extends DataPacket {
   
-  public static final Identifier ID = new Identifier("Selected Level Info");
+  public static final Identifier ID = new Identifier("SelectedLevelInfo");
   
   String name, author, gameVersion;
   int multyplayerMode, maxPlayers, minPlayers, id;
