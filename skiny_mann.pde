@@ -4007,6 +4007,9 @@ void programLoad() {
   players[8]=new Player(20, 699, 1, 8);
   players[9]=new Player(20, 699, 1, 9);
   loadProgress++;
+  
+  //register all the classes in the corresponding registries
+  registerThings();
 
   println("initlizing sound handler");
 

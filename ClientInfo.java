@@ -13,7 +13,11 @@ class ClientInfo extends DataPacket {
     this.atEnd=atEnd;
   }
   
-  //SerialIterator iterator
+  public ClientInfo(SerialIterator iterator){
+    name = iterator.getString();
+    readdy = iterator.getBoolean();
+    atEnd = iterator.getBoolean();
+  }
   @Override
   public SerializedData serialize() {
     SerializedData data = new SerializedData(id());
