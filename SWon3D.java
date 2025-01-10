@@ -1,9 +1,11 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
 class SWon3D extends StageComponent {//ground component
+
+  public static final Identifier ID = new Identifier("SWon3D");
+
   SWon3D(JSONObject data, boolean stage_3D) {
     type="3DonSW";
     x=data.getFloat("x");
@@ -21,6 +23,10 @@ class SWon3D extends StageComponent {//ground component
     y=Y;
     z=Z;
     type="3DonSW";
+  }
+  
+  public SWon3D(SerialIterator iterator){
+    deserial(iterator);
   }
   
   StageComponent copy() {
@@ -99,5 +105,18 @@ class SWon3D extends StageComponent {//ground component
   }
   public Collider3D getCollider3D(){ 
     return null;
+  }
+  
+  //SerialIterator iterator
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    serialize(data);
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
 }

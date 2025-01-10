@@ -1,4 +1,3 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
@@ -6,6 +5,7 @@ import processing.core.*;
 
 class CheckPoint extends StageComponent {//ground component
   static transient skiny_mann source;
+  public static final Identifier ID = new Identifier("CheckPoint");
   CheckPoint(JSONObject data, boolean stage_3D) {
     type="check point";
     x=data.getFloat("x");
@@ -29,6 +29,11 @@ class CheckPoint extends StageComponent {//ground component
     y=Y;
     z=Z;
   }
+  
+  public CheckPoint(SerialIterator iterator){
+    deserial(iterator);
+  }
+  
   StageComponent copy() {
     return new CheckPoint(x, y, z);
   }
@@ -138,5 +143,18 @@ class CheckPoint extends StageComponent {//ground component
   }
   public Collider3D getCollider3D(){ 
     return null;
+  }
+  
+  //SerialIterator iterator
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    serialize(data);
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
 }

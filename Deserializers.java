@@ -140,10 +140,10 @@ public class Deserializers {
 
             //deserialized the object and if it is one of the special types, resolve it
             Object elementr = SerialRegistry.get(elementType).apply(iterator);
-            if(elementr instanceof SerialRegistry.SerialString str){
-                list.add((E) str.get());
-            } else if (elementr instanceof SerialRegistry.SerialArrayList arl) {
-                list.add((E) arl.get());
+            if(elementr instanceof SerialRegistry.SerialString){
+                list.add((E) ((SerialRegistry.SerialString)elementr).get());
+            } else if (elementr instanceof SerialRegistry.SerialArrayList) {
+                list.add((E) ((SerialRegistry.SerialArrayList)elementr).get());
             }else {
                 list.add((E) elementr);
             }

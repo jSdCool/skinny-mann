@@ -1,5 +1,8 @@
 import processing.data.*;
 class Goon extends StageEntity{
+  
+  public static final Identifier ID = new Identifier("Goon");
+  
   Goon(float x,float y, float z,Stage stage){
     super(stage);
     this.x=x;
@@ -18,6 +21,19 @@ class Goon extends StageEntity{
     ix=x;
     iy=y;
     iz=z;
+  }
+  
+  public Goon(SerialIterator iterator){
+    super(null);
+    x = iterator.getFloat();
+    y = iterator.getFloat();
+    z = iterator.getFloat();
+    ix = iterator.getFloat();
+    iy = iterator.getFloat();
+    iz = iterator.getFloat();
+    verticalVelocity = iterator.getFloat();
+    dead = iterator.getBoolean();
+    in3D = iterator.getBoolean();
   }
   
   float x,y,z;
@@ -177,5 +193,25 @@ class Goon extends StageEntity{
     return null;
   }
   
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+  
+    data.addFloat(x);
+    data.addFloat(y);
+    data.addFloat(z);
+    data.addFloat(ix);
+    data.addFloat(iy);
+    data.addFloat(iz);
+    data.addFloat(verticalVelocity);
+    data.addBool(dead);
+    data.addBool(in3D);
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
+  }
   
 }

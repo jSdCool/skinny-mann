@@ -67,16 +67,8 @@ public class ObjectDeserializingInputStream extends InputStream {
             throw new IOException("End of stream reached");
         }
 
-        //timing shit
-        long start = System.nanoTime();
 
         Object o = deserializer.apply(new SerialIterator(4,objectBytes));
-
-        //more timing shit
-        long end = System.nanoTime();
-        //System.out.println("deserialized in: "+(end-start)+"ns");
-        Main.dcerTime.add((end-start));
-        //using the registry deserialize the object and return it
         return o;
     }
 

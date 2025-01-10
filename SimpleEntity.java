@@ -1,6 +1,9 @@
 import java.util.Random;
 import processing.data.*;
 class SimpleEntity extends StageEntity{
+  
+  public static final Identifier ID = new Identifier("SimpleEntity");
+  
   public SimpleEntity(float x,float y,float z,Stage stage){
     super(stage);
     spawnX=x;
@@ -9,6 +12,18 @@ class SimpleEntity extends StageEntity{
     setX(x);
     setY(y);
     setZ(z);
+  }
+  
+  public SimpleEntity(SerialIterator iterator){
+    super(null);
+    x = iterator.getFloat();
+    y = iterator.getFloat();
+    z = iterator.getFloat();
+    spawnX = iterator.getFloat();
+    spawnY = iterator.getFloat();
+    spawnZ = iterator.getFloat();
+    vVelcoity = iterator.getFloat();
+    dead = iterator.getBoolean();
   }
   
   public Entity create(float x,float y,float z){
@@ -43,6 +58,16 @@ class SimpleEntity extends StageEntity{
         az = (int)(r.nextInt(-1,2));
         j = (int)(Math.random()*2)==1;
       };
+      //SerialIterator iterator
+      @Override
+      public SerializedData serialize() {
+        return null;
+      }
+      
+      @Override
+      public Identifier id() {
+        return null;
+      }
     };
   
   public MovementManager getMovementmanager(){
@@ -159,5 +184,24 @@ class SimpleEntity extends StageEntity{
   
   public PlayerIniteractionResult playerInteraction(Collider3D playerHitBox){
     return null;
+  }
+  
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    data.addFloat(x);
+    data.addFloat(y);
+    data.addFloat(z);
+    data.addFloat(spawnX);
+    data.addFloat(spawnY);
+    data.addFloat(spawnZ);
+    data.addFloat(vVelcoity);
+    data.addBool(dead);
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
 }

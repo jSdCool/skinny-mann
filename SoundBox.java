@@ -1,10 +1,12 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 import processing.sound.*;
 
 class SoundBox extends StageComponent {
+  
+  public static final Identifier ID = new Identifier("SoundBox");
+  
   String soundKey="";
 
   SoundBox(float X, float Y) {
@@ -21,6 +23,11 @@ class SoundBox extends StageComponent {
     if (!data.isNull("group")) {
       group=data.getInt("group");
     }
+  }
+  
+  public SoundBox(SerialIterator iterator){
+    deserial(iterator);
+    soundKey = iterator.getString();
   }
 
   void draw() {
@@ -109,5 +116,18 @@ class SoundBox extends StageComponent {
   }
   public Collider3D getCollider3D(){ 
     return null;
+  }
+ 
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    serialize(data);
+    data.addObject(SerializedData.ofString(soundKey));
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
 }
