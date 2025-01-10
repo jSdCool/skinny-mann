@@ -129,7 +129,7 @@ LeaderBoard leaderBoard= new LeaderBoard(new String[]{"", "", "", "", "", "", ""
 Stage blueprints[], displayBlueprint;
 Point3D initalMousePoint=new Point3D(0, 0, 0), initalObjectPos=new Point3D(0, 0, 0), initialObjectDim=new Point3D(0, 0, 0);
 UiFrame ui;
-UiText mm_title, mm_EarlyAccess, mm_version, ls_levelSelect, lsUGC_title, lsUGC_noLevelFound, lsUGC_levelNotCompatible, lsUGC_levelName, st_title, st_Hssr, st_Vssr, st_gameplay, st_vsrp, st_hsrp, st_dsp_vsr, st_dsp_fs, st_dsp_4k, st_dsp_1440, st_dsp_1080, st_dsp_900, st_dsp_720, st_dsp_fsYes, st_dsp_fsNo, st_display, st_o_displayFPS, st_o_debugINFO, st_snd_musicVol, st_snd_SFXvol, st_o_3DShadow, st_snd_narration, st_o_yes, st_o_no, st_snd_better, st_snd_demonitized, st_snd_currentMusicVolume, st_snd_currentSoundsVolume, st_other, initMultyplayerScreenTitle, mp_hostSeccion, mp_host_Name, mp_host_enterdName, mp_host_port, mp_host_endterdPort, mp_joinSession, mp_join_name, mp_join_enterdName, mp_join_port, mp_join_enterdPort, mp_join_ip, mp_join_enterdIp, mp_disconnected, mp_dc_reason, dev_title, dev_info, tut_notToday, tut_disclaimer, tut_toClose, coinCountText, pa_title, logoText, up_title, up_info, up_wait, lc_start_version, lc_start_author, lc_load_new_describe, lc_load_new_enterd, lc_load_notFound, lc_newf_enterdName, lc_newf_fileName, lc_dp2_info, lc_newbp_describe, lc_exit_question, lc_exit_disclaimer, deadText, fpsText, dbg_mspc, dbg_playerX, dbg_playerY, dbg_vertvel, dbg_animationCD, dbg_pose, dbg_camX, dbg_camY, dbg_tutorialPos, game_displayText, lebelCompleteText, lc_fullScreenWarning, settingPlayerSpawnText,st_sound,st_snd_narrationVol,st_snd_currentNarrationVolume,narrationCaptionText,st_o_diableTransitions,st_o_defaultAuthor;
+UiText mm_title, mm_EarlyAccess, mm_version, ls_levelSelect, lsUGC_title, lsUGC_noLevelFound, lsUGC_levelNotCompatible, lsUGC_levelName, st_title, st_Hssr, st_Vssr, st_gameplay, st_vsrp, st_hsrp, st_dsp_vsr, st_dsp_fs, st_dsp_4k, st_dsp_1440, st_dsp_1080, st_dsp_900, st_dsp_720, st_dsp_fsYes, st_dsp_fsNo, st_display, st_o_displayFPS, st_o_debugINFO, st_snd_musicVol, st_snd_SFXvol, st_o_3DShadow, st_snd_narration, st_o_yes, st_o_no, st_snd_better, st_snd_demonitized, st_snd_currentMusicVolume, st_snd_currentSoundsVolume, st_other, initMultyplayerScreenTitle, mp_hostSeccion, mp_host_Name, mp_host_enterdName, mp_host_port, mp_host_endterdPort, mp_joinSession, mp_join_name, mp_join_enterdName, mp_join_port, mp_join_enterdPort, mp_join_ip, mp_join_enterdIp, mp_disconnected, mp_dc_reason, dev_title, dev_info, tut_notToday, tut_disclaimer, tut_toClose, coinCountText, pa_title, logoText, up_title, up_info, up_wait, lc_start_version, lc_start_author, lc_load_new_describe, lc_load_new_enterd, lc_load_notFound, lc_newf_enterdName, lc_newf_fileName, lc_dp2_info, lc_newbp_describe, lc_exit_question, lc_exit_disclaimer, deadText, fpsText, dbg_mspc, dbg_playerX, dbg_playerY, dbg_vertvel, dbg_animationCD, dbg_pose, dbg_camX, dbg_camY, dbg_tutorialPos, game_displayText, lebelCompleteText, lc_fullScreenWarning, settingPlayerSpawnText,st_sound,st_snd_narrationVol,st_snd_currentNarrationVolume,narrationCaptionText,st_o_diableTransitions,st_o_defaultAuthor,dbg_ping;
 UiSlider musicVolumeSlider, SFXVolumeSlider, verticleEdgeScrollSlider, horozontalEdgeScrollSlider,narrationVolumeSlider;
 ArrayList<GlitchBox> glitchBoxes = new ArrayList<>();
 UiTextBox defaultAuthorNameTextBox;
@@ -1041,6 +1041,22 @@ void draw() {// the function that is called every fraim
         dbg_camY.setText("camera y: "+camPosY);
         dbg_tutorialPos.setText("tutorial position: "+tutorialPos);
       }
+      if(multiplayer){
+        if(clients.size()==0){
+          dbg_ping.setText("Ping: N/A");
+        }else if(clients.size()==1){
+          long pingl = clients.get(0).ping;
+          float pingDisp = (int)(pingl/10000)/100.0;
+          dbg_ping.setText("Ping: "+pingDisp);
+        }else{
+          long totalPing = clients.stream().map( c -> c.ping).reduce(0l, Long::sum);
+          long avgPingl = totalPing / clients.size();
+          float pingDisp = (int)(avgPingl/10000)/100.0;
+          dbg_ping.setText("avgPing: "+pingDisp);
+        }
+      }else{
+        dbg_ping.setText("Ping: N/A");
+      }
       dbg_mspc.draw();
       dbg_playerX.draw();
       dbg_playerY.draw();
@@ -1050,6 +1066,7 @@ void draw() {// the function that is called every fraim
       dbg_camX.draw();
       dbg_camY.draw();
       dbg_tutorialPos.draw();
+      dbg_ping.draw();
     }
 
     if (millis()<gmillis) {
@@ -4544,5 +4561,6 @@ void initText() {
   lebelCompleteText = new UiText(ui, "LEVEL COMPLETE!!!", 200, 400, 100, LEFT, BOTTOM);
   settingPlayerSpawnText = new UiText(ui, "Select the spawn location of the player",640,72,35,CENTER,CENTER);
   narrationCaptionText = new UiText(ui,"*Narration in progress*",640,695,20,CENTER,BOTTOM);
+  dbg_ping = new UiText(ui,"Ping: N/A",1275,100,10,RIGHT,TOP);
   
 }

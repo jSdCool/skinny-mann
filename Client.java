@@ -17,6 +17,7 @@ class Client extends Thread {
   String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&()-_=+`~[]{}";
   byte outherFiles[][];
   byte currentDownloadingFile[];
+  long lastContactTime, ping;
 
   Client(Socket s) {
     init(s);
@@ -40,7 +41,6 @@ class Client extends Thread {
       source.networkError(i);
       return;
     }
-
     ip=socket.getInetAddress().toString();
     System.out.println(ip);
     start();
@@ -61,22 +61,20 @@ class Client extends Thread {
 
   void host() {
     try {
-      long sent=0, processStart=0;
-      double sr=0, rs=0;
       while (socket.isConnected()&&!socket.isClosed()) {
         //send data to client
-        //System.out.println("sending "+source.frameCount);
+        
         output.write(toSend);
-        sent=System.nanoTime();
         output.flush();
-        rs=(double)(sent/1000000-processStart/1000000);
-        //System.out.println("send to recieve: "+sr+"\nrecieve to send: "+rs);
+        
+        //calculate Ping
+        ping = System.nanoTime() - lastContactTime;
+        lastContactTime = System.nanoTime();
 
         //recieve data from client
         Object rawInput = input.readSerializedObject();
-        processStart=System.nanoTime();
-        sr=(double)(processStart/1000000-sent/1000000);
-        //System.out.println("recieved "+source.frameCount);
+
+        
         //process input
         recieved=(NetworkDataPacket)rawInput;
         for (int i=0; i<recieved.data.size(); i++) {
@@ -182,13 +180,14 @@ class Client extends Thread {
 
   void joined() {
     try {
-      long sent=0, processStart=0;
-      double sr=0, rs=0;
       while (socket.isConnected()&&!socket.isClosed()) {
+        //calculate Ping
+        ping = System.nanoTime() - lastContactTime;
+        lastContactTime = System.nanoTime();
+        
         //recieve data from server
         Object rawInput = input.readSerializedObject();
-        processStart=System.nanoTime();
-        sr=(double)(processStart/1000000-sent/1000000);
+
         //process input
         recieved=(NetworkDataPacket)rawInput;
         for (int i=0; i<recieved.data.size(); i++) {
@@ -312,7 +311,6 @@ class Client extends Thread {
         }
 
         //outher misolenous processing
-        //System.out.println(readdy);
         dataToSend.add(new ClientInfo(source.name, readdy, source.reachedEnd));
         if (source.inGame) {
           source.players[playernumber].name=source.name;
@@ -325,13 +323,9 @@ class Client extends Thread {
         generateSendPacket();
 
         //send data to server
-        //System.out.println("sending "+source.frameCount);
         output.write(toSend);
-        sent=System.nanoTime();
         output.flush();
 
-        rs=(double)(sent/1000000-processStart/1000000);
-        //System.out.println("send to recieve: "+sr+"\nrecieve to send: "+rs);
       }
     }
     catch(java.net.SocketTimeoutException s) {
