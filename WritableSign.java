@@ -1,9 +1,11 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
 class WritableSign extends StageComponent {
+  
+  public static final Identifier ID = new Identifier("WritableSign");
+  
   String contents;
   WritableSign(JSONObject data, boolean stage_3D) {
     type="WritableSign";
@@ -29,6 +31,11 @@ class WritableSign extends StageComponent {
     z=Z;
     contents="";
     type="WritableSign";
+  }
+  
+  public WritableSign(SerialIterator iterator){
+    deserial(iterator);
+    contents = iterator.getString();
   }
   
   StageComponent copy() {
@@ -138,5 +145,18 @@ class WritableSign extends StageComponent {
   }
   public Collider3D getCollider3D(){ 
     return null;
+  }
+  
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    serialize(data);
+    data.addObject(SerializedData.ofString(contents));
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
 }

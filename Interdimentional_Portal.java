@@ -1,9 +1,11 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
 class Interdimentional_Portal extends StageComponent {//ground component
+
+  public static final Identifier ID = new Identifier("InterdimentionalPortal");
+  
   float linkX, linkY, linkZ;
   int linkIndex;
   Interdimentional_Portal(JSONObject data, boolean stage_3D) {
@@ -23,6 +25,15 @@ class Interdimentional_Portal extends StageComponent {//ground component
       group=data.getInt("group");
     }
   }
+  
+  public Interdimentional_Portal(SerialIterator iterator){
+    deserial(iterator);
+    linkX = iterator.getFloat();
+    linkY = iterator.getFloat();
+    linkZ = iterator.getFloat();
+    linkIndex = iterator.getInt();
+  }
+  
   StageComponent copy() {
     return null;
   }
@@ -166,5 +177,21 @@ class Interdimentional_Portal extends StageComponent {//ground component
   }
   public Collider3D getCollider3D() {
     return null;
+  }
+  
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    serialize(data);
+    data.addFloat(linkX);
+    data.addFloat(linkY);
+    data.addFloat(linkZ);
+    data.addInt(linkIndex);
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
 }

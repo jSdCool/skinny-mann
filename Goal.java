@@ -1,9 +1,11 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
 class Goal extends StageComponent {//ground component
+
+  public static final Identifier ID = new Identifier("Goal");
+
   Goal(JSONObject data, boolean stage_3D) {
     type="goal";
     x=data.getFloat("x");
@@ -19,6 +21,10 @@ class Goal extends StageComponent {//ground component
     type="goal";
     x=X;
     y=Y;
+  }
+  
+  public Goal(SerialIterator iterator){
+    deserial(iterator);
   }
 
   StageComponent copy() {
@@ -93,5 +99,17 @@ class Goal extends StageComponent {//ground component
   }
   public Collider3D getCollider3D(){ 
     return null;
+  }
+  
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    serialize(data);
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
 }

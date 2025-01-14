@@ -1,9 +1,11 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
 class SWoff3D extends StageComponent {//ground component
+
+  public static final Identifier ID = new Identifier("SWoff3D");
+
   SWoff3D(JSONObject data, boolean stage_3D) {
     type="3DoffSW";
     x=data.getFloat("x");
@@ -21,6 +23,10 @@ class SWoff3D extends StageComponent {//ground component
     y=Y;
     z=Z;
     type="3DoffSW";
+  }
+  
+  public SWoff3D(SerialIterator iterator){
+    deserial(iterator);
   }
   
   StageComponent copy() {
@@ -100,5 +106,17 @@ class SWoff3D extends StageComponent {//ground component
   }
   public Collider3D getCollider3D(){ 
     return null;
+  }
+ 
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    serialize(data);
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
 }

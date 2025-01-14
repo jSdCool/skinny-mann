@@ -1,9 +1,11 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
 class Sloap extends StageComponent {//ground component
+
+  public static final Identifier ID = new Identifier("Sloap");
+
   int direction;
   Sloap(JSONObject data, boolean stage_3D) {
     type="sloap";
@@ -30,6 +32,11 @@ class Sloap extends StageComponent {//ground component
     dy=y2;
     direction=rot;
     ccolor=fcolor;
+  }
+  
+  public Sloap(SerialIterator iterator){
+    deserial(iterator);
+    direction = iterator.getInt();
   }
   
   StageComponent copy() {
@@ -161,5 +168,18 @@ class Sloap extends StageComponent {//ground component
   }
   public Collider3D getCollider3D(){ 
     return null;
+  }
+  
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    serialize(data);
+    data.addInt(direction);
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
 }

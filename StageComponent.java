@@ -1,9 +1,8 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
-abstract class StageComponent implements Serializable {//the base class for all components that exsist inside a stage
+abstract class StageComponent implements Serialization {//the base class for all components that exsist inside a stage
   static transient skiny_mann source;
   public float x, y, z, dx, dy, dz;
   public int ccolor, group=-1;
@@ -63,5 +62,28 @@ abstract class StageComponent implements Serializable {//the base class for all 
   abstract public Collider2D getCollider2D();
   abstract public Collider3D getCollider3D();
   
+  void serialize(SerializedData data){
+    data.addFloat(x);
+    data.addFloat(y);
+    data.addFloat(z);
+    data.addFloat(dx);
+    data.addFloat(dy);
+    data.addFloat(dz);
+    data.addInt(ccolor);
+    data.addInt(group);
+    data.addObject(SerializedData.ofString(type));
+  }
+  
+  void deserial(SerialIterator iterator){
+    x = iterator.getFloat();
+    y = iterator.getFloat();
+    z = iterator.getFloat();
+    dx = iterator.getFloat();
+    dy = iterator.getFloat();
+    dz = iterator.getFloat();
+    ccolor = iterator.getInt();
+    group = iterator.getInt();
+    type = iterator.getString();
+  }
   
 }

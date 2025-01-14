@@ -1,9 +1,11 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
 class DethPlane extends StageComponent {//ground component
+
+  public static final Identifier ID = new Identifier("DeathPlane");
+
   DethPlane(JSONObject data, boolean stage_3D) {
     type="dethPlane";
     x=data.getFloat("x");
@@ -36,6 +38,10 @@ class DethPlane extends StageComponent {//ground component
   StageComponent copy(float offsetX, float offsetY, float offsetZ) {
     System.err.println("Attempted to create a 3D copy of a deth plane. This opperation is not supported");
     return null;
+  }
+  
+  public DethPlane(SerialIterator iterator){
+    deserial(iterator);
   }
 
   JSONObject save(boolean stage_3D) {
@@ -119,5 +125,17 @@ class DethPlane extends StageComponent {//ground component
       new PVector(x+group.xOffset+dx, y+group.yOffset+dy, z+group.zOffset+dz),
       new PVector(x+group.xOffset, y+group.yOffset+dy, z+group.zOffset+dz)
       });
+  }
+  
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    serialize(data);
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
 }

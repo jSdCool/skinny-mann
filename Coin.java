@@ -1,9 +1,11 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
 class Coin extends StageComponent {//ground component
+
+  public static final Identifier ID = new Identifier("Coin");
+
   int coinId;
   Coin(JSONObject data, boolean stage_3D) {
     type="coin";
@@ -29,6 +31,11 @@ class Coin extends StageComponent {//ground component
     coinId=ind;
     type="coin";
     z=Z;
+  }
+  
+  public Coin(SerialIterator iterator){
+    deserial(iterator);
+    coinId = iterator.getInt();
   }
   StageComponent copy() {
     return new Coin(x, y, z, coinId);
@@ -143,5 +150,18 @@ class Coin extends StageComponent {//ground component
   }
   public Collider3D getCollider3D(){ 
     return null;
+  }
+  
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    serialize(data);
+    data.addInt(coinId);
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
 }

@@ -1,9 +1,11 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
 class LogicButton extends StageComponent {//ground component
+  
+  public static final Identifier ID = new Identifier("LogicButton");
+
   int variable=-1;
   LogicButton(JSONObject data, boolean stage_3D) {
     type="logic button";
@@ -41,6 +43,11 @@ class LogicButton extends StageComponent {//ground component
     x=X;
     y=Y;
     type="logic button";
+  }
+  
+  public LogicButton(SerialIterator iterator){
+    deserial(iterator);
+    variable = iterator.getInt();
   }
   
   JSONObject save(boolean stage_3D) {
@@ -179,6 +186,19 @@ class LogicButton extends StageComponent {//ground component
   }
   public Collider3D getCollider3D(){ 
     return null;
+  }
+  
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    serialize(data);
+    data.addInt(variable);
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
   
 }

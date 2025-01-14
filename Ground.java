@@ -1,9 +1,11 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
 class Ground extends StageComponent {//ground component
+
+  public static final Identifier ID = new Identifier("Ground");
+
   Ground(JSONObject data, boolean stage_3D) {
     type="ground";
     x=data.getFloat("x");
@@ -36,6 +38,10 @@ class Ground extends StageComponent {//ground component
     dy=DY;
     dz=DZ;
     ccolor=fcolor;
+  }
+  
+  public Ground(SerialIterator iterator){
+    deserial(iterator);
   }
   
   StageComponent copy() {
@@ -132,5 +138,17 @@ class Ground extends StageComponent {//ground component
       new PVector(x+group.xOffset+dx, y+group.yOffset+dy, z+group.zOffset+dz),
       new PVector(x+group.xOffset, y+group.yOffset+dy, z+group.zOffset+dz)
       });
+  }
+  
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    serialize(data);
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
 }

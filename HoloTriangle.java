@@ -1,9 +1,11 @@
-import java.io.Serializable;
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
 class HoloTriangle extends StageComponent {//ground component
+
+  public static final Identifier ID = new Identifier("HoloTriangle");
+  
   int direction;
   HoloTriangle(JSONObject data, boolean stage_3D) {
     type="holoTriangle";
@@ -30,6 +32,12 @@ class HoloTriangle extends StageComponent {//ground component
     direction=rot;
     ccolor=fcolor;
   }
+  
+  public HoloTriangle(SerialIterator iterator){
+    deserial(iterator);
+    direction = iterator.getInt();
+  }
+  
   StageComponent copy() {
     return new HoloTriangle(x, y, dx, dy, direction, ccolor);
   }
@@ -125,5 +133,18 @@ class HoloTriangle extends StageComponent {//ground component
   }
   public Collider3D getCollider3D(){ 
     return null;
+  }
+  
+  @Override
+  public SerializedData serialize() {
+    SerializedData data = new SerializedData(id());
+    serialize(data);
+    data.addInt(direction);
+    return data;
+  }
+  
+  @Override
+  public Identifier id() {
+    return ID;
   }
 }
