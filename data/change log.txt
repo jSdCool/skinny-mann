@@ -8,6 +8,8 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 +added: new shadow type
 +added: loading text to startup logo
 -fixed: auto key repeat when holding down a key and typing
+-changed: new multyplayer networking system
++added: new debug info line, current multyplayer ping
 
 0.9.0_Early_Access
 -changed: new collision detection system
