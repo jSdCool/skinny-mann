@@ -2,19 +2,82 @@ import processing.core.*;
 import java.util.ArrayList;
 class CollisionDetection{
   public boolean collide2D(Collider2D c1, Collider2D c2){
-    //AABB
+    //AABB    check if the 2 args may be colliding using the Axis Aligned Bounding Boxes method
     if(!AABB2D(c1,c2))
       return false;
-    //GJK
+    
+    //check for combo boxes
+    
+    //check if the first arg is a combo box
+    if(c1 instanceof ComboBox2D){
+      ComboBox2D cb = (ComboBox2D)c1;
+      //for each of the sub Boxes, check collision on it
+      for(Collider2D box: cb.getBoxes()){
+        if(collide2D(box,c2)){
+          //if the collision check return true then a collision occored, return true
+          return true;
+        }
+      }
+      //if none of the boxes were successful then no collsion could posibly have tken palce, return false
+      return false;
+    }
+    //check if the second arg is a conbo box
+    if(c2 instanceof ComboBox2D){
+     ComboBox2D cb = (ComboBox2D)c2;
+     //for each of the sub Boxes, check collision on it
+      for(Collider2D box: cb.getBoxes()){
+        if(collide2D(c1,box)){
+          //if the collision check return true then a collision occored, return true
+          return true;
+        }
+      }
+      //if none of the boxes were successful then no collsion could posibly have tken palce, return false
+      return false;
+    }
+    
+    //now we have verified that nether arg is a combo box and that the boudnign boxes of the 2 args overlap
+    
+    //GJK    check for collision using the GLK collision algorythem 
     return GJK2D(c1,c2);
   }
   
   public boolean collide3D(Collider3D c1, Collider3D c2){
     
-    //AABB
+    //AABB    check if the 2 args may be colliding using the Axis Aligned Bounding Boxes method
     if(!AABB3D(c1,c2))
       return false;
-    //GJK
+    
+    //check for combo boxes
+    
+    //check if the first arg is a combo box
+    if(c1 instanceof ComboBox3D){
+      ComboBox3D cb = (ComboBox3D)c1;
+      //for each of the sub Boxes, check collision on it
+      for(Collider3D box: cb.getBoxes()){
+        if(collide3D(box,c2)){
+          //if the collision check return true then a collision occored, return true
+          return true;
+        }
+      }
+      //if none of the boxes were successful then no collsion could posibly have tken palce, return false
+      return false;
+    }
+    //check if the second arg is a conbo box
+    if(c2 instanceof ComboBox3D){
+     ComboBox3D cb = (ComboBox3D)c2;
+     //for each of the sub Boxes, check collision on it
+      for(Collider3D box: cb.getBoxes()){
+        if(collide3D(c1,box)){
+          //if the collision check return true then a collision occored, return true
+          return true;
+        }
+      }
+      //if none of the boxes were successful then no collsion could posibly have tken palce, return false
+      return false;
+    }
+    //now we have verified that nether arg is a combo box and that the boudnign boxes of the 2 args overlap
+    
+    //GJK    check for collision using the GLK collision algorythem
     return GJK3D(c1,c2);
   }
   

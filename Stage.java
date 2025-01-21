@@ -146,4 +146,28 @@ class Stage implements Serialization {
   public Identifier id() {
     return ID;
   }
+  
+  public boolean equals(Object o){
+    if(o instanceof Stage){
+      Stage s = (Stage)o;
+      if(!s.name.equals(name)){
+        return false;
+      }
+      if(!s.type.equals(type)){
+        return false;
+      }
+      if(stageID!=s.stageID){
+        return false;
+      }
+      if(skyColor!=s.skyColor){
+        return false;
+      }
+      if(parts.size()!=s.parts.size()){
+        return false;
+      }
+      
+      return true;
+    }
+    return false;
+  }
 }

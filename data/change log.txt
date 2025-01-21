@@ -10,6 +10,7 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 -fixed: auto key repeat when holding down a key and typing
 -changed: new multyplayer networking system
 +added: new debug info line, current multyplayer ping
+-changed: Collision hitboxes are now pre grouped into combo boxes before collisions are calculated 
 
 0.9.0_Early_Access
 -changed: new collision detection system
