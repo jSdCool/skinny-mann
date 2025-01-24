@@ -71,7 +71,7 @@ void stageLevelDraw() {
       ArrayList<Collider3D> stageCollisions = generateLevel3DComboBox(stage);
 
       if ((simulating&&levelCreator)||!levelCreator)
-        camera3DpositionSimulating(stage);
+        camera3DpositionSimulating(stageCollisions);
       else
         camera3DpositionNotSimulating();
 
@@ -509,10 +509,11 @@ void blueprintEditDraw() {
   }
 }
 
-void camera3DpositionSimulating(Stage stage) {
+void camera3DpositionSimulating(ArrayList<Collider3D> stageCollision) {
   cam3Dx=players[currentPlayer].x;
-  cam3Dy=players[currentPlayer].y;
+  cam3Dy=players[currentPlayer].y-37;//camera Y pos in the bille of the body instead of the bottom
   cam3Dz=players[currentPlayer].z;
+  //handle roatation
   if (cam_left) {
     xangle+=2;
     if (xangle>240)
@@ -543,6 +544,9 @@ void camera3DpositionSimulating(Stage stage) {
   //binary search tree
 
   //create a hit box for the entire range of camera positions
+  PVector basePointNear = calcCameraBasePoint(10);
+  PVector basePointFar = calcCameraBasePoint(700);
+  
   //if it collides
   //split the box in 2
   //select the box closest to the player
@@ -572,6 +576,13 @@ void camera3DpositionSimulating(Stage stage) {
   //  break;
   //}
   //}
+  
+  //+ - -
+}
+
+PVector calcCameraBasePoint(float dist){
+  float tmp = cos(radians(yangle)) * dist;
+  return new PVector(cam3Dx+sin(radians(xangle))*tmp,cam3Dy-sin(radians(yangle))*dist,cam3Dz-cos(radians(xangle))*tmp);
 }
 
 void camera3DpositionNotSimulating() {
