@@ -537,52 +537,87 @@ void camera3DpositionSimulating(ArrayList<Collider3D> stageCollision) {
   //xangle=205;
   //yangle=15;
 
-  //do this later, seems to cause a little lag
-  //check if a peice of terain would be intersecting the camera
-
-  //ray casts are dum do this instead:
-  //binary search tree
-
   //create a hit box for the entire range of camera positions
-  PVector basePointNear = calcCameraBasePoint(10);
-  PVector basePointFar = calcCameraBasePoint(700);
+  float neard = 10,fard = 700;
+  PVector basePointNear = calcCameraBasePoint(neard);
+  PVector basePointFar = calcCameraBasePoint(fard);
   
-  //if it collides
-  //split the box in 2
-  //select the box closest to the player
-
-  //loop
-  //check if the selected box collides with the level
-  //if so split that box in 2
-  //if not split the box not selected in 2
-
-  //if at the final level return the number
-
-  //select the new split box that is closest to the player
-  //restart loop
-
+  //create the default box
+  Collider3D cameraBox = calcCameraHitBox(basePointNear,basePointFar);
+  boolean possibleCollision = false;
+  
+  //check if there is anything between the camera and the player
+  for(Collider3D sb:stageCollision){
+    if(CollisionDetection.collide3D(cameraBox,sb)){
+      possibleCollision = true;
+      break;
+    }
+  }
+  
+  float camDist = 700;
+  
+  //if there is something between the camera and player,
+  if(possibleCollision){
+    //if it collides
+    //split the box in 2
+    //select the box closest to the player
+    //narrow down where it is
+    int iterations = 10;
+    for(int i=0;i<iterations;i++){
+      //divide the collision area in 2
+      float mid = (fard - neard)/2 + neard;
+      basePointNear = calcCameraBasePoint(neard);
+      basePointFar = calcCameraBasePoint(mid);
+      //create the new hit box
+      cameraBox = calcCameraHitBox(basePointNear,basePointFar);
+      
+      boolean result = false;
+      //loop
+      //check if the selected box collides with the level
+      for(Collider3D sb:stageCollision){
+        if(CollisionDetection.collide3D(cameraBox,sb)){
+          result = true;
+          break;
+        }
+      }
+      //if so split that box in 2
+      //if not split the box not selected in 2
+      if(result){
+        fard = mid;
+      }else{
+        neard = mid;
+      }
+      //if at the final level return the number
+      if(i == iterations-1){
+        camDist = neard;
+      }
+      
+      //select the new split box that is closest to the player
+      //restart loop
+    }
+  }
   //if the box did not collide
   //retun 700
 
-  //for(int i=100;i<dist;i++){
-  //calculate the eye position of the camera
-  DY=sin(radians(yangle))*dist;
-  hd=cos(radians(yangle))*dist;
+  DY=sin(radians(yangle))*camDist;
+  hd=cos(radians(yangle))*camDist;
   DX=sin(radians(xangle))*hd;
   DZ=cos(radians(xangle))*hd;
-  //check if that position is inside of terain
-  //Collider3D checkBox = Collider3D.createBoxHitBox(cam3Dx+DX-1, cam3Dy-DY-1, cam3Dz-DZ-1,3,3,3);
-  //if(level_colide(checkBox,stage)){
-  //  break;
-  //}
-  //}
-  
   //+ - -
 }
 
 PVector calcCameraBasePoint(float dist){
   float tmp = cos(radians(yangle)) * dist;
   return new PVector(cam3Dx+sin(radians(xangle))*tmp,cam3Dy-sin(radians(yangle))*dist,cam3Dz-cos(radians(xangle))*tmp);
+}
+
+Collider3D calcCameraHitBox(PVector near,PVector far){
+  float smalDist=0.1;
+  return new Collider3D(
+    new PVector[]{
+      new PVector(near.x+smalDist,near.y,near.z+smalDist),new PVector(near.x+smalDist,near.y,near.z-smalDist),new PVector(near.x-smalDist,near.y,near.z-smalDist),new PVector(near.x-smalDist,near.y,near.z+smalDist),
+      new PVector(far.x+smalDist,far.y,far.z+smalDist),new PVector(far.x+smalDist,far.y,far.z-smalDist),new PVector(far.x-smalDist,far.y,far.z-smalDist),new PVector(far.x-smalDist,far.y,far.z+smalDist)
+    });
 }
 
 void camera3DpositionNotSimulating() {
