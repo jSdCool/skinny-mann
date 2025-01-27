@@ -267,16 +267,19 @@ void draw() {// the function that is called every fraim
           fill(0);
           mp_hostSeccion.draw();
           mp_host_Name.draw();
-          mp_host_enterdName.setText(name+((enteringName)? cursor:""));
-          mp_host_enterdName.draw();
+          //mp_host_enterdName.setText(name+((enteringName)? cursor:""));
+          //mp_host_enterdName.draw();
           mp_host_port.draw();
-          mp_host_endterdPort.setText(port+((enteringPort)? cursor:""));
-          mp_host_endterdPort.draw();
+          //mp_host_endterdPort.setText(port+((enteringPort)? cursor:""));
+          //mp_host_endterdPort.draw();
+          
+          multyPlayerNameTextBox.draw();
+          multyPlayerPortTextBox.draw();
 
-          noStroke();
-          rect(width/2-width*0.4, height*0.2, width*0.8, 2*Scale);
+          //noStroke();
+          //rect(width/2-width*0.4, height*0.2, width*0.8, 2*Scale);
 
-          rect(width/2-width*0.05, height*0.31, width*0.1, 2*Scale);
+          //rect(width/2-width*0.05, height*0.31, width*0.1, 2*Scale);
 
           multyplayerExit.draw();
           multyplayerGo.draw();
@@ -286,18 +289,23 @@ void draw() {// the function that is called every fraim
           fill(0);
           mp_joinSession.draw();
           mp_join_name.draw();
-          mp_join_enterdName.setText(name+((enteringName)? cursor:""));
-          mp_join_enterdName.draw();
+          //mp_join_enterdName.setText(name+((enteringName)? cursor:""));
+          //mp_join_enterdName.draw();
           mp_join_port.draw();
-          mp_join_enterdPort.setText(port+((enteringPort)? cursor:""));
-          mp_join_enterdPort.draw();
+          //mp_join_enterdPort.setText(port+((enteringPort)? cursor:""));
+          //mp_join_enterdPort.draw();
           mp_join_ip.draw();
-          mp_join_enterdIp.setText(ip+((enteringIP)?cursor:""));
-          mp_join_enterdIp.draw();
-          noStroke();
-          rect(width/2-width*0.4, height*0.2, width*0.8, 2*Scale);
-          rect(width/2-width*0.05, height*0.31, width*0.1, 2*Scale);
-          rect(width/2-width*0.3, height*0.42, width*0.6, 2*Scale);
+          //mp_join_enterdIp.setText(ip+((enteringIP)?cursor:""));
+          //mp_join_enterdIp.draw();
+          
+          multyPlayerNameTextBox.draw();
+          multyPlayerPortTextBox.draw();
+          multyPlayerIpTextBox.draw();
+          
+          //noStroke();
+          //rect(width/2-width*0.4, height*0.2, width*0.8, 2*Scale);
+          //rect(width/2-width*0.05, height*0.31, width*0.1, 2*Scale);
+          //rect(width/2-width*0.3, height*0.42, width*0.6, 2*Scale);
 
           multyplayerExit.draw();
           multyplayerGo.draw();
@@ -1623,15 +1631,19 @@ void mouseClicked() {// when you click the mouse
           if (multyplayerExit.isMouseOver()) {
             Menue="main";
           }
-          if (mouseX >= width/2-width*0.4 && mouseX <= width/2+width*0.4 && mouseY >= height*0.15 && mouseY <= height*0.2) {//name line
-            enteringName=true;
-            enteringPort=false;
-          }
-          if (mouseX >= width/2-width*0.05 && mouseX <= width/2+width*0.05 && mouseY >= height*0.26 && mouseY <= height*0.31) {//port line
-            enteringName=false;
-            enteringPort=true;
-          }
+          //if (mouseX >= width/2-width*0.4 && mouseX <= width/2+width*0.4 && mouseY >= height*0.15 && mouseY <= height*0.2) {//name line
+          //  enteringName=true;
+          //  enteringPort=false;
+          //}
+          //if (mouseX >= width/2-width*0.05 && mouseX <= width/2+width*0.05 && mouseY >= height*0.26 && mouseY <= height*0.31) {//port line
+          //  enteringName=false;
+          //  enteringPort=true;
+          //}
+          multyPlayerNameTextBox.mouseClicked();
+          multyPlayerPortTextBox.mouseClicked();
           if (multyplayerGo.isMouseOver()) {
+            //TODO: extract values from text Boxes
+            
             isHost=true;
             Menue="multiplayer selection";
             multiplayer = true;
@@ -1644,22 +1656,26 @@ void mouseClicked() {// when you click the mouse
           if (multyplayerExit.isMouseOver()) {
             Menue="main";
           }
-          if (mouseX >= width/2-width*0.4 && mouseX <= width/2+width*0.4 && mouseY >= height*0.15 && mouseY <= height*0.2) {//name line
-            enteringName=true;
-            enteringPort=false;
-            enteringIP=false;
-          }
-          if (mouseX >= width/2-width*0.05 && mouseX <= width/2+width*0.05 && mouseY >= height*0.26 && mouseY <= height*0.31) {//port line
-            enteringName=false;
-            enteringPort=true;
-            enteringIP=false;
-          }
-          if (mouseX >= width/2-width*0.3 && mouseX <= width/2+width*0.3 && mouseY >= height*0.37 && mouseY <= height*0.42) {//ip line
-            enteringName=false;
-            enteringPort=false;
-            enteringIP=true;
-          }
+          //if (mouseX >= width/2-width*0.4 && mouseX <= width/2+width*0.4 && mouseY >= height*0.15 && mouseY <= height*0.2) {//name line
+          //  enteringName=true;
+          //  enteringPort=false;
+          //  enteringIP=false;
+          //}
+          //if (mouseX >= width/2-width*0.05 && mouseX <= width/2+width*0.05 && mouseY >= height*0.26 && mouseY <= height*0.31) {//port line
+          //  enteringName=false;
+          //  enteringPort=true;
+          //  enteringIP=false;
+          //}
+          //if (mouseX >= width/2-width*0.3 && mouseX <= width/2+width*0.3 && mouseY >= height*0.37 && mouseY <= height*0.42) {//ip line
+          //  enteringName=false;
+          //  enteringPort=false;
+          //  enteringIP=true;
+          //}
+          multyPlayerNameTextBox.mouseClicked();
+          multyPlayerPortTextBox.mouseClicked();
+          multyPlayerIpTextBox.mouseClicked();
           if (multyplayerGo.isMouseOver()) {
+            //TODO: extreact values from text boxes
             isHost=false;
             Menue="multiplayer selection";
             multiplayer=true;
@@ -2305,14 +2321,14 @@ void keyPressed() {// when a key is pressed
       if (key=='e'||key=='E') {
         E_pressed=true;
       }
+      if (keyCode==87) {//w
+        playerMovementManager.setIn(true);
+      }
+      if (keyCode==83) {//s
+        playerMovementManager.setOut(true);
+      }
       if (e3DMode) {
-        if (keyCode==87) {//w
-          playerMovementManager.setIn(true);
-        }
-        if (keyCode==83) {//s
-          playerMovementManager.setOut(true);
-        }
-      //level creator camera controlls
+        //level creator camera controlls
         if (keyCode==65) {//if 'A' is pressed
           a3D=true;
         }
@@ -2401,51 +2417,56 @@ void keyPressed() {// when a key is pressed
           key = 0;  //clear the key so it doesnt close the program
           Menue="main";
         }
-        if (enteringName) {
-          name=getInput(name, 0);
-        }
-        if (enteringPort) {
-          if (getInput(port+"", 1).equals("")) {
-            port=0;
-          } else {
-            if (port==0) {
-              port=Integer.parseInt(getInput("0", 1));
-            } else {
-              try {
-                port=Integer.parseInt(getInput(port+"", 1));
-              }
-              catch(java.lang.NumberFormatException n) {
-              }
-            }
-          }
-        }
+        //if (enteringName) {
+        //  name=getInput(name, 0);
+        //}
+        //if (enteringPort) {
+        //  if (getInput(port+"", 1).equals("")) {
+        //    port=0;
+        //  } else {
+        //    if (port==0) {
+        //      port=Integer.parseInt(getInput("0", 1));
+        //    } else {
+        //      try {
+        //        port=Integer.parseInt(getInput(port+"", 1));
+        //      }
+        //      catch(java.lang.NumberFormatException n) {
+        //      }
+        //    }
+        //  }
+        //}
+        multyPlayerNameTextBox.keyPressed();
+        multyPlayerPortTextBox.keyPressed();
       }
       if (Menue.equals("start join")) {
         if (key == ESC) {
           key = 0;  //clear the key so it doesnt close the program
           Menue="main";
         }
-        if (enteringName) {
-          name=getInput(name, 0);
-        }
-        if (enteringPort) {
-          if (getInput(port+"", 1).equals("")) {
-            port=0;
-          } else {
-            if (port==0) {
-              port=Integer.parseInt(getInput("0", 1));
-            } else {
-              try {
-                port=Integer.parseInt(getInput(port+"", 1));
-              }
-              catch(java.lang.NumberFormatException n) {
-              }
-            }
-          }
-        }
-        if (enteringIP) {
-          ip=getInput(ip, 4);
-        }
+        //if (enteringName) {
+        //  name=getInput(name, 0);
+        //}
+        //if (enteringPort) {
+        //  if (getInput(port+"", 1).equals("")) {
+        //    port=0;
+        //  } else {
+        //    if (port==0) {
+        //      port=Integer.parseInt(getInput("0", 1));
+        //    } else {
+        //      try {
+        //        port=Integer.parseInt(getInput(port+"", 1));
+        //      }
+        //      catch(java.lang.NumberFormatException n) {
+        //      }
+        //    }
+        //  }
+        //}
+        //if (enteringIP) {
+        //  ip=getInput(ip, 4);
+        //}
+        multyPlayerNameTextBox.keyPressed();
+        multyPlayerPortTextBox.keyPressed();
+        multyPlayerIpTextBox.keyPressed();
       }
     }
     if (levelCreator) {
@@ -2509,6 +2530,7 @@ void keyPressed() {// when a key is pressed
       if (startup) {//if on the main menue
         author = getInput(author, 0);//typing for the author name
       }
+      //this shit is redundent
       if (!simulating||editinglogicBoard||e3DMode) {//if the simulation is paused
         if (keyCode==37) {//if LEFT ARROW is pressed
           cam_left=true;
@@ -2545,13 +2567,13 @@ void keyPressed() {// when a key is pressed
         }
       }
     }
-    if(keyCode == 108){//F12
+    if(keyCode == 108 && dev_mode){//F12
       showDepthBuffer = !showDepthBuffer;
     }
-    if(keyCode == 107){
+    if(keyCode == 107 && dev_mode){//F11
       shadowShaderOutputSampledDepthInfo = !shadowShaderOutputSampledDepthInfo;
     }
-    if(keyCode == 106){
+    if(keyCode == 106 && dev_mode){//F10
       shadowShader = loadShader("shaders/shadowMapFrag.glsl","shaders/shadowMapVert.glsl");
       println("Relaoded Shaders");
     }
@@ -2565,7 +2587,8 @@ void keyPressed() {// when a key is pressed
 
 void keyReleased() {//when you release a key
   try {
-    if (inGame||(levelCreator&&editingStage)) {//whehn in game
+    if (inGame||(levelCreator&&editingStage)) {//when in a level or when in the levelcreate and in a level
+      //update movement manager inputs
       if (keyCode==65) {//if A is released
         playerMovementManager.setLeft(false);
       }
@@ -2578,15 +2601,15 @@ void keyReleased() {//when you release a key
       if (key=='e'||key=='E') {
         E_pressed=false;
       }
+      if (keyCode==87) {//w
+        playerMovementManager.setIn(false);
+      }
+      if (keyCode==83) {//s
+        playerMovementManager.setOut(false);
+      }
+      
       if (e3DMode) {
-        if (keyCode==87) {//w
-          playerMovementManager.setIn(false);
-        }
-        if (keyCode==83) {//s
-          playerMovementManager.setOut(false);
-        }
-      }//end of 3d mode
-      if (e3DMode) {
+        //level creater 3D camera inputs
         if (keyCode==65) {//if 'A' is pressed
           a3D=false;
         }
@@ -2621,8 +2644,8 @@ void keyReleased() {//when you release a key
       }
     }
 
-    if (levelCreator) {
-      if (!simulating||editinglogicBoard||e3DMode) {//if the simulation is paused
+    if (levelCreator) {//when in the level creator
+      if (!simulating||editinglogicBoard||e3DMode) {//this seems to be for the logic boards as the pervous section hanldes all insatces of being in the stage editor
         if (keyCode==37) {//if LEFT ARROW released
           cam_left=false;
         }
@@ -2636,7 +2659,7 @@ void keyReleased() {//when you release a key
           cam_down=false;
         }
       }//end of simulation pasued
-      if (!simulating&&e3DMode) {
+      if (!simulating&&e3DMode) { // this again seems to be redundent
         if (keyCode==65) {//if 'A' is pressed
           a3D=false;
         }
@@ -2664,6 +2687,15 @@ void keyReleased() {//when you release a key
           defaultAuthorNameTextBox.keyReleased();
         }
       }
+      if (Menue.equals("start host")) {
+        multyPlayerNameTextBox.keyReleased();
+        multyPlayerPortTextBox.keyReleased();
+      }
+      if (Menue.equals("start join")) {
+        multyPlayerNameTextBox.keyReleased();
+        multyPlayerPortTextBox.keyReleased();
+        multyPlayerIpTextBox.keyReleased();
+      }
     }
   }
   catch(Throwable e) {
@@ -2688,6 +2720,15 @@ void keyTyped(){
           settings.save();
         }
       }
+    }
+    if (Menue.equals("start host")) {
+      multyPlayerNameTextBox.keyTyped();
+      multyPlayerPortTextBox.keyTyped();
+    }
+    if (Menue.equals("start join")) {
+      multyPlayerNameTextBox.keyTyped();
+      multyPlayerPortTextBox.keyTyped();
+      multyPlayerIpTextBox.keyTyped();
     }
   }
 }
@@ -4284,6 +4325,22 @@ void  initButtons() {
   lc_openLevelsFolder = new UiButton(ui, 1060, 650, 200, 40, "Open Folder", #BB48ED, #4857ED).setStrokeWeight(10);
   
   defaultAuthorNameTextBox = new UiTextBox(ui,900,330,340,40).setColors(#FFFFFF,0).setStrokeWeight(5).setTextSize(26).setPlaceHolder("Name Goes Here").setContence(defaultAuthor);
+  
+  //perhapse dont use default suthor for this, or do
+  multyPlayerNameTextBox = new UiTextBox(ui, 128, 108, 1024, 36).setTextSize(25).setPlaceHolder("Your Name Here").setContence(defaultAuthor);
+  multyPlayerPortTextBox = new UiTextBox(ui, 128, 187, 1024, 36).setTextSize(25).setPlaceHolder("Port Here").setContence(port+"").setAllowList("0123456789");
+  multyPlayerIpTextBox = new UiTextBox(ui, 128, 266, 1024, 36).setTextSize(25).setPlaceHolder("Host Address Here").setContence("localhost").setAllowList(".0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-");
+  //if (mouseX >= width/2-width*0.4 && mouseX <= width/2+width*0.4 && mouseY >= height*0.15 && mouseY <= height*0.2) {//name line
+  //          enteringName=true;
+  //          enteringPort=false;
+  //          enteringIP=false;
+  //        }
+  //        if (mouseX >= width/2-width*0.05 && mouseX <= width/2+width*0.05 && mouseY >= height*0.26 && mouseY <= height*0.31) {//port line
+  //          enteringName=false;
+  //          enteringPort=true;
+  //          enteringIP=false;
+  //        }
+  //        if (mouseX >= width/2-width*0.3 && mouseX <= width/2+width*0.3 && mouseY >= height*0.37 && mouseY <= height*0.42) {//ip line
 }
 
 
@@ -4459,16 +4516,16 @@ void initText() {
   initMultyplayerScreenTitle = new UiText(ui, "Multiplayer", 640, 36, 50, CENTER, CENTER);
   mp_hostSeccion = new UiText(ui, "Host session", 640, 36, 50, CENTER, CENTER);
   mp_host_Name = new UiText(ui, "Name", 640, 93.6, 25, CENTER, CENTER);
-  mp_host_enterdName = new UiText(ui, "V", 640, 126, 25, CENTER, CENTER);
+  //mp_host_enterdName = new UiText(ui, "V", 640, 126, 25, CENTER, CENTER);
   mp_host_port = new UiText(ui, "Port", 640, 172.8, 25, CENTER, CENTER);
-  mp_host_endterdPort = new UiText(ui, "V", 640, 205.2, 25, CENTER, CENTER);
+  //mp_host_endterdPort = new UiText(ui, "V", 640, 205.2, 25, CENTER, CENTER);
   mp_joinSession = new UiText(ui, "Join session", 640, 36, 50, CENTER, CENTER);
   mp_join_name = new UiText(ui, "Name", 640, 93.6, 25, CENTER, CENTER);
-  mp_join_enterdName = new UiText(ui, "V", 640, 126, 25, CENTER, CENTER);
+  //mp_join_enterdName = new UiText(ui, "V", 640, 126, 25, CENTER, CENTER);
   mp_join_port = new UiText(ui, "Port", 640, 172.8, 25, CENTER, CENTER);
-  mp_join_enterdPort = new UiText(ui, "V", 640, 205.2, 25, CENTER, CENTER);
+  //mp_join_enterdPort = new UiText(ui, "V", 640, 205.2, 25, CENTER, CENTER);
   mp_join_ip = new UiText(ui, "IP address", 640, 252, 25, CENTER, CENTER);
-  mp_join_enterdIp = new UiText(ui, "?V", 640, 284.4, 25, CENTER, CENTER);
+  //mp_join_enterdIp = new UiText(ui, "?V", 640, 284.4, 25, CENTER, CENTER);
   mp_disconnected = new UiText(ui, "Disconnected", 640, 36, 50, CENTER, CENTER);
   mp_dc_reason = new UiText(ui, "V", 640, 216, 25, CENTER, CENTER);
   dev_title = new UiText(ui, "Developer Menue", 640, 36, 50, CENTER, CENTER);

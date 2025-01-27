@@ -416,16 +416,16 @@ UiText st_other;
 UiText initMultyplayerScreenTitle;
 UiText mp_hostSeccion;
 UiText mp_host_Name;
-UiText mp_host_enterdName;
+//UiText mp_host_enterdName;
 UiText mp_host_port;
-UiText mp_host_endterdPort;
+//UiText mp_host_endterdPort;
 UiText mp_joinSession;
 UiText mp_join_name;
-UiText mp_join_enterdName;
+//UiText mp_join_enterdName;
 UiText mp_join_port;
-UiText mp_join_enterdPort;
+//UiText mp_join_enterdPort;
 UiText mp_join_ip;
-UiText mp_join_enterdIp;
+//UiText mp_join_enterdIp;
 UiText mp_disconnected;
 UiText mp_dc_reason;
 UiText dev_title;
@@ -480,6 +480,9 @@ UiSlider horozontalEdgeScrollSlider;
 UiSlider narrationVolumeSlider;
 
 UiTextBox defaultAuthorNameTextBox;
+UiTextBox multyPlayerNameTextBox;
+UiTextBox multyPlayerPortTextBox;
+UiTextBox multyPlayerIpTextBox;
 
 Server server;
 

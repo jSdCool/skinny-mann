@@ -11,6 +11,9 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 -changed: new multyplayer networking system
 +added: new debug info line, current multyplayer ping
 -changed: Collision hitboxes are now pre grouped into combo boxes before collisions are calculated 
+-fixed: moving in and out in 3D mode remaining active when the corresponfing button was held as the player was transitioning out of 3D moe
+-fixed: most font glyphs disappearing when certen letters were typed in a text box (may not have effected release builds)
+-changed: updated many text entering fields to now be text boxes
 
 0.9.0_Early_Access
 -changed: new collision detection system
