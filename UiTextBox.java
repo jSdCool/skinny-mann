@@ -84,11 +84,17 @@ class UiTextBox{
           if(ui.getSource().textWidth(contence)> maxTextWidth){
             //if the text is longer then the width of the box figure out how much can be rednerd
             //verry ineffshent
+            boolean rednerd = false;
             for(int i=0;i<contence.length();i++){
               if(ui.getSource().textWidth(contence.substring(0,i)) > maxTextWidth){
                 ui.getSource().text(contence.substring(0,i-1),x,y+height/2);
+                rednerd = true;
                 break;
               }
+            }
+            //if the edge case of the loop not rendering it happens, then just render the whole thing
+            if(!rednerd){
+              ui.getSource().text(contence,x,y+height/2);
             }
           }else{
             ui.getSource().text(contence,x,y+height/2);
@@ -113,11 +119,17 @@ class UiTextBox{
         if(ui.getSource().textWidth(contence)> maxTextWidth){
           //if the text is longer then the width of the box figure out how much can be rednerd
           //verry ineffshent
+          boolean rednerd = false;
           for(int i=0;i<contence.length();i++){
             if(ui.getSource().textWidth(contence.substring(0,i)) > maxTextWidth){
               ui.getSource().text(contence.substring(0,i-1),x,y+height/2);
+              rednerd = true;
               break;
             }
+          }
+          //if the edge case of the loop not rendering it happens, then just render the whole thing
+          if(!rednerd){
+            ui.getSource().text(contence,x,y+height/2);
           }
         }else{
           //if the text is shorter then the width of the box just render the next

@@ -76,8 +76,10 @@ void stageLevelDraw() {
         camera3DpositionNotSimulating();
 
       camera(cam3Dx+DX, cam3Dy-DY, cam3Dz-DZ, cam3Dx, cam3Dy, cam3Dz, 0, 1, 0);//set the camera
-      directionalLight(255, 255, 255, 0.8, 1, -0.35);//setr up the lighting
+      directionalLight(255, 255, 255, 0.8, 1, -0.35);//set up the old lighting (for when shadows are old or off)
       ambientLight(102, 102, 102);
+      perspective(settings.getFOV(),width*1.0/height,0.5,1048576);
+      
       coinRotation+=3;//rotate the coins
       if (coinRotation>360)//reset the coin totation if  it is over 360 degrees
         coinRotation-=360;
@@ -134,6 +136,7 @@ void stageLevelDraw() {
           translate(-players[currentPlayer].x, -(shadowAltitude-2), -players[currentPlayer].z);
         }
       }
+      //prespecitve is reset in the main draw function acter all stage drawings have finished
     } else {//redner the level in 2D
       SPressed=false;
       WPressed=false;

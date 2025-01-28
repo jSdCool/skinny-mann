@@ -9,6 +9,7 @@ class Settings{
   
   private int scrollHorozontal = 360;
   private int scrollVertical = 250;
+  private float cameraFOV = 60 * PApplet.DEG_TO_RAD;
   
   private int resolutionHorozontal = 1280;
   private int resolutionVertical = 720;
@@ -95,6 +96,7 @@ class Settings{
     shadows = data.getInt("3D shaows");
     disableMenuTransitions = data.getBoolean("disableMenuTransitions");
     defaultAuthor = data.getString("default author");
+    cameraFOV = data.getFloat("FOVY");
   }
   
   //saving functions
@@ -154,6 +156,7 @@ class Settings{
     data.setBoolean("disableMenuTransitions",disableMenuTransitions);
     data.setString("default author",defaultAuthor);
     data.setString("label","outher");
+    data.setFloat("FOVY",cameraFOV);
     return data;
   }
   
@@ -163,6 +166,10 @@ class Settings{
   }
   public int getSrollVertical(){
     return scrollVertical;
+  }
+  
+  public float getFOV(){
+    return cameraFOV;
   }
   
   public int getResolutionHorozontal(){
@@ -220,6 +227,12 @@ class Settings{
      this.scrollVertical = scrollVertical;
      if(stats)
      adjustStats();
+   }
+   public void setFOV(float fov,boolean stats){
+     cameraFOV = PApplet.radians(fov);
+     if(stats){
+       adjustStats();
+     }
    }
   
    public void setResolutionHorozontal(int resolutionHorozontal){

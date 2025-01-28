@@ -520,6 +520,7 @@ void draw() {// the function that is called every fraim
           }
         }
       }
+      perspective();//reset the perspecive / fov fro 3D mode
 
       if (tutorialMode&&!inGame) {
         if (Menue.equals("settings")) {
@@ -683,6 +684,7 @@ void draw() {// the function that is called every fraim
             renderBlueprint();//render blueprint
           }
         }
+        perspective();//reset the perspecive / fov
         engageHUDPosition();
       }
 
@@ -1436,6 +1438,7 @@ void mouseClicked() {// when you click the mouse
 
             verticleEdgeScrollSlider.mouseClicked();
             horozontalEdgeScrollSlider.mouseClicked();
+            fovSlider.mouseClicked();
             if (horozontalEdgeScrollSlider.button.isMouseOver()) {
               settings.setScrollHorozontal((int)horozontalEdgeScrollSlider.getValue(),true);
               settings.save();
@@ -1445,6 +1448,12 @@ void mouseClicked() {// when you click the mouse
               settings.setScrollVertical((int)verticleEdgeScrollSlider.getValue(),true);
               settings.save();
             }
+            if(fovSlider.button.isMouseOver()){
+              settings.setFOV(fovSlider.getValue(),true);
+              settings.save();
+            }
+            
+            
           }//end of game play settings
 
           if (settingsMenue.equals("display")) {
@@ -2761,6 +2770,7 @@ void mouseDragged() {
         if (settingsMenue.equals("game play")) {
           verticleEdgeScrollSlider.mouseDragged();
           horozontalEdgeScrollSlider.mouseDragged();
+          fovSlider.mouseDragged();
           if (horozontalEdgeScrollSlider.button.isMouseOver()) {
             settings.setScrollHorozontal((int)horozontalEdgeScrollSlider.getValue(),false);
             settings.save();
@@ -2769,6 +2779,10 @@ void mouseDragged() {
           if (verticleEdgeScrollSlider.button.isMouseOver()) {
               settings.setScrollVertical((int)verticleEdgeScrollSlider.getValue(),false);
               settings.save();
+          }
+          if(fovSlider.button.isMouseOver()){
+            settings.setFOV(fovSlider.getValue(),false);
+            settings.save();
           }
         }
         
@@ -3098,9 +3112,13 @@ void drawSettings() {
     st_vsrp.setText((int)verticleEdgeScrollSlider.getValue()+"");
     st_hsrp.draw();
     st_vsrp.draw();
+    st_gmp_fovdisp.setText(fovSlider.getValue()+"");
+    st_gmp_fovdisp.draw();
+    st_gmp_fovdesc.draw();
 
     verticleEdgeScrollSlider.draw();
     horozontalEdgeScrollSlider.draw();
+    fovSlider.draw();
     fill(0);
     st_gameplay.draw();
   }//end of gameplay settings
@@ -3902,23 +3920,6 @@ void programLoad() {
   loadProgress++;
   coin3D.scale(3);
 
-  //eadgeScroleDist=scroll.getInt("horozontal");
-  //esdPos=(int)(((eadgeScroleDist-100.0)/530)*440+800);
-  //eadgeScroleDistV=scroll.getInt("vertical");
-  //vesdPos=(int)(((eadgeScroleDistV-100.0)/250)*440+800);
-  
-  
-  //displayFPS=debug.getBoolean("fps");
-  //displayDebugInfo=debug.getBoolean("debug info");
-  
-  //musicVolume=sound.getFloat("music volume");
-  //sfxVolume=sound.getFloat("SFX volume");
-  //narrationVolume = sound.getFloat("narration volume");
-  //tutorialNarrationMode=sound.getInt("narrationMode");
-  
-  //shadow3D=sv3.getBoolean("3D shaows");
-  //disableMenuTransitions = sv3.getBoolean("disableMenuTransitions");
-  //defaultAuthor = sv3.getString("default author");
   defaultAuthorNameTextBox.setContence(settings.getDefaultAuthor());
   author = settings.getDefaultAuthor();
   loadProgress++;
@@ -4117,6 +4118,7 @@ void programLoad() {
   narrationVolumeSlider.setValue(settings.getSoundNarrationVolume()*100);
   verticleEdgeScrollSlider.setValue(settings.getSrollVertical());
   horozontalEdgeScrollSlider.setValue(settings.getScrollHorozontal());
+  fovSlider.setValue(degrees(settings.getFOV()));
   
   String[] rawGlitchBoxes = loadStrings("data/glitch.txt");
   loadProgress++;
@@ -4234,6 +4236,7 @@ void  initButtons() {
   SFXVolumeSlider = new UiSlider(ui, 800, 140, 440, 30).setStrokeWeight(5).setColors(255, 0).showValue(false).setRounding(1);
   narrationVolumeSlider = new UiSlider(ui,800,210,440,30).setStrokeWeight(5).setColors(255,0).showValue(false).setRounding(1);
   verticleEdgeScrollSlider = new UiSlider(ui, 800, 120, 440, 30).setStrokeWeight(5).setColors(255, 0).showValue(false).setRounding(1).setMax(320).setMin(100);
+  fovSlider = new UiSlider(ui, 800, 190, 440, 30).setStrokeWeight(5).setColors(255,0).showValue(false).setRounding(0.5).setMax(170).setMin(10);
   shadows4 = new UiButton(ui, (1200), (190), (40), (40), 255, 0).setStrokeWeight(5);
   shadows3 = new UiButton(ui, (1130), (190), (40), (40), 255, 0).setStrokeWeight(5);
   shadows2 = new UiButton(ui, 1060, 190, 40, 40, 255, 0).setStrokeWeight(5);
@@ -4343,17 +4346,6 @@ void  initButtons() {
   multyPlayerNameTextBox = new UiTextBox(ui, 128, 108, 1024, 36).setColors(#FF8000,0).setTextSize(25).setPlaceHolder("Your Name Here").setContence(defaultAuthor);
   multyPlayerPortTextBox = new UiTextBox(ui, 128, 187, 1024, 36).setColors(#FF8000,0).setTextSize(25).setPlaceHolder("Port Here").setContence(port+"").setAllowList("0123456789");
   multyPlayerIpTextBox = new UiTextBox(ui, 128, 266, 1024, 36).setColors(#FF8000,0).setTextSize(25).setPlaceHolder("Host Address Here").setContence("localhost").setAllowList(".0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-");
-  //if (mouseX >= width/2-width*0.4 && mouseX <= width/2+width*0.4 && mouseY >= height*0.15 && mouseY <= height*0.2) {//name line
-  //          enteringName=true;
-  //          enteringPort=false;
-  //          enteringIP=false;
-  //        }
-  //        if (mouseX >= width/2-width*0.05 && mouseX <= width/2+width*0.05 && mouseY >= height*0.26 && mouseY <= height*0.31) {//port line
-  //          enteringName=false;
-  //          enteringPort=true;
-  //          enteringIP=false;
-  //        }
-  //        if (mouseX >= width/2-width*0.3 && mouseX <= width/2+width*0.3 && mouseY >= height*0.37 && mouseY <= height*0.42) {//ip line
 }
 
 
@@ -4492,6 +4484,8 @@ void initText() {
   st_gameplay = new UiText(ui, "Game Play", 640, 0, 50, CENTER, TOP);
   st_vsrp = new UiText(ui, "V", 700, 160, 40, LEFT, BOTTOM);
   st_hsrp = new UiText(ui, "V", 700, 90, 40, LEFT, BOTTOM);
+  st_gmp_fovdesc = new UiText(ui, "Camera FOV", 40, 230, 40, LEFT, BOTTOM);
+  st_gmp_fovdisp =  new UiText(ui,"V", 700, 230, 40, LEFT, BOTTOM);
   st_dsp_vsr = new UiText(ui, "verticle screen resolution (requires restart)", 40, 80, 40, LEFT, BOTTOM);
   st_dsp_fs = new UiText(ui, "full screen (requires restart)", 40, 140, 40, LEFT, BOTTOM);
   st_dsp_4k = new UiText(ui, "2160(4K)", 1190, 45, 20, LEFT, BOTTOM);

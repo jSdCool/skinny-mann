@@ -385,6 +385,8 @@ UiText st_Vssr;
 UiText st_gameplay;
 UiText st_vsrp;
 UiText st_hsrp;
+UiText st_gmp_fovdesc;
+UiText st_gmp_fovdisp;
 UiText st_dsp_vsr;
 UiText st_dsp_fs;
 UiText st_dsp_4k;
@@ -478,6 +480,7 @@ UiSlider SFXVolumeSlider;
 UiSlider verticleEdgeScrollSlider;
 UiSlider horozontalEdgeScrollSlider;
 UiSlider narrationVolumeSlider;
+UiSlider fovSlider;
 
 UiTextBox defaultAuthorNameTextBox;
 UiTextBox multyPlayerNameTextBox;

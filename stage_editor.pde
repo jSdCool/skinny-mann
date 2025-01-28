@@ -1897,8 +1897,14 @@ float dfa=1280.0/720, car=1.0*width/height;
 Point3D mousePoint=new Point3D(0, 0, 0);
 void calcMousePoint() {//get a 3d point that is at the same postition as the mouse curser
 
+//camera() = camera(defCameraX, defCameraY, defCameraZ,    defCameraX, defCameraY, 0,    0, 1, 0);
+//defCameraX = width/2;
+//defCameraY = height/2;
+//defCameraFOV = 60 * DEG_TO_RAD;
+//defCameraZ = defCameraY / ((float) Math.tan(defCameraFOV / 2.0f));
+
   car=1.0*width/height;
-  float planeDist=622/*700*/;
+  float planeDist = 360.0 / tan(settings.getFOV()/2);
   float camCentercCalcX, camCentercCalcY, camCentercCalcZ;//get a point that is a certain distance from where the camera eyes are in the center if the screen
   camCentercCalcY=sin(radians(yangle))*planeDist+cam3Dy-DY;//calculate the center point of the camera on the plane that is a distacne from the eye point of the camera
   float hd2=cos(radians(yangle))*-planeDist;//calcualte a new hypotenuse for the x/z axis where the result from the calculation of the Y coord is taken into account
