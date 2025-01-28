@@ -1630,6 +1630,8 @@ void mouseClicked() {// when you click the mouse
         if (Menue.equals("start host")) {
           if (multyplayerExit.isMouseOver()) {
             Menue="main";
+            multyPlayerNameTextBox.resetState();
+            multyPlayerPortTextBox.resetState();
           }
           //if (mouseX >= width/2-width*0.4 && mouseX <= width/2+width*0.4 && mouseY >= height*0.15 && mouseY <= height*0.2) {//name line
           //  enteringName=true;
@@ -1642,7 +1644,10 @@ void mouseClicked() {// when you click the mouse
           multyPlayerNameTextBox.mouseClicked();
           multyPlayerPortTextBox.mouseClicked();
           if (multyplayerGo.isMouseOver()) {
-            //TODO: extract values from text Boxes
+            name = multyPlayerNameTextBox.getContence();
+            port = Integer.parseInt(multyPlayerPortTextBox.getContence());
+            multyPlayerNameTextBox.resetState();
+            multyPlayerPortTextBox.resetState();
             
             isHost=true;
             Menue="multiplayer selection";
@@ -1655,6 +1660,9 @@ void mouseClicked() {// when you click the mouse
         if (Menue.equals("start join")) {
           if (multyplayerExit.isMouseOver()) {
             Menue="main";
+            multyPlayerNameTextBox.resetState();
+            multyPlayerPortTextBox.resetState();
+            multyPlayerIpTextBox.resetState();
           }
           //if (mouseX >= width/2-width*0.4 && mouseX <= width/2+width*0.4 && mouseY >= height*0.15 && mouseY <= height*0.2) {//name line
           //  enteringName=true;
@@ -1675,7 +1683,12 @@ void mouseClicked() {// when you click the mouse
           multyPlayerPortTextBox.mouseClicked();
           multyPlayerIpTextBox.mouseClicked();
           if (multyplayerGo.isMouseOver()) {
-            //TODO: extreact values from text boxes
+            name = multyPlayerNameTextBox.getContence();
+            port = Integer.parseInt(multyPlayerPortTextBox.getContence());
+            ip = multyPlayerIpTextBox.getContence();
+            multyPlayerNameTextBox.resetState();
+            multyPlayerPortTextBox.resetState();
+            multyPlayerIpTextBox.resetState();
             isHost=false;
             Menue="multiplayer selection";
             multiplayer=true;
@@ -4327,9 +4340,9 @@ void  initButtons() {
   defaultAuthorNameTextBox = new UiTextBox(ui,900,330,340,40).setColors(#FFFFFF,0).setStrokeWeight(5).setTextSize(26).setPlaceHolder("Name Goes Here").setContence(defaultAuthor);
   
   //perhapse dont use default suthor for this, or do
-  multyPlayerNameTextBox = new UiTextBox(ui, 128, 108, 1024, 36).setTextSize(25).setPlaceHolder("Your Name Here").setContence(defaultAuthor);
-  multyPlayerPortTextBox = new UiTextBox(ui, 128, 187, 1024, 36).setTextSize(25).setPlaceHolder("Port Here").setContence(port+"").setAllowList("0123456789");
-  multyPlayerIpTextBox = new UiTextBox(ui, 128, 266, 1024, 36).setTextSize(25).setPlaceHolder("Host Address Here").setContence("localhost").setAllowList(".0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-");
+  multyPlayerNameTextBox = new UiTextBox(ui, 128, 108, 1024, 36).setColors(#FF8000,0).setTextSize(25).setPlaceHolder("Your Name Here").setContence(defaultAuthor);
+  multyPlayerPortTextBox = new UiTextBox(ui, 128, 187, 1024, 36).setColors(#FF8000,0).setTextSize(25).setPlaceHolder("Port Here").setContence(port+"").setAllowList("0123456789");
+  multyPlayerIpTextBox = new UiTextBox(ui, 128, 266, 1024, 36).setColors(#FF8000,0).setTextSize(25).setPlaceHolder("Host Address Here").setContence("localhost").setAllowList(".0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-");
   //if (mouseX >= width/2-width*0.4 && mouseX <= width/2+width*0.4 && mouseY >= height*0.15 && mouseY <= height*0.2) {//name line
   //          enteringName=true;
   //          enteringPort=false;
