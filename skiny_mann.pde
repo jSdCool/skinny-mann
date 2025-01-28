@@ -1382,7 +1382,7 @@ void mouseClicked() {// when you click the mouse
             newFile=false;
             levelCreator=true;
             filesScrole=0;
-            author = defaultAuthor;//set the author to the default
+            author = settings.getDefaultAuthor();//set the author to the default
             return;
           }
         }
@@ -1967,7 +1967,7 @@ void mouseClicked() {// when you click the mouse
             mainIndex.setJSONObject(0, terain);
             levelOverview=true;
             level=new Level(mainIndex);
-            level.save();
+            level.save(true);
             return;
           }
           if (lc_backButton.isMouseOver()) {
@@ -2002,7 +2002,7 @@ void mouseClicked() {// when you click the mouse
 
           if (overview_saveLevel.isMouseOver()) {//save button in the level overview
             System.out.println("saving level");
-            level.save();
+            level.save(true);
             gmillis=millis()+400;//glitch effect
             System.out.println("save complete");
           }
@@ -2086,7 +2086,7 @@ void mouseClicked() {// when you click the mouse
               System.out.println("adding sound to level");
               level.sounds.put(newFileName, new StageSound(newFileName, "/"+pathSegments[pathSegments.length-1],newSoundAsNarration));//add the sound to the level
               System.out.println("saving level");
-              level.save();//save the level
+              level.save(true);//save the level
               gmillis=millis()+400;///glitch effect
               System.out.println("save complete"+gmillis);
               newFile=false;//return back to the obverview

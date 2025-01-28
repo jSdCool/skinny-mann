@@ -241,7 +241,7 @@ class Level implements Serialization {
     }
   }
 
-  void save() {
+  void save(boolean inLevelCreator) {
     JSONArray index=new JSONArray();
     JSONObject head = new JSONObject();
     head.setInt("mainStage", mainStage);
@@ -252,7 +252,11 @@ class Level implements Serialization {
     head.setFloat("spawn pointX", RewspawnX);
     head.setFloat("spawn pointY", RespawnY);
     head.setString("name", name);
-    head.setString("game version", createdVersion);//when integrating the level creator make shure this line is changed to reflect the correct version
+    if(inLevelCreator){
+      head.setString("game version", source.version);
+    }else {
+      head.setString("game version", createdVersion);//when integrating the level creator make shure this line is changed to reflect the correct version
+    }
     head.setString("author", author);
     head.setInt("number of variable", variables.size());
     head.setInt("multyplayer mode", multyplayerMode);

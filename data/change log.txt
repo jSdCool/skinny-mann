@@ -14,6 +14,9 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 -fixed: moving in and out in 3D mode remaining active when the corresponfing button was held as the player was transitioning out of 3D moe
 -fixed: most font glyphs disappearing when certen letters were typed in a text box (may not have effected release builds)
 -changed: updated many text entering fields to now be text boxes
++added: adjustable 3D FOV
++added: new setting Camera FOV
+-fixed: level creator not saving the correct version
 
 0.9.0_Early_Access
 -changed: new collision detection system
