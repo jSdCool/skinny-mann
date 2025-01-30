@@ -2,17 +2,17 @@ if you get a trojan waring from windows defender check this link
 https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-trojans
 
 0.9.1_Early_Access
--fixed: all muisc after the first music track would ignore the set volume
+-fixed: all music after the first music track would ignore the set volume
 -changed: 3D Shadow setting now has 5 values
 -changed: settings version has been increased
 +added: new shadow type
 +added: loading text to startup logo
 -fixed: auto key repeat when holding down a key and typing
--changed: new multyplayer networking system
-+added: new debug info line, current multyplayer ping
+-changed: new multiplayer networking system
++added: new debug info line, current multiplayer ping
 -changed: Collision hitboxes are now pre grouped into combo boxes before collisions are calculated 
--fixed: moving in and out in 3D mode remaining active when the corresponfing button was held as the player was transitioning out of 3D moe
--fixed: most font glyphs disappearing when certen letters were typed in a text box (may not have effected release builds)
+-fixed: moving in and out in 3D mode remaining active when the corresponding button was held as the player was transitioning out of 3D moe
+-fixed: most font glyphs disappearing when certain letters were typed in a text box (may not have effected release builds)
 -changed: updated many text entering fields to now be text boxes
 +added: adjustable 3D FOV
 +added: new setting Camera FOV
