@@ -4559,7 +4559,7 @@ void initText() {
   lc_exit_disclaimer = new UiText(ui, "Any unsaved data will be lost.", 640, 200, 50, CENTER, CENTER);
   lc_fullScreenWarning = new UiText(ui, "Full screen mode is not recommended for the Level Creator", 640, 420, 45, CENTER, CENTER);
   deadText = new UiText(ui, "you died", 640, 360, 50, CENTER, CENTER);
-  fpsText = new UiText(ui, "fps: ", 1220, 15, 10, LEFT, BOTTOM);
+  fpsText = new UiText(ui, "fps: ", 1220, 10, 10, LEFT, BOTTOM);
   dbg_mspc = new UiText(ui, "mspc: V", 1275, 10, 10, RIGHT, TOP);
   dbg_playerX = new UiText(ui, "player X: V", 1275, 20, 10, RIGHT, TOP);
   dbg_playerY = new UiText(ui, "player Y: V", 1275, 30, 10, RIGHT, TOP);
