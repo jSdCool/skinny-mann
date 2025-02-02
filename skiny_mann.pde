@@ -625,6 +625,7 @@ void draw() {// the function that is called every fraim
       }//end of loading level
 
       if (newLevel) {//if creating a new level
+      hint(ENABLE_KEY_REPEAT);
         background(#48EDD8);
         fill(0);
         lc_load_new_describe.draw();
@@ -649,6 +650,7 @@ void draw() {// the function that is called every fraim
       }//end of make new level
 
       if (editingStage) {//if edditing the stage
+      hint(DISABLE_KEY_REPEAT);
         if (!simulating) {//if not simulating allow the camera to be moved by the arrow keys
           if (cam_left&&camPos>0) {
             camPos-=4;
