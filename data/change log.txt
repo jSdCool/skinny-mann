@@ -11,6 +11,7 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 -changed: new multiplayer networking system
 +added: new debug info line, current multiplayer ping
 -changed: Collision hitboxes are now pre grouped into combo boxes before collisions are calculated 
+-changed: 3D camera now collides with things between its default position and the player
 -fixed: moving in and out in 3D mode remaining active when the corresponding button was held as the player was transitioning out of 3D moe
 -fixed: most font glyphs disappearing when certain letters were typed in a text box (may not have effected release builds)
 -changed: updated many text entering fields to now be text boxes
