@@ -33,6 +33,8 @@ void drawlogo(boolean controllCamera, boolean setBackground) {
     logorx+=(startupMillisTimer/1000.0)*25;
   } else {
     fill(#03FA0C);
+    
+    
     logoText.draw();
     start_wate+=startupMillisTimer/1000.0;
   }
@@ -42,7 +44,11 @@ void drawlogo(boolean controllCamera, boolean setBackground) {
     camera(width/2, height/2, 623.5382907, width/2, height/2, 0, 0, 1, 0);
 
   if(setBackground){
-    loadingText.draw();
+    //loadingText.draw();
+    textSize(30);
+    textAlign(CENTER,TOP);
+    //loadingText = new UiText(ui,"Loading ...",640,180,20,CENTER,TOP);
+    text("Loading ...",width/2,height/2-300);
   }
   pushMatrix();
   translate(width/2, height/2, 0);

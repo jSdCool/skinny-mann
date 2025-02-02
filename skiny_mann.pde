@@ -4575,7 +4575,6 @@ void initText() {
   lebelCompleteText = new UiText(ui, "LEVEL COMPLETE!!!", 200, 400, 100, LEFT, BOTTOM);
   settingPlayerSpawnText = new UiText(ui, "Select the spawn location of the player",640,72,35,CENTER,CENTER);
   narrationCaptionText = new UiText(ui,"*Narration in progress*",640,695,20,CENTER,BOTTOM);
-  loadingText = new UiText(ui,"Loading ...",640,30,20,CENTER,TOP);
   dbg_ping = new UiText(ui,"Ping: N/A",1275,100,10,RIGHT,TOP);
 
 }

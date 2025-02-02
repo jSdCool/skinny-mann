@@ -370,7 +370,6 @@ Button select_lvl_next;
 
 UiFrame ui;
 
-UiText loadingText;
 UiText mm_title;
 UiText mm_EarlyAccess;
 UiText mm_version;
