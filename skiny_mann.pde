@@ -2077,7 +2077,7 @@ void mouseClicked() {// when you click the mouse
           }
           if (newFileType.equals("sound")) {
             if (chooseFileButton.isMouseOver()) {//choose file button for when the type is sound
-              selectInput("select audio file: .WAV .AFI .MP3:", "fileSelected");//open file selection diaglog
+              selectInput("select audio file: .WAV .AIF .MP3:", "fileSelected");//open file selection diaglog
             }
             if(lc_newSoundAsSoundButton.isMouseOver()){
               newSoundAsNarration=false;
@@ -3821,8 +3821,8 @@ String formatMillis(int millis) {
 void programLoad() {
   //do this first becasue it causes a momentary freez on the render thread that we want to avoid later in the animation
   println("loading shaders");
-  depthBufferShader = loadShader("shaders/depthBufferFrag.glsl","shaders/depthBufferVert.glsl");
-  shadowShader = loadShader("shaders/shadowMapFrag.glsl","shaders/shadowMapVert.glsl");
+  depthBufferShader = loadShader("data/shaders/depthBufferFrag.glsl","shaders/depthBufferVert.glsl");
+  shadowShader = loadShader("data/shaders/shadowMapFrag.glsl","shaders/shadowMapVert.glsl");
 
   requestDepthBufferInit = true;
   //this init can only happen on the main render thread
@@ -4377,7 +4377,7 @@ void fileSelected(File selection) {
   System.out.println(path);
   String extenchen=path.substring(path.length()-3, path.length()).toLowerCase();
   System.out.println(extenchen);
-  if (extenchen.equals("wav")||extenchen.equals("mp3")||extenchen.equals("afi")) {//check if the file type is valid
+  if (extenchen.equals("wav")||extenchen.equals("mp3")||extenchen.equals("aif")) {//check if the file type is valid
 
     fileToCoppyPath=path;
   } else {
