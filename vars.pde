@@ -143,7 +143,7 @@ ArrayList<Boolean> coins;
 PVector lightDir = new PVector();
 
 String Menue = "creds";
-String version = "0.9.1_Early_Access";
+String version = "0.9.2_Early_Access";
 String EDITOR_version = "0.2.0_EAc";
 String ip = "localhost";
 String name = "can't_be_botherd_to_chane_it";

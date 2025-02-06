@@ -1461,27 +1461,27 @@ void mouseClicked() {// when you click the mouse
           if (settingsMenue.equals("display")) {
             String arat = "16:9";
             if (rez4k.isMouseOver()) {//2160 resolution button
-              settings.setResolution(1260,2160*16/9);
+              settings.setResolution((int)(2160*16.0/9),2160);
               settings.save();
             }
 
             if (rez1440.isMouseOver()) {// 1440 resolition button
-              settings.setResolution(1440,1440*16/9);
+              settings.setResolution((int)(1440*16.0/9),1440);
               settings.save();
             }
 
             if (rez1080.isMouseOver()) {// 1080 resolution button
-              settings.setResolution(1080,1080*16/9);
+              settings.setResolution((int)(1080*16.0/9),1080);
               settings.save();
             }
 
             if (rez900.isMouseOver()) {////900 resolution button
-              settings.setResolution(900,900*16/9);
+              settings.setResolution((int)(900*16.0/9),900);
               settings.save();
             }
 
             if (rez720.isMouseOver()) {// 720 resolution button
-              settings.setResolution(720,720*16/9);
+              settings.setResolution((int)(720*16.0/9),720);
               settings.save();
             }
 
