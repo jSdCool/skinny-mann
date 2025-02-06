@@ -1835,30 +1835,34 @@ void mouseClicked() {// when you click the mouse
           if (newLevelButton.isMouseOver()) {//new level button
             startup=false;
             newLevel=true;
-            //entering_name=true;
             rootPath="";
             lcEnterLevelTextBox.setContence("");
+            lcEnterLevelTextBox.activate();
+            return;
           }
           if (loadLevelButton.isMouseOver()) {//load level button
             startup=false;
             loading=true;
-            //entering_file_path=true;
             rootPath="";
             lcEnterLevelTextBox.setContence("");
+            lcEnterLevelTextBox.activate();
+            return;
           }
           if (newBlueprint.isMouseOver()) {//new blurprint button
             startup=false;
             creatingNewBlueprint=true;
             new_name="my blueprint";
             lcEnterLevelTextBox.setContence("my blueprint");
-            //entering_name=true;
+            lcEnterLevelTextBox.activate();
+            return;
           }
           if (loadBlueprint.isMouseOver()) {//load blueprint button
             startup=false;
             loadingBlueprint=true;
             new_name="";
             lcEnterLevelTextBox.setContence("");
-            //entering_name=true;
+            lcEnterLevelTextBox.activate();
+            return;
           }
           if (lc_backButton.isMouseOver()) {
             levelCreator=false;
@@ -1950,6 +1954,8 @@ void mouseClicked() {// when you click the mouse
             levelOverview=false;
             newFile=true;
             lcNewFileTextBox.setContence("");
+            lcNewFileTextBox.activate();
+            return;
           }
           if (mouseY>80*Scale) {//if the mouse is in the files section of the screen
             overviewSelection=(int)(mouseY/Scale-80)/60+ filesScrole;//figure out witch thing to select
