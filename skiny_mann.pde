@@ -4262,6 +4262,19 @@ void  initButtons() {
   multyPlayerPortTextBox = new UiTextBox(ui, 128, 187, 1024, 36).setColors(#FF8000,0).setTextSize(25).setPlaceHolder("Port Here").setContence(port+"").setAllowList("0123456789");
   multyPlayerIpTextBox = new UiTextBox(ui, 128, 266, 1024, 36).setColors(#FF8000,0).setTextSize(25).setPlaceHolder("Host Address Here").setContence("localhost").setAllowList(".0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-");
 
+  //DO NOT EDIT BELOW THIS LINE ON THE MAIN PROJECT!
+  //===================================================
+  //DO NOT EDIT THEESE LINES, EVER
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++
+  //===================================================
+  //reserved for arcade edition vars
+  
+  
+  
+  //===================================================
+  //DO NOT EDIT THEESE LINES, EVER
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++
+  //===================================================
   
 }
 
@@ -4489,5 +4502,33 @@ void initText() {
   settingPlayerSpawnText = new UiText(ui, "Select the spawn location of the player",640,72,35,CENTER,CENTER);
   narrationCaptionText = new UiText(ui,"*Narration in progress*",640,695,20,CENTER,BOTTOM);
   dbg_ping = new UiText(ui,"Ping: N/A",1275,100,10,RIGHT,TOP);
+  
+  //DO NOT EDIT BELOW THIS LINE ON THE MAIN PROJECT!
+  //===================================================
+  //DO NOT EDIT THEESE LINES, EVER
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++
+  //===================================================
+  //reserved for arcade edition vars
+  
+  
+  
+  //===================================================
+  //DO NOT EDIT THEESE LINES, EVER
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++
+  //===================================================
 
 }
+
+//DO NOT EDIT BELOW THIS LINE ON THE MAIN PROJECT!
+//===================================================
+//DO NOT EDIT THEESE LINES, EVER
+//+++++++++++++++++++++++++++++++++++++++++++++++++++
+//===================================================
+//reserved for arcade edition vars
+
+
+
+//===================================================
+//DO NOT EDIT THEESE LINES, EVER
+//+++++++++++++++++++++++++++++++++++++++++++++++++++
+//===================================================
