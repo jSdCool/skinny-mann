@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 class SWoff3D extends StageComponent {//ground component
 
-  public static final Identifier ID = new Identifier("SWoff3D");
+  public static final Identifier ID = new Identifier("3DoffSW");
 
-  SWoff3D(JSONObject data, boolean stage_3D) {
+  SWoff3D(JSONObject data) {
     type="3DoffSW";
     x=data.getFloat("x");
     y=data.getFloat("y");
+    boolean stage_3D = data.getBoolean("s3d");
     if (stage_3D) {
       z=data.getFloat("z");
     }
@@ -17,12 +18,14 @@ class SWoff3D extends StageComponent {//ground component
       group=data.getInt("group");
     }
   }
-
-  SWoff3D(float X, float Y, float Z) {
-    x=X;
-    y=Y;
-    z=Z;
+  
+  public SWoff3D(StageComponentPlacementContext context){
     type="3DoffSW";
+    x = context.getX();
+    y = context.getY();
+    if(context.has3D()){
+      z = context.getZ();
+    }
   }
   
   public SWoff3D(SerialIterator iterator){

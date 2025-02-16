@@ -7,10 +7,11 @@ class Coin extends StageComponent {//ground component
   public static final Identifier ID = new Identifier("Coin");
 
   int coinId;
-  Coin(JSONObject data, boolean stage_3D) {
+  Coin(JSONObject data) {
     type="coin";
     x=data.getFloat("x");
     y=data.getFloat("y");
+    boolean stage_3D = data.getBoolean("s3d");
     if (stage_3D) {
       z=data.getFloat("z");
     }
@@ -19,18 +20,15 @@ class Coin extends StageComponent {//ground component
       group=data.getInt("group");
     }
   }
-  Coin(float X, float Y, int ind) {
-    x=X;
-    y=Y;
-    coinId=ind;
+  
+  public Coin(StageComponentPlacementContext context){
     type="coin";
-  }
-  Coin(float X, float Y, float Z, int ind) {
-    x=X;
-    y=Y;
-    coinId=ind;
-    type="coin";
-    z=Z;
+    x = context.getX();
+    y = context.getY();
+    if(context.has3D()){
+      z = context.getZ();
+    }
+    coinId = context.index();
   }
   
   public Coin(SerialIterator iterator){
@@ -38,15 +36,15 @@ class Coin extends StageComponent {//ground component
     coinId = iterator.getInt();
   }
   StageComponent copy() {
-    return new Coin(x, y, z, coinId);
+    return new Coin(new StageComponentPlacementContext(x, y, z, coinId));
   }
   
   StageComponent copy(float offsetX,float offsetY){
-    return new Coin(x+offsetX,y+offsetY,coinId);
+    return new Coin(new StageComponentPlacementContext(x+offsetX,y+offsetY,coinId));
   }
   
   StageComponent copy(float offsetX,float offsetY,float offsetZ){
-    return new Coin(x+offsetX,y+offsetY,z+offsetZ,coinId);
+    return new Coin(new StageComponentPlacementContext(x+offsetX,y+offsetY,z+offsetZ,coinId));
   }
   
   JSONObject save(boolean stage_3D) {

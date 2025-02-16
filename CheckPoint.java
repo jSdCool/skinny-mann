@@ -6,10 +6,11 @@ import processing.core.*;
 class CheckPoint extends StageComponent {//ground component
   static transient skiny_mann source;
   public static final Identifier ID = new Identifier("CheckPoint");
-  CheckPoint(JSONObject data, boolean stage_3D) {
+  CheckPoint(JSONObject data) {
     type="check point";
     x=data.getFloat("x");
     y=data.getFloat("y");
+    boolean stage_3D = data.getBoolean("s3d");
     if (stage_3D) {
       z=data.getFloat("z");
     }
@@ -17,17 +18,14 @@ class CheckPoint extends StageComponent {//ground component
       group=data.getInt("group");
     }
   }
-
-  CheckPoint(float X, float Y) {
+  
+  public CheckPoint(StageComponentPlacementContext context){
     type="check point";
-    x=X;
-    y=Y;
-  }
-  CheckPoint(float X, float Y, float Z) {
-    type="check point";
-    x=X;
-    y=Y;
-    z=Z;
+    x = context.getX();
+    y = context.getY();
+    if(context.has3D()){
+      z = context.getZ();
+    }
   }
   
   public CheckPoint(SerialIterator iterator){
@@ -35,15 +33,15 @@ class CheckPoint extends StageComponent {//ground component
   }
   
   StageComponent copy() {
-    return new CheckPoint(x, y, z);
+    return new CheckPoint(new StageComponentPlacementContext(x, y, z));
   }
   
   StageComponent copy(float offsetX,float  offsetY){
-    return new CheckPoint(x+offsetX,y+offsetY);
+    return new CheckPoint(new StageComponentPlacementContext(x+offsetX,y+offsetY));
   }
   
   StageComponent copy(float offsetX,float  offsetY,float offsetZ){
-    return new CheckPoint(x+offsetZ,y+offsetY,z+offsetZ);
+    return new CheckPoint(new StageComponentPlacementContext(x+offsetZ,y+offsetY,z+offsetZ));
   }
 
   JSONObject save(boolean stage_3D) {

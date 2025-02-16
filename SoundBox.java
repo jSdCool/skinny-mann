@@ -9,19 +9,22 @@ class SoundBox extends StageComponent {
   
   String soundKey="";
 
-  SoundBox(float X, float Y) {
-    x=X;
-    y=Y;
-    type = "sound box";
-  }
-  
-  SoundBox(JSONObject data, boolean stage_3D) {
+  SoundBox(JSONObject data) {
     type = "sound box";
     x=data.getFloat("x");
     y=data.getFloat("y");
     soundKey=data.getString("sound key");
     if (!data.isNull("group")) {
       group=data.getInt("group");
+    }
+  }
+  
+  public SoundBox(StageComponentPlacementContext context){
+    type="sound box";
+    x = context.getX();
+    y = context.getY();
+    if(context.has3D()){
+      z = context.getZ();
     }
   }
   

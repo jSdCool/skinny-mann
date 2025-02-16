@@ -7,13 +7,14 @@ class HoloTriangle extends StageComponent {//ground component
   public static final Identifier ID = new Identifier("HoloTriangle");
   
   int direction;
-  HoloTriangle(JSONObject data, boolean stage_3D) {
+  HoloTriangle(JSONObject data) {
     type="holoTriangle";
     x=data.getFloat("x1");
     y=data.getFloat("y1");
     dx=data.getFloat("x2");
     dy=data.getFloat("y2");
     ccolor=data.getInt("color");
+    boolean stage_3D = data.getBoolean("s3d");
     if (stage_3D) {
       z=data.getFloat("z");
       dz=data.getFloat("dz");
@@ -23,14 +24,19 @@ class HoloTriangle extends StageComponent {//ground component
       group=data.getInt("group");
     }
   }
-  HoloTriangle(float x1, float y1, float x2, float y2, int rot, int fcolor) {
+  
+  public HoloTriangle(StageComponentDragPlacementContext context){
     type="holoTriangle";
-    x=x1;
-    y=y1;
-    dx=x2;
-    dy=y2;
-    direction=rot;
-    ccolor=fcolor;
+    x = context.getX();
+    y = context.getY();
+    dx = context.getDX();
+    dy = context.getDY();
+    ccolor = context.getColor();
+    if(context.has3D()){
+      z = context.getZ();
+      dx = context.getDZ();
+    }
+    direction = context.getRotation();
   }
   
   public HoloTriangle(SerialIterator iterator){
@@ -39,11 +45,11 @@ class HoloTriangle extends StageComponent {//ground component
   }
   
   StageComponent copy() {
-    return new HoloTriangle(x, y, dx, dy, direction, ccolor);
+    return new HoloTriangle(new StageComponentDragPlacementContext(x, y, dx, dy, ccolor, direction));
   }
   
   StageComponent copy(float offsetX,float offsetY){
-    return new HoloTriangle(x+offsetX,y+offsetY,dx+offsetX,dy+offsetY,direction,ccolor);
+    return new HoloTriangle(new StageComponentDragPlacementContext(x+offsetX,y+offsetY,dx+offsetX,dy+offsetY,direction,ccolor));
   }
   
   StageComponent copy(float offsetX,float offsetY,float offsetZ){

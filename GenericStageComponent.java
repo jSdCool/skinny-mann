@@ -28,6 +28,10 @@ class GenericStageComponent extends StageComponent {
     return this;
   }
   
+  public GenericStageComponent(StageComponentPlacementContext context){
+    
+  }
+  
   public GenericStageComponent(SerialIterator iterator){
      deserial(iterator);
   }

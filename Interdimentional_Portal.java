@@ -8,7 +8,7 @@ class Interdimentional_Portal extends StageComponent {//ground component
   
   float linkX, linkY, linkZ;
   int linkIndex;
-  Interdimentional_Portal(JSONObject data, boolean stage_3D) {
+  Interdimentional_Portal(JSONObject data) {
     type="interdimentional Portal";
     x=data.getFloat("x");
     y=data.getFloat("y");

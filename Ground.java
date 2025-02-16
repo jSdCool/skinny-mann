@@ -6,13 +6,14 @@ class Ground extends StageComponent {//ground component
 
   public static final Identifier ID = new Identifier("Ground");
 
-  Ground(JSONObject data, boolean stage_3D) {
+  Ground(JSONObject data) {
     type="ground";
     x=data.getFloat("x");
     y=data.getFloat("y");
     dx=data.getFloat("dx");
     dy=data.getFloat("dy");
     ccolor=data.getInt("color");
+    boolean stage_3D = data.getBoolean("s3d");
     if (stage_3D) {
       z=data.getFloat("z");
       dz=data.getFloat("dz");
@@ -21,23 +22,18 @@ class Ground extends StageComponent {//ground component
       group=data.getInt("group");
     }
   }
-  Ground(float X, float Y, float DX, float DY, int fcolor) {
+  
+  public Ground(StageComponentDragPlacementContext context){
     type="ground";
-    x=X;
-    y=Y;
-    dx=DX;
-    dy=DY;
-    ccolor=fcolor;
-  }
-  Ground(float X, float Y, float Z, float DX, float DY, float DZ, int fcolor) {
-    type="ground";
-    x=X;
-    y=Y;
-    z=Z;
-    dx=DX;
-    dy=DY;
-    dz=DZ;
-    ccolor=fcolor;
+    x = context.getX();
+    y = context.getY();
+    dx = context.getDX();
+    dy = context.getDY();
+    ccolor = context.getColor();
+    if(context.has3D()){
+      z = context.getZ();
+      dx = context.getDZ();
+    }
   }
   
   public Ground(SerialIterator iterator){
@@ -45,15 +41,15 @@ class Ground extends StageComponent {//ground component
   }
   
   StageComponent copy() {
-    return new Ground(x, y, z, dx, dy, dz, ccolor);
+    return new Ground(new StageComponentDragPlacementContext(x,y,z,dx,dy,dz,ccolor));
   }
   
   StageComponent copy(float offsetX,float offsetY){
-    return new Ground(x+offsetX,y+offsetY,dx,dy,ccolor);
+    return new Ground(new StageComponentDragPlacementContext(x+offsetX,y+offsetY,dx,dy,ccolor));
   }
   
   StageComponent copy(float offsetX,float offsetY,float offsetZ){
-    return new Ground(x+offsetX,y+offsetY,z+offsetZ,dx,dy,dz,ccolor);
+    return new Ground(new StageComponentDragPlacementContext(x+offsetX,y+offsetY,z+offsetZ,dx,dy,dz,ccolor));
   }
 
   JSONObject save(boolean stage_3D) {

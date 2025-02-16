@@ -6,10 +6,11 @@ class Goal extends StageComponent {//ground component
 
   public static final Identifier ID = new Identifier("Goal");
 
-  Goal(JSONObject data, boolean stage_3D) {
+  Goal(JSONObject data) {
     type="goal";
     x=data.getFloat("x");
     y=data.getFloat("y");
+    boolean stage_3D = data.getBoolean("s3d");
     if (stage_3D) {
       z=data.getFloat("z");
     }
@@ -17,10 +18,14 @@ class Goal extends StageComponent {//ground component
       group=data.getInt("group");
     }
   }
-  Goal(float X, float Y) {
+  
+  public Goal(StageComponentPlacementContext context){
     type="goal";
-    x=X;
-    y=Y;
+    x = context.getX();
+    y = context.getY();
+    if(context.has3D()){
+      z = context.getZ();
+    }
   }
   
   public Goal(SerialIterator iterator){
@@ -28,11 +33,11 @@ class Goal extends StageComponent {//ground component
   }
 
   StageComponent copy() {
-    return new Goal(x, y);
+    return new Goal(new StageComponentPlacementContext(x, y));
   }
   
   StageComponent copy(float offsetX,float offsetY){
-    return new Goal(x+offsetX,y+offsetY);
+    return new Goal(new StageComponentPlacementContext(x+offsetX,y+offsetY));
   }
   
   StageComponent copy(float offsetX,float offsetY,float offsetZ){

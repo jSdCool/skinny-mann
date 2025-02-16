@@ -7,10 +7,11 @@ class LogicButton extends StageComponent {//ground component
   public static final Identifier ID = new Identifier("LogicButton");
 
   int variable=-1;
-  LogicButton(JSONObject data, boolean stage_3D) {
+  LogicButton(JSONObject data) {
     type="logic button";
     x=data.getFloat("x");
     y=data.getFloat("y");
+    boolean stage_3D = data.getBoolean("s3d");
     if (stage_3D) {
       z=data.getFloat("z");
     }
@@ -19,30 +20,26 @@ class LogicButton extends StageComponent {//ground component
     }
     variable=data.getInt("variable");
   }
-
-  LogicButton(float X, float Y, float Z) {
-    x=X;
-    y=Y;
-    z=Z;
+  
+  public LogicButton(StageComponentPlacementContext context){
     type="logic button";
+    x = context.getX();
+    y = context.getY();
+    if(context.has3D()){
+      z = context.getZ();
+    }
   }
   
   StageComponent copy() {
-    return new LogicButton(x, y, z);
+    return new LogicButton(new StageComponentPlacementContext(x, y, z));
   }
   
   StageComponent copy(float offsetX,float offsetY){
-    return new LogicButton(x+offsetX,y+offsetY);
+    return new LogicButton(new StageComponentPlacementContext(x+offsetX,y+offsetY));
   }
   
   StageComponent copy(float offsetX,float offsetY,float offsetZ){
-    return new LogicButton(x+offsetX,y+offsetY,z+offsetZ);
-  }
-  
-  LogicButton(float X, float Y) {
-    x=X;
-    y=Y;
-    type="logic button";
+    return new LogicButton(new StageComponentPlacementContext(x+offsetX,y+offsetY,z+offsetZ));
   }
   
   public LogicButton(SerialIterator iterator){

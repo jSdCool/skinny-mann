@@ -6,12 +6,15 @@ class DethPlane extends StageComponent {//ground component
 
   public static final Identifier ID = new Identifier("DeathPlane");
 
-  DethPlane(JSONObject data, boolean stage_3D) {
+  DethPlane(JSONObject data) {
     type="dethPlane";
     x=data.getFloat("x");
     y=data.getFloat("y");
     dx=data.getFloat("dx");
     dy=data.getFloat("dy");
+    
+    boolean stage_3D = data.getBoolean("s3d");
+    
     if (stage_3D) {
       z=data.getFloat("z");
       dz=data.getFloat("dz");
@@ -20,19 +23,25 @@ class DethPlane extends StageComponent {//ground component
       group=data.getInt("group");
     }
   }
-  DethPlane(float X, float Y, float DX, float DY) {
+  
+  public DethPlane(StageComponentDragPlacementContext context){
     type="dethPlane";
-    x=X;
-    y=Y;
-    dx=DX;
-    dy=DY;
+    x = context.getX();
+    y = context.getY();
+    dx = context.getDX();
+    dy = context.getDY();
+    if(context.has3D()){
+      z = context.getZ();
+      dx = context.getDZ();
+    }
   }
+  
   StageComponent copy() {
-    return new DethPlane(x, y, dx, dy);
+    return new DethPlane(new StageComponentDragPlacementContext(x, y, dx, dy,0));
   }
 
   StageComponent copy(float offsetX, float offsetY) {
-    return new DethPlane(x+offsetX, y+offsetY, dx, dy);
+    return new DethPlane(new StageComponentDragPlacementContext(x+offsetX, y+offsetY, dx, dy,0));
   }
 
   StageComponent copy(float offsetX, float offsetY, float offsetZ) {
