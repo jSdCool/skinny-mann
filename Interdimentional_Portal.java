@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Interdimentional_Portal extends StageComponent {//ground component
 
-  public static final Identifier ID = new Identifier("InterdimentionalPortal");
+  public static final Identifier ID = new Identifier("interdimentional_Portal");
   
   float linkX, linkY, linkZ;
   int linkIndex;

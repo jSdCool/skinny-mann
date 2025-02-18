@@ -12,7 +12,8 @@ void registerThings(){
   StageComponentRegistry.register(LogicButton.ID,LogicButton::new,LogicButton::new,LogicButton::new, (reder, x, y) -> {}, "Button", new Boolean[]{true,true});
   StageComponentRegistry.register(SoundBox.ID,SoundBox::new,SoundBox::new,SoundBox::new, (reder, x, y) -> {}, "Sound Box", new Boolean[]{true,false});
   StageComponentRegistry.register(WritableSign.ID,WritableSign::new,WritableSign::new,WritableSign::new, (reder, x, y) -> {}, "Sign", new Boolean[]{true,true});
-  
+  StageComponentRegistry.register(SWoff3D.ID,SWoff3D::new,SWoff3D::new,SWoff3D::new,(reder, x, y) -> {}, "3D off switch", new Boolean[]{true,true});
+  StageComponentRegistry.register(SWon3D.ID,SWon3D::new,SWon3D::new,SWon3D::new,(reder, x, y) -> {}, "3D on switch", new Boolean[]{true,true});
   SerialRegistry.register(GenericStageComponent.ID,GenericStageComponent::new);//palce
   
   //Logic components
@@ -34,8 +35,6 @@ void registerThings(){
   SerialRegistry.register(SetXOffset.ID,SetXOffset::new);
   SerialRegistry.register(SetYOffset.ID,SetYOffset::new);
   SerialRegistry.register(SetZOffset.ID,SetZOffset::new);
-  SerialRegistry.register(SWoff3D.ID,SWoff3D::new);
-  SerialRegistry.register(SWon3D.ID,SWon3D::new);
   SerialRegistry.register(XNorGate.ID,XNorGate::new);
   SerialRegistry.register(XorGate.ID,XorGate::new);
   

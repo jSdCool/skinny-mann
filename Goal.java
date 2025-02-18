@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Goal extends StageComponent {//ground component
 
-  public static final Identifier ID = new Identifier("Goal");
+  public static final Identifier ID = new Identifier("goal");
 
   Goal(JSONObject data) {
     type="goal";

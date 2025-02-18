@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Sloap extends StageComponent {//ground component
 
-  public static final Identifier ID = new Identifier("Sloap");
+  public static final Identifier ID = new Identifier("sloap");
 
   int direction;
   Sloap(JSONObject data) {

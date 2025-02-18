@@ -5,7 +5,7 @@ import processing.sound.*;
 
 class SoundBox extends StageComponent {
   
-  public static final Identifier ID = new Identifier("SoundBox");
+  public static final Identifier ID = new Identifier("sound_box");
   
   String soundKey="";
 
@@ -92,13 +92,13 @@ class SoundBox extends StageComponent {
   }
 
   StageComponent copy() {
-    SoundBox e=new SoundBox(x, y);
+    SoundBox e=new SoundBox(new StageComponentPlacementContext(x, y));
     e.soundKey=soundKey;
     return  e;
   }
   
   StageComponent copy(float offsetX,float offsetY){
-    SoundBox e = new SoundBox(x+offsetX,y+offsetY);
+    SoundBox e = new SoundBox(new StageComponentPlacementContext(x+offsetX,y+offsetY));
     e.soundKey=soundKey;
     return e;
   }

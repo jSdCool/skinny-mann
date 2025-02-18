@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Ground extends StageComponent {//ground component
 
-  public static final Identifier ID = new Identifier("Ground");
+  public static final Identifier ID = new Identifier("ground");
 
   Ground(JSONObject data) {
     type="ground";

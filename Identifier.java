@@ -67,4 +67,8 @@ public class Identifier {
     public int hashCode() {
         return Objects.hash(nameSpace, value);
     }
+    
+    public static String convertToId(String raw){
+      return raw.replaceAll(" ","_");
+    }
 }

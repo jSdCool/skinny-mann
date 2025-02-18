@@ -1,6 +1,7 @@
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
+import java.util.function.Function;
 
 class Stage implements Serialization {
   
@@ -45,64 +46,86 @@ class Stage implements Serialization {
     if (type.equals("stage")||type.equals("3Dstage")||type.equals("blueprint")||type.equals("3D blueprint")) {
       is3D=type.equals("3Dstage")||type.equals("3D blueprint");
       for (int i=1; i<file.size(); i++) {
-        try {
+        //try {
           JSONObject ob=file.getJSONObject(i);
-          String otype=ob.getString("type");
-          if (otype.equals("ground")) {
-            parts.add(new Ground(ob, is3D));
-          }
-          else if (otype.equals("holo")) {
-            parts.add(new Holo(ob, is3D));
-          }
-          else if (otype.equals("dethPlane")) {
-            parts.add(new DethPlane(ob, is3D));
-          }
-          else if (otype.equals("check point")) {
-            parts.add(new CheckPoint(ob, is3D));
-          }
-          else if (otype.equals("goal")) {
-            parts.add(new Goal(ob, is3D));
-          }
-          else if (otype.equals("coin")) {
-            parts.add(new Coin(ob, is3D));
-          }
-          else if (otype.equals("interdimentional Portal")) {
-            parts.add(new Interdimentional_Portal(ob, is3D));
-          }
-          else if (otype.equals("sloap")) {
-            parts.add(new Sloap(ob, is3D));
-          }
-          else if (otype.equals("holoTriangle")) {
-            parts.add(new HoloTriangle(ob, is3D));
-          }
-          else if (otype.equals("3DonSW")) {
-            parts.add(new SWon3D(ob, is3D));
-          }
-          else if (otype.equals("3DoffSW")) {
-            parts.add(new SWoff3D(ob, is3D));
-          }
-          else if (otype.equals("WritableSign")) {
-            parts.add(new WritableSign(ob, is3D));
-          }
-          else if (otype.equals("sound box")) {
-            parts.add(new SoundBox(ob, is3D));
-          }
-          else if (otype.equals("logic button")) {
-            parts.add(new LogicButton(ob, is3D));
-            interactables.add(parts.get(parts.size()-1));
-          }
-          else{
+          String otype=Identifier.convertToId(ob.getString("type"));
+          ob.setBoolean("s3d",is3D);
+          Identifier typeID = new Identifier(otype);
+          Function<JSONObject, StageComponent> constructor = StageComponentRegistry.getJsonConstructor(typeID);
+          if(constructor == null){
+            //check if it is an entity
             //if the current thing is an entity, load it
             StageEntity ent = source.entityRegistry.get(otype);
             if(ent!=null){
               entities.add(ent.create(ob,this));
+            }else{
+              System.err.println("No constructor found for idntifier: "+typeID);
+              throw new RuntimeException("No constructor found for idntifier: "+typeID);
             }
+            continue;
           }
           
-        }
-        catch(Throwable e) {
-        }
+          StageComponent component = constructor.apply(ob);
+          add(component);
+          
+          //if (otype.equals("ground")) {
+          //  parts.add(new Ground(ob, is3D));
+          //}
+          //else if (otype.equals("holo")) {
+          //  parts.add(new Holo(ob, is3D));
+          //}
+          //else if (otype.equals("dethPlane")) {
+          //  parts.add(new DethPlane(ob, is3D));
+          //}
+          //else if (otype.equals("check point")) {
+          //  parts.add(new CheckPoint(ob, is3D));
+          //}
+          //else if (otype.equals("goal")) {
+          //  parts.add(new Goal(ob, is3D));
+          //}
+          //else if (otype.equals("coin")) {
+          //  parts.add(new Coin(ob, is3D));
+          //}
+          //else if (otype.equals("interdimentional Portal")) {
+          //  parts.add(new Interdimentional_Portal(ob, is3D));
+          //}
+          //else if (otype.equals("sloap")) {
+          //  parts.add(new Sloap(ob, is3D));
+          //}
+          //else if (otype.equals("holoTriangle")) {
+          //  parts.add(new HoloTriangle(ob, is3D));
+          //}
+          //else if (otype.equals("3DonSW")) {
+          //  parts.add(new SWon3D(ob, is3D));
+          //}
+          //else if (otype.equals("3DoffSW")) {
+          //  parts.add(new SWoff3D(ob, is3D));
+          //}
+          //else if (otype.equals("WritableSign")) {
+          //  parts.add(new WritableSign(ob, is3D));
+          //}
+          //else if (otype.equals("sound box")) {
+          //  parts.add(new SoundBox(ob, is3D));
+          //}
+          //else if (otype.equals("logic button")) {
+          //  parts.add(new LogicButton(ob, is3D));
+          //  interactables.add(parts.get(parts.size()-1));
+          //}
+          //else{
+            
+          //}
+          
+        //}
+        //catch(Throwable e) {
+        //}
       }
+    }
+  }
+  
+  void add(StageComponent component){
+    parts.add(component);
+    if(component instanceof Interactable){
+      interactables.add(component);
     }
   }
 

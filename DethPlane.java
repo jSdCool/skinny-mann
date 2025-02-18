@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class DethPlane extends StageComponent {//ground component
 
-  public static final Identifier ID = new Identifier("DeathPlane");
+  public static final Identifier ID = new Identifier("dethPlane");
 
   DethPlane(JSONObject data) {
     type="dethPlane";

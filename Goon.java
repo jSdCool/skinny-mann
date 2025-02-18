@@ -2,7 +2,7 @@ import processing.data.*;
 import processing.core.*;
 class Goon extends StageEntity{
   
-  public static final Identifier ID = new Identifier("Goon");
+  public static final Identifier ID = new Identifier("goon");
   
   Goon(float x,float y, float z,Stage stage){
     super(stage);

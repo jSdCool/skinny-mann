@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.awt.Desktop;
 import javax.swing.*;
+import java.util.function.Function;
 
 
 void settings() {//first function called
@@ -69,7 +70,7 @@ void setup() {//seccond function called
     textureSphere(200, 200, 200, CBi);
     
     //add entites to the entity regisrty
-    entityRegistry.put("simple entity",new SimpleEntity(0,0,0,null));
+    entityRegistry.put("simple_entity",new SimpleEntity(0,0,0,null));
     entityRegistry.put("goon",new Goon(0,0,0,null));
     //start the load thread
     thread("programLoad");
@@ -4380,6 +4381,7 @@ void turnThingsOff() {
   placingPulse=false;
   placingRandom=false;
   placingGoon=false;
+  currentlyPlaceing = null;
 }
 
 void fileSelected(File selection) {

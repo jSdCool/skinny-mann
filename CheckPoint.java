@@ -5,7 +5,7 @@ import processing.core.*;
 
 class CheckPoint extends StageComponent {//ground component
   static transient skiny_mann source;
-  public static final Identifier ID = new Identifier("CheckPoint");
+  public static final Identifier ID = new Identifier("check_point");
   CheckPoint(JSONObject data) {
     type="check point";
     x=data.getFloat("x");

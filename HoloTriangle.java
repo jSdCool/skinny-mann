@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class HoloTriangle extends StageComponent {//ground component
 
-  public static final Identifier ID = new Identifier("HoloTriangle");
+  public static final Identifier ID = new Identifier("holoTriangle");
   
   int direction;
   HoloTriangle(JSONObject data) {

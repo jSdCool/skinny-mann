@@ -508,6 +508,8 @@ LogicThread logicTickingThread = new LogicThread();
 
 ToolBox scr2;
 
+Identifier currentlyPlaceing = null;
+
 
 //DO NOT EDIT BELOW THIS LINE ON THE MAIN PROJECT!
 //===================================================

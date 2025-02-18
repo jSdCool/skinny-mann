@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Coin extends StageComponent {//ground component
 
-  public static final Identifier ID = new Identifier("Coin");
+  public static final Identifier ID = new Identifier("coin");
 
   int coinId;
   Coin(JSONObject data) {

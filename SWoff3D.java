@@ -33,15 +33,15 @@ class SWoff3D extends StageComponent {//ground component
   }
   
   StageComponent copy() {
-    return new SWoff3D(x, y, z);
+    return new SWoff3D(new StageComponentPlacementContext(x, y, z));
   }
   
   StageComponent copy(float offsetX,float offsetY){
-    return new SWoff3D(x=offsetX,y+offsetY,z);
+    return new SWoff3D(new StageComponentPlacementContext(x+offsetX,y+offsetY,z));
   }
   
   StageComponent copy(float offsetX,float offsetY,float offsetZ){
-    return new SWoff3D(x+offsetX,y+offsetY,z+offsetZ);
+    return new SWoff3D(new StageComponentPlacementContext(x+offsetX,y+offsetY,z+offsetZ));
   }
   
   JSONObject save(boolean stage_3D) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Holo extends StageComponent {//ground component
 
-  public static final Identifier ID = new Identifier("Holo");
+  public static final Identifier ID = new Identifier("holo");
 
   Holo(JSONObject data) {
     type="holo";

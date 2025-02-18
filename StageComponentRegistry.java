@@ -65,6 +65,10 @@ public class StageComponentRegistry{
     return dimentionAllow.get(id);
   }
   
+  static boolean isDraggable(Identifier id){
+    return dragPlacementConstructors.get(id) != null;
+  }
+  
   
   interface ComponentButtonIconDraw{
     void draw(PGraphics render, float x, float y);

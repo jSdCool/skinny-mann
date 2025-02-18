@@ -37,19 +37,19 @@ class WritableSign extends StageComponent {
   }
   
   StageComponent copy() {
-    WritableSign e=new WritableSign(x, y, z);
+    WritableSign e=new WritableSign(new StageComponentPlacementContext(x, y, z));
     e.contents=contents;
     return  e;
   }
   
   StageComponent copy(float offsetX,float offsetY){
-    WritableSign e = new WritableSign(x+offsetX,y+offsetY);
+    WritableSign e = new WritableSign(new StageComponentPlacementContext(x+offsetX,y+offsetY));
     e.contents = contents;
     return e;
   }
   
   StageComponent copy(float offsetX,float offsetY,float offsetZ){
-    WritableSign e = new WritableSign(x+offsetX,y+offsetY,z+offsetZ);
+    WritableSign e = new WritableSign(new StageComponentPlacementContext(x+offsetX,y+offsetY,z+offsetZ));
     e.contents = contents;
     return e;
   }

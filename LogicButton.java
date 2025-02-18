@@ -2,9 +2,9 @@ import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
-class LogicButton extends StageComponent {//ground component
+class LogicButton extends StageComponent implements Interactable {//ground component
   
-  public static final Identifier ID = new Identifier("LogicButton");
+  public static final Identifier ID = new Identifier("logic_button");
 
   int variable=-1;
   LogicButton(JSONObject data) {
@@ -140,11 +140,11 @@ class LogicButton extends StageComponent {//ground component
     return false;
   }
 
-  void setData(int data) {
+  public void setData(int data) {
     variable=data;
   }
 
-  int getDataI() {
+  public int getDataI() {
     return variable;
   }
 
@@ -152,7 +152,7 @@ class LogicButton extends StageComponent {//ground component
    
    @param data the index of the stage the button is in
    */
-  void worldInteractions(int data) {
+  public void worldInteractions(int data) {
     if (source.level.multyplayerMode==2) {
       Group group=getGroup();
       if (!group.visable)
