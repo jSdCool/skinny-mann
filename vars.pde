@@ -25,7 +25,7 @@ boolean menue = true;
 boolean inGame = false;
 boolean player1_moving_right = false;
 boolean player1_moving_left = false;
-boolean dev_mode = false;
+boolean dev_mode = true;
 boolean player1_jumping = false;
 boolean dead = false;
 boolean level_complete = false;
@@ -137,7 +137,7 @@ ArrayList<Boolean> coins;
 PVector lightDir = new PVector();
 
 String Menue = "creds";
-String version = "0.9.2_Early_Access";
+String version = "0.10.0_Early_Access";
 String EDITOR_version = "0.2.1_EAc";
 String ip = "localhost";
 String name = "can't_be_botherd_to_chane_it";
@@ -162,7 +162,7 @@ ArrayList<String> playerNames=new ArrayList<>();
 
 //String[] musicTracks ={"data/music/track1.wav", "data/music/track2.wav", "data/music/track3.wav"};
 //String[] sfxTracks={"data/sounds/level complete.wav"};
-String[] compatibleVersions={"0.7.0_Early_Access", "0.7.1_Early_Access","0.8.0_Early_Access","0.8.1_Early_Access","0.8.2_Early_Access","0.9.0_Early_Access","0.9.1_Early_Access"};
+String[] compatibleVersions={"0.9.1_Early_Access","0.9.2_Early_Access","0.10.0_Early_Access"};
 
 float Scale;
 float gravity = 0.001;

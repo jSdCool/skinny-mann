@@ -9,7 +9,8 @@ class ToolBox extends PApplet {
   public int redVal=0, greenVal=0, blueVal=0, CC=0;
   int rsp=0, gsp=0, bsp=0, selectedColor=0, millisOffset, variableScroll=0, groupScroll=0;
   String page="colors", newGroopName="";
-  Button colorPage, toolsPage, draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, toggle3DMode, switch3D1, switch3D2, saveLevel, exitStageEdit, sign, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, playSound, nextSound, prevSound, checkpointButton, playPauseButton, groundButton, goalButton, deleteButton, movePlayerButton, gridModeButton, holoButton, connectLogicButton, moveComponentsButton, andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, logicButtonButton, runLoad, delayButton, zOffsetButton, logicHelpButton, move3DButton, size3DButton, set3DButton, read3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, playLogicSoundButton, pulseButton, randomButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton;
+  Button colorPage, toolsPage,  toggle3DMode, saveLevel, exitStageEdit, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, nextSound, prevSound,  playPauseButton,  deleteButton, movePlayerButton, gridModeButton, connectLogicButton, moveComponentsButton, andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, runLoad, delayButton, zOffsetButton, logicHelpButton, move3DButton, size3DButton, set3DButton, read3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, playLogicSoundButton, pulseButton, randomButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton;
+  //Button draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, switch3D1, switch3D2, sign, checkpointButton, groundButton, goalButton, holoButton, logicButtonButton, playSound;
   Button goonEntity;
   boolean typingSign=false, settingSkyColor=false, typingGroopName=false;
 
@@ -31,39 +32,55 @@ class ToolBox extends PApplet {
     nextPlayerButton=new Button(this, 400, 105, 28, 28, ">");
     
     //stage editing tools
-    toggle3DMode=new Button(this, 820, 40+100, 50, 50, "  3D  ", 255, 203).setStrokeWeight(5).setHoverText("toggle 3D mode");
-    switch3D1=new Button(this, 880, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("turn 3D on switch");
-    switch3D2=new Button(this, 940, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("turn 3D off switch");
-    saveLevel=new Button(this, 1000, 40+100, 50, 50, "save", 255, 203).setStrokeWeight(5).setHoverText("save level");
-    draw_sloap=new Button(this, 700, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("sloap");
-    draw_holoTriangle=new Button(this, 760, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("holographic sloap(no colision)");
-    draw_dethPlane=new Button(this, 820, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("death plane");
-    draw_coin=new Button(this, 580, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("coin");
-    draw_portal=new Button(this, 640, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("interdimentional portal");
-    exitStageEdit= new Button(this, 520, 40+100, 50, 50, " < ", 255, 203).setStrokeWeight(5).setHoverText("exit to overview");
-    sign=new Button(this, 1060, 140, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("sign");
-    select=new Button(this, 1120, 140, 50, 50, "select", 255, 203).setStrokeWeight(5).setHoverText("select");
-    skyColorB1=new Button(this, 150, 165, 40, 40, 255, 203).setStrokeWeight(0);
-    setSkyColor=new Button(this, 300, 580, 100, 30, "set sky color").setStrokeWeight(2);
-    resetSkyColor=new Button(this, 200, 165, 40, 40, "reset", 255, 203).setStrokeWeight(0);
-    placeBlueprint=new Button(this, 1180, 140, 50, 50, #0F1AD3, 203).setStrokeWeight(5).setHoverText("place blurprint");
+    int buttonPosIndex = 0;
+    int[] buttonPos = calcButtonPos(buttonPosIndex++);
+    //NOTE: save and back to overiew are common between level and logic tools
+    saveLevel=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "save", 255, 203).setStrokeWeight(5).setHoverText("save level");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    exitStageEdit= new Button(this, buttonPos[0], buttonPos[1], 50, 50, " < ", 255, 203).setStrokeWeight(5).setHoverText("exit to overview");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    playPauseButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("play/pause the simulation");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    gridModeButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("grid mode");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    deleteButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("delete");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    movePlayerButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("move player");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    select=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "select", 255, 203).setStrokeWeight(5).setHoverText("select");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    toggle3DMode=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "  3D  ", 255, 203).setStrokeWeight(5).setHoverText("toggle 3D mode");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    move3DButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "move", 255, 203).setStrokeWeight(5).setHoverText("move things in 3D");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    size3DButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "size", 255, 203).setStrokeWeight(5).setHoverText("resize things in 3D");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    placeBlueprint=new Button(this, buttonPos[0], buttonPos[1], 50, 50, #0F1AD3, 203).setStrokeWeight(5).setHoverText("place blurprint");
+    
+    
+   
+    
+    //switch3D1=new Button(this, 880, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("turn 3D on switch");
+    //switch3D2=new Button(this, 940, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("turn 3D off switch");
+    //draw_sloap=new Button(this, 700, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("sloap");
+    //draw_holoTriangle=new Button(this, 760, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("holographic sloap(no colision)");
+    //draw_dethPlane=new Button(this, 820, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("death plane");
+    //draw_coin=new Button(this, 580, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("coin");
+    //draw_portal=new Button(this, 640, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("interdimentional portal");
+    //sign=new Button(this, 1060, 140, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("sign");
+    //playSound=new Button(this, 40, 200, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("place sound");
+    //checkpointButton=new Button(this, 160, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("check point");
+    //groundButton=new Button(this, 100, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("solid ground");
+    //goalButton=new Button(this, 220, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("finish line");
+    //holoButton=new Button(this, 460, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("hologram (no collision)");
+    //logicButtonButton=new Button(this, 100, 200, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("place button");
+    
+    goonEntity = new Button(this,280,200,50,50,255,203).setStrokeWeight(5).setHoverText("Goon");
+    
     nexBlueprint=new Button(this, width/2+200, height*0.7-25, 50, 50, ">", 255, 203).setStrokeWeight(5);
     prevBlueprint=new Button(this, width/2-200, height*0.7-25, 50, 50, "<", 255, 203).setStrokeWeight(5);
-    playSound=new Button(this, 40, 200, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("place sound");
     nextSound=new Button(this, width/2+300, height*0.4-25, 50, 50, ">", 255, 203).setStrokeWeight(5);
     prevSound=new Button(this, width/2-300, height*0.4-25, 50, 50, "<", 255, 203).setStrokeWeight(5);
-    checkpointButton=new Button(this, 160, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("check point");
-    playPauseButton=new Button(this, 40, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("play/pause the simulation");
-    groundButton=new Button(this, 100, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("solid ground");
-    goalButton=new Button(this, 220, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("finish line");
-    deleteButton=new Button(this, 280, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("delete");
-    movePlayerButton=new Button(this, 340, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("move player");
-    gridModeButton=new Button(this, 400, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("grid mode");
-    holoButton=new Button(this, 460, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("hologram (no collision)");
-    logicButtonButton=new Button(this, 100, 200, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("place button");
-    move3DButton=new Button(this, 160, 200, 50, 50, "move", 255, 203).setStrokeWeight(5).setHoverText("move things in 3D");
-    size3DButton=new Button(this, 220, 200, 50, 50, "size", 255, 203).setStrokeWeight(5).setHoverText("resize things in 3D");
-    goonEntity = new Button(this,280,200,50,50,255,203).setStrokeWeight(5).setHoverText("Goon");
 
     //logic editor tools
     connectLogicButton=new Button(this, 40, 40+100, 50, 50, "connect", 255, 203).setStrokeWeight(5).setHoverText("connect logic nodes");
@@ -118,8 +135,17 @@ class ToolBox extends PApplet {
     maxplayersIncrease=new Button(this, 230, 290, 30, 30, ">");
     maxplayersDecrease=new Button(this, 160, 290, 30, 30, "<");
     respawnEntitiesButton = new Button(this, 160,340, 80,30,"Respawn Entities",255,100);
+    skyColorB1=new Button(this, 150, 165, 40, 40, 255, 203).setStrokeWeight(0);
+    setSkyColor=new Button(this, 300, 580, 100, 30, "set sky color").setStrokeWeight(2);
+    resetSkyColor=new Button(this, 200, 165, 40, 40, "reset", 255, 203).setStrokeWeight(0);
   }
 
+  int[] calcButtonPos(int index){
+    final int numPerRow= 20;
+    int x = 40+60*(index%numPerRow);
+    int y = 140+ 60*(index/numPerRow);
+    return new int[]{x,y};
+  }
 
   public void draw() {
     if (levelCreator) {
@@ -202,583 +228,498 @@ class ToolBox extends PApplet {
 
         if (editingStage) {
 
-
+          //Tools
           playPauseButton.draw();
           fill(0);
           stroke(0);
           strokeWeight(0);
           if (simulating) {
-            rect(50, 50+100, 8, 30);
-            rect(70, 50+100, 8, 30);
+            rect(playPauseButton.x+10, playPauseButton.y+10, 8, 30);
+            rect(playPauseButton.x+30, playPauseButton.y+10, 8, 30);
           } else {
-            triangle(50, 50+100, 75, 65+100, 50, 80+100);
+            triangle(playPauseButton.x+10, playPauseButton.y+10, playPauseButton.x+35, playPauseButton.y+25, playPauseButton.x+10, playPauseButton.y+40);
           }
+          
+          if (deleteing) {
+            deleteButton.setColor(255, #F2F258);
+          } else {
+            deleteButton.setColor(255, 203);
+          }
+          deleteButton.draw();
+          fill(203);
+          stroke(203);
+          strokeWeight(0);
+          rect(deleteButton.x+5, deleteButton.y+15, 40, 5);
+          rect(deleteButton.x+20, deleteButton.y+10, 10, 5);
+          rect(deleteButton.x+10, deleteButton.y+20, 5, 20);
+          rect(deleteButton.x+10, deleteButton.y+40, 30, 5);
+          rect(deleteButton.x+35, deleteButton.y+20, 5, 20);
+          rect(deleteButton.x+18, deleteButton.y+20, 5, 20);
+          rect(deleteButton.x+27, deleteButton.y+20, 5, 20);
+
+          if (moving_player) {
+            movePlayerButton.setColor(255, #F2F258);
+          } else {
+            movePlayerButton.setColor(255, 203);
+          }
+          movePlayerButton.draw();
+          strokeWeight(0);
+          draw_mann(365, 88+100, 1, 0.6, "red");
+
+          if (grid_mode) {
+            gridModeButton.setColor(255, #F2F258);
+          } else {
+            gridModeButton.setColor(255, 203);
+          }
+          gridModeButton.draw();
+          textSize(20);
+          fill(0);
+          stroke(0);
+          strokeWeight(1);
+          line(gridModeButton.x+10, gridModeButton.y+2, gridModeButton.x+10, gridModeButton.y+47);
+          line(gridModeButton.x+20, gridModeButton.y+2, gridModeButton.x+20, gridModeButton.y+47);
+          line(gridModeButton.x+30, gridModeButton.y+2, gridModeButton.x+30, gridModeButton.y+47);
+          line(gridModeButton.x+40, gridModeButton.y+2, gridModeButton.x+40, gridModeButton.y+47);
+          line(gridModeButton.x+2, gridModeButton.y+10, gridModeButton.x+48, gridModeButton.y+10);
+          line(gridModeButton.x+2, gridModeButton.y+20, gridModeButton.x+48, gridModeButton.y+20);
+          line(gridModeButton.x+2, gridModeButton.y+30, gridModeButton.x+48, gridModeButton.y+30);
+          line(gridModeButton.x+2, gridModeButton.y+40, gridModeButton.x+48, gridModeButton.y+40);
+          text(grid_size, gridModeButton.x+10, gridModeButton.y+40);
+          strokeWeight(0);
+          
+          if (selectingBlueprint) {
+            placeBlueprint.setColor(#0F1AD3, #F2F258);
+          } else {
+            placeBlueprint.setColor(#0F1AD3, 203);
+          }
+          placeBlueprint.draw();
+          
+          if (selecting) {
+            select.setColor(255, #F2F258);
+          } else {
+            select.setColor(255, 203);
+          }
+          select.draw();
+          
+          saveLevel.draw();
+          toggle3DMode.draw();
+          exitStageEdit.draw();
+          
+          if (current3DTransformMode==2&&selecting) {
+            size3DButton.setColor(255, #F2F258);
+          } else {
+            size3DButton.setColor(255, 203);
+          }
+          size3DButton.draw();
+          if (current3DTransformMode==1&&selecting) {
+            move3DButton.setColor(255, #F2F258);
+          } else {
+            move3DButton.setColor(255, 203);
+          }
+          move3DButton.draw();
+          
+          //Components
+          
+          
+          //Entities
+          if(placingGoon){
+            goonEntity.setColor(255, #F2F258);
+          } else {
+            goonEntity.setColor(255, 203);
+          }
+          goonEntity.draw();
+          
+          //Hover Text
+          deleteButton.drawHoverText();
+          movePlayerButton.drawHoverText();
+          gridModeButton.drawHoverText();
+          exitStageEdit.drawHoverText();
+          playPauseButton.drawHoverText();
+          placeBlueprint.drawHoverText();
+          goonEntity.drawHoverText();
+          select.drawHoverText();
+          saveLevel.drawHoverText();
+          move3DButton.drawHoverText();
+          size3DButton.drawHoverText();
+          toggle3DMode.drawHoverText();
 
           if (!e3DMode) {
-            strokeWeight(0);
-            if (ground) {
-              groundButton.setColor(255, #F2F258);
-            } else {
-              groundButton.setColor(255, 203);
-            }
-            groundButton.draw();
-            fill(-7254783);
-            stroke(-7254783);
-            rect(100, 70+100, 50, 20);
-            fill(-16732415);
-            stroke(-16732415);
-            rect(100, 60+100, 50, 10);
+            //strokeWeight(0);
+            //if (ground) {
+            //  groundButton.setColor(255, #F2F258);
+            //} else {
+            //  groundButton.setColor(255, 203);
+            //}
+            //groundButton.draw();
+            //fill(-7254783);
+            //stroke(-7254783);
+            //rect(100, 70+100, 50, 20);
+            //fill(-16732415);
+            //stroke(-16732415);
+            //rect(100, 60+100, 50, 10);
 
-            strokeWeight(0);
-            if (check_point) {
-              checkpointButton.setColor(255, #F2F258);
-            } else {
-              checkpointButton.setColor(255, 203);
-            }
-            checkpointButton.draw();
-            fill(#B9B9B9);
-            strokeWeight(0);
-            rect(168, 45+100, 5, 40);
-            fill(#EA0202);
-            stroke(#EA0202);
-            strokeWeight(0);
-            triangle(170, 85-60+20+100, 170, 85-40+20+100, 170+30, 85-50+20+100);
-            strokeWeight(0);
+            //strokeWeight(0);
+            //if (check_point) {
+            //  checkpointButton.setColor(255, #F2F258);
+            //} else {
+            //  checkpointButton.setColor(255, 203);
+            //}
+            //checkpointButton.draw();
+            //fill(#B9B9B9);
+            //strokeWeight(0);
+            //rect(168, 45+100, 5, 40);
+            //fill(#EA0202);
+            //stroke(#EA0202);
+            //strokeWeight(0);
+            //triangle(170, 85-60+20+100, 170, 85-40+20+100, 170+30, 85-50+20+100);
+            //strokeWeight(0);
 
-            if (!level.stages.get(currentStageIndex).type.equals("3Dstage")) {
-              if (goal) {
-                goalButton.setColor(255, #F2F258);
-              } else {
-                goalButton.setColor(255, 203);
-              }
-              goalButton.draw();
-              fill(0);
-              stroke(0);
-              strokeWeight(0);
-              rect(223, 43+100, 15, 15);
-              rect(253, 43+100, 15, 15);
-              rect(238, 58+100, 15, 15);
-              rect(223, 73+100, 15, 15);
-              rect(253, 73+100, 15, 15);
-            }
-            if (deleteing) {
-              deleteButton.setColor(255, #F2F258);
-            } else {
-              deleteButton.setColor(255, 203);
-            }
-            deleteButton.draw();
-            fill(203);
-            stroke(203);
-            strokeWeight(0);
-            rect(285, 55+100, 40, 5);
-            rect(300, 50+100, 10, 5);
-            rect(290, 60+100, 5, 20);
-            rect(290, 80+100, 30, 5);
-            rect(315, 60+100, 5, 20);
-            rect(298, 60+100, 5, 20);
-            rect(307, 60+100, 5, 20);
+            //if (!level.stages.get(currentStageIndex).type.equals("3Dstage")) {
+            //  if (goal) {
+            //    goalButton.setColor(255, #F2F258);
+            //  } else {
+            //    goalButton.setColor(255, 203);
+            //  }
+            //  goalButton.draw();
+            //  fill(0);
+            //  stroke(0);
+            //  strokeWeight(0);
+            //  rect(223, 43+100, 15, 15);
+            //  rect(253, 43+100, 15, 15);
+            //  rect(238, 58+100, 15, 15);
+            //  rect(223, 73+100, 15, 15);
+            //  rect(253, 73+100, 15, 15);
+            //}
+            
+            //if (holo_gram) {
+            //  holoButton.setColor(255, #F2F258);
+            //} else {
+            //  holoButton.setColor(255, 203);
+            //}
+            //holoButton.draw();
+            //exitStageEdit.draw();
 
-            if (moving_player) {
-              movePlayerButton.setColor(255, #F2F258);
-            } else {
-              movePlayerButton.setColor(255, 203);
-            }
-            movePlayerButton.draw();
-            strokeWeight(0);
-            draw_mann(365, 88+100, 1, 0.6, "red");
-
-            if (grid_mode) {
-              gridModeButton.setColor(255, #F2F258);
-            } else {
-              gridModeButton.setColor(255, 203);
-            }
-            gridModeButton.draw();
-            textSize(20);
-            fill(0);
-            stroke(0);
-            strokeWeight(1);
-            line(410, 42+100, 410, 87+100);
-            line(420, 42+100, 420, 87+100);
-            line(430, 42+100, 430, 87+100);
-            line(440, 42+100, 440, 87+100);
-            line(402, 50+100, 448, 50+100);
-            line(402, 60+100, 448, 60+100);
-            line(402, 70+100, 448, 70+100);
-            line(402, 80+100, 448, 80+100);
-            text(grid_size, 410, 80+100);
-            strokeWeight(0);
-            if (holo_gram) {
-              holoButton.setColor(255, #F2F258);
-            } else {
-              holoButton.setColor(255, 203);
-            }
-            holoButton.draw();
-            exitStageEdit.draw();
-
-            if (drawCoins) {
-              draw_coin.setColor(255, #F2F258);
-            } else {
-              draw_coin.setColor(255, 203);
-            }
-            draw_coin.draw();
-            drawCoin(605, 65+100, 4);
-            if (drawingPortal) {
-              draw_portal.setColor(255, #F2F258);
-            } else {
-              draw_portal.setColor(255, 203);
-            }
-            draw_portal.draw();
-            drawPortal(665, 65+100, 0.45);
+            //if (drawCoins) {
+            //  draw_coin.setColor(255, #F2F258);
+            //} else {
+            //  draw_coin.setColor(255, 203);
+            //}
+            //draw_coin.draw();
+            //drawCoin(605, 65+100, 4);
+            //if (drawingPortal) {
+            //  draw_portal.setColor(255, #F2F258);
+            //} else {
+            //  draw_portal.setColor(255, 203);
+            //}
+            //draw_portal.draw();
+            //drawPortal(665, 65+100, 0.45);
 
             if (!level.stages.get(currentStageIndex).type.equals("3Dstage")) {
-              if (sloap) {
-                draw_sloap.setColor(255, #F2F258);
-              } else {
-                draw_sloap.setColor(255, 203);
-              }//draw_holoTriangle
-              draw_sloap.draw();
-              fill(-7254783);
-              stroke(-7254783);
-              strokeWeight(0);
-              triangle(705, 85+100, 745, 85+100, 745, 45+100);
-              if (holoTriangle) {
-                draw_holoTriangle.setColor(255, #F2F258);
-              } else {
-                draw_holoTriangle.setColor(255, 203);
-              }//draw_holoTriangle
-              draw_holoTriangle.draw();
-              fill(-4623063);
-              stroke(-4623063);
-              strokeWeight(0);
-              triangle(765, 85+100, 805, 85+100, 805, 45+100);
+              //if (sloap) {
+              //  draw_sloap.setColor(255, #F2F258);
+              //} else {
+              //  draw_sloap.setColor(255, 203);
+              //}//draw_holoTriangle
+              //draw_sloap.draw();
+              //fill(-7254783);
+              //stroke(-7254783);
+              //strokeWeight(0);
+              //triangle(705, 85+100, 745, 85+100, 745, 45+100);
+              //if (holoTriangle) {
+              //  draw_holoTriangle.setColor(255, #F2F258);
+              //} else {
+              //  draw_holoTriangle.setColor(255, 203);
+              //}//draw_holoTriangle
+              //draw_holoTriangle.draw();
+              //fill(-4623063);
+              //stroke(-4623063);
+              //strokeWeight(0);
+              //triangle(765, 85+100, 805, 85+100, 805, 45+100);
 
 
-              if (dethPlane) {
-                draw_dethPlane.setColor(255, #F2F258);
-              } else {
-                draw_dethPlane.setColor(255, 203);
-              }//draw_holoTriangle
-              draw_dethPlane.draw();
-              fill(-114431);
-              stroke(-114431);
-              rect(825, 65+100, 40, 20);
+              //if (dethPlane) {
+              //  draw_dethPlane.setColor(255, #F2F258);
+              //} else {
+              //  draw_dethPlane.setColor(255, 203);
+              //}//draw_holoTriangle
+              //draw_dethPlane.draw();
+              //fill(-114431);
+              //stroke(-114431);
+              //rect(825, 65+100, 40, 20);
 
-              if (selectingBlueprint) {
-                placeBlueprint.setColor(#0F1AD3, #F2F258);
-              } else {
-                placeBlueprint.setColor(#0F1AD3, 203);
-              }
-              placeBlueprint.draw();
+              
 
-              if (placingSound) {
-                playSound.setColor(255, #F2F258);
-              } else {
-                playSound.setColor(255, 203);
-              }
-              playSound.draw();
-              drawSpeakericon(playSound.x+playSound.lengthX/2, playSound.y+playSound.lengthY/2, 0.5,g);
+              //if (placingSound) {
+              //  playSound.setColor(255, #F2F258);
+              //} else {
+              //  playSound.setColor(255, 203);
+              //}
+              //playSound.draw();
+              //drawSpeakericon(playSound.x+playSound.lengthX/2, playSound.y+playSound.lengthY/2, 0.5,g);
               
               //tmp
-              if(placingGoon){
-                goonEntity.setColor(255, #F2F258);
-              } else {
-                goonEntity.setColor(255, 203);
-              }
-              goonEntity.draw();
+              
             }//end of level is not 3D
 
-            if (drawingSign) {
-              sign.setColor(255, #F2F258);
-            } else {
-              sign.setColor(255, 203);
-            }
-            sign.draw();
-            drawSign(sign.x+sign.lengthX/2, sign.y+sign.lengthY, 0.6);
+            //if (drawingSign) {
+            //  sign.setColor(255, #F2F258);
+            //} else {
+            //  sign.setColor(255, 203);
+            //}
+            //sign.draw();
+            //drawSign(sign.x+sign.lengthX/2, sign.y+sign.lengthY, 0.6);
 
-            if (selecting) {
-              select.setColor(255, #F2F258);
-            } else {
-              select.setColor(255, 203);
-            }
-            select.draw();
-            if (placingLogicButton) {
-              logicButtonButton.setColor(255, #F2F258);
-            } else {
-              logicButtonButton.setColor(255, 203);
-            }
-            logicButtonButton.draw();
-            drawLogicButton(logicButtonButton.x+logicButtonButton.lengthX/2, logicButtonButton.y+logicButtonButton.lengthY/2, 1, false,g);
+            
+            //if (placingLogicButton) {
+            //  logicButtonButton.setColor(255, #F2F258);
+            //} else {
+            //  logicButtonButton.setColor(255, 203);
+            //}
+            //logicButtonButton.draw();
+            //drawLogicButton(logicButtonButton.x+logicButtonButton.lengthX/2, logicButtonButton.y+logicButtonButton.lengthY/2, 1, false,g);
           }//end of not in 3D mode
 
-          saveLevel.draw();
+          
 
 
           //button hover text
-          textAlign(LEFT, BOTTOM);
-          playPauseButton.drawHoverText();
+          
           if (!e3DMode) {
-            groundButton.drawHoverText();
-            checkpointButton.drawHoverText();
+            //groundButton.drawHoverText();
+            //checkpointButton.drawHoverText();
+            //if (!level.stages.get(currentStageIndex).type.equals("3Dstage")) {
+            //  goalButton.drawHoverText();
+            //}
+            //holoButton.drawHoverText();
+            
+            //draw_coin.drawHoverText();
+            //draw_portal.drawHoverText();
             if (!level.stages.get(currentStageIndex).type.equals("3Dstage")) {
-              goalButton.drawHoverText();
-            }
-
-            deleteButton.drawHoverText();
-            movePlayerButton.drawHoverText();
-            gridModeButton.drawHoverText();
-            holoButton.drawHoverText();
-            exitStageEdit.drawHoverText();
-            draw_coin.drawHoverText();
-            draw_portal.drawHoverText();
-            if (!level.stages.get(currentStageIndex).type.equals("3Dstage")) {
-              draw_sloap.drawHoverText();
-              draw_holoTriangle.drawHoverText();
-              draw_dethPlane.drawHoverText();
-              placeBlueprint.drawHoverText();
-              goonEntity.drawHoverText();
+              //draw_sloap.drawHoverText();
+              //draw_holoTriangle.drawHoverText();
+              //draw_dethPlane.drawHoverText();
+              
             }//end of level is not 3D
-            playSound.drawHoverText();
+            //playSound.drawHoverText();
 
-            sign.drawHoverText();
-            select.drawHoverText();
-            logicButtonButton.drawHoverText();
+            //sign.drawHoverText();
+            //logicButtonButton.drawHoverText();
             
           }//end of not 3d mode
 
-          saveLevel.drawHoverText();
+          
 
 
           if (level.stages.get(currentStageIndex).type.equals("3Dstage")) {
 
             if (!e3DMode) {
-              toggle3DMode.setColor(255, 203);
-              toggle3DMode.draw();
-
-              playPauseButton.draw();
-              fill(0);
-              stroke(0);
-              strokeWeight(0);
-              if (simulating) {
-                rect(50, 50+100, 8, 30);
-                rect(70, 50+100, 8, 30);
-              } else {
-                triangle(50, 50+100, 75, 65+100, 50, 80+100);
-              }
-
-              strokeWeight(0);
-              if (ground) {
-                groundButton.setColor(255, #F2F258);
-              } else {
-                groundButton.setColor(255, 203);
-              }
-              groundButton.draw();
-              fill(-7254783);
-              stroke(-7254783);
-              rect(100, 70+100, 50, 20);
-              fill(-16732415);
-              stroke(-16732415);
-              rect(100, 60+100, 50, 10);
-              exitStageEdit.draw();
-              textAlign(LEFT, BOTTOM);
-
-              if (grid_mode) {
-                gridModeButton.setColor(255, #F2F258);
-              } else {
-                gridModeButton.setColor(255, 203);
-              }
-              gridModeButton.draw();
-              textSize(20);
-              fill(0);
-              stroke(0);
-              strokeWeight(1);
-              line(410, 42+100, 410, 87+100);
-              line(420, 42+100, 420, 87+100);
-              line(430, 42+100, 430, 87+100);
-              line(440, 42+100, 440, 87+100);
-              line(402, 50+100, 448, 50+100);
-              line(402, 60+100, 448, 60+100);
-              line(402, 70+100, 448, 70+100);
-              line(402, 80+100, 448, 80+100);
-              text(grid_size, 410, 80+100);
-              strokeWeight(0);
-              if (deleteing) {
-                deleteButton.setColor(255, #F2F258);
-              } else {
-                deleteButton.setColor(255, 203);
-              }
-              deleteButton.draw();
-              fill(203);
-              stroke(203);
-              strokeWeight(0);
-              rect(285, 55+100, 40, 5);
-              rect(300, 50+100, 10, 5);
-              rect(290, 60+100, 5, 20);
-              rect(290, 80+100, 30, 5);
-              rect(315, 60+100, 5, 20);
-              rect(298, 60+100, 5, 20);
-              rect(307, 60+100, 5, 20);
-
-              if (moving_player) {
-                movePlayerButton.setColor(255, #F2F258);
-              } else {
-                movePlayerButton.setColor(255, 203);
-              }
-              movePlayerButton.draw();
-              strokeWeight(0);
-              draw_mann(365, 88+100, 1, 0.6, "red");
-
-
-
-
-
-
-              if (check_point) {
-                checkpointButton.setColor(255, #F2F258);
-              } else {
-                checkpointButton.setColor(255, 203);
-              }
-              checkpointButton.draw();
-              fill(#B9B9B9);
-              strokeWeight(0);
-              rect(168, 45+100, 5, 40);
-              fill(#EA0202);
-              stroke(#EA0202);
-              strokeWeight(0);
-              triangle(170, 85-60+20+100, 170, 85-40+20+100, 170+30, 85-50+20+100);
-
-
-
-              if (holo_gram) {
-                holoButton.setColor(255, #F2F258);
-              } else {
-                holoButton.setColor(255, 203);
-              }
-              holoButton.draw();
-
-              if (draw3DSwitch1) {
-                switch3D1.setColor(255, #F2F258);
-              } else {
-                switch3D1.setColor(255, 203);
-              }
-              switch3D1.draw();
-              draw3DSwitch1(905, 80+100, 1);
-
-              if (draw3DSwitch2) {
-                switch3D2.setColor(255, #F2F258);
-              } else {
-                switch3D2.setColor(255, 203);
-              }
-              switch3D2.draw();
-              draw3DSwitch2(965, 80+100, 1);
-
-              if (drawingPortal) {
-                draw_portal.setColor(255, #F2F258);
-              } else {
-                draw_portal.setColor(255, 203);
-              }
-              draw_portal.draw();
-              drawPortal(665, 65+100, 0.45);
-
-              if (drawCoins) {
-                draw_coin.setColor(255, #F2F258);
-              } else {
-                draw_coin.setColor(255, 203);
-              }
-              draw_coin.draw();
-              drawCoin(605, 65+100, 4);
-
-              saveLevel.draw();
+              //toggle3DMode.setColor(255, 203);
               
-              if (selectingBlueprint) {
-                placeBlueprint.setColor(#0F1AD3, #F2F258);
-              } else {
-                placeBlueprint.setColor(#0F1AD3, 203);
-              }
-              placeBlueprint.draw();
-              
+
+              //playPauseButton.draw();
+              //fill(0);
+              //stroke(0);
+              //strokeWeight(0);
+              //if (simulating) {
+              //  rect(50, 50+100, 8, 30);
+              //  rect(70, 50+100, 8, 30);
+              //} else {
+              //  triangle(50, 50+100, 75, 65+100, 50, 80+100);
+              //}
+
+              strokeWeight(0);
+              //if (ground) {
+              //  groundButton.setColor(255, #F2F258);
+              //} else {
+              //  groundButton.setColor(255, 203);
+              //}
+              //groundButton.draw();
+              //fill(-7254783);
+              //stroke(-7254783);
+              //rect(100, 70+100, 50, 20);
+              //fill(-16732415);
+              //stroke(-16732415);
+              //rect(100, 60+100, 50, 10);
               
               textAlign(LEFT, BOTTOM);
-              toggle3DMode.drawHoverText();
-              switch3D1.drawHoverText();
-              switch3D2.drawHoverText();
-              checkpointButton.drawHoverText();
-              draw_portal.drawHoverText();
-              if (holoButton.isMouseOver()) {//this one has to stay
-                stroke(0);
-                fill(200);
-                strokeWeight(2);
-                rect(mouseX-4, mouseY-13, 165, 16);
-                fill(0);
-                textSize(15);
-                text("hologram (solid in 3D)", mouseX, mouseY+5);
-              }
-              draw_coin.drawHoverText();
-              saveLevel.drawHoverText();
-              textAlign(LEFT, BOTTOM);
-              playPauseButton.drawHoverText();
-              groundButton.drawHoverText();
-              exitStageEdit.drawHoverText();
-              gridModeButton.drawHoverText();
-              deleteButton.drawHoverText();
-              placeBlueprint.drawHoverText();
+
+              //if (grid_mode) {
+              //  gridModeButton.setColor(255, #F2F258);
+              //} else {
+              //  gridModeButton.setColor(255, 203);
+              //}
+              //gridModeButton.draw();
+              //textSize(20);
+              //fill(0);
+              //stroke(0);
+              //strokeWeight(1);
+              //line(410, 42+100, 410, 87+100);
+              //line(420, 42+100, 420, 87+100);
+              //line(430, 42+100, 430, 87+100);
+              //line(440, 42+100, 440, 87+100);
+              //line(402, 50+100, 448, 50+100);
+              //line(402, 60+100, 448, 60+100);
+              //line(402, 70+100, 448, 70+100);
+              //line(402, 80+100, 448, 80+100);
+              //text(grid_size, 410, 80+100);
+
+
+              //if (check_point) {
+              //  checkpointButton.setColor(255, #F2F258);
+              //} else {
+              //  checkpointButton.setColor(255, 203);
+              //}
+              //checkpointButton.draw();
+              //fill(#B9B9B9);
+              //strokeWeight(0);
+              //rect(168, 45+100, 5, 40);
+              //fill(#EA0202);
+              //stroke(#EA0202);
+              //strokeWeight(0);
+              //triangle(170, 85-60+20+100, 170, 85-40+20+100, 170+30, 85-50+20+100);
+
+
+
+              //if (holo_gram) {
+              //  holoButton.setColor(255, #F2F258);
+              //} else {
+              //  holoButton.setColor(255, 203);
+              //}
+              //holoButton.draw();
+
+              //if (draw3DSwitch1) {
+              //  switch3D1.setColor(255, #F2F258);
+              //} else {
+              //  switch3D1.setColor(255, 203);
+              //}
+              //switch3D1.draw();
+              //draw3DSwitch1(905, 80+100, 1);
+
+              //if (draw3DSwitch2) {
+              //  switch3D2.setColor(255, #F2F258);
+              //} else {
+              //  switch3D2.setColor(255, 203);
+              //}
+              //switch3D2.draw();
+              //draw3DSwitch2(965, 80+100, 1);
+
+              //if (drawingPortal) {
+              //  draw_portal.setColor(255, #F2F258);
+              //} else {
+              //  draw_portal.setColor(255, 203);
+              //}
+              //draw_portal.draw();
+              //drawPortal(665, 65+100, 0.45);
+
+              //if (drawCoins) {
+              //  draw_coin.setColor(255, #F2F258);
+              //} else {
+              //  draw_coin.setColor(255, 203);
+              //}
+              //draw_coin.draw();
+              //drawCoin(605, 65+100, 4);
+              
+              //switch3D1.drawHoverText();
+              //switch3D2.drawHoverText();
+              //checkpointButton.drawHoverText();
+              //draw_portal.drawHoverText();
+              //if (holoButton.isMouseOver()) {//this one has to stay
+              //  stroke(0);
+              //  fill(200);
+              //  strokeWeight(2);
+              //  rect(mouseX-4, mouseY-13, 165, 16);
+              //  fill(0);
+              //  textSize(15);
+              //  text("hologram (solid in 3D)", mouseX, mouseY+5);
+              //}
+              //draw_coin.drawHoverText();
             }//end of if not in 3D mode
             else {
-              toggle3DMode.setColor(255, #F2F258);
-              toggle3DMode.draw();
-              if (grid_mode) {
-                gridModeButton.setColor(255, #F2F258);
-              } else {
-                gridModeButton.setColor(255, 203);
-              }
-              gridModeButton.draw();
-              textSize(20);
-              fill(0);
-              stroke(0);
-              strokeWeight(1);
-              line(410, 42+100, 410, 87+100);
-              line(420, 42+100, 420, 87+100);
-              line(430, 42+100, 430, 87+100);
-              line(440, 42+100, 440, 87+100);
-              line(402, 50+100, 448, 50+100);
-              line(402, 60+100, 448, 60+100);
-              line(402, 70+100, 448, 70+100);
-              line(402, 80+100, 448, 80+100);
-              text(grid_size, 410, 80+100);
-              strokeWeight(0);
+              //if (ground) {
+              //  groundButton.setColor(255, #F2F258);
+              //} else {
+              //  groundButton.setColor(255, 203);
+              //}
+              //groundButton.draw();
+              //fill(-7254783);
+              //stroke(-7254783);
+              //rect(100, 70+100, 50, 20);
+              //fill(-16732415);
+              //stroke(-16732415);
+              //rect(100, 60+100, 50, 10);
+              //if (holo_gram) {
+              //  holoButton.setColor(255, #F2F258);
+              //} else {
+              //  holoButton.setColor(255, 203);
+              //}
+              //holoButton.draw();
+              //if (check_point) {
+              //  checkpointButton.setColor(255, #F2F258);
+              //} else {
+              //  checkpointButton.setColor(255, 203);
+              //}
+              //checkpointButton.draw();
+              //fill(#B9B9B9);
+              //strokeWeight(0);
+              //rect(168, 45+100, 5, 40);
+              //fill(#EA0202);
+              //stroke(#EA0202);
+              //strokeWeight(0);
+              //triangle(170, 85-60+20+100, 170, 85-40+20+100, 170+30, 85-50+20+100);
+              //if (drawCoins) {
+              //  draw_coin.setColor(255, #F2F258);
+              //} else {
+              //  draw_coin.setColor(255, 203);
+              //}
+              //draw_coin.draw();
+              //drawCoin(605, 65+100, 4);
+              //if (draw3DSwitch1) {
+              //  switch3D1.setColor(255, #F2F258);
+              //} else {
+              //  switch3D1.setColor(255, 203);
+              //}
+              //switch3D1.draw();
+              //draw3DSwitch1(905, 80+100, 1);
 
-              if (current3DTransformMode==2&&selecting) {
-                size3DButton.setColor(255, #F2F258);
-              } else {
-                size3DButton.setColor(255, 203);
-              }
-              size3DButton.draw();
-              if (current3DTransformMode==1&&selecting) {
-                move3DButton.setColor(255, #F2F258);
-              } else {
-                move3DButton.setColor(255, 203);
-              }
-              move3DButton.draw();
-              strokeWeight(0);
-              if (ground) {
-                groundButton.setColor(255, #F2F258);
-              } else {
-                groundButton.setColor(255, 203);
-              }
-              groundButton.draw();
-              fill(-7254783);
-              stroke(-7254783);
-              rect(100, 70+100, 50, 20);
-              fill(-16732415);
-              stroke(-16732415);
-              rect(100, 60+100, 50, 10);
-              if (holo_gram) {
-                holoButton.setColor(255, #F2F258);
-              } else {
-                holoButton.setColor(255, 203);
-              }
-              holoButton.draw();
-              if (check_point) {
-                checkpointButton.setColor(255, #F2F258);
-              } else {
-                checkpointButton.setColor(255, 203);
-              }
-              checkpointButton.draw();
-              fill(#B9B9B9);
-              strokeWeight(0);
-              rect(168, 45+100, 5, 40);
-              fill(#EA0202);
-              stroke(#EA0202);
-              strokeWeight(0);
-              triangle(170, 85-60+20+100, 170, 85-40+20+100, 170+30, 85-50+20+100);
-              if (drawCoins) {
-                draw_coin.setColor(255, #F2F258);
-              } else {
-                draw_coin.setColor(255, 203);
-              }
-              draw_coin.draw();
-              drawCoin(605, 65+100, 4);
-              if (draw3DSwitch1) {
-                switch3D1.setColor(255, #F2F258);
-              } else {
-                switch3D1.setColor(255, 203);
-              }
-              switch3D1.draw();
-              draw3DSwitch1(905, 80+100, 1);
-
-              if (draw3DSwitch2) {
-                switch3D2.setColor(255, #F2F258);
-              } else {
-                switch3D2.setColor(255, 203);
-              }
-              switch3D2.draw();
-              draw3DSwitch2(965, 80+100, 1);
-              if (drawingSign) {
-                sign.setColor(255, #F2F258);
-              } else {
-                sign.setColor(255, 203);
-              }
-              sign.draw();
-              drawSign(sign.x+sign.lengthX/2, sign.y+sign.lengthY, 0.6);
-              if (placingLogicButton) {
-                logicButtonButton.setColor(255, #F2F258);
-              } else {
-                logicButtonButton.setColor(255, 203);
-              }
-              logicButtonButton.draw();
-              drawLogicButton(logicButtonButton.x+logicButtonButton.lengthX/2, logicButtonButton.y+logicButtonButton.lengthY/2, 1, false,g);
-              if (deleteing) {
-                deleteButton.setColor(255, #F2F258);
-              } else {
-                deleteButton.setColor(255, 203);
-              }
-              deleteButton.draw();
-              fill(203);
-              stroke(203);
-              strokeWeight(0);
-              rect(285, 55+100, 40, 5);
-              rect(300, 50+100, 10, 5);
-              rect(290, 60+100, 5, 20);
-              rect(290, 80+100, 30, 5);
-              rect(315, 60+100, 5, 20);
-              rect(298, 60+100, 5, 20);
-              rect(307, 60+100, 5, 20);
+              //if (draw3DSwitch2) {
+              //  switch3D2.setColor(255, #F2F258);
+              //} else {
+              //  switch3D2.setColor(255, 203);
+              //}
+              //switch3D2.draw();
+              //draw3DSwitch2(965, 80+100, 1);
+              //if (drawingSign) {
+              //  sign.setColor(255, #F2F258);
+              //} else {
+              //  sign.setColor(255, 203);
+              //}
+              //sign.draw();
+              //drawSign(sign.x+sign.lengthX/2, sign.y+sign.lengthY, 0.6);
+              //if (placingLogicButton) {
+              //  logicButtonButton.setColor(255, #F2F258);
+              //} else {
+              //  logicButtonButton.setColor(255, 203);
+              //}
+              //logicButtonButton.draw();
+              //drawLogicButton(logicButtonButton.x+logicButtonButton.lengthX/2, logicButtonButton.y+logicButtonButton.lengthY/2, 1, false,g);
               
-              if (selectingBlueprint) {
-                placeBlueprint.setColor(#0F1AD3, #F2F258);
-                if(blueprints.length!=0)
-                  placeBlueprint3DButton.draw();
-              } else {
-                placeBlueprint.setColor(#0F1AD3, 203);
-              }
-              placeBlueprint.draw();
-              
-
-              move3DButton.drawHoverText();
-              size3DButton.drawHoverText();
-              gridModeButton.drawHoverText();
-              toggle3DMode.drawHoverText();
-              groundButton.drawHoverText();
-              if (holoButton.isMouseOver()) {//this one has to stay
-                stroke(0);
-                fill(200);
-                strokeWeight(2);
-                rect(mouseX-4, mouseY-13, 165, 16);
-                fill(0);
-                textSize(15);
-                textAlign(LEFT, BOTTOM);
-                text("hologram (solid in 3D)", mouseX, mouseY+5);
-              }
-              checkpointButton.drawHoverText();
-              draw_coin.drawHoverText();
-              switch3D1.drawHoverText();
-              switch3D2.drawHoverText();
-              sign.drawHoverText();
-              logicButtonButton.drawHoverText();
-              deleteButton.drawHoverText();
-              placeBlueprint.drawHoverText();
-              if (selectingBlueprint && blueprints.length != 0) {
-                placeBlueprint3DButton.drawHoverText();
-              }
+              //groundButton.drawHoverText();
+              //if (holoButton.isMouseOver()) {//this one has to stay
+              //  stroke(0);
+              //  fill(200);
+              //  strokeWeight(2);
+              //  rect(mouseX-4, mouseY-13, 165, 16);
+              //  fill(0);
+              //  textSize(15);
+              //  textAlign(LEFT, BOTTOM);
+              //  text("hologram (solid in 3D)", mouseX, mouseY+5);
+              //}
+              //checkpointButton.drawHoverText();
+              //draw_coin.drawHoverText();
+              //switch3D1.drawHoverText();
+              //switch3D2.drawHoverText();
+              //sign.drawHoverText();
+              //logicButtonButton.drawHoverText();
               
             }
           }//end of if stage is 3D
@@ -813,34 +754,34 @@ class ToolBox extends PApplet {
         else if (editingBlueprint) {
           if (workingBlueprint.type.equals("blueprint")) {
             strokeWeight(0);
-            if (ground) {
-              groundButton.setColor(255, #F2F258);
-            } else {
-              groundButton.setColor(255, 203);
-            }
-            groundButton.draw();
-            fill(-7254783);
-            stroke(-7254783);
-            rect(100, 70+100, 50, 20);
-            fill(-16732415);
-            stroke(-16732415);
-            rect(100, 60+100, 50, 10);
+            //if (ground) {
+            //  groundButton.setColor(255, #F2F258);
+            //} else {
+            //  groundButton.setColor(255, 203);
+            //}
+            //groundButton.draw();
+            //fill(-7254783);
+            //stroke(-7254783);
+            //rect(100, 70+100, 50, 20);
+            //fill(-16732415);
+            //stroke(-16732415);
+            //rect(100, 60+100, 50, 10);
 
-            strokeWeight(0);
-            if (check_point) {
-              checkpointButton.setColor(255, #F2F258);
-            } else {
-              checkpointButton.setColor(255, 203);
-            }
-            checkpointButton.draw();
-            fill(#B9B9B9);
-            strokeWeight(0);
-            rect(168, 45+100, 5, 40);
-            fill(#EA0202);
-            stroke(#EA0202);
-            strokeWeight(0);
-            triangle(170, 85-60+20+100, 170, 85-40+20+100, 170+30, 85-50+20+100);
-            strokeWeight(0);
+            //strokeWeight(0);
+            //if (check_point) {
+            //  checkpointButton.setColor(255, #F2F258);
+            //} else {
+            //  checkpointButton.setColor(255, 203);
+            //}
+            //checkpointButton.draw();
+            //fill(#B9B9B9);
+            //strokeWeight(0);
+            //rect(168, 45+100, 5, 40);
+            //fill(#EA0202);
+            //stroke(#EA0202);
+            //strokeWeight(0);
+            //triangle(170, 85-60+20+100, 170, 85-40+20+100, 170+30, 85-50+20+100);
+            //strokeWeight(0);
 
             textAlign(LEFT, BOTTOM);
 
@@ -881,85 +822,85 @@ class ToolBox extends PApplet {
             rect(298, 60+100, 5, 20);
             rect(307, 60+100, 5, 20);
 
-            if (drawCoins) {
-              draw_coin.setColor(255, #F2F258);
-            } else {
-              draw_coin.setColor(255, 203);
-            }
-            draw_coin.draw();
-            drawCoin(605, 65+100, 4);
+            //if (drawCoins) {
+            //  draw_coin.setColor(255, #F2F258);
+            //} else {
+            //  draw_coin.setColor(255, 203);
+            //}
+            //draw_coin.draw();
+            //drawCoin(605, 65+100, 4);
 
-            if (sloap) {
-              draw_sloap.setColor(255, #F2F258);
-            } else {
-              draw_sloap.setColor(255, 203);
-            }//draw_holoTriangle
-            draw_sloap.draw();
-            fill(-7254783);
-            stroke(-7254783);
-            strokeWeight(0);
-            triangle(705, 85+100, 745, 85+100, 745, 45+100);
-            if (holoTriangle) {
-              draw_holoTriangle.setColor(255, #F2F258);
-            } else {
-              draw_holoTriangle.setColor(255, 203);
-            }//draw_holoTriangle
-            draw_holoTriangle.draw();
-            fill(-4623063);
-            stroke(-4623063);
-            strokeWeight(0);
-            triangle(765, 85+100, 805, 85+100, 805, 45+100);
-            if (holo_gram) {
-              holoButton.setColor(255, #F2F258);
-            } else {
-              holoButton.setColor(255, 203);
-            }
-            holoButton.draw();
+            //if (sloap) {
+            //  draw_sloap.setColor(255, #F2F258);
+            //} else {
+            //  draw_sloap.setColor(255, 203);
+            //}//draw_holoTriangle
+            //draw_sloap.draw();
+            //fill(-7254783);
+            //stroke(-7254783);
+            //strokeWeight(0);
+            //triangle(705, 85+100, 745, 85+100, 745, 45+100);
+            //if (holoTriangle) {
+            //  draw_holoTriangle.setColor(255, #F2F258);
+            //} else {
+            //  draw_holoTriangle.setColor(255, 203);
+            //}//draw_holoTriangle
+            //draw_holoTriangle.draw();
+            //fill(-4623063);
+            //stroke(-4623063);
+            //strokeWeight(0);
+            //triangle(765, 85+100, 805, 85+100, 805, 45+100);
+            //if (holo_gram) {
+            //  holoButton.setColor(255, #F2F258);
+            //} else {
+            //  holoButton.setColor(255, 203);
+            //}
+            //holoButton.draw();
             saveLevel.draw();
             exitStageEdit.draw();
 
             textAlign(LEFT, BOTTOM);
-            groundButton.drawHoverText();
+            //groundButton.drawHoverText();
             gridModeButton.drawHoverText();
             deleteButton.drawHoverText();
-            holoButton.drawHoverText();
-            draw_coin.drawHoverText();
+            //holoButton.drawHoverText();
+            //draw_coin.drawHoverText();
             saveLevel.drawHoverText();
-            checkpointButton.drawHoverText();
-            draw_sloap.drawHoverText();
-            draw_holoTriangle.drawHoverText();
+            //checkpointButton.drawHoverText();
+            //draw_sloap.drawHoverText();
+            //draw_holoTriangle.drawHoverText();
             exitStageEdit.drawHoverText();
           }//end of type is blueprint
           else if (workingBlueprint.type.equals("3D blueprint")) {
             strokeWeight(0);
-            if (ground) {
-              groundButton.setColor(255, #F2F258);
-            } else {
-              groundButton.setColor(255, 203);
-            }
-            groundButton.draw();
-            fill(-7254783);
-            stroke(-7254783);
-            rect(100, 70+100, 50, 20);
-            fill(-16732415);
-            stroke(-16732415);
-            rect(100, 60+100, 50, 10);
+            //if (ground) {
+            //  groundButton.setColor(255, #F2F258);
+            //} else {
+            //  groundButton.setColor(255, 203);
+            //}
+            //groundButton.draw();
+            //fill(-7254783);
+            //stroke(-7254783);
+            //rect(100, 70+100, 50, 20);
+            //fill(-16732415);
+            //stroke(-16732415);
+            //rect(100, 60+100, 50, 10);
 
-            strokeWeight(0);
-            if (check_point) {
-              checkpointButton.setColor(255, #F2F258);
-            } else {
-              checkpointButton.setColor(255, 203);
-            }
-            checkpointButton.draw();
-            fill(#B9B9B9);
-            strokeWeight(0);
-            rect(168, 45+100, 5, 40);
-            fill(#EA0202);
-            stroke(#EA0202);
-            strokeWeight(0);
-            triangle(170, 85-60+20+100, 170, 85-40+20+100, 170+30, 85-50+20+100);
-            strokeWeight(0);
+            //strokeWeight(0);
+            //if (check_point) {
+            //  checkpointButton.setColor(255, #F2F258);
+            //} else {
+            //  checkpointButton.setColor(255, 203);
+            //}
+            //checkpointButton.draw();
+            //fill(#B9B9B9);
+            //strokeWeight(0);
+            //rect(168, 45+100, 5, 40);
+            //fill(#EA0202);
+            //stroke(#EA0202);
+            //strokeWeight(0);
+            //triangle(170, 85-60+20+100, 170, 85-40+20+100, 170+30, 85-50+20+100);
+            //strokeWeight(0);
 
             textAlign(LEFT, BOTTOM);
 
@@ -1000,20 +941,20 @@ class ToolBox extends PApplet {
             rect(298, 60+100, 5, 20);
             rect(307, 60+100, 5, 20);
 
-            if (drawCoins) {
-              draw_coin.setColor(255, #F2F258);
-            } else {
-              draw_coin.setColor(255, 203);
-            }
-            draw_coin.draw();
-            drawCoin(605, 65+100, 4);
+            //if (drawCoins) {
+            //  draw_coin.setColor(255, #F2F258);
+            //} else {
+            //  draw_coin.setColor(255, 203);
+            //}
+            //draw_coin.draw();
+            //drawCoin(605, 65+100, 4);
             
-            if (holo_gram) {
-              holoButton.setColor(255, #F2F258);
-            } else {
-              holoButton.setColor(255, 203);
-            }
-            holoButton.draw();
+            //if (holo_gram) {
+            //  holoButton.setColor(255, #F2F258);
+            //} else {
+            //  holoButton.setColor(255, 203);
+            //}
+            //holoButton.draw();
             saveLevel.draw();
             
             
@@ -1045,13 +986,13 @@ class ToolBox extends PApplet {
             }//end of 3D mode
             textAlign(LEFT, BOTTOM);
             toggle3DMode.drawHoverText();
-            groundButton.drawHoverText();
+            //groundButton.drawHoverText();
             gridModeButton.drawHoverText();
             deleteButton.drawHoverText();
-            holoButton.drawHoverText();
-            draw_coin.drawHoverText();
+            //holoButton.drawHoverText();
+            //draw_coin.drawHoverText();
             saveLevel.drawHoverText();
-            checkpointButton.drawHoverText();
+            //checkpointButton.drawHoverText();
             
           }//end of type is 3D blueprint
         } else if (editinglogicBoard) {
@@ -1670,44 +1611,44 @@ class ToolBox extends PApplet {
       if (page.equals("tools")) {
         if (editingStage) {
           if (level.stages.get(currentStageIndex).type.equals("stage")) {
-            if (draw_coin.isMouseOver()) {
-              turnThingsOff();
-              drawCoins=true;
-            }
-            if (draw_portal.isMouseOver()) {
-              turnThingsOff();
-              drawingPortal=true;
-            }
-            if (draw_sloap.isMouseOver()) {
-              turnThingsOff();
-              sloap=true;
-            }
-            if (draw_holoTriangle.isMouseOver()) {
-              turnThingsOff();
-              holoTriangle=true;
-            }
-            if (draw_dethPlane.isMouseOver()) {
-              turnThingsOff();
-              dethPlane=true;
-            }
+            //if (draw_coin.isMouseOver()) {
+            //  turnThingsOff();
+            //  drawCoins=true;
+            //}
+            //if (draw_portal.isMouseOver()) {
+            //  turnThingsOff();
+            //  drawingPortal=true;
+            //}
+            //if (draw_sloap.isMouseOver()) {
+            //  turnThingsOff();
+            //  sloap=true;
+            //}
+            //if (draw_holoTriangle.isMouseOver()) {
+            //  turnThingsOff();
+            //  holoTriangle=true;
+            //}
+            //if (draw_dethPlane.isMouseOver()) {
+            //  turnThingsOff();
+            //  dethPlane=true;
+            //}
 
             if (playPauseButton.isMouseOver()) {
               simulating=!simulating;
             }
 
 
-            if (groundButton.isMouseOver()) {
-              turnThingsOff();
-              ground=true;
-            }
-            if (checkpointButton.isMouseOver()) {
-              turnThingsOff();
-              check_point=true;
-            }
-            if (goalButton.isMouseOver()) {
-              turnThingsOff();
-              goal=true;
-            }
+            //if (groundButton.isMouseOver()) {
+            //  turnThingsOff();
+            //  ground=true;
+            //}
+            //if (checkpointButton.isMouseOver()) {
+            //  turnThingsOff();
+            //  check_point=true;
+            //}
+            //if (goalButton.isMouseOver()) {
+            //  turnThingsOff();
+            //  goal=true;
+            //}
             if (deleteButton.isMouseOver()) {
               turnThingsOff();
               deleteing=true;
@@ -1720,10 +1661,10 @@ class ToolBox extends PApplet {
               grid_mode=!grid_mode;
             }
 
-            if (holoButton.isMouseOver()) {
-              turnThingsOff();
-              holo_gram=true;
-            }
+            //if (holoButton.isMouseOver()) {
+            //  turnThingsOff();
+            //  holo_gram=true;
+            //}
 
             if (exitStageEdit.isMouseOver()) {
               turnThingsOff();
@@ -1732,19 +1673,19 @@ class ToolBox extends PApplet {
               level_complete=false;
               viewingItemContents=false;
             }
-            if (sign.isMouseOver()) {
-              turnThingsOff();
-              drawingSign=true;
-            }
+            //if (sign.isMouseOver()) {
+            //  turnThingsOff();
+            //  drawingSign=true;
+            //}
 
             if (select.isMouseOver()) {
               turnThingsOff();
               selecting=true;
             }
-            if (logicButtonButton.isMouseOver()) {
-              turnThingsOff();
-              placingLogicButton=true;
-            }
+            //if (logicButtonButton.isMouseOver()) {
+            //  turnThingsOff();
+            //  placingLogicButton=true;
+            //}
             if (placeBlueprint.isMouseOver()) {
               turnThingsOff();
 
@@ -1778,10 +1719,10 @@ class ToolBox extends PApplet {
               if (currentBluieprintIndex<blueprints.length-1&&nexBlueprint.isMouseOver())
                 currentBluieprintIndex++;
             }
-            if (playSound.isMouseOver()) {
-              turnThingsOff();
-              placingSound=true;
-            }
+            //if (playSound.isMouseOver()) {
+            //  turnThingsOff();
+            //  placingSound=true;
+            //}
             if(goonEntity.isMouseOver()){
               turnThingsOff();
               placingGoon=true;
@@ -1797,10 +1738,10 @@ class ToolBox extends PApplet {
               }
 
 
-              if (groundButton.isMouseOver()) {
-                turnThingsOff();
-                ground=true;
-              }
+              //if (groundButton.isMouseOver()) {
+              //  turnThingsOff();
+              //  ground=true;
+              //}
 
               if (deleteButton.isMouseOver()) {
                 turnThingsOff();
@@ -1825,10 +1766,10 @@ class ToolBox extends PApplet {
 
 
 
-              if (checkpointButton.isMouseOver()) {
-                turnThingsOff();
-                check_point=true;
-              }
+              //if (checkpointButton.isMouseOver()) {
+              //  turnThingsOff();
+              //  check_point=true;
+              //}
 
               if (toggle3DMode.isMouseOver()) {
                 e3DMode=true;
@@ -1836,38 +1777,38 @@ class ToolBox extends PApplet {
                 selecting=true;
                 return;
               }
-              if (switch3D1.isMouseOver()) {
-                turnThingsOff();
-                draw3DSwitch1=true;
-              }
-              if (switch3D2.isMouseOver()) {
-                turnThingsOff();
-                draw3DSwitch2=true;
-              }
-              if (draw_portal.isMouseOver()) {
-                turnThingsOff();
-                drawingPortal=true;
-              }
-              if (holoButton.isMouseOver()) {
-                turnThingsOff();
-                holo_gram=true;
-              }
-              if (draw_coin.isMouseOver()) {
-                turnThingsOff();
-                drawCoins=true;
-              }
-              if (sign.isMouseOver()) {
-                turnThingsOff();
-                drawingSign=true;
-              }
+              //if (switch3D1.isMouseOver()) {
+              //  turnThingsOff();
+              //  draw3DSwitch1=true;
+              //}
+              //if (switch3D2.isMouseOver()) {
+              //  turnThingsOff();
+              //  draw3DSwitch2=true;
+              //}
+              //if (draw_portal.isMouseOver()) {
+              //  turnThingsOff();
+              //  drawingPortal=true;
+              //}
+              //if (holoButton.isMouseOver()) {
+              //  turnThingsOff();
+              //  holo_gram=true;
+              //}
+              //if (draw_coin.isMouseOver()) {
+              //  turnThingsOff();
+              //  drawCoins=true;
+              //}
+              //if (sign.isMouseOver()) {
+              //  turnThingsOff();
+              //  drawingSign=true;
+              //}
               if (select.isMouseOver()) {
                 turnThingsOff();
                 selecting=true;
               }
-              if (logicButtonButton.isMouseOver()) {
-                turnThingsOff();
-                placingLogicButton=true;
-              }
+              //if (logicButtonButton.isMouseOver()) {
+              //  turnThingsOff();
+              //  placingLogicButton=true;
+              //}
              
               if(goonEntity.isMouseOver()){
                 turnThingsOff();
@@ -1883,10 +1824,10 @@ class ToolBox extends PApplet {
                 simulating=!simulating;
               }
 
-              if (sign.isMouseOver()) {
-                turnThingsOff();
-                drawingSign=true;
-              }
+              //if (sign.isMouseOver()) {
+              //  turnThingsOff();
+              //  drawingSign=true;
+              //}
               if (select.isMouseOver()) {
                 turnThingsOff();
                 selecting=true;
@@ -1904,38 +1845,38 @@ class ToolBox extends PApplet {
                 turnThingsOff();
                 selecting=true;
               }
-              if (groundButton.isMouseOver()) {
-                turnThingsOff();
-                ground=true;
-              }
-              if (holoButton.isMouseOver()) {
-                turnThingsOff();
-                holo_gram=true;
-              }
-              if (checkpointButton.isMouseOver()) {
-                turnThingsOff();
-                check_point=true;
-              }
-              if (draw_coin.isMouseOver()) {
-                turnThingsOff();
-                drawCoins=true;
-              }
-              if (switch3D1.isMouseOver()) {
-                turnThingsOff();
-                draw3DSwitch1=true;
-              }
-              if (switch3D2.isMouseOver()) {
-                turnThingsOff();
-                draw3DSwitch2=true;
-              }
-              if (sign.isMouseOver()) {
-                turnThingsOff();
-                drawingSign=true;
-              }
-              if (logicButtonButton.isMouseOver()) {
-                turnThingsOff();
-                placingLogicButton=true;
-              }
+              //if (groundButton.isMouseOver()) {
+              //  turnThingsOff();
+              //  ground=true;
+              //}
+              //if (holoButton.isMouseOver()) {
+              //  turnThingsOff();
+              //  holo_gram=true;
+              //}
+              //if (checkpointButton.isMouseOver()) {
+              //  turnThingsOff();
+              //  check_point=true;
+              //}
+              //if (draw_coin.isMouseOver()) {
+              //  turnThingsOff();
+              //  drawCoins=true;
+              //}
+              //if (switch3D1.isMouseOver()) {
+              //  turnThingsOff();
+              //  draw3DSwitch1=true;
+              //}
+              //if (switch3D2.isMouseOver()) {
+              //  turnThingsOff();
+              //  draw3DSwitch2=true;
+              //}
+              //if (sign.isMouseOver()) {
+              //  turnThingsOff();
+              //  drawingSign=true;
+              //}
+              //if (logicButtonButton.isMouseOver()) {
+              //  turnThingsOff();
+              //  placingLogicButton=true;
+              //}
               if (deleteButton.isMouseOver()) {
                 turnThingsOff();
                 deleteing=true;
@@ -2022,10 +1963,10 @@ class ToolBox extends PApplet {
         }//end of edditing stage
         else if (editingBlueprint) {
           if (workingBlueprint.type.equals("blueprint")) {
-            if (groundButton.isMouseOver()) {
-              turnThingsOff();
-              ground=true;
-            }
+            //if (groundButton.isMouseOver()) {
+            //  turnThingsOff();
+            //  ground=true;
+            //}
 
             if (deleteButton.isMouseOver()) {
               turnThingsOff();
@@ -2035,26 +1976,26 @@ class ToolBox extends PApplet {
             if (gridModeButton.isMouseOver()) {
               grid_mode=!grid_mode;
             }
-            if (holoButton.isMouseOver()) {
-              turnThingsOff();
-              holo_gram=true;
-            }
-            if (draw_coin.isMouseOver()) {
-              turnThingsOff();
-              drawCoins=true;
-            }
-            if (checkpointButton.isMouseOver()) {
-              turnThingsOff();
-              check_point=true;
-            }
-            if (draw_sloap.isMouseOver()) {
-              turnThingsOff();
-              sloap=true;
-            }
-            if (draw_holoTriangle.isMouseOver()) {
-              turnThingsOff();
-              holoTriangle=true;
-            }
+            //if (holoButton.isMouseOver()) {
+            //  turnThingsOff();
+            //  holo_gram=true;
+            //}
+            //if (draw_coin.isMouseOver()) {
+            //  turnThingsOff();
+            //  drawCoins=true;
+            //}
+            //if (checkpointButton.isMouseOver()) {
+            //  turnThingsOff();
+            //  check_point=true;
+            //}
+            //if (draw_sloap.isMouseOver()) {
+            //  turnThingsOff();
+            //  sloap=true;
+            //}
+            //if (draw_holoTriangle.isMouseOver()) {
+            //  turnThingsOff();
+            //  holoTriangle=true;
+            //}
             if (saveLevel.isMouseOver()) {
               System.out.println("saving blueprint");
               workingBlueprint.save();
@@ -2067,10 +2008,10 @@ class ToolBox extends PApplet {
             }
           }//end of type is blueprint
           else if (workingBlueprint.type.equals("3D blueprint")) {
-            if (groundButton.isMouseOver()) {
-              turnThingsOff();
-              ground=true;
-            }
+            //if (groundButton.isMouseOver()) {
+            //  turnThingsOff();
+            //  ground=true;
+            //}
 
             if (deleteButton.isMouseOver()) {
               turnThingsOff();
@@ -2080,18 +2021,18 @@ class ToolBox extends PApplet {
             if (gridModeButton.isMouseOver()) {
               grid_mode=!grid_mode;
             }
-            if (holoButton.isMouseOver()) {
-              turnThingsOff();
-              holo_gram=true;
-            }
-            if (draw_coin.isMouseOver()) {
-              turnThingsOff();
-              drawCoins=true;
-            }
-            if (checkpointButton.isMouseOver()) {
-              turnThingsOff();
-              check_point=true;
-            }
+            //if (holoButton.isMouseOver()) {
+            //  turnThingsOff();
+            //  holo_gram=true;
+            //}
+            //if (draw_coin.isMouseOver()) {
+            //  turnThingsOff();
+            //  drawCoins=true;
+            //}
+            //if (checkpointButton.isMouseOver()) {
+            //  turnThingsOff();
+            //  check_point=true;
+            //}
             
             if (saveLevel.isMouseOver()) {
               System.out.println("saving blueprint");
@@ -2181,7 +2122,7 @@ class ToolBox extends PApplet {
             turnThingsOff();
             placingXnorGate=true;
           }
-          if (testLogicPlaceButton.isMouseOver()) {/////////////////////////////////
+          if (testLogicPlaceButton.isMouseOver()) {
             turnThingsOff();
             placingTestLogic=true;
           }
