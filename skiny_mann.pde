@@ -3721,6 +3721,7 @@ void drawDevMenue() {
   dev_UGC.draw();
   dev_multiplayer.draw();
   dev_levelCreator.draw();
+  dev_testLevel.draw();
 }
 
 void clickDevMenue() {
@@ -3764,6 +3765,19 @@ void clickDevMenue() {
     levelOverview=false;
     newFile=false;
     levelCreator=true;
+    return;
+  }
+  if(dev_testLevel.isMouseOver()){
+    mouseX = (int)(dev_levelCreator.x + dev_levelCreator.lengthX/2);
+    mouseY = (int)(dev_levelCreator.y + dev_levelCreator.lengthY/2);
+    mouseClicked();
+    mouseX = (int)(loadLevelButton.x + loadLevelButton.lengthX/2);
+    mouseY = (int)(loadLevelButton.y + loadLevelButton.lengthY/2);
+    mouseClicked();
+    lcEnterLevelTextBox.setContence("test");
+    mouseX = (int)(lcLoadLevelButton.x + lcLoadLevelButton.lengthX/2);
+    mouseY = (int)(lcLoadLevelButton.y + lcLoadLevelButton.lengthY/2);
+    mouseClicked();
     return;
   }
 }
@@ -4199,6 +4213,7 @@ void  initButtons() {
   dev_UGC = new UiButton(ui, 430, 170, 200, 50, "UGC");
   dev_multiplayer = new UiButton(ui, 650, 170, 200, 50, "Multiplayer");
   dev_levelCreator=new UiButton(ui, 870, 170, 200, 50, "Level Creator");
+  dev_testLevel = new UiButton(ui, 210, 240, 200, 50, "Test Level");
 
   multyplayerJoin = new UiButton(ui, 400, 300, 200, 50, "Join", #FF0004, #FFF300).setStrokeWeight(10);
   multyplayerHost = new UiButton(ui, 680, 300, 200, 50, "Host", #FF0004, #FFF300).setStrokeWeight(10);
@@ -4455,16 +4470,11 @@ void initText() {
   initMultyplayerScreenTitle = new UiText(ui, "Multiplayer", 640, 36, 50, CENTER, CENTER);
   mp_hostSeccion = new UiText(ui, "Host session", 640, 36, 50, CENTER, CENTER);
   mp_host_Name = new UiText(ui, "Name", 640, 93.6, 25, CENTER, CENTER);
-  //mp_host_enterdName = new UiText(ui, "V", 640, 126, 25, CENTER, CENTER);
   mp_host_port = new UiText(ui, "Port", 640, 172.8, 25, CENTER, CENTER);
-  //mp_host_endterdPort = new UiText(ui, "V", 640, 205.2, 25, CENTER, CENTER);
   mp_joinSession = new UiText(ui, "Join session", 640, 36, 50, CENTER, CENTER);
   mp_join_name = new UiText(ui, "Name", 640, 93.6, 25, CENTER, CENTER);
-  //mp_join_enterdName = new UiText(ui, "V", 640, 126, 25, CENTER, CENTER);
   mp_join_port = new UiText(ui, "Port", 640, 172.8, 25, CENTER, CENTER);
-  //mp_join_enterdPort = new UiText(ui, "V", 640, 205.2, 25, CENTER, CENTER);
   mp_join_ip = new UiText(ui, "IP address", 640, 252, 25, CENTER, CENTER);
-  //mp_join_enterdIp = new UiText(ui, "?V", 640, 284.4, 25, CENTER, CENTER);
   mp_disconnected = new UiText(ui, "Disconnected", 640, 36, 50, CENTER, CENTER);
   mp_dc_reason = new UiText(ui, "V", 640, 216, 25, CENTER, CENTER);
   dev_title = new UiText(ui, "Developer Menue", 640, 36, 50, CENTER, CENTER);
