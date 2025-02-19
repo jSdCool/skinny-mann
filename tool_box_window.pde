@@ -11,6 +11,9 @@ class ToolBox extends PApplet {
   String page="colors", newGroopName="";
   Button colorPage, toolsPage,  toggle3DMode, saveLevel, exitStageEdit, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, nextSound, prevSound,  playPauseButton,  deleteButton, movePlayerButton, gridModeButton, connectLogicButton, moveComponentsButton, andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, runLoad, delayButton, zOffsetButton, logicHelpButton, move3DButton, size3DButton, set3DButton, read3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, playLogicSoundButton, pulseButton, randomButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton;
   //Button draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, switch3D1, switch3D2, sign, checkpointButton, groundButton, goalButton, holoButton, logicButtonButton, playSound;
+  Button[] stageComponetButtons;
+  StageComponentRegistry.ComponentButtonIconDraw componentIcons[];
+  Boolean[][] componentAllowedDimentions;
   Button goonEntity;
   boolean typingSign=false, settingSkyColor=false, typingGroopName=false;
 
@@ -34,10 +37,12 @@ class ToolBox extends PApplet {
     //stage editing tools
     int buttonPosIndex = 0;
     int[] buttonPos = calcButtonPos(buttonPosIndex++);
-    //NOTE: save and back to overiew are common between level and logic tools
+    //NOTE: save, back to overiew and select are common between level and logic tools
     saveLevel=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "save", 255, 203).setStrokeWeight(5).setHoverText("save level");
     buttonPos = calcButtonPos(buttonPosIndex++);
     exitStageEdit= new Button(this, buttonPos[0], buttonPos[1], 50, 50, " < ", 255, 203).setStrokeWeight(5).setHoverText("exit to overview");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    select=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "select", 255, 203).setStrokeWeight(5).setHoverText("select");
     buttonPos = calcButtonPos(buttonPosIndex++);
     playPauseButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("play/pause the simulation");
     buttonPos = calcButtonPos(buttonPosIndex++);
@@ -47,8 +52,6 @@ class ToolBox extends PApplet {
     buttonPos = calcButtonPos(buttonPosIndex++);
     movePlayerButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("move player");
     buttonPos = calcButtonPos(buttonPosIndex++);
-    select=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "select", 255, 203).setStrokeWeight(5).setHoverText("select");
-    buttonPos = calcButtonPos(buttonPosIndex++);
     toggle3DMode=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "  3D  ", 255, 203).setStrokeWeight(5).setHoverText("toggle 3D mode");
     buttonPos = calcButtonPos(buttonPosIndex++);
     move3DButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "move", 255, 203).setStrokeWeight(5).setHoverText("move things in 3D");
@@ -57,26 +60,21 @@ class ToolBox extends PApplet {
     buttonPos = calcButtonPos(buttonPosIndex++);
     placeBlueprint=new Button(this, buttonPos[0], buttonPos[1], 50, 50, #0F1AD3, 203).setStrokeWeight(5).setHoverText("place blurprint");
     
+    stageComponetButtons = new Button[StageComponentRegistry.size()];
+    componentIcons = new StageComponentRegistry.ComponentButtonIconDraw[stageComponetButtons.length];
+    componentAllowedDimentions = new Boolean[stageComponetButtons.length][];
+    for(int i=0;i<stageComponetButtons.length;i++){
+      Identifier component = StageComponentRegistry.get(i);
+      buttonPos = calcButtonPos(buttonPosIndex++);
+      stageComponetButtons[i] = new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText(StageComponentRegistry.getDescription(component));
+      componentIcons[i] = StageComponentRegistry.getIcon(component);
+      componentAllowedDimentions[i] = StageComponentRegistry.getAllowedDimentions(component);
+    }
     
-   
+     buttonPos = calcButtonPos(buttonPosIndex++);
+    goonEntity = new Button(this,buttonPos[0], buttonPos[1],50,50,255,203).setStrokeWeight(5).setHoverText("Goon");
     
-    //switch3D1=new Button(this, 880, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("turn 3D on switch");
-    //switch3D2=new Button(this, 940, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("turn 3D off switch");
-    //draw_sloap=new Button(this, 700, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("sloap");
-    //draw_holoTriangle=new Button(this, 760, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("holographic sloap(no colision)");
-    //draw_dethPlane=new Button(this, 820, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("death plane");
-    //draw_coin=new Button(this, 580, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("coin");
-    //draw_portal=new Button(this, 640, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("interdimentional portal");
-    //sign=new Button(this, 1060, 140, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("sign");
-    //playSound=new Button(this, 40, 200, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("place sound");
-    //checkpointButton=new Button(this, 160, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("check point");
-    //groundButton=new Button(this, 100, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("solid ground");
-    //goalButton=new Button(this, 220, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("finish line");
-    //holoButton=new Button(this, 460, 40+100, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("hologram (no collision)");
-    //logicButtonButton=new Button(this, 100, 200, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("place button");
-    
-    goonEntity = new Button(this,280,200,50,50,255,203).setStrokeWeight(5).setHoverText("Goon");
-    
+    //blueprint and sound things
     nexBlueprint=new Button(this, width/2+200, height*0.7-25, 50, 50, ">", 255, 203).setStrokeWeight(5);
     prevBlueprint=new Button(this, width/2-200, height*0.7-25, 50, 50, "<", 255, 203).setStrokeWeight(5);
     nextSound=new Button(this, width/2+300, height*0.4-25, 50, 50, ">", 255, 203).setStrokeWeight(5);
@@ -264,7 +262,7 @@ class ToolBox extends PApplet {
           }
           movePlayerButton.draw();
           strokeWeight(0);
-          draw_mann(365, 88+100, 1, 0.6, "red");
+          draw_mann(movePlayerButton.x+25, movePlayerButton.y+48, 1, 0.6, "red");
 
           if (grid_mode) {
             gridModeButton.setColor(255, #F2F258);
@@ -319,6 +317,14 @@ class ToolBox extends PApplet {
           move3DButton.draw();
           
           //Components
+          for(int i=0;i<stageComponetButtons.length;i++){
+            //check allowed dimentions
+            //[0] = allow in 2D stage [1] = allow in 3D stage [2] = allow place in 3D mode in 3D stage (default true) [3] allow in blueprints (default true)
+            
+            //check if currently active to change the color
+            stageComponetButtons[i].draw();
+            componentIcons[i].draw(g, stageComponetButtons[i].x, stageComponetButtons[i].y);
+          }
           
           
           //Entities
@@ -342,387 +348,13 @@ class ToolBox extends PApplet {
           move3DButton.drawHoverText();
           size3DButton.drawHoverText();
           toggle3DMode.drawHoverText();
-
-          if (!e3DMode) {
-            //strokeWeight(0);
-            //if (ground) {
-            //  groundButton.setColor(255, #F2F258);
-            //} else {
-            //  groundButton.setColor(255, 203);
-            //}
-            //groundButton.draw();
-            //fill(-7254783);
-            //stroke(-7254783);
-            //rect(100, 70+100, 50, 20);
-            //fill(-16732415);
-            //stroke(-16732415);
-            //rect(100, 60+100, 50, 10);
-
-            //strokeWeight(0);
-            //if (check_point) {
-            //  checkpointButton.setColor(255, #F2F258);
-            //} else {
-            //  checkpointButton.setColor(255, 203);
-            //}
-            //checkpointButton.draw();
-            //fill(#B9B9B9);
-            //strokeWeight(0);
-            //rect(168, 45+100, 5, 40);
-            //fill(#EA0202);
-            //stroke(#EA0202);
-            //strokeWeight(0);
-            //triangle(170, 85-60+20+100, 170, 85-40+20+100, 170+30, 85-50+20+100);
-            //strokeWeight(0);
-
-            //if (!level.stages.get(currentStageIndex).type.equals("3Dstage")) {
-            //  if (goal) {
-            //    goalButton.setColor(255, #F2F258);
-            //  } else {
-            //    goalButton.setColor(255, 203);
-            //  }
-            //  goalButton.draw();
-            //  fill(0);
-            //  stroke(0);
-            //  strokeWeight(0);
-            //  rect(223, 43+100, 15, 15);
-            //  rect(253, 43+100, 15, 15);
-            //  rect(238, 58+100, 15, 15);
-            //  rect(223, 73+100, 15, 15);
-            //  rect(253, 73+100, 15, 15);
-            //}
-            
-            //if (holo_gram) {
-            //  holoButton.setColor(255, #F2F258);
-            //} else {
-            //  holoButton.setColor(255, 203);
-            //}
-            //holoButton.draw();
-            //exitStageEdit.draw();
-
-            //if (drawCoins) {
-            //  draw_coin.setColor(255, #F2F258);
-            //} else {
-            //  draw_coin.setColor(255, 203);
-            //}
-            //draw_coin.draw();
-            //drawCoin(605, 65+100, 4);
-            //if (drawingPortal) {
-            //  draw_portal.setColor(255, #F2F258);
-            //} else {
-            //  draw_portal.setColor(255, 203);
-            //}
-            //draw_portal.draw();
-            //drawPortal(665, 65+100, 0.45);
-
-            if (!level.stages.get(currentStageIndex).type.equals("3Dstage")) {
-              //if (sloap) {
-              //  draw_sloap.setColor(255, #F2F258);
-              //} else {
-              //  draw_sloap.setColor(255, 203);
-              //}//draw_holoTriangle
-              //draw_sloap.draw();
-              //fill(-7254783);
-              //stroke(-7254783);
-              //strokeWeight(0);
-              //triangle(705, 85+100, 745, 85+100, 745, 45+100);
-              //if (holoTriangle) {
-              //  draw_holoTriangle.setColor(255, #F2F258);
-              //} else {
-              //  draw_holoTriangle.setColor(255, 203);
-              //}//draw_holoTriangle
-              //draw_holoTriangle.draw();
-              //fill(-4623063);
-              //stroke(-4623063);
-              //strokeWeight(0);
-              //triangle(765, 85+100, 805, 85+100, 805, 45+100);
-
-
-              //if (dethPlane) {
-              //  draw_dethPlane.setColor(255, #F2F258);
-              //} else {
-              //  draw_dethPlane.setColor(255, 203);
-              //}//draw_holoTriangle
-              //draw_dethPlane.draw();
-              //fill(-114431);
-              //stroke(-114431);
-              //rect(825, 65+100, 40, 20);
-
-              
-
-              //if (placingSound) {
-              //  playSound.setColor(255, #F2F258);
-              //} else {
-              //  playSound.setColor(255, 203);
-              //}
-              //playSound.draw();
-              //drawSpeakericon(playSound.x+playSound.lengthX/2, playSound.y+playSound.lengthY/2, 0.5,g);
-              
-              //tmp
-              
-            }//end of level is not 3D
-
-            //if (drawingSign) {
-            //  sign.setColor(255, #F2F258);
-            //} else {
-            //  sign.setColor(255, 203);
-            //}
-            //sign.draw();
-            //drawSign(sign.x+sign.lengthX/2, sign.y+sign.lengthY, 0.6);
-
-            
-            //if (placingLogicButton) {
-            //  logicButtonButton.setColor(255, #F2F258);
-            //} else {
-            //  logicButtonButton.setColor(255, 203);
-            //}
-            //logicButtonButton.draw();
-            //drawLogicButton(logicButtonButton.x+logicButtonButton.lengthX/2, logicButtonButton.y+logicButtonButton.lengthY/2, 1, false,g);
-          }//end of not in 3D mode
-
           
-
-
-          //button hover text
+          for(int i=0;i<stageComponetButtons.length;i++){
+            //check allowed dimentions
+            //[0] = allow in 2D stage [1] = allow in 3D stage [2] = allow place in 3D mode in 3D stage (default true) [3] allow in blueprints (default true)
+            stageComponetButtons[i].drawHoverText();
+          }
           
-          if (!e3DMode) {
-            //groundButton.drawHoverText();
-            //checkpointButton.drawHoverText();
-            //if (!level.stages.get(currentStageIndex).type.equals("3Dstage")) {
-            //  goalButton.drawHoverText();
-            //}
-            //holoButton.drawHoverText();
-            
-            //draw_coin.drawHoverText();
-            //draw_portal.drawHoverText();
-            if (!level.stages.get(currentStageIndex).type.equals("3Dstage")) {
-              //draw_sloap.drawHoverText();
-              //draw_holoTriangle.drawHoverText();
-              //draw_dethPlane.drawHoverText();
-              
-            }//end of level is not 3D
-            //playSound.drawHoverText();
-
-            //sign.drawHoverText();
-            //logicButtonButton.drawHoverText();
-            
-          }//end of not 3d mode
-
-          
-
-
-          if (level.stages.get(currentStageIndex).type.equals("3Dstage")) {
-
-            if (!e3DMode) {
-              //toggle3DMode.setColor(255, 203);
-              
-
-              //playPauseButton.draw();
-              //fill(0);
-              //stroke(0);
-              //strokeWeight(0);
-              //if (simulating) {
-              //  rect(50, 50+100, 8, 30);
-              //  rect(70, 50+100, 8, 30);
-              //} else {
-              //  triangle(50, 50+100, 75, 65+100, 50, 80+100);
-              //}
-
-              strokeWeight(0);
-              //if (ground) {
-              //  groundButton.setColor(255, #F2F258);
-              //} else {
-              //  groundButton.setColor(255, 203);
-              //}
-              //groundButton.draw();
-              //fill(-7254783);
-              //stroke(-7254783);
-              //rect(100, 70+100, 50, 20);
-              //fill(-16732415);
-              //stroke(-16732415);
-              //rect(100, 60+100, 50, 10);
-              
-              textAlign(LEFT, BOTTOM);
-
-              //if (grid_mode) {
-              //  gridModeButton.setColor(255, #F2F258);
-              //} else {
-              //  gridModeButton.setColor(255, 203);
-              //}
-              //gridModeButton.draw();
-              //textSize(20);
-              //fill(0);
-              //stroke(0);
-              //strokeWeight(1);
-              //line(410, 42+100, 410, 87+100);
-              //line(420, 42+100, 420, 87+100);
-              //line(430, 42+100, 430, 87+100);
-              //line(440, 42+100, 440, 87+100);
-              //line(402, 50+100, 448, 50+100);
-              //line(402, 60+100, 448, 60+100);
-              //line(402, 70+100, 448, 70+100);
-              //line(402, 80+100, 448, 80+100);
-              //text(grid_size, 410, 80+100);
-
-
-              //if (check_point) {
-              //  checkpointButton.setColor(255, #F2F258);
-              //} else {
-              //  checkpointButton.setColor(255, 203);
-              //}
-              //checkpointButton.draw();
-              //fill(#B9B9B9);
-              //strokeWeight(0);
-              //rect(168, 45+100, 5, 40);
-              //fill(#EA0202);
-              //stroke(#EA0202);
-              //strokeWeight(0);
-              //triangle(170, 85-60+20+100, 170, 85-40+20+100, 170+30, 85-50+20+100);
-
-
-
-              //if (holo_gram) {
-              //  holoButton.setColor(255, #F2F258);
-              //} else {
-              //  holoButton.setColor(255, 203);
-              //}
-              //holoButton.draw();
-
-              //if (draw3DSwitch1) {
-              //  switch3D1.setColor(255, #F2F258);
-              //} else {
-              //  switch3D1.setColor(255, 203);
-              //}
-              //switch3D1.draw();
-              //draw3DSwitch1(905, 80+100, 1);
-
-              //if (draw3DSwitch2) {
-              //  switch3D2.setColor(255, #F2F258);
-              //} else {
-              //  switch3D2.setColor(255, 203);
-              //}
-              //switch3D2.draw();
-              //draw3DSwitch2(965, 80+100, 1);
-
-              //if (drawingPortal) {
-              //  draw_portal.setColor(255, #F2F258);
-              //} else {
-              //  draw_portal.setColor(255, 203);
-              //}
-              //draw_portal.draw();
-              //drawPortal(665, 65+100, 0.45);
-
-              //if (drawCoins) {
-              //  draw_coin.setColor(255, #F2F258);
-              //} else {
-              //  draw_coin.setColor(255, 203);
-              //}
-              //draw_coin.draw();
-              //drawCoin(605, 65+100, 4);
-              
-              //switch3D1.drawHoverText();
-              //switch3D2.drawHoverText();
-              //checkpointButton.drawHoverText();
-              //draw_portal.drawHoverText();
-              //if (holoButton.isMouseOver()) {//this one has to stay
-              //  stroke(0);
-              //  fill(200);
-              //  strokeWeight(2);
-              //  rect(mouseX-4, mouseY-13, 165, 16);
-              //  fill(0);
-              //  textSize(15);
-              //  text("hologram (solid in 3D)", mouseX, mouseY+5);
-              //}
-              //draw_coin.drawHoverText();
-            }//end of if not in 3D mode
-            else {
-              //if (ground) {
-              //  groundButton.setColor(255, #F2F258);
-              //} else {
-              //  groundButton.setColor(255, 203);
-              //}
-              //groundButton.draw();
-              //fill(-7254783);
-              //stroke(-7254783);
-              //rect(100, 70+100, 50, 20);
-              //fill(-16732415);
-              //stroke(-16732415);
-              //rect(100, 60+100, 50, 10);
-              //if (holo_gram) {
-              //  holoButton.setColor(255, #F2F258);
-              //} else {
-              //  holoButton.setColor(255, 203);
-              //}
-              //holoButton.draw();
-              //if (check_point) {
-              //  checkpointButton.setColor(255, #F2F258);
-              //} else {
-              //  checkpointButton.setColor(255, 203);
-              //}
-              //checkpointButton.draw();
-              //fill(#B9B9B9);
-              //strokeWeight(0);
-              //rect(168, 45+100, 5, 40);
-              //fill(#EA0202);
-              //stroke(#EA0202);
-              //strokeWeight(0);
-              //triangle(170, 85-60+20+100, 170, 85-40+20+100, 170+30, 85-50+20+100);
-              //if (drawCoins) {
-              //  draw_coin.setColor(255, #F2F258);
-              //} else {
-              //  draw_coin.setColor(255, 203);
-              //}
-              //draw_coin.draw();
-              //drawCoin(605, 65+100, 4);
-              //if (draw3DSwitch1) {
-              //  switch3D1.setColor(255, #F2F258);
-              //} else {
-              //  switch3D1.setColor(255, 203);
-              //}
-              //switch3D1.draw();
-              //draw3DSwitch1(905, 80+100, 1);
-
-              //if (draw3DSwitch2) {
-              //  switch3D2.setColor(255, #F2F258);
-              //} else {
-              //  switch3D2.setColor(255, 203);
-              //}
-              //switch3D2.draw();
-              //draw3DSwitch2(965, 80+100, 1);
-              //if (drawingSign) {
-              //  sign.setColor(255, #F2F258);
-              //} else {
-              //  sign.setColor(255, 203);
-              //}
-              //sign.draw();
-              //drawSign(sign.x+sign.lengthX/2, sign.y+sign.lengthY, 0.6);
-              //if (placingLogicButton) {
-              //  logicButtonButton.setColor(255, #F2F258);
-              //} else {
-              //  logicButtonButton.setColor(255, 203);
-              //}
-              //logicButtonButton.draw();
-              //drawLogicButton(logicButtonButton.x+logicButtonButton.lengthX/2, logicButtonButton.y+logicButtonButton.lengthY/2, 1, false,g);
-              
-              //groundButton.drawHoverText();
-              //if (holoButton.isMouseOver()) {//this one has to stay
-              //  stroke(0);
-              //  fill(200);
-              //  strokeWeight(2);
-              //  rect(mouseX-4, mouseY-13, 165, 16);
-              //  fill(0);
-              //  textSize(15);
-              //  textAlign(LEFT, BOTTOM);
-              //  text("hologram (solid in 3D)", mouseX, mouseY+5);
-              //}
-              //checkpointButton.drawHoverText();
-              //draw_coin.drawHoverText();
-              //switch3D1.drawHoverText();
-              //switch3D2.drawHoverText();
-              //sign.drawHoverText();
-              //logicButtonButton.drawHoverText();
-              
-            }
-          }//end of if stage is 3D
 
           if (selectingBlueprint) {
             textAlign(CENTER, CENTER);
