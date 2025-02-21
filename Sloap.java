@@ -29,8 +29,8 @@ class Sloap extends StageComponent {//ground component
     type="ground";
     x = context.getX();
     y = context.getY();
-    dx = context.getDX();
-    dy = context.getDY();
+    dx = x+context.getDX();
+    dy = y+context.getDY();
     ccolor = context.getColor();
     if(context.has3D()){
       z = context.getZ();

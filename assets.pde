@@ -70,11 +70,11 @@ void draw3DSwitch2(float x, float y, float z, float Scale,PGraphics render) {
   render.translate(-x, -(y-7.5), -z);
 }
 
-void drawCheckPoint(float x, float y,PGraphics render) {
+void drawCheckPoint(float x, float y,float scale, PGraphics render) {
   render.fill(#B9B9B9);
-  render.rect((x-3)*Scale, (y-60)*Scale, 5*Scale, 60*Scale);
+  render.rect((x-3)*scale, (y-60)*scale, 5*scale, 60*scale);
   render.fill(#EA0202);
-  render.triangle(x*Scale, (y-60)*Scale, x*Scale, (y-40)*Scale, (x+30)*Scale, (y-50)*Scale);
+  render.triangle(x*scale, (y-60)*scale, x*scale, (y-40)*scale, (x+30)*scale, (y-50)*scale);
 }
 
 void drawSign(float x, float y, float Scale,PGraphics render) {
@@ -135,10 +135,10 @@ void drawSpeakericon(float x, float y, float scale,PGraphics render) {
   render.rect(x+25*scale, y-30*scale, 5*scale, 60*scale);
 }
 
-void drawSoundBox(float x, float y,PGraphics render) {
+void drawSoundBox(float x, float y,float scale,PGraphics render) {
   if (levelCreator) {
     render.fill(#F2C007, 127);
-    render.rect(x-30*Scale, y-30*Scale, 60*Scale, 60*Scale);
+    render.rect(x-30*scale, y-30*scale, 60*scale, 60*scale);
   }
 }
 

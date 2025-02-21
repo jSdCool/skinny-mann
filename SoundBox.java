@@ -37,7 +37,7 @@ class SoundBox extends StageComponent {
     Group group=getGroup();
     if (!group.visable)
       return;
-    source.drawSoundBox((x+group.xOffset)*source.Scale-source.drawCamPosX*source.Scale, (y+group.yOffset)*source.Scale+source.drawCamPosY*source.Scale,render);
+    source.drawSoundBox((x+group.xOffset)*source.Scale-source.drawCamPosX*source.Scale, (y+group.yOffset)*source.Scale+source.drawCamPosY*source.Scale,source.Scale,render);
     Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);
     if (source.collisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x-30,y-30,60,60))) {
       source.displayText="Press E";

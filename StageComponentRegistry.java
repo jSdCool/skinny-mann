@@ -12,8 +12,11 @@ public class StageComponentRegistry{
   private static HashMap<Identifier, ComponentButtonIconDraw> buttonIcons = new HashMap<>();
   private static HashMap<Identifier, String> descriptionText = new HashMap<>();
   private static HashMap<Identifier, Boolean[]> dimentionAllow = new HashMap<>();
+  private static HashMap<Identifier, PlacementPreview> previews = new HashMap<>();
+  private static HashMap<Identifier, DraggablePlacementPreview> draggablePreviews = new HashMap<>();
   
-  public static void register(Identifier id, Function<SerialIterator, Serialization> serialConstructor, Function<JSONObject, StageComponent> jsonConstructor, Function<StageComponentPlacementContext, StageComponent> placementConstructor, ComponentButtonIconDraw icon, String description, Boolean[] dimentionAllows){
+  
+  public static void register(Identifier id, Function<SerialIterator, Serialization> serialConstructor, Function<JSONObject, StageComponent> jsonConstructor, Function<StageComponentPlacementContext, StageComponent> placementConstructor, ComponentButtonIconDraw icon, String description, Boolean[] dimentionAllows, PlacementPreview preview){
     SerialRegistry.register(id, serialConstructor);
     ids.add(id);
     jsonConstructors.put(id,jsonConstructor);
@@ -21,9 +24,10 @@ public class StageComponentRegistry{
     buttonIcons.put(id,icon);
     descriptionText.put(id, description);
     dimentionAllow.put(id, dimentionAllows);
+    previews.put(id,preview);
   }
   
-  public static void register(Identifier id, Function<SerialIterator, Serialization> serialConstructor, Function<JSONObject, StageComponent> jsonConstructor, Function<StageComponentDragPlacementContext, StageComponent> placementConstructor, ComponentButtonIconDraw icon, String description, Boolean[] dimentionAllows, int differnt){
+  public static void register(Identifier id, Function<SerialIterator, Serialization> serialConstructor, Function<JSONObject, StageComponent> jsonConstructor, Function<StageComponentDragPlacementContext, StageComponent> placementConstructor, ComponentButtonIconDraw icon, String description, Boolean[] dimentionAllows, DraggablePlacementPreview preview){
     SerialRegistry.register(id, serialConstructor);
     ids.add(id);
     jsonConstructors.put(id,jsonConstructor);
@@ -31,6 +35,7 @@ public class StageComponentRegistry{
     buttonIcons.put(id,icon);
     descriptionText.put(id, description);
     dimentionAllow.put(id, dimentionAllows);
+    draggablePreviews.put(id, preview);
   }
   
   static int size(){
@@ -69,9 +74,24 @@ public class StageComponentRegistry{
     return dragPlacementConstructors.get(id) != null;
   }
   
+  static PlacementPreview getPreview(Identifier id){
+    return previews.get(id);
+  }
+  
+  static DraggablePlacementPreview getDragPreview(Identifier id){
+    return draggablePreviews.get(id);
+  }
   
   interface ComponentButtonIconDraw{
     void draw(PGraphics render, float x, float y);
+  }
+  
+  interface PlacementPreview{
+    void draw(PGraphics render, float x, float y, float scale);
+  }
+  
+  interface DraggablePlacementPreview{
+    void draw(PGraphics render, float x, float y, float dx, float dy, int color, int rotation, float scale);
   }
   
 }

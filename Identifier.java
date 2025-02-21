@@ -58,6 +58,7 @@ public class Identifier {
 
     @Override
     public boolean equals(Object o) {
+        if (o == null) return false;
         if (this == o) return true;
         if (!(o instanceof Identifier)) return false;
         return Objects.equals(nameSpace, ((Identifier)o).nameSpace) && Objects.equals(value, ((Identifier)o).value);

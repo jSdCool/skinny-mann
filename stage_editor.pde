@@ -20,7 +20,7 @@ void stageEditGUI() {
     current=workingBlueprint;
   }
 
-  if (current.type.equals("stage")||current.type.equals("blueprint")) {//if current is a steg or blueprint
+  if (current.type.equals("stage")||current.type.equals("blueprint")) {//if current is a stage or blueprint
   
   if (grid_mode) {//grid mode position box
     int X2=0, Y2=0, X1=0, Y1=0;
@@ -30,20 +30,13 @@ void stageEditGUI() {
     Y2=(int)(grid_size*Scale);//(int)(((int)(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY)*Scale)-abs(Y1);\
     fill(#AAAA00,120);
     rect(X1,Y1,X2,Y2);
-
-    
   }
 
-    if (drawing) {//if drawing a dragable shape
-      fill(Color);
-      stroke(Color);
-      if (dethPlane) {//overide coustome color if the current tool is deathplane
-        fill(-114431);
-        stroke(-114431);
-      }
-
+    if (drawing && currentlyPlaceing != null && StageComponentRegistry.isDraggable(currentlyPlaceing)) {//if drawing a dragable shape
+      StageComponentRegistry.DraggablePlacementPreview preview = StageComponentRegistry.getDragPreview(currentlyPlaceing);
+      boolean isSloap = currentlyPlaceing.equals(Sloap.ID) || currentlyPlaceing.equals(HoloTriangle.ID);
       if (grid_mode) {//if gridmode is on
-        if (sloap||holoTriangle) {//if your currenly drawing a triangle type
+        if (isSloap) {//if your currenly drawing a triangle type
           int X2=0, Y2=0, X1=0, Y1=0;//calcaute the location of the mouese press and unpress location
           if (mouseX>downX) {
             X1=(int)Math.floor((downX/Scale+camPos)/grid_size)*grid_size-camPos;
@@ -61,18 +54,8 @@ void stageEditGUI() {
             Y1=(int)Math.floor((mouseY/Scale-camPosY)/grid_size)*grid_size+camPosY;
             Y2=(int)Math.floor(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)+camPosY;
           }
-          if (triangleMode==0) {//display the triangle that will be created
-            triangle(X1*Scale, Y1*Scale, X2*Scale, Y2*Scale, X2*Scale, Y1*Scale);
-          }
-          if (triangleMode==1) {
-            triangle(X1*Scale, Y1*Scale, X1*Scale, Y2*Scale, X2*Scale, Y1*Scale);
-          }
-          if (triangleMode==2) {
-            triangle(X1*Scale, Y1*Scale, X2*Scale, Y2*Scale, X1*Scale, Y2*Scale);
-          }
-          if (triangleMode==3) {
-            triangle(X1*Scale, Y2*Scale, X2*Scale, Y2*Scale, X2*Scale, Y1*Scale);
-          }
+          
+          preview.draw(g, X1*Scale, Y1*Scale, X2*Scale, Y2*Scale, Color, triangleMode, Scale);
         } else {//if the type is not a triangle
           int XD=0, YD=0, X1=0, Y1=0;//calcaute the location of the mouese press and unpress location
           if (mouseX>downX) {
@@ -94,10 +77,10 @@ void stageEditGUI() {
           }
           strokeWeight(0);
 
-          rect(X1*Scale, Y1*Scale, XD*Scale, YD*Scale);//display the rectangle that is being drawn
+          preview.draw(g, X1*Scale, Y1*Scale, XD*Scale, YD*Scale, Color, triangleMode, Scale);//display the rectangle that is being drawn
         }
       } else {//if grid mode is off
-        if (sloap||holoTriangle) {
+        if (isSloap) {
           int X2=0, Y2=0, X1=0, Y1=0;//calcaute the location of the mouese press and unpress location
           if (mouseX>downX) {
             X1=(int)Math.floor((downX/Scale));
@@ -115,23 +98,14 @@ void stageEditGUI() {
             Y1=(int)Math.floor(mouseY/Scale);
             Y2=(int)Math.floor(Math.ceil(downY/Scale));
           }
-          if (triangleMode==0) {//display the triangle that will be created
-            triangle(X1*Scale, Y1*Scale, X2*Scale, Y2*Scale, X2*Scale, Y1*Scale);
-          }
-          if (triangleMode==1) {
-            triangle(X1*Scale, Y1*Scale, X1*Scale, Y2*Scale, X2*Scale, Y1*Scale);
-          }
-          if (triangleMode==2) {
-            triangle(X1*Scale, Y1*Scale, X2*Scale, Y2*Scale, X1*Scale, Y2*Scale);
-          }
-          if (triangleMode==3) {
-            triangle(X1*Scale, Y2*Scale, X2*Scale, Y2*Scale, X2*Scale, Y1*Scale);
-          }
+          
+            
+          preview.draw(g, X1*Scale, Y1*Scale, X2*Scale, Y2*Scale, Color, triangleMode, Scale);
+              
         } else {
           strokeWeight(0);
           float xdif=(int)((mouseX-downX)/Scale)*Scale, ydif=(int)((mouseY-downY)/Scale)*Scale;//calcaute the location of the mouese press and unpress location
-
-          rect((int)(downX/Scale)*Scale, (int)(downY/Scale)*Scale, xdif, ydif);//display the rectangle that is being drawn
+           preview.draw(g, (int)(downX/Scale)*Scale, (int)(downY/Scale)*Scale, xdif, ydif, Color, triangleMode, Scale);//display the rectangle that is being drawn
         }
       }
     }
@@ -361,6 +335,16 @@ void stageEditGUI() {
       }
       delete=false;
     }//end of delete
+    
+    //draw placeable preview
+    if(currentlyPlaceing != null && !StageComponentRegistry.isDraggable(currentlyPlaceing)){
+      StageComponentRegistry.PlacementPreview preview = StageComponentRegistry.getPreview(currentlyPlaceing);
+      if (grid_mode) {
+          preview.draw(g, (Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY), Scale);
+        } else {
+          preview.draw(g, (int)(mouseX/Scale), (int)(mouseY/Scale), Scale);
+        }
+    }
 
     if (drawCoins) {//if adding coins render a coin
       if (grid_mode) {//if grid mode is on
@@ -509,9 +493,9 @@ void stageEditGUI() {
     //}
     if (check_point) {//if  checkpoint render a check point
       if (grid_mode) {//draw checkoint
-        drawCheckPoint((Math.round((mouseX/Scale+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round((mouseY/Scale-camPosY)*1.0/grid_size)*grid_size+camPosY),g);
+        drawCheckPoint((Math.round((mouseX/Scale+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round((mouseY/Scale-camPosY)*1.0/grid_size)*grid_size+camPosY),Scale,g);
       } else {
-        drawCheckPoint((int)(mouseX/Scale), (int)(mouseY/Scale),g);
+        drawCheckPoint((int)(mouseX/Scale), (int)(mouseY/Scale),Scale,g);
       }
     }
     if (drawingSign) {//if sign render a sign
@@ -523,9 +507,9 @@ void stageEditGUI() {
     }
     if (placingSound) {//if placing soundboxes render a sound box 
       if (grid_mode) {//draw a sound box
-        drawSoundBox((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale,g);
+        drawSoundBox((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale,Scale,g);
       } else {
-        drawSoundBox((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale,g);
+        drawSoundBox((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale,Scale,g);
       }
     }
     if (placingLogicButton) {//if placing a logic button render a logic button
@@ -562,16 +546,32 @@ void stageEditGUI() {
         rect(X1,Y1,X2,Y2);
       }
 
-      if (drawing) {//if drawing something
-        fill(Color);
-        stroke(Color);
-        if (dethPlane) {
-          fill(-114431);
-          stroke(-114431);
-        }
-
-        if (grid_mode||holo_gram) {//if drawing something that is a rectangle render the preview
-          int XD=0, YD=0, X1=0, Y1=0;//calc the corner positions
+      if (drawing && currentlyPlaceing != null && StageComponentRegistry.isDraggable(currentlyPlaceing)) {//if drawing a dragable shape
+      StageComponentRegistry.DraggablePlacementPreview preview = StageComponentRegistry.getDragPreview(currentlyPlaceing);
+      boolean isSloap = currentlyPlaceing.equals(Sloap.ID) || currentlyPlaceing.equals(HoloTriangle.ID);
+      if (grid_mode) {//if gridmode is on
+        if (isSloap) {//if your currenly drawing a triangle type
+          int X2=0, Y2=0, X1=0, Y1=0;//calcaute the location of the mouese press and unpress location
+          if (mouseX>downX) {
+            X1=(int)Math.floor((downX/Scale+camPos)/grid_size)*grid_size-camPos;
+            X2=(int)Math.floor(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos;
+          }
+          if (mouseX<downX) {
+            X1=(int)Math.floor((mouseX/Scale+camPos)/grid_size)*grid_size-camPos;
+            X2=(int)Math.floor(Math.ceil((downX/Scale+camPos)/grid_size)*grid_size)-camPos;
+          }
+          if (mouseY>downY) {
+            Y1=(int)Math.floor((downY/Scale-camPosY)/grid_size)*grid_size+camPosY;
+            Y2=(int)Math.floor(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY;
+          }
+          if (mouseY<downY) {
+            Y1=(int)Math.floor((mouseY/Scale-camPosY)/grid_size)*grid_size+camPosY;
+            Y2=(int)Math.floor(Math.ceil((downY/Scale-camPosY)/grid_size)*grid_size)+camPosY;
+          }
+          
+          preview.draw(g, X1*Scale, Y1*Scale, X2*Scale, Y2*Scale, Color, triangleMode, Scale);
+        } else {//if the type is not a triangle
+          int XD=0, YD=0, X1=0, Y1=0;//calcaute the location of the mouese press and unpress location
           if (mouseX>downX) {
             X1=(int)Math.floor((downX/Scale+camPos)/grid_size)*grid_size-camPos;
             XD=(int)Math.floor(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-X1-camPos;
@@ -591,13 +591,38 @@ void stageEditGUI() {
           }
           strokeWeight(0);
 
-          rect(X1*Scale, Y1*Scale, XD*Scale, YD*Scale);//draw the rectangle preview
-        } else {//end of grid mode
-          strokeWeight(0);
-          float xdif=mouseX-downX, ydif=mouseY-downY;
-          rect((int)(downX/Scale)*Scale, (int)(downY/Scale)*Scale, (int)(xdif/Scale)*Scale, (int)(ydif/Scale)*Scale);//draw the preview
+          preview.draw(g, X1*Scale, Y1*Scale, XD*Scale, YD*Scale, Color, triangleMode, Scale);//display the rectangle that is being drawn
         }
-      }//end of drawing
+      } else {//if grid mode is off
+        if (isSloap) {
+          int X2=0, Y2=0, X1=0, Y1=0;//calcaute the location of the mouese press and unpress location
+          if (mouseX>downX) {
+            X1=(int)Math.floor((downX/Scale));
+            X2=(int)Math.floor(Math.ceil((mouseX/Scale)));
+          }
+          if (mouseX<downX) {
+            X1=(int)Math.floor((mouseX/Scale));
+            X2=(int)Math.floor(Math.ceil((downX/Scale)));
+          }
+          if (mouseY>downY) {
+            Y1=(int)Math.floor(downY/Scale);
+            Y2=(int)Math.floor(Math.ceil(mouseY/Scale));
+          }
+          if (mouseY<downY) {
+            Y1=(int)Math.floor(mouseY/Scale);
+            Y2=(int)Math.floor(Math.ceil(downY/Scale));
+          }
+          
+            
+          preview.draw(g, X1*Scale, Y1*Scale, X2*Scale, Y2*Scale, Color, triangleMode, Scale);
+              
+        } else {
+          strokeWeight(0);
+          float xdif=(int)((mouseX-downX)/Scale)*Scale, ydif=(int)((mouseY-downY)/Scale)*Scale;//calcaute the location of the mouese press and unpress location
+           preview.draw(g, (int)(downX/Scale)*Scale, (int)(downY/Scale)*Scale, xdif, ydif, Color, triangleMode, Scale);//display the rectangle that is being drawn
+        }
+      }
+    }
 
       if (draw && StageComponentRegistry.isDraggable(currentlyPlaceing)) {//if placeing a draggable 
         float xdif=upX-downX, ydif=upY-downY;
@@ -748,22 +773,31 @@ void stageEditGUI() {
         }
         delete=false;
       }
-      if (draw3DSwitch1) {//if drawing a 3d switch render the switch
-        if (grid_mode) {//draw the switch
-          draw3DSwitch1((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY), Scale,g);
-        } else {
-          draw3DSwitch1((int)(mouseX/Scale), (int)(mouseY/Scale), Scale,g);
-        }
+      //draw placeable preview
+      if(currentlyPlaceing != null && !StageComponentRegistry.isDraggable(currentlyPlaceing)){
+        StageComponentRegistry.PlacementPreview preview = StageComponentRegistry.getPreview(currentlyPlaceing);
+        if (grid_mode) {
+            preview.draw(g, (Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY), Scale);
+          } else {
+            preview.draw(g, (int)(mouseX/Scale), (int)(mouseY/Scale), Scale);
+          }
       }
+      //if (draw3DSwitch1) {//if drawing a 3d switch render the switch
+      //  if (grid_mode) {//draw the switch
+      //    draw3DSwitch1((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY), Scale,g);
+      //  } else {
+      //    draw3DSwitch1((int)(mouseX/Scale), (int)(mouseY/Scale), Scale,g);
+      //  }
+      //}
       
       
-      if (draw3DSwitch2) {//if placeing a placeable (on clipboard)
-        if (grid_mode) {//draw the switch
-          draw3DSwitch2((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY), Scale,g);
-        } else {
-          draw3DSwitch2((int)(mouseX/Scale), (int)(mouseY/Scale), Scale,g);
-        }
-      }
+      //if (draw3DSwitch2) {//if placeing a placeable (on clipboard)
+      //  if (grid_mode) {//draw the switch
+      //    draw3DSwitch2((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY), Scale,g);
+      //  } else {
+      //    draw3DSwitch2((int)(mouseX/Scale), (int)(mouseY/Scale), Scale,g);
+      //  }
+      //}
       //if (draw3DSwitch1&&draw) {//if attempting to add a 3D switch
       //  if (grid_mode) {//add the switch to the stage
       //    current.parts.add(new SWon3D());
@@ -806,34 +840,34 @@ void stageEditGUI() {
           drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale,g);
         }
       }
-      if (check_point) {//if adding checkoint
-        if (grid_mode) {//display a checkoint
-          drawCheckPoint((Math.round((mouseX/Scale+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round((mouseY/Scale-camPosY)*1.0/grid_size)*grid_size+camPosY),g);
-        } else {
-          drawCheckPoint((int)(mouseX/Scale), (int)(mouseY/Scale),g);
-        }
-      }
-      if (drawCoins) {//if adding coins
-        if (grid_mode) {//display a coin
-          drawCoin((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale*3,g);
-        } else {
-          drawCoin((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale*3,g);
-        }
-      }
-      if (drawingSign) {//if adding coins
-        if (grid_mode) {//display a coin
-          drawSign((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale,g);
-        } else {
-          drawSign((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale,g);
-        }
-      }
-      if (placingLogicButton) {//if placing a logic button
-        if (grid_mode) {//draw the switch
-          drawLogicButton((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale, false,g);
-        } else {
-          drawLogicButton((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale, false,g);
-        }
-      }
+      //if (check_point) {//if adding checkoint
+      //  if (grid_mode) {//display a checkoint
+      //    drawCheckPoint((Math.round((mouseX/Scale+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round((mouseY/Scale-camPosY)*1.0/grid_size)*grid_size+camPosY),g);
+      //  } else {
+      //    drawCheckPoint((int)(mouseX/Scale), (int)(mouseY/Scale),g);
+      //  }
+      //}
+      //if (drawCoins) {//if adding coins
+      //  if (grid_mode) {//display a coin
+      //    drawCoin((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale*3,g);
+      //  } else {
+      //    drawCoin((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale*3,g);
+      //  }
+      //}
+      //if (drawingSign) {//if adding coins
+      //  if (grid_mode) {//display a coin
+      //    drawSign((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale,g);
+      //  } else {
+      //    drawSign((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale,g);
+      //  }
+      //}
+      //if (placingLogicButton) {//if placing a logic button
+      //  if (grid_mode) {//draw the switch
+      //    drawLogicButton((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale, false,g);
+      //  } else {
+      //    drawLogicButton((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale, false,g);
+      //  }
+      //}
       //if (placingLogicButton&&draw) {//if attempting to add a logic button
       //  if (grid_mode) {//add the button to the stage
       //    current.parts.add(new LogicButton(Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size, startingDepth));
@@ -1137,19 +1171,13 @@ void GUImouseClicked() {
     if (editingBlueprint) {
       current=workingBlueprint;
     }
+    
+    if (deleteing) {//if deleteing
+      delete=true;
+    }
 
-
-    //if (check_point) {//if checkoint
-    //  draw=true;
-    //}
-    //if (goal) {//if placing finishline
-    //  draw=true;
-    //}
-    //if (placingLogicButton) {//if placing logic button
-    //  draw=true;
-    //}
     if(currentlyPlaceing !=null && (current.type.equals("stage") || current.type.equals("blueprint")) && !currentlyPlaceing.equals(Interdimentional_Portal.ID)){//in2D env
-      if (draw && !StageComponentRegistry.isDraggable(currentlyPlaceing)) {
+      if (!StageComponentRegistry.isDraggable(currentlyPlaceing)) {
         Function<StageComponentPlacementContext, StageComponent> constructor = StageComponentRegistry.getPlacementConstructor(currentlyPlaceing);
         if(constructor == null){
           throw new RuntimeException("Constrructor not found for plaeable: "+currentlyPlaceing);
@@ -1185,7 +1213,7 @@ void GUImouseClicked() {
         draw=false;
       }//end of add placeable to stage
     }else if(currentlyPlaceing !=null && (current.type.equals("3Dstage") || current.type.equals("3D blueprint")) && !currentlyPlaceing.equals(Interdimentional_Portal.ID)){//3D env
-      if (draw && !StageComponentRegistry.isDraggable(currentlyPlaceing)) {
+      if (!StageComponentRegistry.isDraggable(currentlyPlaceing)) {
         Function<StageComponentPlacementContext, StageComponent> constructor = StageComponentRegistry.getPlacementConstructor(currentlyPlaceing);
         if(constructor == null){
           throw new RuntimeException("Constrructor not found for plaeable: "+currentlyPlaceing);
@@ -1222,9 +1250,6 @@ void GUImouseClicked() {
       }//end of add placeable to stage
     }//end of 3D
     
-    if (deleteing) {//if deleteing
-      delete=true;
-    }
     if (moving_player) {//if moving the player
       //set the players new position
       players[currentPlayer].setX(mouseX/Scale+camPos);
@@ -1405,7 +1430,7 @@ void GUImouseClicked() {
 
 void GUImousePressed() {
   if (mouseButton==LEFT) {
-    if (ground||holo_gram||sloap||holoTriangle||dethPlane) {
+    if (StageComponentRegistry.isDraggable(currentlyPlaceing)) {
 
       downX=mouseX;
       downY=mouseY;
@@ -1416,7 +1441,7 @@ void GUImousePressed() {
 
 void GUImouseReleased() {
   if (mouseButton==LEFT) {
-    if ((ground||holo_gram||sloap||holoTriangle||dethPlane)&&drawing) {
+    if ((StageComponentRegistry.isDraggable(currentlyPlaceing))&&drawing) {
 
       upX=mouseX;
       upY=mouseY;
