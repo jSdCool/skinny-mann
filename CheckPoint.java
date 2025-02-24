@@ -26,6 +26,8 @@ class CheckPoint extends StageComponent {//ground component
     if(context.has3D()){
       z = context.getZ();
     }
+    System.out.println(x+" "+y+" "+z);
+    System.out.println(context.getX()+" "+context.getY()+" "+context.getZ()+" "+context.has3D());
   }
   
   public CheckPoint(SerialIterator iterator){

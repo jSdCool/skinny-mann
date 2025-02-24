@@ -32,7 +32,7 @@ class Holo extends StageComponent {//ground component
     ccolor = context.getColor();
     if(context.has3D()){
       z = context.getZ();
-      dx = context.getDZ();
+      dz = context.getDZ();
     }
   }
   

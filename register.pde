@@ -89,7 +89,7 @@ void registerThings(){
     render.rect(x+18, y+18, 15, 15);
     render.rect(x+3, y+33, 15, 15);
     render.rect(x+33, y+33, 15, 15);
-  }, "Goal", new Boolean[]{true,false},(render, x, y, scale)->{
+  }, "Goal", new Boolean[]{true,false,false,false},(render, x, y, scale)->{
     x*=scale;
     y*=scale;
     render.fill(255);
@@ -102,15 +102,15 @@ void registerThings(){
   });
   StageComponentRegistry.register(Interdimentional_Portal.ID,Interdimentional_Portal::new,Interdimentional_Portal::new,null, (render, x, y) -> {
     drawPortal(x+25, y+25, 0.45,render);
-  }, "Portal", new Boolean[]{true,true,false},(render, x, y, scale)->{});
+  }, "Portal", new Boolean[]{true,true,false,false},(render, x, y, scale)->{});
   StageComponentRegistry.register(LogicButton.ID,LogicButton::new,LogicButton::new,LogicButton::new, (render, x, y) -> {
     drawLogicButton(x+25, y+25, 1, false,render);
-  }, "Button", new Boolean[]{true,true},(render, x, y, scale)->{
+  }, "Button", new Boolean[]{true,true,true,false},(render, x, y, scale)->{
     drawLogicButton(x*scale,y*scale,scale,false,render);
   });
   StageComponentRegistry.register(SoundBox.ID,SoundBox::new,SoundBox::new,SoundBox::new, (render, x, y) -> {
     drawSpeakericon(x+25, y+25, 0.5,render);
-  }, "Sound Box", new Boolean[]{true,false},(render, x, y, scale)->{
+  }, "Sound Box", new Boolean[]{true,false,true,false},(render, x, y, scale)->{
     drawSoundBox(x*scale,y*scale,scale,render);
   });
   StageComponentRegistry.register(WritableSign.ID,WritableSign::new,WritableSign::new,WritableSign::new, (render, x, y) -> {

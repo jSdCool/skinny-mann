@@ -7,6 +7,7 @@
    public StageComponentPlacementContext(float x, float y){
      this.x=x;
      this.y=y;
+     System.out.println(1);
    }
    
    public StageComponentPlacementContext(float x, float y, float z){
@@ -14,12 +15,14 @@
      this.x=x;
      this.y=y;
      this.z=z;
+     System.out.println(2);
    }
    
    public StageComponentPlacementContext(float x, float y, int index){
      this.x=x;
      this.y=y;
      this.index = index;
+     System.out.println(3);
    }
    
    public StageComponentPlacementContext(float x, float y, float z, int index){
@@ -28,6 +31,7 @@
      this.y=y;
      this.z=z;
      this.index = index;
+     System.out.println(4);
    }
    
    public float getX(){

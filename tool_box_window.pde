@@ -264,7 +264,7 @@ class ToolBox extends PApplet {
             }
             movePlayerButton.draw();
             strokeWeight(0);
-            draw_mann(movePlayerButton.x+25, movePlayerButton.y+48, 1, 0.6, 1,g);
+            draw_mann(movePlayerButton.x+25, movePlayerButton.y+48, 1, 0.6, 0,g);
           }
           if (grid_mode) {
             gridModeButton.setColor(255, #F2F258);
@@ -425,12 +425,189 @@ class ToolBox extends PApplet {
               nextPlayerButton.draw();
           }
         }//end of if edditing
-        else if (editingBlueprint) {
+        else if (editingBlueprint) {//if editing a 2D Blueprint
           if (workingBlueprint.type.equals("blueprint")) {
+            if (deleteing) {
+              deleteButton.setColor(255, #F2F258);
+            } else {
+              deleteButton.setColor(255, 203);
+            }
+            deleteButton.draw();
+            fill(203);
+            stroke(203);
+            strokeWeight(0);
+            rect(deleteButton.x+5, deleteButton.y+15, 40, 5);
+            rect(deleteButton.x+20, deleteButton.y+10, 10, 5);
+            rect(deleteButton.x+10, deleteButton.y+20, 5, 20);
+            rect(deleteButton.x+10, deleteButton.y+40, 30, 5);
+            rect(deleteButton.x+35, deleteButton.y+20, 5, 20);
+            rect(deleteButton.x+18, deleteButton.y+20, 5, 20);
+            rect(deleteButton.x+27, deleteButton.y+20, 5, 20);
+            if (grid_mode) {
+              gridModeButton.setColor(255, #F2F258);
+            } else {
+              gridModeButton.setColor(255, 203);
+            }
+            gridModeButton.draw();
+            textSize(20);
+            fill(0);
+            stroke(0);
+            strokeWeight(1);
+            line(gridModeButton.x+10, gridModeButton.y+2, gridModeButton.x+10, gridModeButton.y+47);
+            line(gridModeButton.x+20, gridModeButton.y+2, gridModeButton.x+20, gridModeButton.y+47);
+            line(gridModeButton.x+30, gridModeButton.y+2, gridModeButton.x+30, gridModeButton.y+47);
+            line(gridModeButton.x+40, gridModeButton.y+2, gridModeButton.x+40, gridModeButton.y+47);
+            line(gridModeButton.x+2, gridModeButton.y+10, gridModeButton.x+48, gridModeButton.y+10);
+            line(gridModeButton.x+2, gridModeButton.y+20, gridModeButton.x+48, gridModeButton.y+20);
+            line(gridModeButton.x+2, gridModeButton.y+30, gridModeButton.x+48, gridModeButton.y+30);
+            line(gridModeButton.x+2, gridModeButton.y+40, gridModeButton.x+48, gridModeButton.y+40);
+            text(grid_size, gridModeButton.x+10, gridModeButton.y+40);
+            strokeWeight(0);
+            saveLevel.draw();
+            exitStageEdit.draw();
+            
+            //Components
+            for(int i=0;i<stageComponetButtons.length;i++){
+              //check allowed dimentions
+              //[0] = allow in 2D stage [1] = allow in 3D stage [2] = allow place in 3D mode in 3D stage (default true) [3] allow in blueprints (default true)
+              if(/*can beplaced in 2D and stage is 2D*/(componentAllowedDimentions[i][0])){
+                //check can be placed in 3D mdoe
+                if(componentAllowedDimentions[i].length < 4 || componentAllowedDimentions[i][3]){
+                  //check if currently active to change the color
+                  if(StageComponentRegistry.get(i).equals(currentlyPlaceing)){
+                     stageComponetButtons[i].setColor(255, #F2F258);
+                  }else{
+                     stageComponetButtons[i].setColor(255, 203);
+                  }
+                  stageComponetButtons[i].draw();
+                  componentIcons[i].draw(g, stageComponetButtons[i].x, stageComponetButtons[i].y);
+                
+                }
+              }
+            }
+            
+            //hover text
+            deleteButton.drawHoverText();
+            gridModeButton.drawHoverText();
+            saveLevel.drawHoverText();
+            exitStageEdit.drawHoverText();
+            for(int i=0;i<stageComponetButtons.length;i++){
+              //check allowed dimentions
+              //[0] = allow in 2D stage [1] = allow in 3D stage [2] = allow place in 3D mode in 3D stage (default true) [3] allow in blueprints (default true)
+              if(/*can beplaced in 2D and stage is 2D*/(componentAllowedDimentions[i][0])){
+                //check can be placed in 3D mdoe
+                if(componentAllowedDimentions[i].length < 4 || componentAllowedDimentions[i][3]){
+                  stageComponetButtons[i].drawHoverText();
+                
+                }
+              }
+            }
             
           }//end of type is 2D blueprint
           else if (workingBlueprint.type.equals("3D blueprint")) {
+            if (deleteing) {
+              deleteButton.setColor(255, #F2F258);
+            } else {
+              deleteButton.setColor(255, 203);
+            }
+            deleteButton.draw();
+            fill(203);
+            stroke(203);
+            strokeWeight(0);
+            rect(deleteButton.x+5, deleteButton.y+15, 40, 5);
+            rect(deleteButton.x+20, deleteButton.y+10, 10, 5);
+            rect(deleteButton.x+10, deleteButton.y+20, 5, 20);
+            rect(deleteButton.x+10, deleteButton.y+40, 30, 5);
+            rect(deleteButton.x+35, deleteButton.y+20, 5, 20);
+            rect(deleteButton.x+18, deleteButton.y+20, 5, 20);
+            rect(deleteButton.x+27, deleteButton.y+20, 5, 20);
+            if (grid_mode) {
+              gridModeButton.setColor(255, #F2F258);
+            } else {
+              gridModeButton.setColor(255, 203);
+            }
+            gridModeButton.draw();
+            textSize(20);
+            fill(0);
+            stroke(0);
+            strokeWeight(1);
+            line(gridModeButton.x+10, gridModeButton.y+2, gridModeButton.x+10, gridModeButton.y+47);
+            line(gridModeButton.x+20, gridModeButton.y+2, gridModeButton.x+20, gridModeButton.y+47);
+            line(gridModeButton.x+30, gridModeButton.y+2, gridModeButton.x+30, gridModeButton.y+47);
+            line(gridModeButton.x+40, gridModeButton.y+2, gridModeButton.x+40, gridModeButton.y+47);
+            line(gridModeButton.x+2, gridModeButton.y+10, gridModeButton.x+48, gridModeButton.y+10);
+            line(gridModeButton.x+2, gridModeButton.y+20, gridModeButton.x+48, gridModeButton.y+20);
+            line(gridModeButton.x+2, gridModeButton.y+30, gridModeButton.x+48, gridModeButton.y+30);
+            line(gridModeButton.x+2, gridModeButton.y+40, gridModeButton.x+48, gridModeButton.y+40);
+            text(grid_size, gridModeButton.x+10, gridModeButton.y+40);
+            strokeWeight(0);
+            saveLevel.draw();
+            if(!e3DMode){
+              exitStageEdit.draw();
+            }
+            if(e3DMode){//only render when not in 3D
+              if (current3DTransformMode==2&&selecting) {
+                size3DButton.setColor(255, #F2F258);
+              } else {
+                size3DButton.setColor(255, 203);
+              }
+              size3DButton.draw();
+              if (current3DTransformMode==1&&selecting) {
+                move3DButton.setColor(255, #F2F258);
+              } else {
+                move3DButton.setColor(255, 203);
+              }
+              move3DButton.draw();
+            }
+            if (e3DMode) {
+              toggle3DMode.setColor(255, #F2F258);
+            } else {
+              toggle3DMode.setColor(255, 203);
+            }
+            toggle3DMode.draw();
             
+            //Components
+            for(int i=0;i<stageComponetButtons.length;i++){
+              //check allowed dimentions
+              //[0] = allow in 2D stage [1] = allow in 3D stage [2] = allow place in 3D mode in 3D stage (default true) [3] allow in blueprints (default true)
+              if(/*can beplaced in 3D and stage is 3D*/(componentAllowedDimentions[i][1])){
+                //check can be placed in 3D mdoe
+                if((componentAllowedDimentions[i].length < 4 || componentAllowedDimentions[i][3]) && (!e3DMode || componentAllowedDimentions[i].length < 3 || componentAllowedDimentions[i][2])){
+                  //check if currently active to change the color
+                  if(StageComponentRegistry.get(i).equals(currentlyPlaceing)){
+                     stageComponetButtons[i].setColor(255, #F2F258);
+                  }else{
+                     stageComponetButtons[i].setColor(255, 203);
+                  }
+                  stageComponetButtons[i].draw();
+                  componentIcons[i].draw(g, stageComponetButtons[i].x, stageComponetButtons[i].y);
+                
+                }
+              }
+            }
+            
+            //hover text
+            deleteButton.drawHoverText();
+            gridModeButton.drawHoverText();
+            saveLevel.drawHoverText();
+            if(!e3DMode){
+              exitStageEdit.drawHoverText();
+            }else{
+              move3DButton.drawHoverText();
+              size3DButton.drawHoverText();
+            }
+            toggle3DMode.drawHoverText();
+            for(int i=0;i<stageComponetButtons.length;i++){
+              //check allowed dimentions
+              //[0] = allow in 2D stage [1] = allow in 3D stage [2] = allow place in 3D mode in 3D stage (default true) [3] allow in blueprints (default true)
+              if(/*can beplaced in 3D and stage is 3D*/(componentAllowedDimentions[i][1])){
+                //check can be placed in 3D mdoe
+                if((componentAllowedDimentions[i].length < 4 || componentAllowedDimentions[i][3]) && (!e3DMode || componentAllowedDimentions[i].length < 3 || componentAllowedDimentions[i][2])){
+                  stageComponetButtons[i].drawHoverText();
+                
+                }
+              }
+            }
           }//end of type is 3D blueprint
         } else if (editinglogicBoard) {
           //draw buttons
@@ -1240,6 +1417,23 @@ class ToolBox extends PApplet {
               levelCreator=false;
               editingBlueprint=false;
             }
+            
+            for(int i=0;i<stageComponetButtons.length;i++){
+              //check allowed dimentions
+              //[0] = allow in 2D stage [1] = allow in 3D stage [2] = allow place in 3D mode in 3D stage (default true) [3] allow in blueprints (default true)
+              if(/*can beplaced in 2D and stage is 2D*/componentAllowedDimentions[i][0]){
+                //check can be placed in 3D mdoe
+                if(componentAllowedDimentions[i].length < 4 || componentAllowedDimentions[i][3]){
+                  
+                  if(stageComponetButtons[i].isMouseOver()){
+                    turnThingsOff();
+                    Identifier compoenntId = StageComponentRegistry.get(i);
+                    //special case for portals
+                    currentlyPlaceing = compoenntId;
+                  }
+                }
+              }
+            }
           }//end of type is blueprint
           else if (workingBlueprint.type.equals("3D blueprint")) {
             
@@ -1287,6 +1481,22 @@ class ToolBox extends PApplet {
                 selecting=true;
               }
             }//end of 3D mode on
+            for(int i=0;i<stageComponetButtons.length;i++){
+              //check allowed dimentions
+              //[0] = allow in 2D stage [1] = allow in 3D stage [2] = allow place in 3D mode in 3D stage (default true) [3] allow in blueprints (default true)
+              if(/*can beplaced in 3D and stage is 3D*/componentAllowedDimentions[i][1]){
+                //check can be placed in 3D mdoe
+                if((componentAllowedDimentions[i].length < 4 || componentAllowedDimentions[i][3]) && (!e3DMode || componentAllowedDimentions[i].length < 3 || componentAllowedDimentions[i][2])){
+                  
+                  if(stageComponetButtons[i].isMouseOver()){
+                    turnThingsOff();
+                    Identifier compoenntId = StageComponentRegistry.get(i);
+                    //special case for portals
+                    currentlyPlaceing = compoenntId;
+                  }
+                }
+              }
+            }
           }
         }//end of editing blueprint
         else if (editinglogicBoard) {

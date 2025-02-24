@@ -22,15 +22,15 @@ void stageEditGUI() {
 
   if (current.type.equals("stage")||current.type.equals("blueprint")) {//if current is a stage or blueprint
   
-  if (grid_mode) {//grid mode position box
-    int X2=0, Y2=0, X1=0, Y1=0;
-    X1=(int)(((floor((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos)*Scale);
-    X2=(int)(grid_size*Scale);//(int)(((int)(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos)*Scale)-X1;
-    Y1=(int)(((floor((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY)*Scale);
-    Y2=(int)(grid_size*Scale);//(int)(((int)(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY)*Scale)-abs(Y1);\
-    fill(#AAAA00,120);
-    rect(X1,Y1,X2,Y2);
-  }
+    if (grid_mode) {//grid mode position box
+      int X2=0, Y2=0, X1=0, Y1=0;
+      X1=(int)(((floor((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos)*Scale);
+      X2=(int)(grid_size*Scale);//(int)(((int)(Math.ceil((mouseX/Scale+camPos)/grid_size)*grid_size)-camPos)*Scale)-X1;
+      Y1=(int)(((floor((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY)*Scale);
+      Y2=(int)(grid_size*Scale);//(int)(((int)(Math.ceil((mouseY/Scale-camPosY)/grid_size)*grid_size)+camPosY)*Scale)-abs(Y1);\
+      fill(#AAAA00,120);
+      rect(X1,Y1,X2,Y2);
+    }
 
     if (drawing && currentlyPlaceing != null && StageComponentRegistry.isDraggable(currentlyPlaceing)) {//if drawing a dragable shape
       StageComponentRegistry.DraggablePlacementPreview preview = StageComponentRegistry.getDragPreview(currentlyPlaceing);
@@ -786,15 +786,15 @@ void GUImouseClicked() {
         
         StageComponentPlacementContext placementContext;
         if (grid_mode) {//if grid mode is on
-          placementContext = new StageComponentPlacementContext(Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size, startingDepth);
+          placementContext = new StageComponentPlacementContext(Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size, (float)startingDepth);
         } else {
-          placementContext = new StageComponentPlacementContext((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY, startingDepth);//add new checkpoint to the stage
+          placementContext = new StageComponentPlacementContext((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY, (float)startingDepth);//add new checkpoint to the stage
         }
         if(isCoin){
           if (grid_mode) {//if grid mode is on
-            placementContext = new StageComponentPlacementContext(Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size, startingDepth, numCoins);
+            placementContext = new StageComponentPlacementContext(Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size, (float)startingDepth, numCoins);
           } else {
-            placementContext = new StageComponentPlacementContext((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY, startingDepth, numCoins);//add new checkpoint to the stage
+            placementContext = new StageComponentPlacementContext((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY, (float)startingDepth, numCoins);//add new checkpoint to the stage
           }
           if (editingStage) {//if edditng stage the increase the coin counter
             level.numOfCoins++;
@@ -1136,12 +1136,12 @@ void mouseClicked3D() {
         
         StageComponentPlacementContext placementContext;
         if(isCoin){
-          placementContext = new StageComponentPlacementContext((int)(testPoint.x+5*direction), (int)(testPoint.y), (int)(testPoint.z), numCoins);
+          placementContext = new StageComponentPlacementContext((int)(testPoint.x+5*direction), (int)(testPoint.y), (float)(int)(testPoint.z), numCoins);
           if(!editingBlueprint){
              level.numOfCoins++;
            }
         }else{
-          placementContext = new StageComponentPlacementContext((int)(testPoint.x+5*direction), (int)(testPoint.y), (int)(testPoint.z));
+          placementContext = new StageComponentPlacementContext((int)(testPoint.x+5*direction), (int)(testPoint.y), (float)(int)(testPoint.z));
         }
         current.add(constructor.apply(placementContext));//create the new object
         break;
@@ -1154,12 +1154,12 @@ void mouseClicked3D() {
         }
          StageComponentPlacementContext placementContext;
          if(isCoin){
-           placementContext = new StageComponentPlacementContext((int)(testPoint.x), (int)(testPoint.y), (int)(testPoint.z), numCoins);
+           placementContext = new StageComponentPlacementContext((int)(testPoint.x), (int)(testPoint.y), (float)(int)(testPoint.z), numCoins);
            if(!editingBlueprint){
              level.numOfCoins++;
            }
          }else{
-           placementContext = new StageComponentPlacementContext((int)(testPoint.x), (int)(testPoint.y), (int)(testPoint.z));
+           placementContext = new StageComponentPlacementContext((int)(testPoint.x), (int)(testPoint.y), (float)(int)(testPoint.z));
          }
          current.add(constructor.apply(placementContext));//create the new object
         break;
@@ -1172,12 +1172,12 @@ void mouseClicked3D() {
         }
         StageComponentPlacementContext placementContext ;
         if(isCoin){
-          placementContext = new StageComponentPlacementContext((int)(testPoint.x), (int)(testPoint.y), (int)(testPoint.z+5*direction), numCoins);
+          placementContext = new StageComponentPlacementContext((int)(testPoint.x), (int)(testPoint.y), (float)(int)(testPoint.z+5*direction), numCoins);
           if(!editingBlueprint){
              level.numOfCoins++;
            }
         }else{
-          placementContext = new StageComponentPlacementContext((int)(testPoint.x), (int)(testPoint.y), (int)(testPoint.z+5*direction));
+          placementContext = new StageComponentPlacementContext((int)(testPoint.x), (int)(testPoint.y), (float)(int)(testPoint.z+5*direction));
         }
         current.add(constructor.apply(placementContext));//create the new object
         break;

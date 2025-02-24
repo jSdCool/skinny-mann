@@ -890,6 +890,7 @@ void draw() {// the function that is called every fraim
       }//end of loading blueprint
 
       if (editingBlueprint) {//if edditing blueprint
+        hint(DISABLE_KEY_REPEAT);
         background(7646207);
         if(!e3DMode){
           fill(0);
