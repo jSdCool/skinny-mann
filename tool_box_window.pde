@@ -264,7 +264,7 @@ class ToolBox extends PApplet {
             }
             movePlayerButton.draw();
             strokeWeight(0);
-            draw_mann(movePlayerButton.x+25, movePlayerButton.y+48, 1, 0.6, "red");
+            draw_mann(movePlayerButton.x+25, movePlayerButton.y+48, 1, 0.6, 1,g);
           }
           if (grid_mode) {
             gridModeButton.setColor(255, #F2F258);
@@ -1220,11 +1220,7 @@ class ToolBox extends PApplet {
         }//end of edditing stage
         else if (editingBlueprint) {
           if (workingBlueprint.type.equals("blueprint")) {
-            //if (groundButton.isMouseOver()) {
-            //  turnThingsOff();
-            //  ground=true;
-            //}
-
+            
             if (deleteButton.isMouseOver()) {
               turnThingsOff();
               deleteing=true;
@@ -1233,26 +1229,7 @@ class ToolBox extends PApplet {
             if (gridModeButton.isMouseOver()) {
               grid_mode=!grid_mode;
             }
-            //if (holoButton.isMouseOver()) {
-            //  turnThingsOff();
-            //  holo_gram=true;
-            //}
-            //if (draw_coin.isMouseOver()) {
-            //  turnThingsOff();
-            //  drawCoins=true;
-            //}
-            //if (checkpointButton.isMouseOver()) {
-            //  turnThingsOff();
-            //  check_point=true;
-            //}
-            //if (draw_sloap.isMouseOver()) {
-            //  turnThingsOff();
-            //  sloap=true;
-            //}
-            //if (draw_holoTriangle.isMouseOver()) {
-            //  turnThingsOff();
-            //  holoTriangle=true;
-            //}
+            
             if (saveLevel.isMouseOver()) {
               System.out.println("saving blueprint");
               workingBlueprint.save();
@@ -1265,11 +1242,7 @@ class ToolBox extends PApplet {
             }
           }//end of type is blueprint
           else if (workingBlueprint.type.equals("3D blueprint")) {
-            //if (groundButton.isMouseOver()) {
-            //  turnThingsOff();
-            //  ground=true;
-            //}
-
+            
             if (deleteButton.isMouseOver()) {
               turnThingsOff();
               deleteing=true;
@@ -1278,19 +1251,6 @@ class ToolBox extends PApplet {
             if (gridModeButton.isMouseOver()) {
               grid_mode=!grid_mode;
             }
-            //if (holoButton.isMouseOver()) {
-            //  turnThingsOff();
-            //  holo_gram=true;
-            //}
-            //if (draw_coin.isMouseOver()) {
-            //  turnThingsOff();
-            //  drawCoins=true;
-            //}
-            //if (checkpointButton.isMouseOver()) {
-            //  turnThingsOff();
-            //  check_point=true;
-            //}
-            
             if (saveLevel.isMouseOver()) {
               System.out.println("saving blueprint");
               workingBlueprint.save();
@@ -1781,88 +1741,4 @@ class ToolBox extends PApplet {
       }//end of page is variables and groops
     }
   }//end of keypressed
-
-
-  void drawCoin(float x, float y, float Scale) {
-    strokeWeight(0);
-    fill(#FCC703);
-    circle(x, y, 12*Scale);
-    fill(255, 255, 0);
-    circle(x, y, 10*Scale);
-    fill(#FCC703);
-    rect(x-2*Scale, y-3*Scale, 4*Scale, 6*Scale);
-  }
-
-  void drawPortal(float x, float y, float scale) {
-    fill(0);
-    strokeWeight(0);
-    ellipse(x, y, 50*scale, 100*scale);
-    fill(#AE00FA);
-    ellipse(x, y, 35*scale, 80*scale);
-    fill(0);
-    ellipse(x, y, 20*scale, 60*scale);
-    fill(#AE00FA);
-    ellipse(x, y, 5*scale, 40*scale);
-  }
-
-  void draw3DSwitch1(float x, float y, float Scale) {
-    fill(196);
-    strokeWeight(0);
-    rect((x-20)*Scale, (y-5)*Scale, 40*Scale, 5*Scale);
-    fill(#FAB800);
-    rect((x-10)*Scale, (y-10)*Scale, 20*Scale, 5*Scale);
-  }
-
-  void draw3DSwitch2(float x, float y, float Scale) {
-    fill(196);
-    strokeWeight(0);
-    rect((x-20)*Scale, (y-5)*Scale, 40*Scale, 5*Scale);
-  }
-
-  void drawCheckPoint(float x, float y) {
-    fill(#B9B9B9);
-    strokeWeight(0);
-    rect((x-3)*Scale, (y-60)*Scale, 5*Scale, 60*Scale);
-    fill(#EA0202);
-    stroke(#EA0202);
-    strokeWeight(0);
-    triangle(x*Scale, (y-60)*Scale, x*Scale, (y-40)*Scale, (x+30)*Scale, (y-50)*Scale);
-  }
-
-  void drawSign(float x, float y, float Scale) {
-    fill(#A54A00);
-    rect(x-5*Scale, y-30*Scale, 10*Scale, 30*Scale);
-    rect(x-35*Scale, y-65*Scale, 70*Scale, 40*Scale);
-    fill(#C4C4C4);
-    rect(x-33*Scale, y-63*Scale, 66*Scale, 36*Scale);
-    fill(#767675);
-    rect(x-30*Scale, y-58*Scale, 60*Scale, 2*Scale);
-    rect(x-30*Scale, y-52*Scale, 60*Scale, 2*Scale);
-    rect(x-30*Scale, y-46*Scale, 60*Scale, 2*Scale);
-    rect(x-30*Scale, y-40*Scale, 60*Scale, 2*Scale);
-    rect(x-30*Scale, y-34*Scale, 60*Scale, 2*Scale);
-  }
-
-  void draw_mann(float x, float y, int pose, float scale, String shirt_color) {
-    strokeWeight(0);
-    if (shirt_color.equals("red")) {
-      fill(255, 0, 0);
-      stroke(255, 0, 0);
-    }
-
-    if (pose==1) {
-      rect(x-10*scale, y-55*scale, scale*20, scale*25);
-      fill(-17813);
-      stroke(-17813);
-      rect(x-15*scale, y-75*scale, scale*30, scale*20);
-      fill(-16763137);
-      stroke(-16763137);
-      rect(x-10*scale, y-30*scale, scale*6, scale*10);
-      rect(x+4*scale, y-30*scale, scale*6, scale*10);
-      rect(x-10*scale, y-20*scale, scale*6, scale*10);
-      rect(x+4*scale, y-20*scale, scale*6, scale*10);
-      rect(x-10*scale, y-10*scale, scale*6, scale*10);
-      rect(x+4*scale, y-10*scale, scale*6, scale*10);
-    }
-  }
 }//end of ColorSelectorScreen class

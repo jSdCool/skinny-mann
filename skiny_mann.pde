@@ -4351,26 +4351,14 @@ void loadUGCList() {
 
 void turnThingsOff() {
   selectedIndex=-1;
-  ground=false;
-  check_point=false;
-  goal=false;
   deleteing=false;
   moving_player=false;
-  holo_gram=false;
   levelOverview=false;
-  drawCoins=false;
   drawingPortal=false;
   drawingPortal3=false;
-  sloap=false;
-  holoTriangle=false;
-  dethPlane=false;
-  draw3DSwitch1=false;
-  draw3DSwitch2=false;
-  drawingSign=false;
   selecting=false;
   selectedIndex=-1;
   selectingBlueprint=false;
-  placingSound=false;
   connectingLogic=false;
   moveLogicComponents=false;
   placingAndGate=false;
@@ -4386,7 +4374,6 @@ void turnThingsOff() {
   placingSetVisibility=false;
   placingYOffset=false;
   placingXOffset=false;
-  placingLogicButton=false;
   placingDelay=false;
   placingZOffset=false;
   settingPlayerSpawn=false;
