@@ -7,12 +7,12 @@ class XorGate extends LogicComponent {
   
   public static final Identifier ID = new Identifier("XorGate");
   
-  XorGate(float x, float y, LogicBoard lb) {
-    super(x, y, "XOR", lb);
+  XorGate(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "XOR", context.getLogicBoard());
   }
 
-  XorGate(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "XOR", lb, data.getJSONArray("connections"));
+  XorGate(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "XOR", data.getJSONArray("connections"));
   }
   
   public XorGate(SerialIterator iterator){

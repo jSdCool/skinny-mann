@@ -132,26 +132,26 @@ void registerThings(){
   SerialRegistry.register(GenericStageComponent.ID,GenericStageComponent::new);//palce
   
   //Logic components
-  SerialRegistry.register(AndGate.ID,AndGate::new);
-  SerialRegistry.register(ConstantOnSignal.ID,ConstantOnSignal::new);
-  SerialRegistry.register(Delay.ID,Delay::new);
-  SerialRegistry.register(GenericLogicComponent.ID,GenericLogicComponent::new);
-  SerialRegistry.register(LogicPlaySound.ID,LogicPlaySound::new);
-  SerialRegistry.register(NAndGate.ID,NAndGate::new);
-  SerialRegistry.register(NOrGate.ID,NOrGate::new);
-  SerialRegistry.register(OrGate.ID,OrGate::new);
-  SerialRegistry.register(Pulse.ID,Pulse::new);
-  SerialRegistry.register(Random.ID,Random::new);
-  SerialRegistry.register(Read3DMode.ID,Read3DMode::new);
-  SerialRegistry.register(ReadVariable.ID,ReadVariable::new);
-  SerialRegistry.register(Set3DMode.ID,Set3DMode::new);
-  SerialRegistry.register(SetVariable.ID,SetVariable::new);
-  SerialRegistry.register(SetVisibility.ID,SetVisibility::new);
-  SerialRegistry.register(SetXOffset.ID,SetXOffset::new);
-  SerialRegistry.register(SetYOffset.ID,SetYOffset::new);
-  SerialRegistry.register(SetZOffset.ID,SetZOffset::new);
-  SerialRegistry.register(XNorGate.ID,XNorGate::new);
-  SerialRegistry.register(XorGate.ID,XorGate::new);
+  LogicComponentRegistry.register(AndGate.ID,AndGate::new,AndGate::new,AndGate::new,(render,x,y)->{},"And Gate");
+  LogicComponentRegistry.register(ConstantOnSignal.ID,ConstantOnSignal::new,ConstantOnSignal::new,ConstantOnSignal::new,(render,x,y)->{},"Constant On signal");
+  LogicComponentRegistry.register(Delay.ID,Delay::new,Delay::new,Delay::new,(render,x,y)->{},"Delay");
+  LogicComponentRegistry.register(GenericLogicComponent.ID,GenericLogicComponent::new,GenericLogicComponent::new,GenericLogicComponent::new,(render,x,y)->{},"Generic");
+  LogicComponentRegistry.register(LogicPlaySound.ID,LogicPlaySound::new,LogicPlaySound::new,LogicPlaySound::new,(render,x,y)->{},"Play Sound");
+  LogicComponentRegistry.register(NAndGate.ID,NAndGate::new,NAndGate::new,NAndGate::new,(render,x,y)->{},"NAnd Gate");
+  LogicComponentRegistry.register(NOrGate.ID,NOrGate::new,NOrGate::new,NOrGate::new,(render,x,y)->{},"NOr Gate");
+  LogicComponentRegistry.register(OrGate.ID,OrGate::new,OrGate::new,OrGate::new,(render,x,y)->{},"Or Gate");
+  LogicComponentRegistry.register(Pulse.ID,Pulse::new,Pulse::new,Pulse::new,(render,x,y)->{},"Pulse");
+  LogicComponentRegistry.register(Random.ID,Random::new,Random::new,Random::new,(render,x,y)->{},"Random");
+  LogicComponentRegistry.register(Read3DMode.ID,Read3DMode::new,Read3DMode::new,Read3DMode::new,(render,x,y)->{},"Read 3D");
+  LogicComponentRegistry.register(ReadVariable.ID,ReadVariable::new,ReadVariable::new,ReadVariable::new,(render,x,y)->{},"Read Var");
+  LogicComponentRegistry.register(Set3DMode.ID,Set3DMode::new,Set3DMode::new,Set3DMode::new,(render,x,y)->{},"Set 3D");
+  LogicComponentRegistry.register(SetVariable.ID,SetVariable::new,SetVariable::new,SetVariable::new,(render,x,y)->{},"Set Var");
+  LogicComponentRegistry.register(SetVisibility.ID,SetVisibility::new,SetVisibility::new,SetVisibility::new,(render,x,y)->{},"Set Visability");
+  LogicComponentRegistry.register(SetXOffset.ID,SetXOffset::new,SetXOffset::new,SetXOffset::new,(render,x,y)->{},"Set X Offset");
+  LogicComponentRegistry.register(SetYOffset.ID,SetYOffset::new,SetYOffset::new,SetYOffset::new,(render,x,y)->{},"Set Y Offset");
+  LogicComponentRegistry.register(SetZOffset.ID,SetZOffset::new,SetZOffset::new,SetZOffset::new,(render,x,y)->{},"Ser Z Offset");
+  LogicComponentRegistry.register(XNorGate.ID,XNorGate::new,XNorGate::new,XNorGate::new,(render,x,y)->{},"XNor Gate");
+  LogicComponentRegistry.register(XorGate.ID,XorGate::new,XorGate::new,XorGate::new,(render,x,y)->{},"Xor Gate");
   
   //entitys
   SerialRegistry.register(Goon.ID,Goon::new);

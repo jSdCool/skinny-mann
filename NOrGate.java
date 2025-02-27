@@ -7,11 +7,11 @@ class NOrGate extends LogicComponent {
   
   public static final Identifier ID = new Identifier("NorGate");
   
-  NOrGate(float x, float y, LogicBoard lb) {
-    super(x, y, "NOR", lb);
+  NOrGate(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "NOR", context.getLogicBoard());
   }
-  NOrGate(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "NOR", lb, data.getJSONArray("connections"));
+  NOrGate(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "NOR", data.getJSONArray("connections"));
   }
   
   public NOrGate(SerialIterator iterator){

@@ -19,12 +19,11 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
     lb=board;
   }
 
-  LogicComponent(float x, float y, String type, LogicBoard board, JSONArray cnects) {
+  LogicComponent(float x, float y, String type, JSONArray cnects) {
     this.x=x;
     this.y=y;
     this.type=type;
     button=new Button(source, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
-    lb=board;
     for (int i=0; i<cnects.size(); i++) {
       JSONObject data= cnects.getJSONObject(i);
       connections.add(new Integer[]{data.getInt("index"), data.getInt("terminal")});
@@ -44,6 +43,10 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
     }
     
     
+  }
+  
+  protected void setLogicBoard(LogicBoard board){
+    lb = board;
   }
 
   void draw() {

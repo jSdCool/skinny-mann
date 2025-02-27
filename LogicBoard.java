@@ -1,7 +1,7 @@
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
-
+import java.util.function.Function;
 class LogicBoard implements Serialization {//stores all the logic components
 
   public static final Identifier ID = new Identifier("LogicBoard");
@@ -15,47 +15,15 @@ class LogicBoard implements Serialization {//stores all the logic components
     for (int i=1; i<file.size(); i++) {
       JSONObject component=file.getJSONObject(i);
       String type=component.getString("type");
-      if (type.equals("generic")) {
-        components.add(new GenericLogicComponent(component, this));
-      } else if (type.equals("AND")) {
-        components.add(new AndGate(component, this));
-      } else if (type.equals("OR")) {
-        components.add(new OrGate(component, this));
-      } else if (type.equals("XOR")) {
-        components.add(new XorGate(component, this));
-      } else if (type.equals("NAND")) {
-        components.add(new NAndGate(component, this));
-      } else if (type.equals("NOR")) {
-        components.add(new NOrGate(component, this));
-      } else if (type.equals("XNOR")) {
-        components.add(new XNorGate(component, this));
-      } else if (type.equals("ON")) {
-        components.add(new ConstantOnSignal(component, this));
-      } else if (type.equals("read var")) {
-        components.add(new ReadVariable(component, this));
-      } else if (type.equals("set var")) {
-        components.add(new SetVariable(component, this));
-      } else if (type.equals("set visable")) {
-        components.add(new SetVisibility(component, this, level));
-      } else if (type.equals("y-offset")) {
-        components.add(new SetYOffset(component, this, level));
-      } else if (type.equals("x-offset")) {
-        components.add(new SetXOffset(component, this, level));
-      } else if (type.equals("delay")) {
-        components.add(new Delay(component, this));
-      } else if (type.equals("z-offset")) {
-        components.add(new SetZOffset(component, this, level));
-      } else if ( type.equals("play sound")) {
-        components.add(new LogicPlaySound(component, this, level));
-      } else if (type.equals("pulse")) {
-        components.add(new Pulse(component, this));
-      } else if (type.equals("read 3D ")) {
-        components.add(new Read3DMode(component, this));
-      } else if (type.equals("  set 3D  ")) {
-        components.add(new Set3DMode(component, this));
-      } else if (type.equals(" random ")) {
-        components.add(new Random(component, this));
+      Identifier typeId = new Identifier(type);
+      Function<JSONObject, LogicComponent> constructor = LogicComponentRegistry.getJsonConstructor(typeId);
+      if(constructor == null){
+        System.err.println("No constructor found for idntifier: "+typeId);
+        throw new RuntimeException("No constructor found for identifier: "+typeId);
       }
+      LogicComponent comp = constructor.apply(component);
+      comp.setLogicBoard(this);
+      components.add(comp);
     }
   }
   

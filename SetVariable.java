@@ -7,13 +7,13 @@ class SetVariable extends LogicOutputComponent {
   public static final Identifier ID = new Identifier("SetVariable");
   
   int variableNumber=0;
-  SetVariable(float x, float y, LogicBoard lb) {
-    super(x, y, "set var", lb);
+  SetVariable(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "set var", context.getLogicBoard());
     button.setText("  set var b"+variableNumber);
   }
 
-  SetVariable(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "set var", lb, data.getJSONArray("connections"));
+  SetVariable(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "set var", data.getJSONArray("connections"));
     variableNumber=data.getInt("variable number");
     button.setText("  set var b"+variableNumber);
   }

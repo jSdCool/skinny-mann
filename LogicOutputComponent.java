@@ -7,8 +7,8 @@ abstract class LogicOutputComponent extends LogicComponent {
     super(x, y, type, board);
     button=new Button(source, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
   }
-  LogicOutputComponent(float x, float y, String type, LogicBoard board, JSONArray cnects) {
-    super(x, y, type, board, cnects);
+  LogicOutputComponent(float x, float y, String type, JSONArray cnects) {
+    super(x, y, type, cnects);
     button=new Button(source, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
   }
   public LogicOutputComponent(SerialIterator iterator){

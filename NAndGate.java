@@ -7,12 +7,12 @@ class NAndGate extends LogicComponent {
   
   public static final Identifier ID = new Identifier("NandGate");
   
-  NAndGate(float x, float y, LogicBoard lb) {
-    super(x, y, "NAND", lb);
+  NAndGate(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "NAND", context.getLogicBoard());
   }
 
-  NAndGate(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "NAND", lb, data.getJSONArray("connections"));
+  NAndGate(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "NAND", data.getJSONArray("connections"));
   }
   
   public NAndGate(SerialIterator iterator){

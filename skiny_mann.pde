@@ -2181,23 +2181,13 @@ void mouseClicked() {// when you click the mouse
           }
         }//end of loading blueprint
         if (editinglogicBoard) {
-          if (placingAndGate) {
-            level.logicBoards.get(logicBoardIndex).components.add(new AndGate(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingOrGate) {
-            level.logicBoards.get(logicBoardIndex).components.add(new OrGate(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingXorGate) {
-            level.logicBoards.get(logicBoardIndex).components.add(new XorGate(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingNandGate) {
-            level.logicBoards.get(logicBoardIndex).components.add(new NAndGate(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingNorGate) {
-            level.logicBoards.get(logicBoardIndex).components.add(new NOrGate(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingXnorGate) {
-            level.logicBoards.get(logicBoardIndex).components.add(new XNorGate(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //add new logic component to the current logic board
+          if(currentlyPlaceing != null){
+            LogicCompoentnPlacementContext placementContext = new LogicCompoentnPlacementContext(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex));
+            Function<LogicCompoentnPlacementContext,LogicComponent> constructor = LogicComponentRegistry.getPlacementConstructor(currentlyPlaceing);
+            if(constructor != null){
+              level.logicBoards.get(logicBoardIndex).components.add(constructor.apply(placementContext));
+            }
           }
           if (deleteing) {
             for (int i=0; i< level.logicBoards.get(logicBoardIndex).components.size(); i++) {
@@ -2207,18 +2197,15 @@ void mouseClicked() {// when you click the mouse
               }
             }
           }
-          if (placingTestLogic) {
-            //level.logicBoards.get(logicBoardIndex).components.add(new GIL(mouseX-50+camPos, mouseY-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingOnSingal) {
-            level.logicBoards.get(logicBoardIndex).components.add(new ConstantOnSignal(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingSetVaravle) {
-            level.logicBoards.get(logicBoardIndex).components.add(new SetVariable(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingReadVariable) {
-            level.logicBoards.get(logicBoardIndex).components.add(new ReadVariable(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
+          //if (placingOnSingal) {
+          //  level.logicBoards.get(logicBoardIndex).components.add(new ConstantOnSignal(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //}
+          //if (placingSetVaravle) {
+          //  level.logicBoards.get(logicBoardIndex).components.add(new SetVariable(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //}
+          //if (placingReadVariable) {
+          //  level.logicBoards.get(logicBoardIndex).components.add(new ReadVariable(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //}
           if (selecting) {
             for (int i=0; i< level.logicBoards.get(logicBoardIndex).components.size(); i++) {
               if (level.logicBoards.get(logicBoardIndex).components.get(i).button.isMouseOver()) {
@@ -2226,36 +2213,36 @@ void mouseClicked() {// when you click the mouse
               }
             }
           }
-          if (placingSetVisibility) {
-            level.logicBoards.get(logicBoardIndex).components.add(new SetVisibility(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingXOffset) {
-            level.logicBoards.get(logicBoardIndex).components.add(new SetXOffset(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingYOffset) {
-            level.logicBoards.get(logicBoardIndex).components.add(new SetYOffset(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingDelay) {
-            level.logicBoards.get(logicBoardIndex).components.add(new Delay(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingZOffset) {
-            level.logicBoards.get(logicBoardIndex).components.add(new SetZOffset(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placing3Dsetter) {
-            level.logicBoards.get(logicBoardIndex).components.add(new Set3DMode(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placing3Dreader) {
-            level.logicBoards.get(logicBoardIndex).components.add(new Read3DMode(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingPlaySoundLogic) {
-            level.logicBoards.get(logicBoardIndex).components.add(new LogicPlaySound(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingPulse) {
-            level.logicBoards.get(logicBoardIndex).components.add(new Pulse(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
-          if (placingRandom) {
-            level.logicBoards.get(logicBoardIndex).components.add(new Random(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          }
+          //if (placingSetVisibility) {
+          //  level.logicBoards.get(logicBoardIndex).components.add(new SetVisibility(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //}
+          //if (placingXOffset) {
+          //  level.logicBoards.get(logicBoardIndex).components.add(new SetXOffset(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //}
+          //if (placingYOffset) {
+          //  level.logicBoards.get(logicBoardIndex).components.add(new SetYOffset(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //}
+          //if (placingDelay) {
+          //  level.logicBoards.get(logicBoardIndex).components.add(new Delay(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //}
+          //if (placingZOffset) {
+          //  level.logicBoards.get(logicBoardIndex).components.add(new SetZOffset(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //}
+          //if (placing3Dsetter) {
+          //  level.logicBoards.get(logicBoardIndex).components.add(new Set3DMode(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //}
+          //if (placing3Dreader) {
+          //  level.logicBoards.get(logicBoardIndex).components.add(new Read3DMode(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //}
+          //if (placingPlaySoundLogic) {
+          //  level.logicBoards.get(logicBoardIndex).components.add(new LogicPlaySound(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //}
+          //if (placingPulse) {
+          //  level.logicBoards.get(logicBoardIndex).components.add(new Pulse(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //}
+          //if (placingRandom) {
+          //  level.logicBoards.get(logicBoardIndex).components.add(new Random(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
+          //}
         }//end of edditing logic board
 
         if (settingPlayerSpawn) {

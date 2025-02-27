@@ -821,8 +821,10 @@ class ToolBox extends PApplet {
           text("nothing is selected", width/2, height/2);
         } else {
           String type="";
+          //theese are assigned to things so that I do not get pesterd about them having the potential to be null
+          //this stuf has to so with thigns being selected
           StageComponent thing= new GenericStageComponent();
-          LogicComponent logicThing=new GenericLogicComponent(-10, -10, null);
+          LogicComponent logicThing=new GenericLogicComponent(new LogicCompoentnPlacementContext(-10000,-10000,null));
           if (editingStage) {
             thing= level.stages.get(currentStageIndex).parts.get(selectedIndex);
             type=thing.type;
@@ -1619,7 +1621,7 @@ class ToolBox extends PApplet {
         if (selectedIndex!=-1) {
           String type="";
           StageComponent thing= new GenericStageComponent();
-          LogicComponent logicThing=new GenericLogicComponent(-10, -10, null);
+          LogicComponent logicThing=new GenericLogicComponent(new LogicCompoentnPlacementContext(-10000,-10000,null));
           if (editingStage) {
             thing= level.stages.get(currentStageIndex).parts.get(selectedIndex);
             type=thing.type;

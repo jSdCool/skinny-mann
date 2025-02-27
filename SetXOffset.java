@@ -8,16 +8,16 @@ class SetXOffset extends LogicOutputComponent {
   
   int groupNumber=0;
   float offset=0;
-  SetXOffset(float x, float y, LogicBoard lb) {
-    super(x, y, "x-offset", lb);
+  SetXOffset(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "x-offset", context.getLogicBoard());
     button.setText("x-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
   }
 
-  SetXOffset(JSONObject data, LogicBoard lb, Level level) {
-    super(data.getFloat("x"), data.getFloat("y"), "x-offset", lb, data.getJSONArray("connections"));
+  SetXOffset(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "x-offset", data.getJSONArray("connections"));
     groupNumber=data.getInt("group number");
     offset=data.getFloat("offset");
-    button.setText("x-offset "+level.groupNames.get(groupNumber)+" by "+offset);
+    button.setText("x-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
   }
   
   public SetXOffset(SerialIterator iterator){

@@ -7,15 +7,15 @@ class SetVisibility extends LogicOutputComponent {
   public static final Identifier ID = new Identifier("SetVisability");
   
   int groupNumber=0;
-  SetVisibility(float x, float y, LogicBoard lb) {
-    super(x, y, "set visable", lb);
+  SetVisibility(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "set visable", context.getLogicBoard());
     button.setText("  visibility of "+source.level.groupNames.get(groupNumber));
   }
 
-  SetVisibility(JSONObject data, LogicBoard lb, Level level) {
-    super(data.getFloat("x"), data.getFloat("y"), "set visable", lb, data.getJSONArray("connections"));
+  SetVisibility(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "set visable", data.getJSONArray("connections"));
     groupNumber=data.getInt("group number");
-    button.setText("  visibility of "+level.groupNames.get(groupNumber));
+    button.setText("  visibility of "+source.level.groupNames.get(groupNumber));
   }
   
   public SetVisibility(SerialIterator iterator){

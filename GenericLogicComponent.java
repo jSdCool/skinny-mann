@@ -8,11 +8,11 @@ class GenericLogicComponent extends LogicComponent {
   
   public static final Identifier ID = new Identifier("GenericLogicComponent");
   
-  GenericLogicComponent(float x, float y, LogicBoard lb) {
-    super(x, y, "generic", lb);
+  GenericLogicComponent(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "generic", context.getLogicBoard());
   }
-  GenericLogicComponent(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "generic", lb, data.getJSONArray("connections"));
+  GenericLogicComponent(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "generic", data.getJSONArray("connections"));
   }
   
   public GenericLogicComponent(SerialIterator iterator){

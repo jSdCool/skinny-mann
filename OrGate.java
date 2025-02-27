@@ -7,11 +7,11 @@ class OrGate extends LogicComponent {
   
   public static final Identifier ID = new Identifier("OrGate");
   
-  OrGate(float x, float y, LogicBoard lb) {
-    super(x, y, "OR", lb);
+  OrGate(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "OR", context.getLogicBoard());
   }
-  OrGate(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "OR", lb, data.getJSONArray("connections"));
+  OrGate(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "OR", data.getJSONArray("connections"));
   }
   
   public OrGate(SerialIterator iterator){

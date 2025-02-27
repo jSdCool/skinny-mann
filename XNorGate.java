@@ -7,12 +7,12 @@ class XNorGate extends LogicComponent {
   
   public static final Identifier ID = new Identifier("XnorGate");
   
-  XNorGate(float x, float y, LogicBoard lb) {
-    super(x, y, "XNOR", lb);
+  XNorGate(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "XNOR", context.getLogicBoard());
   }
 
-  XNorGate(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "XNOR", lb, data.getJSONArray("connections"));
+  XNorGate(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "XNOR", data.getJSONArray("connections"));
   }
   
   public XNorGate(SerialIterator iterator){

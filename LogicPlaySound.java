@@ -7,13 +7,13 @@ class LogicPlaySound extends LogicComponent {
   public static final Identifier ID = new Identifier("LogicPlaySound");
   
   String soundKey="";
-  LogicPlaySound(float x, float y, LogicBoard lb) {
-    super(x, y, "play sound", lb);
+  LogicPlaySound(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "play sound", context.getLogicBoard());
     button.setText("  play sound ");
   }
 
-  LogicPlaySound(JSONObject data, LogicBoard lb, Level level) {
-    super(data.getFloat("x"), data.getFloat("y"), "play sound", lb, data.getJSONArray("connections"));
+  LogicPlaySound(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "play sound", data.getJSONArray("connections"));
     soundKey=data.getString("sound key");
     button.setText("  play sound: "+soundKey);
   }

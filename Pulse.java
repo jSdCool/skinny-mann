@@ -8,12 +8,12 @@ class Pulse extends LogicComponent {
   public static final Identifier ID = new Identifier("Pulse");
   
   boolean prevousState=false;
-  Pulse(float x, float y, LogicBoard lb) {
-    super(x, y, "pulse", lb);
+  Pulse(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "pulse", context.getLogicBoard());
   }
 
-  Pulse(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "pulse", lb, data.getJSONArray("connections"));
+  Pulse(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "pulse", data.getJSONArray("connections"));
   }
   
   public Pulse(SerialIterator iterator){

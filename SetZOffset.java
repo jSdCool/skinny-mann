@@ -8,16 +8,16 @@ class SetZOffset extends LogicOutputComponent {
   
   int groupNumber=0;
   float offset=0;
-  SetZOffset(float x, float y, LogicBoard lb) {
-    super(x, y, "z-offset", lb);
+  SetZOffset(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "z-offset", context.getLogicBoard());
     button.setText("z-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
   }
 
-  SetZOffset(JSONObject data, LogicBoard lb, Level level) {
-    super(data.getFloat("x"), data.getFloat("y"), "z-offset", lb, data.getJSONArray("connections"));
+  SetZOffset(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "z-offset", data.getJSONArray("connections"));
     groupNumber=data.getInt("group number");
     offset=data.getFloat("offset");
-    button.setText("z-offset "+level.groupNames.get(groupNumber)+" by "+offset);
+    button.setText("z-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
   }
   
   public SetZOffset(SerialIterator iterator){

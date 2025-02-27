@@ -6,12 +6,12 @@ import java.util.ArrayList;
 class AndGate extends LogicComponent {
   public static final Identifier ID = new Identifier("AndGate");
   
-  AndGate(float x, float y, LogicBoard lb) {
-    super(x, y, "AND", lb);
+  AndGate(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "AND", context.getLogicBoard());
   }
 
-  AndGate(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "AND", lb, data.getJSONArray("connections"));
+  AndGate(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "AND", data.getJSONArray("connections"));
   }
   
   public AndGate(SerialIterator iterator){

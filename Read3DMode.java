@@ -6,12 +6,12 @@ class Read3DMode extends LogicInputComponent {
   
   public static final Identifier ID = new Identifier("Read3DMode");
   
-  Read3DMode(float x, float y, LogicBoard lb) {
-    super(x, y, "read 3D ", lb);
+  Read3DMode(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "read 3D ", context.getLogicBoard());
   }
 
-  Read3DMode(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "read 3D ", lb, data.getJSONArray("connections"));
+  Read3DMode(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "read 3D ", data.getJSONArray("connections"));
   }
   
   public Read3DMode(SerialIterator iterator){

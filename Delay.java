@@ -9,16 +9,16 @@ class Delay extends LogicComponent {
   
   int time=10;
   ArrayList<Boolean> mem=new ArrayList<>();
-  Delay(float x, float y, LogicBoard lb) {
-    super(x, y, "delay", lb);
+  Delay(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "delay", context.getLogicBoard());
     button.setText("delay "+time+" ticks  ");
     for (int i=0; i<time; i++) {
       mem.add(false);
     }
   }
 
-  Delay(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "delay", lb, data.getJSONArray("connections"));
+  Delay(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "delay", data.getJSONArray("connections"));
     time=data.getInt("delay");
     button.setText("delay "+time+" ticks  ");
     for (int i=0; i<time; i++) {

@@ -8,12 +8,12 @@ class Set3DMode extends LogicOutputComponent {
   
   int groupNumber=0;
   float offset=0;
-  Set3DMode(float x, float y, LogicBoard lb) {
-    super(x, y, "  set 3D  ", lb);
+  Set3DMode(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "  set 3D  ", context.getLogicBoard());
   }
 
-  Set3DMode(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "  set 3D  ", lb, data.getJSONArray("connections"));
+  Set3DMode(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "  set 3D  ", data.getJSONArray("connections"));
   }
   
   public Set3DMode(SerialIterator iterator){

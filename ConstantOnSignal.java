@@ -6,13 +6,13 @@ class ConstantOnSignal extends LogicInputComponent {
   
   public static final Identifier ID = new Identifier("ConstantOnSignal");
   
-  ConstantOnSignal(float x, float y, LogicBoard lb) {
-    super(x, y, "ON", lb);
+  ConstantOnSignal(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "ON", context.getLogicBoard());
     outputTerminal=true;
   }
 
-  ConstantOnSignal(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "ON", lb, data.getJSONArray("connections"));
+  ConstantOnSignal(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "ON", data.getJSONArray("connections"));
     outputTerminal=true;
   }
   

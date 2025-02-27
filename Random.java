@@ -7,12 +7,12 @@ class Random extends LogicInputComponent {
   public static final Identifier ID = new Identifier("Random");
   
   int variableNumber=0;
-  Random(float x, float y, LogicBoard lb) {
-    super(x, y, " random ", lb);
+  Random(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), " random ", context.getLogicBoard());
   }
 
-  Random(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), " random ", lb, data.getJSONArray("connections"));
+  Random(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), " random ", data.getJSONArray("connections"));
   }
   
   public Random(SerialIterator iterator){

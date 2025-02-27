@@ -60,7 +60,7 @@ class Stage implements Serialization {
               entities.add(ent.create(ob,this));
             }else{
               System.err.println("No constructor found for idntifier: "+typeID);
-              throw new RuntimeException("No constructor found for idntifier: "+typeID);
+              throw new RuntimeException("No constructor found for identifier: "+typeID);
             }
             continue;
           }

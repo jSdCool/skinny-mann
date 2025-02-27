@@ -7,13 +7,13 @@ class ReadVariable extends LogicInputComponent {
   public static final Identifier ID = new Identifier("ReadVariable");
   
   int variableNumber=0;
-  ReadVariable(float x, float y, LogicBoard lb) {
-    super(x, y, "read var", lb);
+  ReadVariable(LogicCompoentnPlacementContext context) {
+    super(context.getX(), context.getY(), "read var", context.getLogicBoard());
     button.setText("read var b"+variableNumber+"  ");
   }
 
-  ReadVariable(JSONObject data, LogicBoard lb) {
-    super(data.getFloat("x"), data.getFloat("y"), "read var", lb, data.getJSONArray("connections"));
+  ReadVariable(JSONObject data) {
+    super(data.getFloat("x"), data.getFloat("y"), "read var", data.getJSONArray("connections"));
     variableNumber=data.getInt("variable number");
     button.setText("read var b"+variableNumber+"  ");
   }
