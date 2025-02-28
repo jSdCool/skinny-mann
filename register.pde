@@ -132,28 +132,201 @@ void registerThings(){
   SerialRegistry.register(GenericStageComponent.ID,GenericStageComponent::new);//palce
   
   //Logic components
-  LogicComponentRegistry.register(AndGate.ID,AndGate::new,AndGate::new,AndGate::new,(render,x,y)->{},"And Gate");
-  LogicComponentRegistry.register(ConstantOnSignal.ID,ConstantOnSignal::new,ConstantOnSignal::new,ConstantOnSignal::new,(render,x,y)->{},"Constant On signal");
-  LogicComponentRegistry.register(Delay.ID,Delay::new,Delay::new,Delay::new,(render,x,y)->{},"Delay");
+  LogicComponentRegistry.register(AndGate.ID,AndGate::new,AndGate::new,AndGate::new,(render,x,y)->{
+    render.fill(147,190,242);
+    render.beginShape();
+    render.vertex(x+10,y+10);
+    render.vertex(x+25,y+10);
+    render.bezierVertex(x+25,y+10,x+40,y+10,x+40,y+25);
+    render.bezierVertex(x+40,y+25,x+40,y+40,x+24,y+40);
+    render.vertex(x+10,y+40);
+    render.endShape(CLOSE);
+  },"And Gate");
+  LogicComponentRegistry.register(ConstantOnSignal.ID,ConstantOnSignal::new,ConstantOnSignal::new,ConstantOnSignal::new,(render,x,y)->{
+    render.fill(-369706);
+    render.circle(x+10,y+25,20);
+    render.fill(255,0,0);
+    render.rect(x+10,y+22.5,40,5);
+    
+  },"Constant On signal");
+  LogicComponentRegistry.register(Delay.ID,Delay::new,Delay::new,Delay::new,(render,x,y)->{
+    render.fill(147,190,242);
+    render.beginShape();
+    render.vertex(x+15,y+10);
+    render.vertex(x+35,y+10);
+    render.vertex(x+15,y+40);
+    render.vertex(x+35,y+40);
+    render.endShape(CLOSE);
+    render.fill(110);
+    render.circle(x+20,y+38,3);
+    render.circle(x+25,y+38,3);
+    render.circle(x+30,y+38,3);
+    render.circle(x+22.5,y+35,3);
+    render.circle(x+27.5,y+35,3);
+    render.circle(x+25,y+32,3);
+    
+    render.circle(x+25,y+22,3);
+  },"Delay");
   LogicComponentRegistry.register(GenericLogicComponent.ID,GenericLogicComponent::new,GenericLogicComponent::new,GenericLogicComponent::new,(render,x,y)->{},"Generic");
   LogicComponentRegistry.register(LogicPlaySound.ID,LogicPlaySound::new,LogicPlaySound::new,LogicPlaySound::new,(render,x,y)->{
     drawSpeakericon(x+25,y+25,0.5,render);
   },"Play Sound");
-  LogicComponentRegistry.register(NAndGate.ID,NAndGate::new,NAndGate::new,NAndGate::new,(render,x,y)->{},"NAnd Gate");
-  LogicComponentRegistry.register(NOrGate.ID,NOrGate::new,NOrGate::new,NOrGate::new,(render,x,y)->{},"NOr Gate");
-  LogicComponentRegistry.register(OrGate.ID,OrGate::new,OrGate::new,OrGate::new,(render,x,y)->{},"Or Gate");
-  LogicComponentRegistry.register(Pulse.ID,Pulse::new,Pulse::new,Pulse::new,(render,x,y)->{},"Pulse");
-  LogicComponentRegistry.register(Random.ID,Random::new,Random::new,Random::new,(render,x,y)->{},"Random");
-  LogicComponentRegistry.register(Read3DMode.ID,Read3DMode::new,Read3DMode::new,Read3DMode::new,(render,x,y)->{},"Read 3D");
-  LogicComponentRegistry.register(ReadVariable.ID,ReadVariable::new,ReadVariable::new,ReadVariable::new,(render,x,y)->{},"Read Var");
-  LogicComponentRegistry.register(Set3DMode.ID,Set3DMode::new,Set3DMode::new,Set3DMode::new,(render,x,y)->{},"Set 3D");
-  LogicComponentRegistry.register(SetVariable.ID,SetVariable::new,SetVariable::new,SetVariable::new,(render,x,y)->{},"Set Var");
-  LogicComponentRegistry.register(SetVisibility.ID,SetVisibility::new,SetVisibility::new,SetVisibility::new,(render,x,y)->{},"Set Visability");
-  LogicComponentRegistry.register(SetXOffset.ID,SetXOffset::new,SetXOffset::new,SetXOffset::new,(render,x,y)->{},"Set X Offset");
-  LogicComponentRegistry.register(SetYOffset.ID,SetYOffset::new,SetYOffset::new,SetYOffset::new,(render,x,y)->{},"Set Y Offset");
+  LogicComponentRegistry.register(NAndGate.ID,NAndGate::new,NAndGate::new,NAndGate::new,(render,x,y)->{
+    render.fill(147,190,242);
+    render.beginShape();
+    render.vertex(x+10,y+10);
+    render.vertex(x+25,y+10);
+    render.bezierVertex(x+25,y+10,x+40,y+10,x+40,y+25);
+    render.bezierVertex(x+40,y+25,x+40,y+40,x+24,y+40);
+    render.vertex(x+10,y+40);
+    render.endShape(CLOSE);
+    render.circle(x+43.5,y+25,7);
+  },"NAnd Gate");
+  LogicComponentRegistry.register(NOrGate.ID,NOrGate::new,NOrGate::new,NOrGate::new,(render,x,y)->{
+     render.fill(147,190,242);
+     render.beginShape();
+     render.vertex(x+10,y+10);
+     render.vertex(x+25,y+10);
+     render.bezierVertex(x+25,y+10,x+40,y+10,x+40,y+25);
+     render.bezierVertex(x+40,y+25,x+40,y+40,x+24,y+40);
+     render.vertex(x+10,y+40);
+     render.bezierVertex(x+10,y+40,x+20,y+25,x+10,y+10);
+     render.endShape(CLOSE);
+     render.circle(x+43.5,y+25,7);
+  },"NOr Gate");
+  LogicComponentRegistry.register(OrGate.ID,OrGate::new,OrGate::new,OrGate::new,(render,x,y)->{
+    render.fill(147,190,242);
+    render.beginShape();
+    render.vertex(x+10,y+10);
+    render.vertex(x+25,y+10);
+    render.bezierVertex(x+25,y+10,x+40,y+10,x+40,y+25);
+    render.bezierVertex(x+40,y+25,x+40,y+40,x+24,y+40);
+    render.vertex(x+10,y+40);
+    render.bezierVertex(x+10,y+40,x+20,y+25,x+10,y+10);
+    render.endShape(CLOSE);
+  },"Or Gate");
+  LogicComponentRegistry.register(Pulse.ID,Pulse::new,Pulse::new,Pulse::new,(render,x,y)->{
+    render.fill(0);
+    render.rect(x,y+40,20,5);
+    render.rect(x+20,y+10,5,35);
+    render.rect(x+25,y+10,5,5);
+    render.rect(x+30,y+10,5,35);
+    render.rect(x+35,y+40,15,5);
+    
+  },"Pulse");
+  LogicComponentRegistry.register(Random.ID,Random::new,Random::new,Random::new,(render,x,y)->{
+    render.fill(147,190,242);
+    render.rect(x+5,y+5,40,40);
+    render.fill(87,130,202);
+    render.circle(x+15,y+15,10);
+    render.circle(x+35,y+15,10);
+    render.circle(x+25,y+25,10);
+    render.circle(x+15,y+35,10);
+    render.circle(x+35,y+35,10);
+  },"Random");
+  LogicComponentRegistry.register(Read3DMode.ID,Read3DMode::new,Read3DMode::new,Read3DMode::new,(render,x,y)->{
+    render.fill(255,0,0);
+    render.textAlign(CENTER,CENTER);
+    render.textSize(30);
+    render.text("3",x+10,y+25);
+    render.fill(0,0,255);
+    render.text("D",x+23,y+25);
+    render.fill(0);
+    render.rect(x+33,y+22.5,7,5);
+    render.triangle(x+40,y+20,x+50,y+25,x+40,y+31); 
+  },"Read 3D");
+  LogicComponentRegistry.register(ReadVariable.ID,ReadVariable::new,ReadVariable::new,ReadVariable::new,(render,x,y)->{
+    render.fill(150,0,0);
+    render.textAlign(CENTER,CENTER);
+    render.textSize(40);
+    render.text("X",x+20,y+25);
+    render.fill(0);
+    render.rect(x+28,y+22.5,12,5);
+    render.triangle(x+40,y+20,x+50,y+25,x+40,y+31); 
+  },"Read Var");
+  LogicComponentRegistry.register(Set3DMode.ID,Set3DMode::new,Set3DMode::new,Set3DMode::new,(render,x,y)->{
+    render.fill(255,0,0);
+    render.textAlign(CENTER,CENTER);
+    render.textSize(30);
+    render.text("3",x+25,y+25);
+    render.fill(0,0,255);
+    render.text("D",x+38,y+25);
+    render.fill(0);
+    render.rect(x,y+22.5,7,5);
+    render.triangle(x+7,y+20,x+17,y+25,x+7,y+31); 
+  },"Set 3D");
+  LogicComponentRegistry.register(SetVariable.ID,SetVariable::new,SetVariable::new,SetVariable::new,(render,x,y)->{
+    render.fill(150,0,0);
+    render.textAlign(CENTER,CENTER);
+    render.textSize(40);
+    render.text("X",x+25,y+25);
+    render.fill(0);
+    render.rect(x,y+22.5,12,5);
+    render.triangle(x+12,y+20,x+22,y+25,x+12,y+31); 
+  },"Set Var");
+  LogicComponentRegistry.register(SetVisibility.ID,SetVisibility::new,SetVisibility::new,SetVisibility::new,(render,x,y)->{
+    render.fill(0);
+    render.rect(x+5,y+5,20,20);
+    render.fill(255);
+    render.rect(x+7,y+7,16,16);
+    render.fill(0);
+    render.rect(x+25,y+25,8,2);
+    render.rect(x+37,y+25,8,2);
+    render.rect(x+25,y+31,2,8);
+    render.rect(x+43,y+31,2,8);
+    render.rect(x+25,y+43,8,2);
+    render.rect(x+37,y+43,8,2);
+  },"Set Visability");
+  LogicComponentRegistry.register(SetXOffset.ID,SetXOffset::new,SetXOffset::new,SetXOffset::new,(render,x,y)->{
+    render.fill(255,0,0);
+    render.triangle(x+5,y+25,x+13,y+17,x+13,y+32);
+    render.rect(x+13,y+22.5,24,5);
+    render.triangle(x+45,y+25,x+37,y+17,x+37,y+33);
+  },"Set X Offset");
+  LogicComponentRegistry.register(SetYOffset.ID,SetYOffset::new,SetYOffset::new,SetYOffset::new,(render,x,y)->{
+    render.fill(0,255,0);
+    render.triangle(x+25,y+5,x+17,y+13,x+32,y+13);
+    render.rect(x+22.5,y+13,5,24);
+    render.triangle(x+25,y+45,x+17,y+37,x+33,y+37);
+  },"Set Y Offset");
   LogicComponentRegistry.register(SetZOffset.ID,SetZOffset::new,SetZOffset::new,SetZOffset::new,(render,x,y)->{},"Ser Z Offset");
-  LogicComponentRegistry.register(XNorGate.ID,XNorGate::new,XNorGate::new,XNorGate::new,(render,x,y)->{},"XNor Gate");
-  LogicComponentRegistry.register(XorGate.ID,XorGate::new,XorGate::new,XorGate::new,(render,x,y)->{},"Xor Gate");
+  LogicComponentRegistry.register(XNorGate.ID,XNorGate::new,XNorGate::new,XNorGate::new,(render,x,y)->{
+    render.fill(147,190,242);
+    render.beginShape();
+    render.vertex(x+10,y+10);
+    render.vertex(x+25,y+10);
+    render.bezierVertex(x+25,y+10,x+40,y+10,x+40,y+25);
+    render.bezierVertex(x+40,y+25,x+40,y+40,x+24,y+40);
+    render.vertex(x+10,y+40);
+    render.bezierVertex(x+10,y+40,x+20,y+25,x+10,y+10);
+    render.endShape(CLOSE);
+    render.beginShape();
+    render.vertex(x+3,y+10);
+    render.vertex(x+7,y+10);
+    render.bezierVertex(x+7,y+10,x+17,y+25,x+7,y+40);
+    render.vertex(x+3,y+40);
+    render.bezierVertex(x+3,y+40,x+13,y+25,x+3,y+10);
+    render.endShape();
+    render.circle(x+43.5,y+25,7);
+  },"XNor Gate");
+  LogicComponentRegistry.register(XorGate.ID,XorGate::new,XorGate::new,XorGate::new,(render,x,y)->{
+    render.fill(147,190,242);
+    render.beginShape();
+    render.vertex(x+10,y+10);
+    render.vertex(x+25,y+10);
+    render.bezierVertex(x+25,y+10,x+40,y+10,x+40,y+25);
+    render.bezierVertex(x+40,y+25,x+40,y+40,x+24,y+40);
+    render.vertex(x+10,y+40);
+    render.bezierVertex(x+10,y+40,x+20,y+25,x+10,y+10);
+    render.endShape(CLOSE);
+    render.beginShape();
+    render.vertex(x+3,y+10);
+    render.vertex(x+7,y+10);
+    render.bezierVertex(x+7,y+10,x+17,y+25,x+7,y+40);
+    render.vertex(x+3,y+40);
+    render.bezierVertex(x+3,y+40,x+13,y+25,x+3,y+10);
+    render.endShape();
+  },"Xor Gate");
   
   //entitys
   SerialRegistry.register(Goon.ID,Goon::new);
