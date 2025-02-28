@@ -136,7 +136,9 @@ void registerThings(){
   LogicComponentRegistry.register(ConstantOnSignal.ID,ConstantOnSignal::new,ConstantOnSignal::new,ConstantOnSignal::new,(render,x,y)->{},"Constant On signal");
   LogicComponentRegistry.register(Delay.ID,Delay::new,Delay::new,Delay::new,(render,x,y)->{},"Delay");
   LogicComponentRegistry.register(GenericLogicComponent.ID,GenericLogicComponent::new,GenericLogicComponent::new,GenericLogicComponent::new,(render,x,y)->{},"Generic");
-  LogicComponentRegistry.register(LogicPlaySound.ID,LogicPlaySound::new,LogicPlaySound::new,LogicPlaySound::new,(render,x,y)->{},"Play Sound");
+  LogicComponentRegistry.register(LogicPlaySound.ID,LogicPlaySound::new,LogicPlaySound::new,LogicPlaySound::new,(render,x,y)->{
+    drawSpeakericon(x+25,y+25,0.5,render);
+  },"Play Sound");
   LogicComponentRegistry.register(NAndGate.ID,NAndGate::new,NAndGate::new,NAndGate::new,(render,x,y)->{},"NAnd Gate");
   LogicComponentRegistry.register(NOrGate.ID,NOrGate::new,NOrGate::new,NOrGate::new,(render,x,y)->{},"NOr Gate");
   LogicComponentRegistry.register(OrGate.ID,OrGate::new,OrGate::new,OrGate::new,(render,x,y)->{},"Or Gate");

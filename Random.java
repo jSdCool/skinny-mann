@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Random extends LogicInputComponent {
   
-  public static final Identifier ID = new Identifier("Random");
+  public static final Identifier ID = new Identifier("random");
   
   int variableNumber=0;
   Random(LogicCompoentnPlacementContext context) {

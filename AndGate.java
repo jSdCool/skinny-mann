@@ -4,7 +4,7 @@ import processing.data.*;
 import java.util.ArrayList;
 
 class AndGate extends LogicComponent {
-  public static final Identifier ID = new Identifier("AndGate");
+  public static final Identifier ID = new Identifier("AND");
   
   AndGate(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "AND", context.getLogicBoard());

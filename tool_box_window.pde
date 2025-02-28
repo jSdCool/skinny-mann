@@ -9,10 +9,12 @@ class ToolBox extends PApplet {
   public int redVal=0, greenVal=0, blueVal=0, CC=0;
   int rsp=0, gsp=0, bsp=0, selectedColor=0, millisOffset, variableScroll=0, groupScroll=0;
   String page="colors", newGroopName="";
-  Button colorPage, toolsPage,  toggle3DMode, saveLevel, exitStageEdit, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, nextSound, prevSound,  playPauseButton,  deleteButton, movePlayerButton, gridModeButton, connectLogicButton, moveComponentsButton, andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, runLoad, delayButton, zOffsetButton, logicHelpButton, move3DButton, size3DButton, set3DButton, read3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, playLogicSoundButton, pulseButton, randomButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton;
+  Button colorPage, toolsPage,  toggle3DMode, saveLevel, exitStageEdit, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, nextSound, prevSound,  playPauseButton,  deleteButton, movePlayerButton, gridModeButton, connectLogicButton, moveComponentsButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, runLoad, logicHelpButton, move3DButton, size3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton;
   //Button draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, switch3D1, switch3D2, sign, checkpointButton, groundButton, goalButton, holoButton, logicButtonButton, playSound;
-  Button[] stageComponetButtons;
+  //Button andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, delayButton, zOffsetButton, set3DButton, read3DButton, playLogicSoundButton, pulseButton, randomButton;
+  Button[] stageComponetButtons, logicComponentButtons;
   StageComponentRegistry.ComponentButtonIconDraw componentIcons[];
+  LogicComponentRegistry.ComponentButtonIconDraw logicComponentIcons[];
   Boolean[][] componentAllowedDimentions;
   Button goonEntity;
   boolean typingSign=false, settingSkyColor=false, typingGroopName=false;
@@ -37,18 +39,18 @@ class ToolBox extends PApplet {
     //stage editing tools
     int buttonPosIndex = 0;
     int[] buttonPos = calcButtonPos(buttonPosIndex++);
-    //NOTE: save, back to overiew and select are common between level and logic tools
+    //NOTE: save, back to overiew, delete and select are common between level and logic tools
     saveLevel=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "save", 255, 203).setStrokeWeight(5).setHoverText("save level");
     buttonPos = calcButtonPos(buttonPosIndex++);
     exitStageEdit= new Button(this, buttonPos[0], buttonPos[1], 50, 50, " < ", 255, 203).setStrokeWeight(5).setHoverText("exit to overview");
     buttonPos = calcButtonPos(buttonPosIndex++);
     select=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "select", 255, 203).setStrokeWeight(5).setHoverText("select");
     buttonPos = calcButtonPos(buttonPosIndex++);
+    deleteButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("delete");
+    buttonPos = calcButtonPos(buttonPosIndex++);
     playPauseButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("play/pause the simulation");
     buttonPos = calcButtonPos(buttonPosIndex++);
     gridModeButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("grid mode");
-    buttonPos = calcButtonPos(buttonPosIndex++);
-    deleteButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("delete");
     buttonPos = calcButtonPos(buttonPosIndex++);
     movePlayerButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("move player");
     buttonPos = calcButtonPos(buttonPosIndex++);
@@ -81,29 +83,44 @@ class ToolBox extends PApplet {
     prevSound=new Button(this, width/2-300, height*0.4-25, 50, 50, "<", 255, 203).setStrokeWeight(5);
 
     //logic editor tools
-    connectLogicButton=new Button(this, 40, 40+100, 50, 50, "connect", 255, 203).setStrokeWeight(5).setHoverText("connect logic nodes");
-    moveComponentsButton=new Button(this, 100, 40+100, 50, 50, "move", 255, 203).setStrokeWeight(5).setHoverText("move components arround");
-    andGateButton=new Button(this, 160, 40+100, 50, 50, "AND", 255, 203).setStrokeWeight(5).setHoverText("and gate");
-    orGateButton=new Button(this, 220, 40+100, 50, 50, "OR", 255, 203).setStrokeWeight(5).setHoverText("or gate");
-    xorGateButton=new Button(this, 340, 40+100, 50, 50, "XOR", 255, 203).setStrokeWeight(5).setHoverText("exclucuve or gate");
-    nandGateButton=new Button(this, 400, 40+100, 50, 50, "NAND", 255, 203).setStrokeWeight(5).setHoverText("inverted and gate");
-    norGateButton=new Button(this, 460, 40+100, 50, 50, "NOR", 255, 203).setStrokeWeight(5).setHoverText("inverted or gate");
-    xnorGateButton=new Button(this, 580, 40+100, 50, 50, "XNOR", 255, 203).setStrokeWeight(5).setHoverText("inverted exclucive or gate");
-    testLogicPlaceButton=new Button(this, 40, 100+100, 50, 50, "test", 255, 203).setStrokeWeight(5).setHoverText("this should not exsist");
-    constantOnButton=new Button(this, 640, 40+100, 50, 50, "ON", 255, 203).setStrokeWeight(5).setHoverText("constant on signal");
-    readVariableButton=new Button(this, 700, 40+100, 50, 50, "read", 255, 203).setStrokeWeight(5).setHoverText("read the state of a variable");
-    setVariableButton=new Button(this, 760, 40+100, 50, 50, "set", 255, 203).setStrokeWeight(5).setHoverText("set the state of a varable");
-    setVisabilityButton=new Button(this, 820, 40+100, 50, 50, "vis", 255, 203).setStrokeWeight(5).setHoverText("set visability of a group");
-    xOffsetButton=new Button(this, 880, 40+100, 50, 50, "offset X", 255, 203).setStrokeWeight(5).setHoverText("offset a group in the x-axis");
-    yOffsetButton=new Button(this, 940, 40+100, 50, 50, "offset y", 255, 203).setStrokeWeight(5).setHoverText("offset a group in the y-axis");
-    delayButton=new Button(this, 1060, 140, 50, 50, "delay", 255, 203).setStrokeWeight(5).setHoverText("delay a pulse in your logic");
-    zOffsetButton=new Button(this, 40, 200, 50, 50, "offset z", 255, 203).setStrokeWeight(5).setHoverText("offset a group in the z-axis");
-    logicHelpButton=new Button(this, 100, 200, 50, 50, "?", 255, 203).setStrokeWeight(5).setHoverText("help");
-    set3DButton=new Button(this, 160, 200, 50, 50, "s 3D", 255, 203).setStrokeWeight(5).setHoverText("set the state of 3D mode");
-    read3DButton=new Button(this, 220, 200, 50, 50, "r 3D", 255, 203).setStrokeWeight(5).setHoverText("read the state of 3D mode");
-    playLogicSoundButton=new Button(this, 280, 200, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("play sounds woth logic");
-    pulseButton=new Button(this, 340, 200, 50, 50, "pulse", 255, 203).setStrokeWeight(5).setHoverText("generates a 1 tick pulse");
-    randomButton= new Button(this, 400, 200, 50, 50, "random", 255, 203).setStrokeWeight(5).setHoverText("sets its output randomly each tick");
+    buttonPosIndex = 4;
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    connectLogicButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "connect", 255, 203).setStrokeWeight(5).setHoverText("connect logic nodes");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    moveComponentsButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "move", 255, 203).setStrokeWeight(5).setHoverText("move components arround");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    logicHelpButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "?", 255, 203).setStrokeWeight(5).setHoverText("help");
+    
+    logicComponentButtons = new Button[LogicComponentRegistry.size()];
+    logicComponentIcons = new LogicComponentRegistry.ComponentButtonIconDraw[logicComponentButtons.length];
+    for(int i=0;i<logicComponentButtons.length;i++){
+      Identifier compId = LogicComponentRegistry.get(i);
+      buttonPos = calcButtonPos(buttonPosIndex++);
+      logicComponentButtons[i] = new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText(LogicComponentRegistry.getDescription(compId));
+      logicComponentIcons[i] = LogicComponentRegistry.getIcon(compId);
+    }
+    
+    //andGateButton=new Button(this, 160, 40+100, 50, 50, "AND", 255, 203).setStrokeWeight(5).setHoverText("and gate");
+    //orGateButton=new Button(this, 220, 40+100, 50, 50, "OR", 255, 203).setStrokeWeight(5).setHoverText("or gate");
+    //xorGateButton=new Button(this, 340, 40+100, 50, 50, "XOR", 255, 203).setStrokeWeight(5).setHoverText("exclucuve or gate");
+    //nandGateButton=new Button(this, 400, 40+100, 50, 50, "NAND", 255, 203).setStrokeWeight(5).setHoverText("inverted and gate");
+    //norGateButton=new Button(this, 460, 40+100, 50, 50, "NOR", 255, 203).setStrokeWeight(5).setHoverText("inverted or gate");
+    //xnorGateButton=new Button(this, 580, 40+100, 50, 50, "XNOR", 255, 203).setStrokeWeight(5).setHoverText("inverted exclucive or gate");
+    //testLogicPlaceButton=new Button(this, 40, 100+100, 50, 50, "test", 255, 203).setStrokeWeight(5).setHoverText("this should not exsist");
+    //constantOnButton=new Button(this, 640, 40+100, 50, 50, "ON", 255, 203).setStrokeWeight(5).setHoverText("constant on signal");
+    //readVariableButton=new Button(this, 700, 40+100, 50, 50, "read", 255, 203).setStrokeWeight(5).setHoverText("read the state of a variable");
+    //setVariableButton=new Button(this, 760, 40+100, 50, 50, "set", 255, 203).setStrokeWeight(5).setHoverText("set the state of a varable");
+    //setVisabilityButton=new Button(this, 820, 40+100, 50, 50, "vis", 255, 203).setStrokeWeight(5).setHoverText("set visability of a group");
+    //xOffsetButton=new Button(this, 880, 40+100, 50, 50, "offset X", 255, 203).setStrokeWeight(5).setHoverText("offset a group in the x-axis");
+    //yOffsetButton=new Button(this, 940, 40+100, 50, 50, "offset y", 255, 203).setStrokeWeight(5).setHoverText("offset a group in the y-axis");
+    //delayButton=new Button(this, 1060, 140, 50, 50, "delay", 255, 203).setStrokeWeight(5).setHoverText("delay a pulse in your logic");
+    //zOffsetButton=new Button(this, 40, 200, 50, 50, "offset z", 255, 203).setStrokeWeight(5).setHoverText("offset a group in the z-axis");
+    
+    //set3DButton=new Button(this, 160, 200, 50, 50, "s 3D", 255, 203).setStrokeWeight(5).setHoverText("set the state of 3D mode");
+    //read3DButton=new Button(this, 220, 200, 50, 50, "r 3D", 255, 203).setStrokeWeight(5).setHoverText("read the state of 3D mode");
+    //playLogicSoundButton=new Button(this, 280, 200, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("play sounds woth logic");
+    //pulseButton=new Button(this, 340, 200, 50, 50, "pulse", 255, 203).setStrokeWeight(5).setHoverText("generates a 1 tick pulse");
+    //randomButton= new Button(this, 400, 200, 50, 50, "random", 255, 203).setStrokeWeight(5).setHoverText("sets its output randomly each tick");
     
     //variables and groups buttons
     increase=new Button(this, width/2+180, height*0.5, 50, 50, "+", 255, 203).setStrokeWeight(5);
@@ -632,173 +649,46 @@ class ToolBox extends PApplet {
           fill(203);
           stroke(203);
           strokeWeight(0);
-          rect(285, 55+100, 40, 5);
-          rect(300, 50+100, 10, 5);
-          rect(290, 60+100, 5, 20);
-          rect(290, 80+100, 30, 5);
-          rect(315, 60+100, 5, 20);
-          rect(298, 60+100, 5, 20);
-          rect(307, 60+100, 5, 20);
-          if (placingAndGate) {
-            andGateButton.setColor(255, #F2F258);
-          } else {
-            andGateButton.setColor(255, 203);
-          }
-          andGateButton.draw();
-          if (placingOrGate) {
-            orGateButton.setColor(255, #F2F258);
-          } else {
-            orGateButton.setColor(255, 203);
-          }
-          orGateButton.draw();
-          if (placingXorGate) {
-            xorGateButton.setColor(255, #F2F258);
-          } else {
-            xorGateButton.setColor(255, 203);
-          }
-          xorGateButton.draw();
+          rect(deleteButton.x+5, deleteButton.y+15, 40, 5);
+          rect(deleteButton.x+20, deleteButton.y+10, 10, 5);
+          rect(deleteButton.x+10, deleteButton.y+20, 5, 20);
+          rect(deleteButton.x+10, deleteButton.y+40, 30, 5);
+          rect(deleteButton.x+35, deleteButton.y+20, 5, 20);
+          rect(deleteButton.x+18, deleteButton.y+20, 5, 20);
+          rect(deleteButton.x+27, deleteButton.y+20, 5, 20);
+          
           saveLevel.draw();
           exitStageEdit.draw();
-          if (placingNandGate) {
-            nandGateButton.setColor(255, #F2F258);
-          } else {
-            nandGateButton.setColor(255, 203);
-          }
-          nandGateButton.draw();
-          if (placingNorGate) {
-            norGateButton.setColor(255, #F2F258);
-          } else {
-            norGateButton.setColor(255, 203);
-          }
-          norGateButton.draw();
-          if (placingXnorGate) {
-            xnorGateButton.setColor(255, #F2F258);
-          } else {
-            xnorGateButton.setColor(255, 203);
-          }
-          xnorGateButton.draw();
-          //if(placingTestLogic){///////////////////////////////////////////////////////////////////////
-          //  testLogicPlaceButton.setColor(255, #F2F258);
-          //}else{
-          //  testLogicPlaceButton.setColor(255, 203);
-          //}
-          //testLogicPlaceButton.draw();
-          if (placingOnSingal) {
-            constantOnButton.setColor(255, #F2F258);
-          } else {
-            constantOnButton.setColor(255, 203);
-          }
-          constantOnButton.draw();
-          if (placingReadVariable) {
-            readVariableButton.setColor(255, #F2F258);
-          } else {
-            readVariableButton.setColor(255, 203);
-          }
-          readVariableButton.draw();
-          if (placingSetVaravle) {
-            setVariableButton.setColor(255, #F2F258);
-          } else {
-            setVariableButton.setColor(255, 203);
-          }
-          setVariableButton.draw();
+          
           if (selecting) {
             select.setColor(255, #F2F258);
           } else {
             select.setColor(255, 203);
           }
           select.draw();
-          if (placingSetVisibility) {
-            setVisabilityButton.setColor(255, #F2F258);
-          } else {
-            setVisabilityButton.setColor(255, 203);
-          }
-          setVisabilityButton.draw();
-          if (placingXOffset) {
-            xOffsetButton.setColor(255, #F2F258);
-          } else {
-            xOffsetButton.setColor(255, 203);
-          }
-          xOffsetButton.draw();
-          if (placingYOffset) {
-            yOffsetButton.setColor(255, #F2F258);
-          } else {
-            yOffsetButton.setColor(255, 203);
-          }
-          yOffsetButton.draw();
-          if (placingDelay) {
-            delayButton.setColor(255, #F2F258);
-          } else {
-            delayButton.setColor(255, 203);
-          }
-          delayButton.draw();
-          if (placingZOffset) {
-            zOffsetButton.setColor(255, #F2F258);
-          } else {
-            zOffsetButton.setColor(255, 203);
-          }
-          zOffsetButton.draw();
+          
           logicHelpButton.draw();
-          if (placing3Dsetter) {
-            set3DButton.setColor(255, #F2F258);
-          } else {
-            set3DButton.setColor(255, 203);
+          
+          for(int i=0;i<logicComponentButtons.length;i++){
+            if(LogicComponentRegistry.get(i).equals(currentlyPlaceing)){
+              logicComponentButtons[i].setColor(255, #F2F258);
+            }else{
+              logicComponentButtons[i].setColor(255, 203);
+            }
+            logicComponentButtons[i].draw();
+            logicComponentIcons[i].draw(g, logicComponentButtons[i].x,logicComponentButtons[i].y);
           }
-          set3DButton.draw();
-          if (placing3Dreader) {
-            read3DButton.setColor(255, #F2F258);
-          } else {
-            read3DButton.setColor(255, 203);
-          }
-          read3DButton.draw();
-          if (placingPlaySoundLogic) {
-            playLogicSoundButton.setColor(255, #F2F258);
-          } else {
-            playLogicSoundButton.setColor(255, 203);
-          }
-          playLogicSoundButton.draw();
-          drawSpeakericon(playLogicSoundButton.x+playLogicSoundButton.lengthX/2, playLogicSoundButton.y+playLogicSoundButton.lengthY/2, 0.5,g);
-
-          if (placingPulse) {
-            pulseButton.setColor(255, #F2F258);
-          } else {
-            pulseButton.setColor(255, 203);
-          }
-          pulseButton.draw();
-
-          if (placingRandom) {
-            randomButton.setColor(255, #F2F258);
-          } else {
-            randomButton.setColor(255, 203);
-          }
-          randomButton.draw();
 
           //draw hover text
           connectLogicButton.drawHoverText();
           moveComponentsButton.drawHoverText();
           deleteButton.drawHoverText();
-          andGateButton.drawHoverText();
-          orGateButton.drawHoverText();
-          xorGateButton.drawHoverText();
           exitStageEdit.drawHoverText();
           saveLevel.drawHoverText();
-          nandGateButton.drawHoverText();
-          norGateButton.drawHoverText();
-          xnorGateButton.drawHoverText();
-          // testLogicPlaceButton.drawHoverText();
-          constantOnButton.drawHoverText();
-          readVariableButton.drawHoverText();
-          setVariableButton.drawHoverText();
-          setVisabilityButton.drawHoverText();
-          xOffsetButton.drawHoverText();
-          yOffsetButton.drawHoverText();
-          delayButton.drawHoverText();
-          zOffsetButton.drawHoverText();
           logicHelpButton.drawHoverText();
-          read3DButton.drawHoverText();
-          set3DButton.drawHoverText();
-          playLogicSoundButton.drawHoverText();
-          pulseButton.drawHoverText();
-          randomButton.drawHoverText();
+          for(int i=0;i<logicComponentButtons.length;i++){
+            logicComponentButtons[i].drawHoverText();
+          }
         } else {
           fill(0);
           textSize(20);
@@ -1510,21 +1400,9 @@ class ToolBox extends PApplet {
             turnThingsOff();
             moveLogicComponents=true;
           }
-          if (andGateButton.isMouseOver()) {
-            turnThingsOff();
-            placingAndGate=true;
-          }
-          if (orGateButton.isMouseOver()) {
-            turnThingsOff();
-            placingOrGate=true;
-          }
           if (deleteButton.isMouseOver()) {
             turnThingsOff();
             deleteing=true;
-          }
-          if (xorGateButton.isMouseOver()) {
-            turnThingsOff();
-            placingXorGate=true;
           }
           if (saveLevel.isMouseOver()) {
             System.out.println("saving level");
@@ -1539,80 +1417,20 @@ class ToolBox extends PApplet {
             camPos=0;
             camPosY=0;
           }
-          if (nandGateButton.isMouseOver()) {
-            turnThingsOff();
-            placingNandGate=true;
-          }
-          if (norGateButton.isMouseOver()) {
-            turnThingsOff();
-            placingNorGate=true;
-          }
-          if (xnorGateButton.isMouseOver()) {
-            turnThingsOff();
-            placingXnorGate=true;
-          }
-          if (testLogicPlaceButton.isMouseOver()) {
-            turnThingsOff();
-            placingTestLogic=true;
-          }
-          if (constantOnButton.isMouseOver()) {
-            turnThingsOff();
-            placingOnSingal=true;
-          }
-          if (readVariableButton.isMouseOver()) {
-            turnThingsOff();
-            placingReadVariable=true;
-          }
-          if (setVariableButton.isMouseOver()) {
-            turnThingsOff();
-            placingSetVaravle=true;
-          }
           if (select.isMouseOver()) {
             turnThingsOff();
             selecting=true;
           }
-          if (setVisabilityButton.isMouseOver()) {
-            turnThingsOff();
-            placingSetVisibility=true;
-          }
-          if (xOffsetButton.isMouseOver()) {
-            turnThingsOff();
-            placingXOffset=true;
-          }
-          if (yOffsetButton.isMouseOver()) {
-            turnThingsOff();
-            placingYOffset=true;
-          }
-          if (delayButton.isMouseOver()) {
-            turnThingsOff();
-            placingDelay=true;
-          }
-          if (zOffsetButton.isMouseOver()) {
-            turnThingsOff();
-            placingZOffset=true;
-          }
           if (logicHelpButton.isMouseOver()) {
             link("https://youtu.be/3ac1G1qWK6g");
           }
-          if (read3DButton.isMouseOver()) {
-            turnThingsOff();
-            placing3Dreader=true;
-          }
-          if (set3DButton.isMouseOver()) {
-            turnThingsOff();
-            placing3Dsetter=true;
-          }
-          if (playLogicSoundButton.isMouseOver()) {
-            turnThingsOff();
-            placingPlaySoundLogic=true;
-          }
-          if (pulseButton.isMouseOver()) {
-            turnThingsOff();
-            placingPulse=true;
-          }
-          if (randomButton.isMouseOver()) {
-            turnThingsOff();
-            placingRandom=true;
+          for(int i=0;i<logicComponentButtons.length;i++){             
+            if(logicComponentButtons[i].isMouseOver()){
+              turnThingsOff();
+              Identifier compoenntId = LogicComponentRegistry.get(i);
+              //special case for portals
+              currentlyPlaceing = compoenntId;
+            }
           }
         }//end of edditing logic board
       }//end of tools

@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 class SetXOffset extends LogicOutputComponent {
   
-  public static final Identifier ID = new Identifier("SetXOffet");
+  public static final Identifier ID = new Identifier("x-offset");
   
   int groupNumber=0;
   float offset=0;
+  boolean reText = false;
   SetXOffset(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "x-offset", context.getLogicBoard());
     button.setText("x-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
@@ -17,7 +18,7 @@ class SetXOffset extends LogicOutputComponent {
     super(data.getFloat("x"), data.getFloat("y"), "x-offset", data.getJSONArray("connections"));
     groupNumber=data.getInt("group number");
     offset=data.getFloat("offset");
-    button.setText("x-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
+    reText = true;
   }
   
   public SetXOffset(SerialIterator iterator){
@@ -49,6 +50,10 @@ class SetXOffset extends LogicOutputComponent {
   }
 
   void draw() {
+    if(reText){
+      button.setText("x-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
+      reText = false;
+    }
     super.draw();
     source.fill(0);
     source.textSize(15*source.Scale);

@@ -38,7 +38,7 @@ public class LogicComponentRegistry{
     return placementConstructors.get(id);
   }
   
-  public static ComponentButtonIconDraw geticon(Identifier id){
+  public static ComponentButtonIconDraw getIcon(Identifier id){
     return icons.get(id);
   }
   
@@ -46,10 +46,7 @@ public class LogicComponentRegistry{
     return descriptions.get(id);
   }
   
-  
-}
-
-
-interface ComponentButtonIconDraw{
-  void draw(PGraphics render, float x, float y); 
+  interface ComponentButtonIconDraw{
+    void draw(PGraphics render, float x, float y); 
+  }
 }

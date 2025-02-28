@@ -67,57 +67,6 @@ class Stage implements Serialization {
           
           StageComponent component = constructor.apply(ob);
           add(component);
-          
-          //if (otype.equals("ground")) {
-          //  parts.add(new Ground(ob, is3D));
-          //}
-          //else if (otype.equals("holo")) {
-          //  parts.add(new Holo(ob, is3D));
-          //}
-          //else if (otype.equals("dethPlane")) {
-          //  parts.add(new DethPlane(ob, is3D));
-          //}
-          //else if (otype.equals("check point")) {
-          //  parts.add(new CheckPoint(ob, is3D));
-          //}
-          //else if (otype.equals("goal")) {
-          //  parts.add(new Goal(ob, is3D));
-          //}
-          //else if (otype.equals("coin")) {
-          //  parts.add(new Coin(ob, is3D));
-          //}
-          //else if (otype.equals("interdimentional Portal")) {
-          //  parts.add(new Interdimentional_Portal(ob, is3D));
-          //}
-          //else if (otype.equals("sloap")) {
-          //  parts.add(new Sloap(ob, is3D));
-          //}
-          //else if (otype.equals("holoTriangle")) {
-          //  parts.add(new HoloTriangle(ob, is3D));
-          //}
-          //else if (otype.equals("3DonSW")) {
-          //  parts.add(new SWon3D(ob, is3D));
-          //}
-          //else if (otype.equals("3DoffSW")) {
-          //  parts.add(new SWoff3D(ob, is3D));
-          //}
-          //else if (otype.equals("WritableSign")) {
-          //  parts.add(new WritableSign(ob, is3D));
-          //}
-          //else if (otype.equals("sound box")) {
-          //  parts.add(new SoundBox(ob, is3D));
-          //}
-          //else if (otype.equals("logic button")) {
-          //  parts.add(new LogicButton(ob, is3D));
-          //  interactables.add(parts.get(parts.size()-1));
-          //}
-          //else{
-            
-          //}
-          
-        //}
-        //catch(Throwable e) {
-        //}
       }
     }
   }

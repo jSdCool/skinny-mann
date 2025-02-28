@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 class NOrGate extends LogicComponent {
   
-  public static final Identifier ID = new Identifier("NorGate");
+  public static final Identifier ID = new Identifier("NOR");
   
   NOrGate(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "NOR", context.getLogicBoard());

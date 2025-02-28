@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class LogicPlaySound extends LogicComponent {
   
-  public static final Identifier ID = new Identifier("LogicPlaySound");
+  public static final Identifier ID = new Identifier("play_sound");
   
   String soundKey="";
   LogicPlaySound(LogicCompoentnPlacementContext context) {

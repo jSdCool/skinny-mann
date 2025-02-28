@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 class XorGate extends LogicComponent {
   
-  public static final Identifier ID = new Identifier("XorGate");
+  public static final Identifier ID = new Identifier("XOR");
   
   XorGate(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "XOR", context.getLogicBoard());

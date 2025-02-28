@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 class SetZOffset extends LogicOutputComponent {
   
-  public static final Identifier ID = new Identifier("SetZOffset");
+  public static final Identifier ID = new Identifier("z-offset");
   
   int groupNumber=0;
   float offset=0;
+  boolean reText = false;
   SetZOffset(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "z-offset", context.getLogicBoard());
     button.setText("z-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
@@ -17,7 +18,7 @@ class SetZOffset extends LogicOutputComponent {
     super(data.getFloat("x"), data.getFloat("y"), "z-offset", data.getJSONArray("connections"));
     groupNumber=data.getInt("group number");
     offset=data.getFloat("offset");
-    button.setText("z-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
+    reText=false;
   }
   
   public SetZOffset(SerialIterator iterator){
@@ -49,6 +50,10 @@ class SetZOffset extends LogicOutputComponent {
   }
 
   void draw() {
+    if(reText){
+      button.setText("z-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
+      reText=false;
+    }
     super.draw();
     source.fill(0);
     source.textSize(15*source.Scale);

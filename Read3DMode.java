@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Read3DMode extends LogicInputComponent {
   
-  public static final Identifier ID = new Identifier("Read3DMode");
+  public static final Identifier ID = new Identifier("read_3D");
   
   Read3DMode(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "read 3D ", context.getLogicBoard());

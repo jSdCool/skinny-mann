@@ -70,6 +70,6 @@ public class Identifier {
     }
     
     public static String convertToId(String raw){
-      return raw.replaceAll(" ","_");
+      return raw.trim().replaceAll(" ","_");
     }
 }

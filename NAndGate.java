@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 class NAndGate extends LogicComponent {
   
-  public static final Identifier ID = new Identifier("NandGate");
+  public static final Identifier ID = new Identifier("NAND");
   
   NAndGate(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "NAND", context.getLogicBoard());

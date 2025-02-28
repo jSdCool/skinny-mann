@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Set3DMode extends LogicOutputComponent {
   
-  public static final Identifier ID = new Identifier("Set3DMode");
+  public static final Identifier ID = new Identifier("set_3D");
   
   int groupNumber=0;
   float offset=0;

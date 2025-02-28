@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 class Pulse extends LogicComponent {
   
-  public static final Identifier ID = new Identifier("Pulse");
+  public static final Identifier ID = new Identifier("pulse");
   
   boolean prevousState=false;
   Pulse(LogicCompoentnPlacementContext context) {

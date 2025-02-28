@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 class Delay extends LogicComponent {
   
-  public static final Identifier ID = new Identifier("Delay");
+  public static final Identifier ID = new Identifier("delay");
   
   int time=10;
   ArrayList<Boolean> mem=new ArrayList<>();

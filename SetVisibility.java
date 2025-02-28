@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 class SetVisibility extends LogicOutputComponent {
   
-  public static final Identifier ID = new Identifier("SetVisability");
+  public static final Identifier ID = new Identifier("set_visable");
   
   int groupNumber=0;
+  boolean reText = false;
   SetVisibility(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "set visable", context.getLogicBoard());
     button.setText("  visibility of "+source.level.groupNames.get(groupNumber));
@@ -15,7 +16,7 @@ class SetVisibility extends LogicOutputComponent {
   SetVisibility(JSONObject data) {
     super(data.getFloat("x"), data.getFloat("y"), "set visable", data.getJSONArray("connections"));
     groupNumber=data.getInt("group number");
-    button.setText("  visibility of "+source.level.groupNames.get(groupNumber));
+    reText = true;
   }
   
   public SetVisibility(SerialIterator iterator){
@@ -45,6 +46,10 @@ class SetVisibility extends LogicOutputComponent {
   }
 
   void draw() {
+    if(reText){
+      button.setText("  visibility of "+source.level.groupNames.get(groupNumber));
+      reText=false;
+    }
     super.draw();
     source.fill(0);
     source.textSize(15*source.Scale);

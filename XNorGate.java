@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 class XNorGate extends LogicComponent {
   
-  public static final Identifier ID = new Identifier("XnorGate");
+  public static final Identifier ID = new Identifier("XNOR");
   
   XNorGate(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "XNOR", context.getLogicBoard());

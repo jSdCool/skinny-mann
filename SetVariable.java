@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class SetVariable extends LogicOutputComponent {
   
-  public static final Identifier ID = new Identifier("SetVariable");
+  public static final Identifier ID = new Identifier("set_var");
   
   int variableNumber=0;
   SetVariable(LogicCompoentnPlacementContext context) {

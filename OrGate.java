@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 class OrGate extends LogicComponent {
   
-  public static final Identifier ID = new Identifier("OrGate");
+  public static final Identifier ID = new Identifier("OR");
   
   OrGate(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "OR", context.getLogicBoard());

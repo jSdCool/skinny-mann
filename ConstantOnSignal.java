@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class ConstantOnSignal extends LogicInputComponent {
   
-  public static final Identifier ID = new Identifier("ConstantOnSignal");
+  public static final Identifier ID = new Identifier("ON");
   
   ConstantOnSignal(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "ON", context.getLogicBoard());

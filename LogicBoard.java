@@ -14,7 +14,7 @@ class LogicBoard implements Serialization {//stores all the logic components
     name=head.getString("name");
     for (int i=1; i<file.size(); i++) {
       JSONObject component=file.getJSONObject(i);
-      String type=component.getString("type");
+      String type = Identifier.convertToId(component.getString("type"));
       Identifier typeId = new Identifier(type);
       Function<JSONObject, LogicComponent> constructor = LogicComponentRegistry.getJsonConstructor(typeId);
       if(constructor == null){

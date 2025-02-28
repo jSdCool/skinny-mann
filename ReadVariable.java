@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class ReadVariable extends LogicInputComponent {
   
-  public static final Identifier ID = new Identifier("ReadVariable");
+  public static final Identifier ID = new Identifier("read_var");
   
   int variableNumber=0;
   ReadVariable(LogicCompoentnPlacementContext context) {
