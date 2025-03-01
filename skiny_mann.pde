@@ -4349,27 +4349,7 @@ void turnThingsOff() {
   selectingBlueprint=false;
   connectingLogic=false;
   moveLogicComponents=false;
-  placingAndGate=false;
-  placingOrGate=false;
-  placingXorGate=false;
-  placingNandGate=false;
-  placingNorGate=false;
-  placingXnorGate=false;
-  placingTestLogic=false;
-  placingOnSingal=false;
-  placingSetVaravle=false;
-  placingReadVariable=false;
-  placingSetVisibility=false;
-  placingYOffset=false;
-  placingXOffset=false;
-  placingDelay=false;
-  placingZOffset=false;
   settingPlayerSpawn=false;
-  placing3Dreader=false;
-  placing3Dsetter=false;
-  placingPlaySoundLogic=false;
-  placingPulse=false;
-  placingRandom=false;
   placingGoon=false;
   currentlyPlaceing = null;
 }
