@@ -28,7 +28,4 @@ abstract class Entity{
   //rener methods
   public abstract void draw(skiny_mann context,PGraphics render);
   public abstract void draw3D(skiny_mann context,PGraphics render);
-  
-  //factory methhod
-  public abstract Entity create(float x,float y,float z);
 }

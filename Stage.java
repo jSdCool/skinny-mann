@@ -55,9 +55,9 @@ class Stage implements Serialization {
           if(constructor == null){
             //check if it is an entity
             //if the current thing is an entity, load it
-            StageEntity ent = source.entityRegistry.get(otype);
-            if(ent!=null){
-              entities.add(ent.create(ob,this));
+            //StageEntity ent = source.entityRegistry.get(otype);
+            if(/*ent!=null*/false){
+              //entities.add(ent.create(ob,this));
             }else{
               System.err.println("No constructor found for idntifier: "+typeID);
               throw new RuntimeException("No constructor found for identifier: "+typeID);

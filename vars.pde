@@ -455,8 +455,6 @@ PlayerMovementManager playerMovementManager = new PlayerMovementManager();
 
 CollisionDetection collisionDetection = new CollisionDetection();
 
-HashMap<String,StageEntity> entityRegistry = new HashMap<>();//This is gogin to be repalced in the next Update
-
 StatisticManager stats;
 
 SoundHandler soundHandler;

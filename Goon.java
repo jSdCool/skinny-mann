@@ -4,18 +4,16 @@ class Goon extends StageEntity{
   
   public static final Identifier ID = new Identifier("goon");
   
-  Goon(float x,float y, float z,Stage stage){
-    super(stage);
-    this.x=x;
-    this.y=y;
-    this.z=z;
+  Goon(StageEntityPlacementContext context){
+    this.x=context.getX();
+    this.y=context.getY();
+    this.z=context.getX();
     ix = x;
     iy = y;
     iz = z;
   }
   
-  Goon(JSONObject data,Stage stage){
-    super(stage);
+  Goon(JSONObject data){
     x = data.getFloat("x");
     y = data.getFloat("y");
     z = data.getFloat("z");
@@ -25,7 +23,6 @@ class Goon extends StageEntity{
   }
   
   public Goon(SerialIterator iterator){
-    super(null);
     x = iterator.getFloat();
     y = iterator.getFloat();
     z = iterator.getFloat();
@@ -42,10 +39,6 @@ class Goon extends StageEntity{
   float verticalVelocity=0;
   boolean dead=false,in3D =false;
   GoonMovementManager mm= new GoonMovementManager(this);
-  
-  public StageEntity create(JSONObject data,Stage stage){
-    return new Goon(data,stage);
-  }
   
   //entity specific movemnt manger. responcable for storing movement commands
   public MovementManager getMovementmanager(){
@@ -144,11 +137,6 @@ class Goon extends StageEntity{
     
   }
   
-  //factory methhod
-  public Entity create(float x,float y,float z){
-    return new Goon(x,y,z,null);
-  }
-  
   //killable methods
   public void kill(){
     dead=true;
@@ -181,7 +169,7 @@ class Goon extends StageEntity{
   public PlayerIniteractionResult playerInteraction(Collider2D playerHitBox){
     
     //if the player hits the kill Entity box section
-    if(new CollisionDetection().collide2D(playerHitBox,Collider2D.createRectHitbox(x-10,y-50,20,10))){
+    if(CollisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x-10,y-50,20,10))){
       //kill this entity
       kill();
       return null;

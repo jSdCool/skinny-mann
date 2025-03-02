@@ -69,9 +69,6 @@ void setup() {//seccond function called
     initializeSphere(ptsW, ptsH);
     textureSphere(200, 200, 200, CBi);
     
-    //add entites to the entity regisrty
-    entityRegistry.put("simple_entity",new SimpleEntity(0,0,0,null));
-    entityRegistry.put("goon",new Goon(0,0,0,null));
     //start the load thread
     thread("programLoad");
     

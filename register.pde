@@ -333,8 +333,38 @@ void registerThings(){
   
   
   //entitys
-  SerialRegistry.register(Goon.ID,Goon::new);
-  SerialRegistry.register(SimpleEntity.ID,SimpleEntity::new);
+  EntityRegistry.register(Goon.ID,Goon::new, Goon::new,Goon::new,(render, x, y)->{
+    float localX = x;
+    float loaclY = y;
+    float Scale = 1;
+    //hat
+    render.fill(59,59,59);
+    render.rect((localX-10)*Scale,(loaclY-50)*Scale,20*Scale,5*Scale);
+    render.rect((localX-12.5f)*Scale,(loaclY-45)*Scale,25*Scale,5*Scale);
+    render.fill(255);
+    render.rect((localX-15)*Scale,(loaclY-40)*Scale,30*Scale,5*Scale);
+    render.fill(0);
+    render.rect((localX-17.5f)*Scale,(loaclY-35)*Scale,35*Scale,5*Scale);
+    //face
+    render.fill(255,0xBA,0x6B);
+    render.rect((localX-15)*Scale,(loaclY-30)*Scale,30*Scale,15*Scale);
+    render.fill(0);
+    //sun glasses
+    render.rect((localX-15)*Scale,(loaclY-27)*Scale,30*Scale,2*Scale);
+    render.rect((localX-15)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
+    render.rect((localX+0)*Scale,(loaclY-27)*Scale,10*Scale,5*Scale);
+    
+    
+    //shirt
+    render.fill(21,18,15);
+    render.rect((localX-10)*Scale,(loaclY-15)*Scale,20*Scale,20*Scale);
+    
+    //legs
+    render.fill(70,70,70);
+    render.rect((localX-10)*Scale,(loaclY+5)*Scale,5*Scale,10*Scale);
+    render.rect((localX+5)*Scale,(loaclY+5)*Scale,5*Scale,10*Scale);
+  },"Goon Enemy");
+  EntityRegistry.register(SimpleEntity.ID,SimpleEntity::new,SimpleEntity::new,SimpleEntity::new,(render, x, y)->{},"test entity");
   
   //other
   SerialRegistry.register(BackToMenuRequest.ID,BackToMenuRequest::new);

@@ -5,18 +5,25 @@ class SimpleEntity extends StageEntity{
   
   public static final Identifier ID = new Identifier("SimpleEntity");
   
-  public SimpleEntity(float x,float y,float z,Stage stage){
-    super(stage);
+  public SimpleEntity(StageEntityPlacementContext context){
+    spawnX=context.getX();
+    spawnY=context.getY();
+    spawnZ=context.getZ();
+    setX(context.getX());
+    setY(context.getY());
+    setZ(context.getZ());
+  }
+  
+  public SimpleEntity(JSONObject data){
+    setX(data.getFloat("x"));
+    setY(data.getFloat("y"));
+    setZ(data.getFloat("z"));
     spawnX=x;
     spawnY=y;
     spawnZ=z;
-    setX(x);
-    setY(y);
-    setZ(z);
   }
   
   public SimpleEntity(SerialIterator iterator){
-    super(null);
     x = iterator.getFloat();
     y = iterator.getFloat();
     z = iterator.getFloat();
@@ -25,14 +32,6 @@ class SimpleEntity extends StageEntity{
     spawnZ = iterator.getFloat();
     vVelcoity = iterator.getFloat();
     dead = iterator.getBoolean();
-  }
-  
-  public Entity create(float x,float y,float z){
-    return new SimpleEntity(x,y,z,null);
-  }
-  
-  public StageEntity create(JSONObject input,Stage stage){
-    return new SimpleEntity(input.getFloat("x"),input.getFloat("y"),input.getFloat("z"),stage);
   }
   
   public JSONObject save(){
