@@ -187,7 +187,7 @@ void stageEditGUI() {
         Collider2D c2D = Collider2D.createRectHitbox(mouseX/Scale+camPos-0.5f,mouseY/Scale-camPosY-0.5f,1,1);
         //check for collision with entities
         for(int i=0;i<current.entities.size();i++){
-          if(collisionDetection.collide2D(current.entities.get(i).getHitBox2D(0,0),c2D)){
+          if(CollisionDetection.collide2D(current.entities.get(i).getHitBox2D(0,0),c2D)){
             current.entities.remove(i);
             break;
           }
@@ -204,11 +204,13 @@ void stageEditGUI() {
     //draw placeable preview
     if(currentlyPlaceing != null && !StageComponentRegistry.isDraggable(currentlyPlaceing)){
       StageComponentRegistry.PlacementPreview preview = StageComponentRegistry.getPreview(currentlyPlaceing);
-      if (grid_mode) {
+      if(preview != null){
+        if (grid_mode) {
           preview.draw(g, (Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos), (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY), Scale);
         } else {
           preview.draw(g, (int)(mouseX/Scale), (int)(mouseY/Scale), Scale);
         }
+      }
     }
 
     if (drawingPortal) {//if adding portal part 1 reder a portal
@@ -395,7 +397,7 @@ void stageEditGUI() {
           Collider2D c2D = Collider2D.createRectHitbox(mouseX/Scale+camPos-0.5f,mouseY/Scale-camPosY-0.5f,1,1);
           //check for collision with entities
           for(int i=0;i<current.entities.size();i++){
-            if(collisionDetection.collide2D(current.entities.get(i).getHitBox2D(0,0),c2D)){
+            if(CollisionDetection.collide2D(current.entities.get(i).getHitBox2D(0,0),c2D)){
               current.entities.remove(i);
               break;
             }
@@ -738,36 +740,46 @@ void GUImouseClicked() {
       if (!StageComponentRegistry.isDraggable(currentlyPlaceing)) {
         Function<StageComponentPlacementContext, StageComponent> constructor = StageComponentRegistry.getPlacementConstructor(currentlyPlaceing);
         if(constructor == null){
-          throw new RuntimeException("Constrructor not found for plaeable: "+currentlyPlaceing);
-        }
-        
-        //TODO: check special case here
-        boolean isCoin = currentlyPlaceing.equals(Coin.ID);
-        int numCoins = 0;
-        if(current.type.equals("stage")){
-          numCoins = level.numOfCoins;
-        }
-        
-        StageComponentPlacementContext placementContext;
-        if (grid_mode) {//if grid mode is on
-          placementContext = new StageComponentPlacementContext(Math.round(((int)Math.floor(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)Math.floor(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size);
-        } else {
-          placementContext = new StageComponentPlacementContext((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY);//add new checkpoint to the stage
-        }
-        if(isCoin){
+          Function<StageEntityPlacementContext, StageEntity> entityConstructor = EntityRegistry.getPlacementConstructor(currentlyPlaceing);
+          if(entityConstructor == null){
+            throw new RuntimeException("Constrructor not found for plaeable: "+currentlyPlaceing);
+          }
+          StageEntityPlacementContext placementContext;
           if (grid_mode) {//if grid mode is on
-            placementContext = new StageComponentPlacementContext(Math.round(((int)Math.floor(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)Math.floor(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size,numCoins);
+            placementContext = new StageEntityPlacementContext(Math.round(((int)Math.floor(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)Math.floor(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size,0);
           } else {
-            placementContext = new StageComponentPlacementContext((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY,numCoins);//add new checkpoint to the stage
+            placementContext = new StageEntityPlacementContext((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY,0);//add new checkpoint to the stage
           }
-          if (editingStage) {//if edditng stage the increase the coin counter
-            level.numOfCoins++;
-            level.reloadCoins();
+          
+          current.entities.add(entityConstructor.apply(placementContext));
+        }else{
+          //TODO: check special case here
+          boolean isCoin = currentlyPlaceing.equals(Coin.ID);
+          int numCoins = 0;
+          if(current.type.equals("stage")){
+            numCoins = level.numOfCoins;
           }
-        }
-        
-        current.add(constructor.apply(placementContext));
-        
+          
+          StageComponentPlacementContext placementContext;
+          if (grid_mode) {//if grid mode is on
+            placementContext = new StageComponentPlacementContext(Math.round(((int)Math.floor(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)Math.floor(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size);
+          } else {
+            placementContext = new StageComponentPlacementContext((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY);//add new checkpoint to the stage
+          }
+          if(isCoin){
+            if (grid_mode) {//if grid mode is on
+              placementContext = new StageComponentPlacementContext(Math.round(((int)Math.floor(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size, Math.round(((int)Math.floor(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size,numCoins);
+            } else {
+              placementContext = new StageComponentPlacementContext((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY,numCoins);//add new checkpoint to the stage
+            }
+            if (editingStage) {//if edditng stage the increase the coin counter
+              level.numOfCoins++;
+              level.reloadCoins();
+            }
+          }
+          
+          current.add(constructor.apply(placementContext));
+        }//end of constructor not being null
         draw=false;
       }//end of add placeable to stage
     }else if(currentlyPlaceing !=null && (current.type.equals("3Dstage") || current.type.equals("3D blueprint")) && !currentlyPlaceing.equals(Interdimentional_Portal.ID)){//3D env
@@ -918,10 +930,6 @@ void GUImouseClicked() {
         
       }
     }
-    
-    //if(placingGoon){
-    //  current.entities.add(new Goon((int)(mouseX/Scale)+camPos, (int)(mouseY/Scale)-camPosY,0,current));
-    //}
   }//end of eddit stage
 }
 

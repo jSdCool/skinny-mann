@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.ArrayList;
 import processing.data.*;
 import processing.core.*;
 class SimpleEntity extends StageEntity{
@@ -184,6 +185,10 @@ class SimpleEntity extends StageEntity{
   
   public PlayerIniteractionResult playerInteraction(Collider3D playerHitBox){
     return null;
+  }
+  
+  public void update(float dt, ArrayList<Collider2D> stageHitBoxes){
+    
   }
   
   @Override

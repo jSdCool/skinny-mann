@@ -3676,7 +3676,6 @@ void sourceInitilize() {
   Client.source=this;
   Server.source=this;
   Player.source=this;
-  StageEntityCollisionManager.set(this);
 }
 
 void networkError(Throwable error) {

@@ -12,11 +12,11 @@ class ToolBox extends PApplet {
   Button colorPage, toolsPage,  toggle3DMode, saveLevel, exitStageEdit, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, nextSound, prevSound,  playPauseButton,  deleteButton, movePlayerButton, gridModeButton, connectLogicButton, moveComponentsButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, runLoad, logicHelpButton, move3DButton, size3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton;
   //Button draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, switch3D1, switch3D2, sign, checkpointButton, groundButton, goalButton, holoButton, logicButtonButton, playSound;
   //Button andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, delayButton, zOffsetButton, set3DButton, read3DButton, playLogicSoundButton, pulseButton, randomButton;
-  Button[] stageComponetButtons, logicComponentButtons;
+  Button[] stageComponetButtons, logicComponentButtons, entityButtons;
   StageComponentRegistry.ComponentButtonIconDraw componentIcons[];
   LogicComponentRegistry.ComponentButtonIconDraw logicComponentIcons[];
+  EntityRegistry.EntityButtonIconDraw entityIcons[];
   Boolean[][] componentAllowedDimentions;
-  Button goonEntity;
   boolean typingSign=false, settingSkyColor=false, typingGroopName=false;
 
   public void settings() {
@@ -73,8 +73,14 @@ class ToolBox extends PApplet {
       componentAllowedDimentions[i] = StageComponentRegistry.getAllowedDimentions(component);
     }
     
-     buttonPos = calcButtonPos(buttonPosIndex++);
-    goonEntity = new Button(this,buttonPos[0], buttonPos[1],50,50,255,203).setStrokeWeight(5).setHoverText("Goon");
+    entityButtons = new Button[EntityRegistry.size()];
+    entityIcons = new EntityRegistry.EntityButtonIconDraw[entityButtons.length];
+    for(int i=0;i<entityButtons.length;i++){
+      Identifier component = EntityRegistry.get(i);
+      buttonPos = calcButtonPos(buttonPosIndex++);
+      entityButtons[i] = new Button(this,buttonPos[0], buttonPos[1],50,50,255,203).setStrokeWeight(5).setHoverText(EntityRegistry.getDescription(component));
+      entityIcons[i] = EntityRegistry.getIcon(component);
+    }
     
     //blueprint and sound things
     nexBlueprint=new Button(this, width/2+200, height*0.7-25, 50, 50, ">", 255, 203).setStrokeWeight(5);
@@ -100,27 +106,6 @@ class ToolBox extends PApplet {
       logicComponentIcons[i] = LogicComponentRegistry.getIcon(compId);
     }
     
-    //andGateButton=new Button(this, 160, 40+100, 50, 50, "AND", 255, 203).setStrokeWeight(5).setHoverText("and gate");
-    //orGateButton=new Button(this, 220, 40+100, 50, 50, "OR", 255, 203).setStrokeWeight(5).setHoverText("or gate");
-    //xorGateButton=new Button(this, 340, 40+100, 50, 50, "XOR", 255, 203).setStrokeWeight(5).setHoverText("exclucuve or gate");
-    //nandGateButton=new Button(this, 400, 40+100, 50, 50, "NAND", 255, 203).setStrokeWeight(5).setHoverText("inverted and gate");
-    //norGateButton=new Button(this, 460, 40+100, 50, 50, "NOR", 255, 203).setStrokeWeight(5).setHoverText("inverted or gate");
-    //xnorGateButton=new Button(this, 580, 40+100, 50, 50, "XNOR", 255, 203).setStrokeWeight(5).setHoverText("inverted exclucive or gate");
-    //testLogicPlaceButton=new Button(this, 40, 100+100, 50, 50, "test", 255, 203).setStrokeWeight(5).setHoverText("this should not exsist");
-    //constantOnButton=new Button(this, 640, 40+100, 50, 50, "ON", 255, 203).setStrokeWeight(5).setHoverText("constant on signal");
-    //readVariableButton=new Button(this, 700, 40+100, 50, 50, "read", 255, 203).setStrokeWeight(5).setHoverText("read the state of a variable");
-    //setVariableButton=new Button(this, 760, 40+100, 50, 50, "set", 255, 203).setStrokeWeight(5).setHoverText("set the state of a varable");
-    //setVisabilityButton=new Button(this, 820, 40+100, 50, 50, "vis", 255, 203).setStrokeWeight(5).setHoverText("set visability of a group");
-    //xOffsetButton=new Button(this, 880, 40+100, 50, 50, "offset X", 255, 203).setStrokeWeight(5).setHoverText("offset a group in the x-axis");
-    //yOffsetButton=new Button(this, 940, 40+100, 50, 50, "offset y", 255, 203).setStrokeWeight(5).setHoverText("offset a group in the y-axis");
-    //delayButton=new Button(this, 1060, 140, 50, 50, "delay", 255, 203).setStrokeWeight(5).setHoverText("delay a pulse in your logic");
-    //zOffsetButton=new Button(this, 40, 200, 50, 50, "offset z", 255, 203).setStrokeWeight(5).setHoverText("offset a group in the z-axis");
-    
-    //set3DButton=new Button(this, 160, 200, 50, 50, "s 3D", 255, 203).setStrokeWeight(5).setHoverText("set the state of 3D mode");
-    //read3DButton=new Button(this, 220, 200, 50, 50, "r 3D", 255, 203).setStrokeWeight(5).setHoverText("read the state of 3D mode");
-    //playLogicSoundButton=new Button(this, 280, 200, 50, 50, 255, 203).setStrokeWeight(5).setHoverText("play sounds woth logic");
-    //pulseButton=new Button(this, 340, 200, 50, 50, "pulse", 255, 203).setStrokeWeight(5).setHoverText("generates a 1 tick pulse");
-    //randomButton= new Button(this, 400, 200, 50, 50, "random", 255, 203).setStrokeWeight(5).setHoverText("sets its output randomly each tick");
     
     //variables and groups buttons
     increase=new Button(this, width/2+180, height*0.5, 50, 50, "+", 255, 203).setStrokeWeight(5);
@@ -368,12 +353,16 @@ class ToolBox extends PApplet {
           
           if(!stageIs3D){
             //Entities
-            if(placingGoon){
-              goonEntity.setColor(255, #F2F258);
-            } else {
-              goonEntity.setColor(255, 203);
+            for(int i=0;i<entityButtons.length;i++){
+              Identifier component = EntityRegistry.get(i);
+              if(EntityRegistry.get(i).equals(currentlyPlaceing)){
+                 entityButtons[i].setColor(255, #F2F258);
+              }else{
+                 entityButtons[i].setColor(255, 203);
+              }
+              entityButtons[i].draw();
+              entityIcons[i].draw(g, entityButtons[i].x,entityButtons[i].y);
             }
-            goonEntity.draw();
           }
           
           //Hover Text
@@ -388,7 +377,9 @@ class ToolBox extends PApplet {
           playPauseButton.drawHoverText();
           placeBlueprint.drawHoverText();
           if(!stageIs3D){
-            goonEntity.drawHoverText();
+            for(int i=0;i<entityButtons.length;i++){
+              entityButtons[i].drawHoverText();
+            }
           }
           if(!e3DMode){
             select.drawHoverText();
@@ -1212,10 +1203,13 @@ class ToolBox extends PApplet {
               currentBluieprintIndex++;
           }
           
-          if(!stageIs3D){//TODO tmp
-            if(goonEntity.isMouseOver()){
-              turnThingsOff();
-              placingGoon=true;
+          if(!stageIs3D){
+            for(int i=0;i<entityButtons.length;i++){
+              Identifier component = EntityRegistry.get(i);
+              if(entityButtons[i].isMouseOver()){
+                turnThingsOff();
+                currentlyPlaceing = component;
+              }
             }
           }
           

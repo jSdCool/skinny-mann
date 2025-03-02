@@ -44,6 +44,10 @@ public class EntityRegistry{
     return icons.get(id);
   }
   
+  public static String getDescription(Identifier id){
+    return desciprions.get(id);
+  }
+  
   interface EntityButtonIconDraw{
     void draw(PGraphics render, float x, float y);
   }

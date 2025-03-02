@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 class GoonMovementManager extends MovementManager{
   
   public static final Identifier ID = new Identifier("goonMovementManager");
@@ -19,7 +20,6 @@ class GoonMovementManager extends MovementManager{
   }
   
   public boolean right(){
-    recalculateMovements();
     return right;
   }
   
@@ -43,37 +43,37 @@ class GoonMovementManager extends MovementManager{
     out=false;
   }
   
-  void recalculateMovements(){
+  void recalculateMovements(ArrayList<Collider2D> stage){
     if(!goon.isDead()){
       if(!goon.in3D){
         if(right){
           //if there is a wall in fron the the entity
-          if(StageEntityCollisionManager.level_colide(goon.getHitBox2D(2,0),goon)){
+          if(StageEntityCollisionManager.level_colide(goon.getHitBox2D(2,0),stage)){
             //and there is sill a wall 9 units up
-            if(StageEntityCollisionManager.level_colide(goon.getHitBox2D(2,-6),goon)){
+            if(StageEntityCollisionManager.level_colide(goon.getHitBox2D(2,-6),stage)){
               right=false;
               left=true;
               return;
             }
           }
           //if there is a clif in front of the entity
-          if(!StageEntityCollisionManager.level_colide(goon.getHitBox2D(2,11),goon)){
+          if(!StageEntityCollisionManager.level_colide(goon.getHitBox2D(2,11),stage)){
             right=false;
             left=true;
             return;
           }
         }else if(left){
           //if there is a wall in fron the the entity
-          if(StageEntityCollisionManager.level_colide(goon.getHitBox2D(-2,0),goon)){
+          if(StageEntityCollisionManager.level_colide(goon.getHitBox2D(-2,0),stage)){
             //and there is sill a wall 9 units up
-            if(StageEntityCollisionManager.level_colide(goon.getHitBox2D(-2,-6),goon)){
+            if(StageEntityCollisionManager.level_colide(goon.getHitBox2D(-2,-6),stage)){
               right=true;
               left=false;
               return;
             }
           }
           //if there is a clif in front of the entity
-          if(!StageEntityCollisionManager.level_colide(goon.getHitBox2D(-2,11),goon)){
+          if(!StageEntityCollisionManager.level_colide(goon.getHitBox2D(-2,11),stage)){
             right=true;
             left=false;
             return;
@@ -83,7 +83,6 @@ class GoonMovementManager extends MovementManager{
         }
       }
     }
-    //StageEntityCollisionManager.level_colide(
   }
   
   public SerializedData serialize(){

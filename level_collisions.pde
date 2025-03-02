@@ -701,13 +701,13 @@ void playerPhysics() {
     if (!level.stages.get(currentStageIndex).entities.get(i).isDead()) {
       if (e3DMode) {//3d mdoe
         Collider3D enitiyHitBox = level.stages.get(currentStageIndex).entities.get(i).getHitBox3D(0, 0, 0);
-        if (enitiyHitBox!=null && collisionDetection.collide3D(player3DHitbox, enitiyHitBox)) {
+        if (enitiyHitBox!=null && CollisionDetection.collide3D(player3DHitbox, enitiyHitBox)) {
           //if collideing
           result = level.stages.get(currentStageIndex).entities.get(i).playerInteraction(player3DHitbox);
         }
       } else {//not 3D mode
         Collider2D entityHitBox = level.stages.get(currentStageIndex).entities.get(i).getHitBox2D(0, 0);
-        if (entityHitBox !=null && collisionDetection.collide2D(player2DHitbox, entityHitBox)) {
+        if (entityHitBox !=null && CollisionDetection.collide2D(player2DHitbox, entityHitBox)) {
           //if collideing
           result = level.stages.get(currentStageIndex).entities.get(i).playerInteraction(player2DHitbox);
         }
@@ -761,6 +761,7 @@ void playerPhysics() {
         entityStageBoxes3D = generateLevel3DComboBox(stage);
       }
       for (int i=0; i<stage.entities.size(); i++) {
+        stage.entities.get(i).update(mspc,entityStageBoxes);
         entityPhysics(stage.entities.get(i), stage, entityStageBoxes,entityStageBoxes3D);
       }
     }
@@ -1209,7 +1210,7 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
  */
 boolean level_colide(Collider2D hitbox, ArrayList<Collider2D> stageBoxes) {
   for (Collider2D stageBox:stageBoxes) {//loop over all the objects in the stage
-    if (collisionDetection.collide2D(hitbox, stageBox)) {//check if the objects collide
+    if (CollisionDetection.collide2D(hitbox, stageBox)) {//check if the objects collide
       return true;
     }
   }
@@ -1222,7 +1223,7 @@ boolean level_colide(Collider2D hitbox, ArrayList<Collider2D> stageBoxes) {
  */
 boolean level_colide(Collider3D hitbox, ArrayList<Collider3D> stageBoxes) {//3d collions
   for (Collider3D stageBox:stageBoxes) {//loop over all the objects in the stage
-    if (collisionDetection.collide3D(hitbox, stageBox)) {//check if the objects collide
+    if (CollisionDetection.collide3D(hitbox, stageBox)) {//check if the objects collide
       return true;
     }
   }
