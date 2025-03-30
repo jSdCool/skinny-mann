@@ -2,9 +2,15 @@ import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
-class Ground extends StageComponent {//ground component
+class Ground extends StageComponent implements Rotatable{//ground component
 
   public static final Identifier ID = new Identifier("ground");
+  
+  private PMatrix3D transfomration = new PMatrix3D(), tmpMat = new PMatrix3D();
+  private float rx,ry,rz;
+  PVector verticies[] = new PVector[]{new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector()};//8 long
+  PVector center = new PVector();
+  PVector prevoursGroupPos = new PVector();
 
   Ground(JSONObject data) {
     type="ground";
@@ -21,6 +27,8 @@ class Ground extends StageComponent {//ground component
     if (!data.isNull("group")) {
       group=data.getInt("group");
     }
+    
+    updateVerticies();
   }
   
   public Ground(StageComponentDragPlacementContext context){
@@ -80,11 +88,24 @@ class Ground extends StageComponent {//ground component
     Group group=getGroup();
     if (!group.visable)
       return;
+    if(group.xOffset != prevoursGroupPos.x || group.yOffset!=prevoursGroupPos.y || group.zOffset!=prevoursGroupPos.z){
+      updateVerticies();
+      prevoursGroupPos.x = group.xOffset;
+      prevoursGroupPos.y = group.yOffset;
+      prevoursGroupPos.z = group.zOffset;
+    }
     render.fill(ccolor);
     //strokeWeight(0);
     render.translate((x+group.xOffset)+dx/2, (y+group.yOffset)+dy/2, (z+group.zOffset)+dz/2);
     render.box(dx, dy, dz);
     render.translate(-1*((x+group.xOffset)+dx/2), -1*((y+group.yOffset)+dy/2), -1*((z+group.zOffset)+dz/2));
+    
+    for(PVector v: verticies){
+      render.translate(v.x,v.y,v.z);
+      render.fill(250,0,0);
+      render.box(5);
+      render.translate(-v.x,-v.y,-v.z);
+    }
   }
 
   boolean colide(float x, float y, boolean c) {
@@ -146,5 +167,65 @@ class Ground extends StageComponent {//ground component
   @Override
   public Identifier id() {
     return ID;
+  }
+  
+  public void resetRotate(){
+    rx=0;
+    ry=0;
+    rz=0;
+  }
+  public void rotateX(float x){
+    rx+=x;
+    updateVerticies();
+  }
+  public void rotateY(float y){
+    ry+=y;
+    updateVerticies();
+  }
+  public void rotateZ(float z){
+    rz+=z;
+    updateVerticies();
+  }
+  public void updateVerticies(){
+    Group group=getGroup();
+    transfomration.reset();
+    //get the current rotaiton matix
+    Util.rotateXYZ(rx,ry,rz,transfomration);
+    center.x = x+dx/2+group.xOffset;
+    center.y = y+dy/2+group.yOffset;
+    center.z = z+dz/2+group.zOffset;
+    //add the offset translation
+    transfomration.translate(center.x,center.y,center.z);
+    float hdx = dx/2;
+    float hdy = dy/2;
+    float hdz = dz/2;
+    //reset the vrticies
+    verticies[0].x = -hdx;
+    verticies[0].y = -hdy;
+    verticies[0].z = -hdz;
+    verticies[1].x = hdx;
+    verticies[1].y = -hdy;
+    verticies[1].z = -hdz;
+    verticies[2].x = hdx;
+    verticies[2].y = -hdy;
+    verticies[2].z = hdz;
+    verticies[3].x = -hdx;
+    verticies[3].y = -hdy;
+    verticies[3].z = hdz;
+    verticies[4].x = -hdx;
+    verticies[4].y = hdy;
+    verticies[4].z = hdz;
+    verticies[5].x = hdx;
+    verticies[5].y = hdy;
+    verticies[5].z = hdz;
+    verticies[6].x = hdx;
+    verticies[6].y = hdy;
+    verticies[6].z = -hdz;
+    verticies[7].x = -hdx;
+    verticies[7].y = hdy;
+    verticies[7].z = -hdz;
+    //transform all the verticies
+    Util.transform4Vert(transfomration,verticies[0],verticies[1],verticies[2],verticies[3],tmpMat);
+    Util.transform4Vert(transfomration,verticies[4],verticies[5],verticies[6],verticies[7],tmpMat);
   }
 }

@@ -48,6 +48,9 @@ abstract class StageComponent implements Serialization {//the base class for all
   Group getGroup() {
     if (group==-1)
       return new Group();
+    if(source.level == null){
+      return new Group();
+    }
     return source.level.groups.get(group);
   }
   
