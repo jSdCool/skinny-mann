@@ -255,17 +255,17 @@ class Ground extends StageComponent implements Rotatable{//ground component
     return rz;
   }
   
-  public PVector getXNormal(){
+  public PVector getXLocal(){
     PVector norm = new PVector();
     rotation.mult(F_XNORM,norm);
     return norm;
   }
-  public PVector getYNormal(){
+  public PVector getYLocal(){
     PVector norm = new PVector();
     rotation.mult(F_YNORM,norm);
     return norm;
   }
-  public PVector getZNormal(){
+  public PVector getZLocal(){
     PVector norm = new PVector();
     rotation.mult(F_ZNORM,norm);
     return norm;

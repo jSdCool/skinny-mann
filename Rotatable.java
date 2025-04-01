@@ -9,7 +9,7 @@ interface Rotatable{
   float getRotateX();
   float getRotateY();
   float getRotateZ();
-  PVector getXNormal();
-  PVector getYNormal();
-  PVector getZNormal();
+  PVector getXLocal();
+  PVector getYLocal();
+  PVector getZLocal();
 }
