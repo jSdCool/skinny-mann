@@ -112,4 +112,12 @@ public class Util{
     // P - ((((P-C) dot N )/ (N dot N)) dot N)
     return PVector.sub(point,PVector.mult(normal,((PVector.sub(point,center,work).dot(normal))/(normal.dot(normal))),work),work);
   }
+  
+  public static PVector intersectPlaneAndLine(PVector lineA,PVector lineB, PVector planePoint,PVector planeNormal){
+    float t = planeNormal.x*(planePoint.x-lineA.x) + planeNormal.y*(planePoint.y-lineA.y) + planeNormal.z*(planePoint.z-lineA.z);
+    t /= planeNormal.x*(lineB.x-lineA.x) + planeNormal.y*(lineB.y-lineA.y) + planeNormal.z*(lineB.z-lineA.z);
+    
+    PVector reslut = new PVector(lineA.x+t*(lineB.x-lineA.x),lineA.y+t*(lineB.y-lineA.y),lineA.z+t*(lineB.z-lineA.z));
+    return reslut;
+  }
 }

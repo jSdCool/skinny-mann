@@ -481,48 +481,47 @@ void stageEditGUI() {
             sze*=31;//scale factor to make the cyleners the right size
             Rotatable rota = (Rotatable)ct;
             PVector testP = new PVector(testPoint.x,testPoint.y,testPoint.z);
+            //tash DELETE
             PVector tprojectX = Util.projectToPlane(testP,center,rota.getXNormal());
             PVector tprojectY = Util.projectToPlane(testP,center,rota.getYNormal());
             PVector tprojectZ = Util.projectToPlane(testP,center,rota.getZNormal());
+            //calculate the position on the rotation plane that intersects with the mouse
+            PVector inPlaneX = Util.intersectPlaneAndLine(new PVector(cam3Dx+DX,cam3Dy-DY,cam3Dz-DZ),new PVector(mousePoint.x,mousePoint.y,mousePoint.z),center,rota.getXNormal());
             fill(255,0,0);
-            translate(tprojectX.x,tprojectX.y,tprojectX.z);
+            
+            translate(inPlaneX.x,inPlaneX.y,inPlaneX.z);
             box(10);
-            translate(-tprojectX.x,-tprojectX.y,-tprojectX.z);
-            translate(tprojectY.x,tprojectY.y,tprojectY.z);
-            box(10);
-            translate(-tprojectY.x,-tprojectY.y,-tprojectY.z);
-            translate(tprojectZ.x,tprojectZ.y,tprojectZ.z);
-            box(10);
-            translate(-tprojectZ.x,-tprojectZ.y,-tprojectZ.z);
+            translate(-inPlaneX.x,-inPlaneX.y,-inPlaneX.z);
+            
             tprojectX.sub(center);
             //println(sze);
             if(tprojectX.mag() <= sze){
               rix=true;
-              translate(center.x,center.y,center.z);
-              translate(tprojectX.x,tprojectX.y,tprojectX.z);
-              box(10);
-              translate(-tprojectX.x,-tprojectX.y,-tprojectX.z);
-              translate(-center.x,-center.y,-center.z);
+              //translate(center.x,center.y,center.z);
+              //translate(tprojectX.x,tprojectX.y,tprojectX.z);
+              //box(10);
+              //translate(-tprojectX.x,-tprojectX.y,-tprojectX.z);
+              //translate(-center.x,-center.y,-center.z);
               break;
             }
             tprojectY.sub(center);
             if(tprojectY.mag() <= sze){
               riy=true;
-              translate(center.x,center.y,center.z);
-              translate(tprojectY.x,tprojectY.y,tprojectY.z);
-              box(10);
-              translate(-tprojectY.x,-tprojectY.y,-tprojectY.z);
-              translate(-center.x,-center.y,-center.z);
+              //translate(center.x,center.y,center.z);
+              //translate(tprojectY.x,tprojectY.y,tprojectY.z);
+              //box(10);
+              //translate(-tprojectY.x,-tprojectY.y,-tprojectY.z);
+              //translate(-center.x,-center.y,-center.z);
               break;
             }
             tprojectZ.sub(center);
             if(tprojectZ.mag() <= sze){
               riz=true;
-              translate(center.x,center.y,center.z);
-              translate(tprojectZ.x,tprojectZ.y,tprojectZ.z);
-              box(10);
-              translate(-tprojectZ.x,-tprojectZ.y,-tprojectZ.z);
-              translate(-center.x,-center.y,-center.z);
+              //translate(center.x,center.y,center.z);
+              //translate(tprojectZ.x,tprojectZ.y,tprojectZ.z);
+              //box(10);
+              //translate(-tprojectZ.x,-tprojectZ.y,-tprojectZ.z);
+              //translate(-center.x,-center.y,-center.z);
               break;
             }
           }
