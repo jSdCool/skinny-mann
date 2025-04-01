@@ -476,20 +476,53 @@ void stageEditGUI() {
               break;
             }
           }else{
-            float centerX = ct.x+ct.dx/2, centerY = ct.y+ct.dy/2, centerZ = ct.z+ct.dz/2;
+            PVector center = new PVector(ct.x+ct.dx/2,ct.y+ct.dy/2,ct.z+ct.dz/2);
             float sze = sqrt(pow(ct.dx/2,2)+pow(ct.dy/2,2)+pow(ct.dz/2,2))/28;
             sze*=31;//scale factor to make the cyleners the right size
+            Rotatable rota = (Rotatable)ct;
+            PVector testP = new PVector(testPoint.x,testPoint.y,testPoint.z);
+            PVector tprojectX = Util.projectToPlane(testP,center,rota.getXNormal());
+            PVector tprojectY = Util.projectToPlane(testP,center,rota.getYNormal());
+            PVector tprojectZ = Util.projectToPlane(testP,center,rota.getZNormal());
+            fill(255,0,0);
+            translate(tprojectX.x,tprojectX.y,tprojectX.z);
+            box(10);
+            translate(-tprojectX.x,-tprojectX.y,-tprojectX.z);
+            translate(tprojectY.x,tprojectY.y,tprojectY.z);
+            box(10);
+            translate(-tprojectY.x,-tprojectY.y,-tprojectY.z);
+            translate(tprojectZ.x,tprojectZ.y,tprojectZ.z);
+            box(10);
+            translate(-tprojectZ.x,-tprojectZ.y,-tprojectZ.z);
+            tprojectX.sub(center);
             //println(sze);
-            if(dist(testPoint.y,testPoint.z,centerY,centerZ) <= sze && testPoint.x >= centerX-5 && testPoint.x <= centerX+5){
+            if(tprojectX.mag() <= sze){
               rix=true;
+              translate(center.x,center.y,center.z);
+              translate(tprojectX.x,tprojectX.y,tprojectX.z);
+              box(10);
+              translate(-tprojectX.x,-tprojectX.y,-tprojectX.z);
+              translate(-center.x,-center.y,-center.z);
               break;
             }
-            if(dist(testPoint.x,testPoint.z,centerX,centerZ) <= sze && testPoint.y >= centerY-5 && testPoint.y <= centerY+5){
+            tprojectY.sub(center);
+            if(tprojectY.mag() <= sze){
               riy=true;
+              translate(center.x,center.y,center.z);
+              translate(tprojectY.x,tprojectY.y,tprojectY.z);
+              box(10);
+              translate(-tprojectY.x,-tprojectY.y,-tprojectY.z);
+              translate(-center.x,-center.y,-center.z);
               break;
             }
-            if(dist(testPoint.y,testPoint.x,centerY,centerX) <= sze && testPoint.z >= centerZ-5 && testPoint.z <= centerZ+5){
+            tprojectZ.sub(center);
+            if(tprojectZ.mag() <= sze){
               riz=true;
+              translate(center.x,center.y,center.z);
+              translate(tprojectZ.x,tprojectZ.y,tprojectZ.z);
+              box(10);
+              translate(-tprojectZ.x,-tprojectZ.y,-tprojectZ.z);
+              translate(-center.x,-center.y,-center.z);
               break;
             }
           }

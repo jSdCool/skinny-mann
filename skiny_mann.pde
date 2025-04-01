@@ -2861,16 +2861,18 @@ void mousePressed() {
             PVector tprojectY = Util.projectToPlane(testP,center,rota.getYNormal());
             PVector tprojectZ = Util.projectToPlane(testP,center,rota.getZNormal());
 
-            //println(sze);
-            if(dist(testPoint.y,testPoint.z,center.y,center.z) <= sze && testPoint.x >= center.x-5 && testPoint.x <= center.x+5){
+            tprojectX.sub(center);
+            if(tprojectX.mag() <= sze){
               translateXaxis=true;
               break;
             }
-            if(dist(testPoint.x,testPoint.z,center.x,center.z) <= sze && testPoint.y >= center.y-5 && testPoint.y <= center.y+5){
+            tprojectY.sub(center);
+            if(tprojectY.mag() <= sze){
               translateYaxis=true;
               break;
             }
-            if(dist(testPoint.y,testPoint.x,center.y,center.x) <= sze && testPoint.z >= center.z-5 && testPoint.z <= center.z+5){
+            tprojectZ.sub(center);
+            if(tprojectZ.mag() <= sze){
               translateZaxis=true;
               break;
             }
