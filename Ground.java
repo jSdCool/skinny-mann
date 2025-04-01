@@ -6,11 +6,13 @@ class Ground extends StageComponent implements Rotatable{//ground component
 
   public static final Identifier ID = new Identifier("ground");
   
-  private PMatrix3D transfomration = new PMatrix3D(), tmpMat = new PMatrix3D();
+  private PMatrix3D transfomration = new PMatrix3D(), rotation =  new PMatrix3D(),tmpMat = new PMatrix3D();
   private float rx,ry,rz;
   PVector verticies[] = new PVector[]{new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector()};//8 long
   PVector center = new PVector();
   PVector prevoursGroupPos = new PVector();
+  
+  private final PVector F_XNORM = new PVector(1,0,0), F_YNORM = new PVector(0,1,0), F_ZNORM = new PVector(0,0,1);
 
   Ground(JSONObject data) {
     type="ground";
@@ -175,27 +177,41 @@ class Ground extends StageComponent implements Rotatable{//ground component
     rz=0;
   }
   public void rotateX(float x){
-    rx+=x;
+    if(Float.isNaN(x)){
+      return;
+    }
+    rx=x;
     updateVerticies();
   }
   public void rotateY(float y){
-    ry+=y;
+    if(Float.isNaN(y)){
+      return;
+    }
+    ry=y;
     updateVerticies();
   }
   public void rotateZ(float z){
-    rz+=z;
+    if(Float.isNaN(z)){
+      return;
+    }
+    rz=z;
     updateVerticies();
   }
   public void updateVerticies(){
     Group group=getGroup();
     transfomration.reset();
-    //get the current rotaiton matix
-    Util.rotateXYZ(rx,ry,rz,transfomration);
     center.x = x+dx/2+group.xOffset;
     center.y = y+dy/2+group.yOffset;
     center.z = z+dz/2+group.zOffset;
     //add the offset translation
     transfomration.translate(center.x,center.y,center.z);
+    rotation.reset();
+    //get the current rotaiton matix
+    Util.rotateXYZ(rx,ry,rz,rotation);
+    
+    transfomration.apply(rotation);
+    
+    
     float hdx = dx/2;
     float hdy = dy/2;
     float hdz = dz/2;
@@ -227,5 +243,31 @@ class Ground extends StageComponent implements Rotatable{//ground component
     //transform all the verticies
     Util.transform4Vert(transfomration,verticies[0],verticies[1],verticies[2],verticies[3],tmpMat);
     Util.transform4Vert(transfomration,verticies[4],verticies[5],verticies[6],verticies[7],tmpMat);
+  }
+  
+  public float getRotateX(){
+    return rx;
+  }
+  public float getRotateY(){
+    return ry;
+  }
+  public float getRotateZ(){
+    return rz;
+  }
+  
+  public PVector getXNormal(){
+    PVector norm = new PVector();
+    rotation.mult(F_XNORM,norm);
+    return norm;
+  }
+  public PVector getYNormal(){
+    PVector norm = new PVector();
+    rotation.mult(F_YNORM,norm);
+    return norm;
+  }
+  public PVector getZNormal(){
+    PVector norm = new PVector();
+    rotation.mult(F_ZNORM,norm);
+    return norm;
   }
 }

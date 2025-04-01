@@ -9,7 +9,7 @@ class ToolBox extends PApplet {
   public int redVal=0, greenVal=0, blueVal=0, CC=0;
   int rsp=0, gsp=0, bsp=0, selectedColor=0, millisOffset, variableScroll=0, groupScroll=0;
   String page="colors", newGroopName="";
-  Button colorPage, toolsPage,  toggle3DMode, saveLevel, exitStageEdit, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, nextSound, prevSound,  playPauseButton,  deleteButton, movePlayerButton, gridModeButton, connectLogicButton, moveComponentsButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, runLoad, logicHelpButton, move3DButton, size3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton;
+  Button colorPage, toolsPage,  toggle3DMode, saveLevel, exitStageEdit, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, nextSound, prevSound,  playPauseButton,  deleteButton, movePlayerButton, gridModeButton, connectLogicButton, moveComponentsButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, runLoad, logicHelpButton, move3DButton, size3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton, rotateButton;
   //Button draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, switch3D1, switch3D2, sign, checkpointButton, groundButton, goalButton, holoButton, logicButtonButton, playSound;
   //Button andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, delayButton, zOffsetButton, set3DButton, read3DButton, playLogicSoundButton, pulseButton, randomButton;
   Button[] stageComponetButtons, logicComponentButtons, entityButtons;
@@ -59,6 +59,8 @@ class ToolBox extends PApplet {
     move3DButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "move", 255, 203).setStrokeWeight(5).setHoverText("move things in 3D");
     buttonPos = calcButtonPos(buttonPosIndex++);
     size3DButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "size", 255, 203).setStrokeWeight(5).setHoverText("resize things in 3D");
+    buttonPos = calcButtonPos(buttonPosIndex++);
+    rotateButton = new Button(this, buttonPos[0], buttonPos[1], 50, 50, "Rotate", 255, 203).setStrokeWeight(5).setHoverText("rotate thigns");
     buttonPos = calcButtonPos(buttonPosIndex++);
     placeBlueprint=new Button(this, buttonPos[0], buttonPos[1], 50, 50, #0F1AD3, 203).setStrokeWeight(5).setHoverText("place blurprint");
     
@@ -330,6 +332,13 @@ class ToolBox extends PApplet {
             exitStageEdit.draw();
           }
           
+          if(rotating){
+            rotateButton.setColor(255, #F2F258);
+          } else {
+            rotateButton.setColor(255, 203);
+          }
+          rotateButton.draw();
+          
           
           //Components
           for(int i=0;i<stageComponetButtons.length;i++){
@@ -391,6 +400,7 @@ class ToolBox extends PApplet {
           if(stageIs3D){
             toggle3DMode.drawHoverText();
           }
+          rotateButton.drawHoverText();
           
           for(int i=0;i<stageComponetButtons.length;i++){
             //check allowed dimentions
@@ -1223,6 +1233,13 @@ class ToolBox extends PApplet {
               return;
             }
           }
+          if(rotateButton.isMouseOver()){
+            current3DTransformMode=3;
+            turnThingsOff();
+            rotating = true;
+            selecting=true;
+          }
+          
           if(e3DMode){
             if (size3DButton.isMouseOver()) {
               current3DTransformMode=2;

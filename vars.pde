@@ -17,6 +17,10 @@ PShape greenScaler;
 PShape blueScaler;
 PShape yellowScaler;
 PShape LevelCreatorLogo;
+PShape rotateCircleX;
+PShape rotateCircleY;
+PShape rotateCircleZ;
+PShape rotateCircleHilight;
 
 boolean requestDepthBufferInit = false ;
 boolean showDepthBuffer = false;
@@ -98,10 +102,12 @@ boolean transitioningMenu = false;
 boolean newSoundAsNarration = false;
 boolean newBlueprintIs3D = false;
 boolean placingGoon = false;
+boolean rotating = false;
 ArrayList<Boolean> compatibles;
 ArrayList<Boolean> coins;
 
 PVector lightDir = new PVector();
+PVector currentComponentRotation = new PVector();
 
 String Menue = "creds";
 String version = "0.10.0_Early_Access";

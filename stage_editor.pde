@@ -440,39 +440,58 @@ void stageEditGUI() {
     else {//if 3dmode is on
       if (selectedIndex!=-1) {
         //wether the red/green/blue arrows are currrntly being hoverd over
-        boolean b1=false, b2=false, r1=false, r2=false, g1=false, g2=false;
+        boolean b1=false, b2=false, r1=false, r2=false, g1=false, g2=false, rix=false,riy=false,riz=false;
         StageComponent ct=current.parts.get(selectedIndex);
         //check if the mouse is hovering over an arrow
         for (int i=0; i<5000; i++) {
           Point3D testPoint=genMousePoint(i);
-          if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z+ct.dz && testPoint.z <= ct.z+ct.dz+60) {
-            b1=true;
-            break;
-          }
-
-          if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z-60 && testPoint.z <= ct.z) {
-            b2=true;
-            break;
-          }
-
-          if (testPoint.x >= ct.x-60 && testPoint.x <= ct.x && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
-            r1=true;
-            break;
-          }
-
-          if (testPoint.x >= ct.x+ct.dx && testPoint.x <= ct.x+ct.dx+60 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
-            r2=true;
-            break;
-          }
-
-          if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= ct.y-60 && testPoint.y <= ct.y && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
-            g1=true;
-            break;
-          }
-
-          if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= ct.y+ct.dy && testPoint.y <= ct.y+ct.dy+60 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
-            g2=true;
-            break;
+          if(!(current3DTransformMode==3 && ct instanceof Rotatable)){
+            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z+ct.dz && testPoint.z <= ct.z+ct.dz+60) {
+              b1=true;
+              break;
+            }
+  
+            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z-60 && testPoint.z <= ct.z) {
+              b2=true;
+              break;
+            }
+  
+            if (testPoint.x >= ct.x-60 && testPoint.x <= ct.x && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+              r1=true;
+              break;
+            }
+  
+            if (testPoint.x >= ct.x+ct.dx && testPoint.x <= ct.x+ct.dx+60 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+              r2=true;
+              break;
+            }
+  
+            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= ct.y-60 && testPoint.y <= ct.y && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+              g1=true;
+              break;
+            }
+  
+            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= ct.y+ct.dy && testPoint.y <= ct.y+ct.dy+60 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+              g2=true;
+              break;
+            }
+          }else{
+            float centerX = ct.x+ct.dx/2, centerY = ct.y+ct.dy/2, centerZ = ct.z+ct.dz/2;
+            float sze = sqrt(pow(ct.dx/2,2)+pow(ct.dy/2,2)+pow(ct.dz/2,2))/28;
+            sze*=31;//scale factor to make the cyleners the right size
+            //println(sze);
+            if(dist(testPoint.y,testPoint.z,centerY,centerZ) <= sze && testPoint.x >= centerX-5 && testPoint.x <= centerX+5){
+              rix=true;
+              break;
+            }
+            if(dist(testPoint.x,testPoint.z,centerX,centerZ) <= sze && testPoint.y >= centerY-5 && testPoint.y <= centerY+5){
+              riy=true;
+              break;
+            }
+            if(dist(testPoint.y,testPoint.x,centerY,centerX) <= sze && testPoint.z >= centerZ-5 && testPoint.z <= centerZ+5){
+              riz=true;
+              break;
+            }
           }
         }
         
@@ -538,11 +557,9 @@ void stageEditGUI() {
             }
             if (translateXaxis) {
               ct.x=(int)Math.round((initalObjectPos.x-initalMousePoint.x+mousePoint.x)*1.0/grid_size)*grid_size;
-              ;
             }
             if (translateYaxis) {
               ct.y=(int)Math.round((initalObjectPos.y-initalMousePoint.y+mousePoint.y)*1.0/grid_size)*grid_size;
-              ;
             }
           } else {//if not in grid mdoe
             if (translateZaxis) {
@@ -684,7 +701,80 @@ void stageEditGUI() {
             }
           }
         }//end of 3d transform mode is scale
-      }//end of 3d tranform is move mode
+        if(current3DTransformMode==3 && ct instanceof Rotatable){
+          Rotatable rotb = (Rotatable)ct;
+          float sze = sqrt(pow(ct.dx/2,2)+pow(ct.dy/2,2)+pow(ct.dz/2,2))/28;
+          rotateCircleX.scale(sze);
+          rotateCircleY.scale(sze);
+          rotateCircleZ.scale(sze);
+          rotateCircleHilight.scale(sze);
+          translate(ct.x+ct.dx/2, ct.y+ct.dy/2, ct.z+ct.dz/2);
+          
+          rotateZ(rotb.getRotateZ()%PI);
+          rotateY(rotb.getRotateY()%PI);
+          rotateX(rotb.getRotateX()%PI);
+          
+          //x - ring
+          rotateY(HALF_PI);
+
+          if (rix) {
+            shape(rotateCircleHilight);
+          }else{
+             shape(rotateCircleX); 
+          }
+          rotateY(-HALF_PI);
+          // y- ring
+          rotateX(HALF_PI);
+          
+          if (riy) {
+            shape(rotateCircleHilight);
+          }else{
+            shape(rotateCircleY);   
+          }
+          
+          rotateX(-HALF_PI);
+          // z-ring
+          
+          if (riz) {
+            shape(rotateCircleHilight);
+          }else{
+             shape(rotateCircleZ); 
+          }
+          
+          rotateX(-rotb.getRotateX()%PI);
+          rotateY(-rotb.getRotateY()%PI);
+          rotateZ(-rotb.getRotateZ()%PI);
+          //un translate and rescale everying
+          translate(-(ct.x+ct.dx/2), -(ct.y+ct.dy/2), -(ct.z+ct.dz/2));
+          rotateCircleX.scale(1/sze);
+          rotateCircleY.scale(1/sze);
+          rotateCircleZ.scale(1/sze);
+          rotateCircleHilight.scale(1/sze);
+          
+          //now for the funtional part of rotating
+          
+          //start by fining the ange of rotation:
+          PVector objectCenter = new PVector(ct.x+ct.dx/2,ct.y+ct.dy/2,ct.z+ct.dz/2);
+          PVector AB = PVector.sub(new PVector(initalMousePoint.x,initalMousePoint.y,initalMousePoint.z),objectCenter,null);
+          PVector BC = PVector.sub(objectCenter, new PVector(mousePoint.x,mousePoint.y,mousePoint.z),null);
+          AB.normalize();
+          BC.normalize();
+          float angleDiff = acos(AB.dot(BC));
+          if(PVector.cross(AB,BC,null).z > 0){
+            angleDiff*=-1;
+          }
+          
+          if(translateXaxis){
+            rotb.rotateX(currentComponentRotation.x+angleDiff);
+          }
+          if(translateYaxis){
+            rotb.rotateY(currentComponentRotation.y+angleDiff);
+          }
+          if(translateZaxis){
+            rotb.rotateZ(currentComponentRotation.z+angleDiff);
+          }
+        }
+      }//end of something is selected
       
       if (e3DMode && selectingBlueprint && blueprints.length!=0){
 

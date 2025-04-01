@@ -106,4 +106,10 @@ public class Util{
     return currentTransform;
     
   }
+  
+  public static PVector projectToPlane(PVector point, PVector center,PVector normal){
+    PVector work = new PVector();
+    // P - ((((P-C) dot N )/ (N dot N)) dot N)
+    return PVector.sub(point,PVector.mult(normal,((PVector.sub(point,center,work).dot(normal))/(normal.dot(normal))),work),work);
+  }
 }

@@ -2810,40 +2810,74 @@ void mousePressed() {
         
         for (int i=0; i<5000; i++) {
           Point3D testPoint=genMousePoint(i);
-          if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z+ct.dz && testPoint.z <= ct.z+ct.dz+60) {
-            translateZaxis=true;
-            transformComponentNumber=1;
-            break;
-          }
+          if(!(current3DTransformMode==3 && ct instanceof Rotatable)){
+            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z+ct.dz && testPoint.z <= ct.z+ct.dz+60) {
+              translateZaxis=true;
+              transformComponentNumber=1;
+              break;
+            }
+  
+            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z-60 && testPoint.z <= ct.z) {
+              translateZaxis=true;
+              transformComponentNumber=2;
+              break;
+            }
+  
+            if (testPoint.x >= ct.x-60 && testPoint.x <= ct.x && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+              translateXaxis=true;
+              transformComponentNumber=2;
+              break;
+            }
+  
+            if (testPoint.x >= ct.x+ct.dx && testPoint.x <= ct.x+ct.dx+60 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+              translateXaxis=true;
+              transformComponentNumber=1;
+              break;
+            }
+  
+            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= ct.y-60 && testPoint.y <= ct.y && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+              translateYaxis=true;
+              transformComponentNumber=2;
+              break;
+            }
+  
+            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= ct.y+ct.dy && testPoint.y <= ct.y+ct.dy+60 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+              translateYaxis=true;
+              transformComponentNumber=1;
+              break;
+            }
+          }else{
+            //TODO mosve most of theese calculations outsize the for loop
+            PVector center = new PVector(ct.x+ct.dx/2,ct.y+ct.dy/2,ct.z+ct.dz/2);
+            float sze = sqrt(pow(ct.dx/2,2)+pow(ct.dy/2,2)+pow(ct.dz/2,2))/28;
+            sze*=31;//scale factor to make the cyleners the right size
+            Rotatable rota = (Rotatable)ct;
+            PVector mouseP = new PVector(mousePoint.x,mousePoint.y,mousePoint.z);
+            PVector testP = new PVector(testPoint.x,testPoint.y,testPoint.z);
+            PVector projectX = Util.projectToPlane(mouseP,center,rota.getXNormal());
+            PVector projectY = Util.projectToPlane(mouseP,center,rota.getYNormal());
+            PVector projectZ = Util.projectToPlane(mouseP,center,rota.getZNormal());
+            PVector tprojectX = Util.projectToPlane(testP,center,rota.getXNormal());
+            PVector tprojectY = Util.projectToPlane(testP,center,rota.getYNormal());
+            PVector tprojectZ = Util.projectToPlane(testP,center,rota.getZNormal());
 
-          if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z-60 && testPoint.z <= ct.z) {
-            translateZaxis=true;
-            transformComponentNumber=2;
-            break;
-          }
-
-          if (testPoint.x >= ct.x-60 && testPoint.x <= ct.x && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
-            translateXaxis=true;
-            transformComponentNumber=2;
-            break;
-          }
-
-          if (testPoint.x >= ct.x+ct.dx && testPoint.x <= ct.x+ct.dx+60 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
-            translateXaxis=true;
-            transformComponentNumber=1;
-            break;
-          }
-
-          if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= ct.y-60 && testPoint.y <= ct.y && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
-            translateYaxis=true;
-            transformComponentNumber=2;
-            break;
-          }
-
-          if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= ct.y+ct.dy && testPoint.y <= ct.y+ct.dy+60 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
-            translateYaxis=true;
-            transformComponentNumber=1;
-            break;
+            //println(sze);
+            if(dist(testPoint.y,testPoint.z,center.y,center.z) <= sze && testPoint.x >= center.x-5 && testPoint.x <= center.x+5){
+              translateXaxis=true;
+              break;
+            }
+            if(dist(testPoint.x,testPoint.z,center.x,center.z) <= sze && testPoint.y >= center.y-5 && testPoint.y <= center.y+5){
+              translateYaxis=true;
+              break;
+            }
+            if(dist(testPoint.y,testPoint.x,center.y,center.x) <= sze && testPoint.z >= center.z-5 && testPoint.z <= center.z+5){
+              translateZaxis=true;
+              break;
+            }
+            
+            currentComponentRotation.x = rota.getRotateX();
+            currentComponentRotation.y = rota.getRotateY();
+            currentComponentRotation.z = rota.getRotateZ();
           }
         }
         initalMousePoint=mousePoint;
@@ -4019,6 +4053,14 @@ void programLoad() {
   loadProgress++;
   yellowScaler=loadShape("data/modles/yellow scaler/obj.obj");
   loadProgress++;
+  rotateCircleX = loadShape("data/modles/Rotate_X/obj.obj");
+  loadProgress++;
+  rotateCircleY = loadShape("data/modles/Rotate_Y/obj.obj");
+  loadProgress++;
+  rotateCircleZ = loadShape("data/modles/Rotate_Z/obj.obj");
+  loadProgress++;
+  rotateCircleHilight = loadShape("data/modles/Rotate_Hilight/obj.obj");
+  loadProgress++;
 
   LevelCreatorLogo=loadShape("data/modles/LevelCreatorLogo/LCL.obj");
   loadProgress++;
@@ -4341,13 +4383,13 @@ void turnThingsOff() {
   drawingPortal=false;
   drawingPortal3=false;
   selecting=false;
-  selectedIndex=-1;
   selectingBlueprint=false;
   connectingLogic=false;
   moveLogicComponents=false;
   settingPlayerSpawn=false;
   placingGoon=false;
   currentlyPlaceing = null;
+  rotating = false;
 }
 
 void fileSelected(File selection) {
