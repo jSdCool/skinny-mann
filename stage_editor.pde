@@ -487,9 +487,9 @@ void stageEditGUI() {
             Rotatable rota = (Rotatable)ct;
             PVector cameraVec = new PVector(cam3Dx+DX,cam3Dy-DY,cam3Dz-DZ), mousePointVec = new PVector(mousePoint.x,mousePoint.y,mousePoint.z);
             //calculate the position on the rotation plane that intersects with the mouse
-            PVector inPlaneX = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rota.getXLocal());
-            PVector inPlaneY = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rota.getYLocal());
-            PVector inPlaneZ = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rota.getZLocal());
+            PVector inPlaneX = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rota.getXRotationAxis());
+            PVector inPlaneY = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rota.getYRotationAxis());
+            PVector inPlaneZ = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rota.getZRotationAxis());
             
             PVector distToCenterX = new PVector(),distToCenterY = new PVector(),distToCenterZ = new PVector();
             PVector distToCamX = new PVector(),distToCamY = new PVector(),distToCamZ = new PVector();
@@ -758,9 +758,9 @@ void stageEditGUI() {
           PVector center = new PVector(ct.x+ct.dx/2,ct.y+ct.dy/2,ct.z+ct.dz/2);
           PVector cameraVec = new PVector(cam3Dx+DX,cam3Dy-DY,cam3Dz-DZ), mousePointVec = new PVector(mousePoint.x,mousePoint.y,mousePoint.z);
           //calculate the position on the rotation plane that intersects with the mouse
-          PVector inPlaneX = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rotb.getXLocal());
-          PVector inPlaneY = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rotb.getYLocal());
-          PVector inPlaneZ = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rotb.getZLocal());
+          PVector inPlaneX = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rotb.getXRotationAxis());
+          PVector inPlaneY = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rotb.getYRotationAxis());
+          PVector inPlaneZ = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rotb.getZRotationAxis());
           
           float sze = sqrt(pow(ct.dx/2,2)+pow(ct.dy/2,2)+pow(ct.dz/2,2))/28;
           rotateCircleX.scale(sze);
@@ -782,6 +782,7 @@ void stageEditGUI() {
              shape(rotateCircleX); 
           }
           rotateY(-HALF_PI);
+          rotateX(-rotb.getRotateX());
           // y- ring
           rotateX(HALF_PI);
           
@@ -792,6 +793,7 @@ void stageEditGUI() {
           }
           
           rotateX(-HALF_PI);
+          rotateY(-rotb.getRotateY());
           // z-ring
           
           if (riz) {
@@ -800,8 +802,8 @@ void stageEditGUI() {
              shape(rotateCircleZ); 
           }
           
-          rotateX(-rotb.getRotateX());
-          rotateY(-rotb.getRotateY());
+          
+          
           rotateZ(-rotb.getRotateZ());
           //un translate and rescale everying
           translate(-(ct.x+ct.dx/2), -(ct.y+ct.dy/2), -(ct.z+ct.dz/2));
@@ -816,13 +818,13 @@ void stageEditGUI() {
             PVector aNoraml;
             if(translateXaxis){
               inPlane = inPlaneX;
-              aNoraml = rotb.getXLocal();
+              aNoraml = rotb.getXRotationAxis();
             }else if(translateYaxis){
               inPlane = inPlaneY;
-              aNoraml = rotb.getYLocal();
+              aNoraml = rotb.getYRotationAxis();
             }else if(translateZaxis){
               inPlane = inPlaneZ;
-              aNoraml = rotb.getZLocal();
+              aNoraml = rotb.getZRotationAxis();
             }else{
               throw new RuntimeException("Attepmpted to comput rotation when no rotation axsi was selected");
             }
@@ -830,12 +832,14 @@ void stageEditGUI() {
             if(!Float.isNaN(inPlane.x)){//only do the next part if the mouse if not parellel to the plane in question
               //start by fining the ange of rotation:
               PVector objectCenter = new PVector(ct.x+ct.dx/2,ct.y+ct.dy/2,ct.z+ct.dz/2);
-              PVector AB = PVector.sub(new PVector(initalMousePoint.x,initalMousePoint.y,initalMousePoint.z),objectCenter,null);
+              PVector AB = PVector.sub(initalMousePoint.toPVector(),objectCenter,null);
               PVector BC = PVector.sub(objectCenter, inPlane,null);
               AB.normalize();
               BC.normalize();
+              BC.mult(-1);//make both face the smae direction if the start and current points are the same place
               float angleDiff = acos(AB.dot(BC));
-              if(PVector.cross(AB,BC,null).dot(aNoraml) < 0){
+              println(angleDiff+" "+initalMousePoint+" "+objectCenter+" "+inPlane);
+              if(PVector.cross(AB,BC,null).dot(aNoraml) <= 0){
                 angleDiff*=-1;
               }
               //then apply it to the correct axis

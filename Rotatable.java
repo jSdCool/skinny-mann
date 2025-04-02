@@ -12,4 +12,7 @@ interface Rotatable{
   PVector getXLocal();
   PVector getYLocal();
   PVector getZLocal();
+  PVector getXRotationAxis();
+  PVector getYRotationAxis();
+  PVector getZRotationAxis();
 }

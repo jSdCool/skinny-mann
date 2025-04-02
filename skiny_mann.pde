@@ -2194,15 +2194,6 @@ void mouseClicked() {// when you click the mouse
               }
             }
           }
-          //if (placingOnSingal) {
-          //  level.logicBoards.get(logicBoardIndex).components.add(new ConstantOnSignal(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          //}
-          //if (placingSetVaravle) {
-          //  level.logicBoards.get(logicBoardIndex).components.add(new SetVariable(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          //}
-          //if (placingReadVariable) {
-          //  level.logicBoards.get(logicBoardIndex).components.add(new ReadVariable(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          //}
           if (selecting) {
             for (int i=0; i< level.logicBoards.get(logicBoardIndex).components.size(); i++) {
               if (level.logicBoards.get(logicBoardIndex).components.get(i).button.isMouseOver()) {
@@ -2210,36 +2201,6 @@ void mouseClicked() {// when you click the mouse
               }
             }
           }
-          //if (placingSetVisibility) {
-          //  level.logicBoards.get(logicBoardIndex).components.add(new SetVisibility(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          //}
-          //if (placingXOffset) {
-          //  level.logicBoards.get(logicBoardIndex).components.add(new SetXOffset(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          //}
-          //if (placingYOffset) {
-          //  level.logicBoards.get(logicBoardIndex).components.add(new SetYOffset(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          //}
-          //if (placingDelay) {
-          //  level.logicBoards.get(logicBoardIndex).components.add(new Delay(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          //}
-          //if (placingZOffset) {
-          //  level.logicBoards.get(logicBoardIndex).components.add(new SetZOffset(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          //}
-          //if (placing3Dsetter) {
-          //  level.logicBoards.get(logicBoardIndex).components.add(new Set3DMode(mouseX/Scale-50+camPos, mouseY/Scale-40+camPosY, level.logicBoards.get(logicBoardIndex)));
-          //}
-          //if (placing3Dreader) {
-          //  level.logicBoards.get(logicBoardIndex).components.add(new Read3DMode(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          //}
-          //if (placingPlaySoundLogic) {
-          //  level.logicBoards.get(logicBoardIndex).components.add(new LogicPlaySound(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          //}
-          //if (placingPulse) {
-          //  level.logicBoards.get(logicBoardIndex).components.add(new Pulse(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          //}
-          //if (placingRandom) {
-          //  level.logicBoards.get(logicBoardIndex).components.add(new Random(mouseX/Scale-50+camPos, mouseY/Scale-20+camPosY, level.logicBoards.get(logicBoardIndex)));
-          //}
         }//end of edditing logic board
 
         if (settingPlayerSpawn) {
@@ -2856,9 +2817,9 @@ void mousePressed() {
             Rotatable rota = (Rotatable)ct;
             PVector cameraVec = new PVector(cam3Dx+DX,cam3Dy-DY,cam3Dz-DZ), mousePointVec = new PVector(mousePoint.x,mousePoint.y,mousePoint.z);
             //calculate the position on the rotation plane that intersects with the mouse
-            PVector inPlaneX = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rota.getXLocal());
-            PVector inPlaneY = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rota.getYLocal());
-            PVector inPlaneZ = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rota.getZLocal());
+            PVector inPlaneX = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rota.getXRotationAxis());
+            PVector inPlaneY = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rota.getYRotationAxis());
+            PVector inPlaneZ = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rota.getZRotationAxis());
             
             PVector distToCenterX = new PVector(),distToCenterY = new PVector(),distToCenterZ = new PVector();
             PVector distToCamX = new PVector(),distToCamY = new PVector(),distToCamZ = new PVector();
