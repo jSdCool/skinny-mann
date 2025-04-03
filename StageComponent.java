@@ -90,7 +90,8 @@ abstract class StageComponent implements Serialization {//the base class for all
   }
   
   public PVector getCenter(){
-     return new PVector(x+dx/2,y+dy/2,z+dz/2);
+     Group group = getGroup();
+     return new PVector(x+dx/2+group.xOffset,y+dy/2+group.yOffset,z+dz/2+group.zOffset);
   }
   
   public float getWidth(){

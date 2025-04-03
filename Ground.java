@@ -54,6 +54,7 @@ class Ground extends StageComponent implements Rotatable{//ground component
       z = context.getZ();
       dz = context.getDZ();
     }
+    updateVerticies();
   }
   
   public Ground(SerialIterator iterator){
@@ -61,6 +62,7 @@ class Ground extends StageComponent implements Rotatable{//ground component
     rx = iterator.getFloat();
     ry = iterator.getFloat();
     rz = iterator.getFloat();
+    updateVerticies();
   }
   
   public StageComponent copy() {
