@@ -33,7 +33,7 @@ class SoundBox extends StageComponent {
     soundKey = iterator.getString();
   }
 
-  void draw(PGraphics render) {
+  public void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -67,9 +67,9 @@ class SoundBox extends StageComponent {
     }
   }
   
-  void draw3D(PGraphics render){}
+  public void draw3D(PGraphics render){}
 
-  boolean colide(float x, float y, boolean c) {
+  public boolean colide(float x, float y, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;
@@ -81,7 +81,7 @@ class SoundBox extends StageComponent {
     return false;
   }
 
-  JSONObject save(boolean stage_3D) {
+  public JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();
     part.setFloat("x", x);
     part.setFloat("y", y);
@@ -91,28 +91,28 @@ class SoundBox extends StageComponent {
     return part;
   }
 
-  StageComponent copy() {
+  public StageComponent copy() {
     SoundBox e=new SoundBox(new StageComponentPlacementContext(x, y));
     e.soundKey=soundKey;
     return  e;
   }
   
-  StageComponent copy(float offsetX,float offsetY){
+  public StageComponent copy(float offsetX,float offsetY){
     SoundBox e = new SoundBox(new StageComponentPlacementContext(x+offsetX,y+offsetY));
     e.soundKey=soundKey;
     return e;
   }
   
-  StageComponent copy(float offsetX,float offsetY,float offsetZ){
+  public StageComponent copy(float offsetX,float offsetY,float offsetZ){
     System.err.println("Attempted to copy sound box in 3D. This opperation is not allowed");
     return null;
   }
 
-  void setData(String data) {
+  public void setData(String data) {
     soundKey=data;
   }
 
-  String getData() {
+  public String getData() {
     return soundKey;
   }
   

@@ -36,15 +36,15 @@ class DethPlane extends StageComponent {//ground component
     }
   }
   
-  StageComponent copy() {
+  public StageComponent copy() {
     return new DethPlane(new StageComponentDragPlacementContext(x, y, dx, dy,0));
   }
 
-  StageComponent copy(float offsetX, float offsetY) {
+  public StageComponent copy(float offsetX, float offsetY) {
     return new DethPlane(new StageComponentDragPlacementContext(x+offsetX, y+offsetY, dx, dy,0));
   }
 
-  StageComponent copy(float offsetX, float offsetY, float offsetZ) {
+  public StageComponent copy(float offsetX, float offsetY, float offsetZ) {
     System.err.println("Attempted to create a 3D copy of a deth plane. This opperation is not supported");
     return null;
   }
@@ -53,7 +53,7 @@ class DethPlane extends StageComponent {//ground component
     deserial(iterator);
   }
 
-  JSONObject save(boolean stage_3D) {
+  public JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();
     part.setFloat("x", x);
     part.setFloat("y", y);
@@ -68,7 +68,7 @@ class DethPlane extends StageComponent {//ground component
     return part;
   }
 
-  void draw(PGraphics render) {
+  public void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -76,7 +76,7 @@ class DethPlane extends StageComponent {//ground component
     render.rect(source.Scale*((x+group.xOffset)-source.drawCamPosX)-0.02f, source.Scale*((y+group.yOffset)+source.drawCamPosY)-0.02f, source.Scale*dx+0.04f, source.Scale*dy+0.04f);
   }
 
-  void draw3D(PGraphics render) {
+  public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -87,7 +87,7 @@ class DethPlane extends StageComponent {//ground component
     render.translate(-1*((x+group.xOffset)+dx/2), -1*((y+group.yOffset)+dy/2), -1*((z+group.zOffset)+dz/2));
   }
 
-  boolean colide(float x, float y, boolean c) {
+  public boolean colide(float x, float y, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;
@@ -98,7 +98,7 @@ class DethPlane extends StageComponent {//ground component
     return false;
   }
 
-  boolean colideDethPlane(float x, float y) {
+  public boolean colideDethPlane(float x, float y) {
     Group group=getGroup();
     if (!group.visable)
       return false;

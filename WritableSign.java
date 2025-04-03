@@ -36,25 +36,25 @@ class WritableSign extends StageComponent {
     contents = iterator.getString();
   }
   
-  StageComponent copy() {
+  public StageComponent copy() {
     WritableSign e=new WritableSign(new StageComponentPlacementContext(x, y, z));
     e.contents=contents;
     return  e;
   }
   
-  StageComponent copy(float offsetX,float offsetY){
+  public StageComponent copy(float offsetX,float offsetY){
     WritableSign e = new WritableSign(new StageComponentPlacementContext(x+offsetX,y+offsetY));
     e.contents = contents;
     return e;
   }
   
-  StageComponent copy(float offsetX,float offsetY,float offsetZ){
+  public StageComponent copy(float offsetX,float offsetY,float offsetZ){
     WritableSign e = new WritableSign(new StageComponentPlacementContext(x+offsetX,y+offsetY,z+offsetZ));
     e.contents = contents;
     return e;
   }
 
-  void draw(PGraphics render) {
+  public void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -74,7 +74,7 @@ class WritableSign extends StageComponent {
       }
     }
   }
-  void draw3D(PGraphics render) {
+  public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -93,7 +93,7 @@ class WritableSign extends StageComponent {
       }
     }
   }
-  boolean colide(float x, float y, boolean c) {
+  public boolean colide(float x, float y, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;
@@ -105,7 +105,7 @@ class WritableSign extends StageComponent {
     return false;
   }
 
-  boolean colide(float x, float y, float z, boolean c) {
+  public boolean colide(float x, float y, float z, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;
@@ -117,7 +117,7 @@ class WritableSign extends StageComponent {
     return false;
   }
 
-  JSONObject save(boolean stage_3D) {
+  public JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();
     part.setFloat("x", x);
     part.setFloat("y", y);
@@ -130,11 +130,11 @@ class WritableSign extends StageComponent {
     return part;
   }
 
-  void setData(String data) {
+  public void setData(String data) {
     contents=data;
   }
 
-  String getData() {
+  public String getData() {
     return contents;
   }
   

@@ -34,21 +34,21 @@ class Interdimentional_Portal extends StageComponent {//ground component
     linkIndex = iterator.getInt();
   }
   
-  StageComponent copy() {
+  public StageComponent copy() {
     return null;
   }
 
-  StageComponent copy(float offsetX, float offsetY) {
+  public StageComponent copy(float offsetX, float offsetY) {
     System.err.println("Attempted to copy portal. This opperation is not supported");
     return null;
   }
 
-  StageComponent copy(float offsetX, float offsetY, float offsetZ) {
+  public StageComponent copy(float offsetX, float offsetY, float offsetZ) {
     System.err.println("attempted to copy portal. This opperation is not supported");
     return null;
   }
 
-  JSONObject save(boolean stage_3D) {
+  public JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();
     part.setFloat("x", x);
     part.setFloat("y", y);
@@ -66,7 +66,7 @@ class Interdimentional_Portal extends StageComponent {//ground component
     return part;
   }
 
-  void draw(PGraphics render) {
+  public void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -107,7 +107,7 @@ class Interdimentional_Portal extends StageComponent {//ground component
     }
   }
 
-  void draw3D(PGraphics render) {
+  public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -148,7 +148,7 @@ class Interdimentional_Portal extends StageComponent {//ground component
     }
   }
 
-  boolean colide(float x, float y, boolean c) {
+  public boolean colide(float x, float y, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;
@@ -160,7 +160,7 @@ class Interdimentional_Portal extends StageComponent {//ground component
     return false;
   }
 
-  boolean colide(float x, float y, float z, boolean c) {
+  public boolean colide(float x, float y, float z, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;

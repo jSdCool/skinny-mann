@@ -50,19 +50,19 @@ class Ground extends StageComponent implements Rotatable{//ground component
     deserial(iterator);
   }
   
-  StageComponent copy() {
+  public StageComponent copy() {
     return new Ground(new StageComponentDragPlacementContext(x,y,z,dx,dy,dz,ccolor));
   }
   
-  StageComponent copy(float offsetX,float offsetY){
+  public StageComponent copy(float offsetX,float offsetY){
     return new Ground(new StageComponentDragPlacementContext(x+offsetX,y+offsetY,dx,dy,ccolor));
   }
   
-  StageComponent copy(float offsetX,float offsetY,float offsetZ){
+  public StageComponent copy(float offsetX,float offsetY,float offsetZ){
     return new Ground(new StageComponentDragPlacementContext(x+offsetX,y+offsetY,z+offsetZ,dx,dy,dz,ccolor));
   }
 
-  JSONObject save(boolean stage_3D) {
+  public JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();
     part.setFloat("x", x);
     part.setFloat("y", y);
@@ -78,7 +78,7 @@ class Ground extends StageComponent implements Rotatable{//ground component
     return part;
   }
 
-  void draw(PGraphics render) {
+  public void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -86,7 +86,7 @@ class Ground extends StageComponent implements Rotatable{//ground component
     render.rect(source.Scale*((x+group.xOffset)-source.drawCamPosX)-0.02f, source.Scale*((y+group.yOffset)+source.drawCamPosY)-0.02f, source.Scale*dx+0.04f, source.Scale*dy+0.04f);
   }
 
-  void draw3D(PGraphics render) {
+  public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -97,11 +97,43 @@ class Ground extends StageComponent implements Rotatable{//ground component
       prevoursGroupPos.z = group.zOffset;
     }
     render.fill(ccolor);
-    //strokeWeight(0);
-    render.translate((x+group.xOffset)+dx/2, (y+group.yOffset)+dy/2, (z+group.zOffset)+dz/2);
-    render.box(dx, dy, dz);
-    render.translate(-1*((x+group.xOffset)+dx/2), -1*((y+group.yOffset)+dy/2), -1*((z+group.zOffset)+dz/2));
-    
+    if(!isRotated()){
+      render.translate((x+group.xOffset)+dx/2, (y+group.yOffset)+dy/2, (z+group.zOffset)+dz/2);
+      render.box(dx, dy, dz);
+      render.translate(-1*((x+group.xOffset)+dx/2), -1*((y+group.yOffset)+dy/2), -1*((z+group.zOffset)+dz/2));
+    }else{
+      render.beginShape(PConstants.QUAD);
+      Util.shapeVertex(render,verticies[0]);
+      Util.shapeVertex(render,verticies[1]);
+      Util.shapeVertex(render,verticies[2]);
+      Util.shapeVertex(render,verticies[3]);
+      
+      Util.shapeVertex(render,verticies[0]);
+      Util.shapeVertex(render,verticies[7]);
+      Util.shapeVertex(render,verticies[6]);
+      Util.shapeVertex(render,verticies[1]);
+      
+      Util.shapeVertex(render,verticies[4]);
+      Util.shapeVertex(render,verticies[5]);
+      Util.shapeVertex(render,verticies[6]);
+      Util.shapeVertex(render,verticies[7]);
+      
+      Util.shapeVertex(render,verticies[2]);
+      Util.shapeVertex(render,verticies[5]);
+      Util.shapeVertex(render,verticies[4]);
+      Util.shapeVertex(render,verticies[3]);
+      
+      Util.shapeVertex(render,verticies[1]);
+      Util.shapeVertex(render,verticies[6]);
+      Util.shapeVertex(render,verticies[5]);
+      Util.shapeVertex(render,verticies[2]);
+      
+      Util.shapeVertex(render,verticies[0]);
+      Util.shapeVertex(render,verticies[3]);
+      Util.shapeVertex(render,verticies[4]);
+      Util.shapeVertex(render,verticies[7]);
+      render.endShape();
+    }
     for(PVector v: verticies){
       render.translate(v.x,v.y,v.z);
       render.fill(250,0,0);
@@ -110,7 +142,7 @@ class Ground extends StageComponent implements Rotatable{//ground component
     }
   }
 
-  boolean colide(float x, float y, boolean c) {
+  public boolean colide(float x, float y, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;
@@ -121,7 +153,7 @@ class Ground extends StageComponent implements Rotatable{//ground component
     return false;
   }
 
-  boolean colide(float x, float y, float z, boolean c) {
+  public boolean colide(float x, float y, float z, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;
@@ -147,16 +179,7 @@ class Ground extends StageComponent implements Rotatable{//ground component
     Group group=getGroup();
     if (!group.visable)
         return null;
-    return new Collider3D(new PVector[]{
-      new PVector(x+group.xOffset, y+group.yOffset, z+group.zOffset),
-      new PVector(x+group.xOffset+dx, y+group.yOffset, z+group.zOffset),
-      new PVector(x+group.xOffset+dx, y+group.yOffset+dy, z+group.zOffset),
-      new PVector(x+group.xOffset, y+group.yOffset+dy, z+group.zOffset),
-      new PVector(x+group.xOffset, y+group.yOffset, z+group.zOffset+dz),
-      new PVector(x+group.xOffset+dx, y+group.yOffset, z+group.zOffset+dz),
-      new PVector(x+group.xOffset+dx, y+group.yOffset+dy, z+group.zOffset+dz),
-      new PVector(x+group.xOffset, y+group.yOffset+dy, z+group.zOffset+dz)
-      });
+    return new Collider3D(verticies);
   }
   
   @Override
@@ -169,6 +192,36 @@ class Ground extends StageComponent implements Rotatable{//ground component
   @Override
   public Identifier id() {
     return ID;
+  }
+  
+  final float EPSILON = 0.00001f;
+  
+  public void setX(float x){
+    this.x=x;
+    updateVerticies();
+  }
+  public void setY(float y){
+    this.y=y;
+    updateVerticies();
+  }
+  public void setZ(float z){
+    this.z=z;
+    updateVerticies();
+  }
+  
+  public void setwidth(float w){
+    dx=w;
+    updateVerticies();
+  }
+  
+  public void setHeight(float h){
+    dy=h;
+    updateVerticies();
+  }
+  
+  public void setDepth(float d){
+    dz=d;
+    updateVerticies();
   }
   
   public void resetRotate(){
@@ -283,5 +336,13 @@ class Ground extends StageComponent implements Rotatable{//ground component
   }
   public PVector getZRotationAxis(){
     return new PVector(0,0,1);
+  }
+  
+  public boolean isRotated(){
+    return Math.abs(rx) > EPSILON || Math.abs(ry) > EPSILON || Math.abs(rz) > EPSILON;
+  }
+  
+  public boolean isRotated3D(){
+    return Math.abs(rx) > EPSILON || Math.abs(ry) > EPSILON;
   }
 }

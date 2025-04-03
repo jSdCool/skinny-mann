@@ -32,19 +32,19 @@ class CheckPoint extends StageComponent {//ground component
     deserial(iterator);
   }
   
-  StageComponent copy() {
+  public StageComponent copy() {
     return new CheckPoint(new StageComponentPlacementContext(x, y, z));
   }
   
-  StageComponent copy(float offsetX,float  offsetY){
+  public StageComponent copy(float offsetX,float  offsetY){
     return new CheckPoint(new StageComponentPlacementContext(x+offsetX,y+offsetY));
   }
   
-  StageComponent copy(float offsetX,float  offsetY,float offsetZ){
+  public StageComponent copy(float offsetX,float  offsetY,float offsetZ){
     return new CheckPoint(new StageComponentPlacementContext(x+offsetZ,y+offsetY,z+offsetZ));
   }
 
-  JSONObject save(boolean stage_3D) {
+  public JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();
     part.setFloat("x", x);
     part.setFloat("y", y);
@@ -56,7 +56,7 @@ class CheckPoint extends StageComponent {//ground component
     return part;
   }
 
-  void draw(PGraphics render) {
+  public void draw(PGraphics render) {
     Group group=getGroup();
     //TODO: move this off the render thread
     if (!group.visable)
@@ -82,7 +82,7 @@ class CheckPoint extends StageComponent {//ground component
     render.triangle(x2*source.Scale, (y2-60)*source.Scale, x2*source.Scale, (y2-40)*source.Scale, (x2+30)*source.Scale, (y2-50)*source.Scale);
   }
 
-  void draw3D(PGraphics render) {
+  public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -113,7 +113,7 @@ class CheckPoint extends StageComponent {//ground component
     render.translate(-((x+group.xOffset)+10), -((y+group.yOffset)-50), -(z+group.zOffset));
   }
 
-  boolean colide(float x, float y, boolean c) {
+  public boolean colide(float x, float y, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;
@@ -125,7 +125,7 @@ class CheckPoint extends StageComponent {//ground component
     return false;
   }
 
-  boolean colide(float x, float y, float z, boolean c) {
+  public boolean colide(float x, float y, float z, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;

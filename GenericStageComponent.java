@@ -8,23 +8,23 @@ class GenericStageComponent extends StageComponent {
 	
   public static final Identifier ID = new Identifier("GenericStageComposnent");
 
-  void draw(PGraphics render){
+  public void draw(PGraphics render){
     
   }
   
-  void draw3D(PGraphics render){
+  public void draw3D(PGraphics render){
     
   }
   
-  StageComponent copy() {
+  public StageComponent copy() {
     return this;
   }
   
-  StageComponent copy(float offsetX,float offsetY){
+  public StageComponent copy(float offsetX,float offsetY){
     return this;
   }
   
-  StageComponent copy(float offsetX,float offsetY,float offsetZ){
+  public StageComponent copy(float offsetX,float offsetY,float offsetZ){
     return this;
   }
   
@@ -38,7 +38,7 @@ class GenericStageComponent extends StageComponent {
   
   public GenericStageComponent(){}
   
-  JSONObject save(boolean e) {
+  public JSONObject save(boolean e) {
     return null;
   }
   

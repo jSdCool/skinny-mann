@@ -8,44 +8,44 @@ abstract class StageComponent implements Serialization {//the base class for all
   public int ccolor, group=-1;
   public String type;
   
-  abstract void draw(PGraphics render);
+  public abstract void draw(PGraphics render);
   
-  abstract void draw3D(PGraphics render);
+  public abstract void draw3D(PGraphics render);
   
   //used for mouse click detecteion
-  boolean colide(float x, float y, boolean c) {
+  public boolean colide(float x, float y, boolean c) {
     return false;
   }//c= is colideing with click box
   
-  boolean colide(float x, float y, float z, boolean c) {
+  public boolean colide(float x, float y, float z, boolean c) {
     return false;
   }
   
-  boolean colideDethPlane(float x, float Y) {
+  public boolean colideDethPlane(float x, float Y) {
     return false;
   }
   
-  abstract JSONObject save(boolean stage_3D);
+  public abstract JSONObject save(boolean stage_3D);
 
-  void setData(String data) {
+  public void setData(String data) {
   }
   
-  void setData(int data) {
+  public void setData(int data) {
   }
 
-  String getData() {
+  public String getData() {
     return null;
   }
   
-  int getDataI() {
+  public int getDataI() {
     return -1;
   }
   
-  abstract StageComponent copy();
-  abstract StageComponent copy(float offsetX,float  offsetY);
-  abstract StageComponent copy(float offsetX,float  offsetY,float offsetZ);
+  public abstract StageComponent copy();
+  public abstract StageComponent copy(float offsetX,float  offsetY);
+  public abstract StageComponent copy(float offsetX,float  offsetY,float offsetZ);
   
-  Group getGroup() {
+  public Group getGroup() {
     if (group==-1)
       return new Group();
     if(source.level == null){
@@ -54,18 +54,18 @@ abstract class StageComponent implements Serialization {//the base class for all
     return source.level.groups.get(group);
   }
   
-  void setGroup(int grp) {
+  public void setGroup(int grp) {
     group=grp;
   }
 
-  void worldInteractions(int data) {
+  public void worldInteractions(int data) {
   }
   
   //used for entity collision detection 
   abstract public Collider2D getCollider2D();
   abstract public Collider3D getCollider3D();
   
-  void serialize(SerializedData data){
+  public void serialize(SerializedData data){
     data.addFloat(x);
     data.addFloat(y);
     data.addFloat(z);
@@ -77,7 +77,7 @@ abstract class StageComponent implements Serialization {//the base class for all
     data.addObject(SerializedData.ofString(type));
   }
   
-  void deserial(SerialIterator iterator){
+  public void deserial(SerialIterator iterator){
     x = iterator.getFloat();
     y = iterator.getFloat();
     z = iterator.getFloat();
@@ -87,6 +87,44 @@ abstract class StageComponent implements Serialization {//the base class for all
     ccolor = iterator.getInt();
     group = iterator.getInt();
     type = iterator.getString();
+  }
+  
+  public PVector getCenter(){
+     return new PVector(x+dx/2,y+dy/2,z+dz/2);
+  }
+  
+  public float getWidth(){
+    return dx;
+  }
+  
+  public float getHeight(){
+    return dy;
+  }
+  
+  public float getDepth(){
+    return dz;
+  }
+  
+  public void setX(float x){
+    this.x=x;
+  }
+  public void setY(float y){
+    this.y=y;
+  }
+  public void setZ(float z){
+    this.z=z;
+  }
+  
+  public void setWidth(float w){
+    dx=w;
+  }
+  
+  public void setHeight(float h){
+    dy=h;
+  }
+  
+  public void setDepth(float d){
+    dz=d;
   }
   
 }

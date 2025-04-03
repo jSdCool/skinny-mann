@@ -35,19 +35,19 @@ class Coin extends StageComponent {//ground component
     deserial(iterator);
     coinId = iterator.getInt();
   }
-  StageComponent copy() {
+  public StageComponent copy() {
     return new Coin(new StageComponentPlacementContext(x, y, z, coinId));
   }
   
-  StageComponent copy(float offsetX,float offsetY){
+  public StageComponent copy(float offsetX,float offsetY){
     return new Coin(new StageComponentPlacementContext(x+offsetX,y+offsetY,coinId));
   }
   
-  StageComponent copy(float offsetX,float offsetY,float offsetZ){
+  public StageComponent copy(float offsetX,float offsetY,float offsetZ){
     return new Coin(new StageComponentPlacementContext(x+offsetX,y+offsetY,z+offsetZ,coinId));
   }
   
-  JSONObject save(boolean stage_3D) {
+  public JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();
     part.setFloat("x", x);
     part.setFloat("y", y);
@@ -60,7 +60,7 @@ class Coin extends StageComponent {//ground component
     return part;
   }
 
-  void draw(PGraphics render) {
+  public void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -87,7 +87,7 @@ class Coin extends StageComponent {//ground component
     }
   }
 
-  void draw3D(PGraphics render) {
+  public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -119,7 +119,7 @@ class Coin extends StageComponent {//ground component
     }
   }
 
-  boolean colide(float x, float y, boolean c) {
+  public boolean colide(float x, float y, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;
@@ -131,7 +131,7 @@ class Coin extends StageComponent {//ground component
     return false;
   }
 
-  boolean colide(float x, float y, float z, boolean c) {
+  public boolean colide(float x, float y, float z, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;

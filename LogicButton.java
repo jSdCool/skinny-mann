@@ -30,15 +30,15 @@ class LogicButton extends StageComponent implements Interactable {//ground compo
     }
   }
   
-  StageComponent copy() {
+  public StageComponent copy() {
     return new LogicButton(new StageComponentPlacementContext(x, y, z));
   }
   
-  StageComponent copy(float offsetX,float offsetY){
+  public StageComponent copy(float offsetX,float offsetY){
     return new LogicButton(new StageComponentPlacementContext(x+offsetX,y+offsetY));
   }
   
-  StageComponent copy(float offsetX,float offsetY,float offsetZ){
+  public StageComponent copy(float offsetX,float offsetY,float offsetZ){
     return new LogicButton(new StageComponentPlacementContext(x+offsetX,y+offsetY,z+offsetZ));
   }
   
@@ -47,7 +47,7 @@ class LogicButton extends StageComponent implements Interactable {//ground compo
     variable = iterator.getInt();
   }
   
-  JSONObject save(boolean stage_3D) {
+  public JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();
     part.setFloat("x", x);
     part.setFloat("y", y);
@@ -60,7 +60,7 @@ class LogicButton extends StageComponent implements Interactable {//ground compo
     return part;
   }
 
-  void draw(PGraphics render) {
+  public void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -88,7 +88,7 @@ class LogicButton extends StageComponent implements Interactable {//ground compo
     source.drawLogicButton(((x+group.xOffset)-source.drawCamPosX)*source.Scale, ((y+group.yOffset)+source.drawCamPosY)*source.Scale, source.Scale, state,render);
   }
 
-  void draw3D(PGraphics render) {
+  public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -116,7 +116,7 @@ class LogicButton extends StageComponent implements Interactable {//ground compo
     source.drawLogicButton((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 1, state,render);
   }
 
-  boolean colide(float x, float y, boolean c) {
+  public boolean colide(float x, float y, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;
@@ -128,7 +128,7 @@ class LogicButton extends StageComponent implements Interactable {//ground compo
     return false;
   }
 
-  boolean colide(float x, float y, float z, boolean c) {
+  public boolean colide(float x, float y, float z, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;

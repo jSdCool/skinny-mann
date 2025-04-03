@@ -15,4 +15,6 @@ interface Rotatable{
   PVector getXRotationAxis();
   PVector getYRotationAxis();
   PVector getZRotationAxis();
+  boolean isRotated();
+  boolean isRotated3D();
 }

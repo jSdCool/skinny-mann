@@ -1,5 +1,6 @@
 import processing.core.PMatrix3D;
 import processing.core.PVector;
+import processing.core.PGraphics;
 
 public class Util{
   /** apply the given transformation to 4 verticies at the same time
@@ -119,5 +120,9 @@ public class Util{
     
     PVector reslut = new PVector(lineA.x+t*(lineB.x-lineA.x),lineA.y+t*(lineB.y-lineA.y),lineA.z+t*(lineB.z-lineA.z));
     return reslut;
+  }
+  
+  public static void shapeVertex(PGraphics g, PVector v){
+    g.vertex(v.x,v.y,v.z);
   }
 }

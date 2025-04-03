@@ -605,23 +605,23 @@ void stageEditGUI() {
           //translte objects in 3D
           if (grid_mode) {//Math.round(((int)mouseX+camPos)*1.0/grid_size)*grid_size
             if (translateZaxis) {
-              ct.z=(int)Math.round((initalObjectPos.z-initalMousePoint.z+mousePoint.z)*1.0/grid_size)*grid_size;
+              ct.setZ((int)Math.round((initalObjectPos.z-initalMousePoint.z+mousePoint.z)*1.0/grid_size)*grid_size);
             }
             if (translateXaxis) {
-              ct.x=(int)Math.round((initalObjectPos.x-initalMousePoint.x+mousePoint.x)*1.0/grid_size)*grid_size;
+              ct.setX((int)Math.round((initalObjectPos.x-initalMousePoint.x+mousePoint.x)*1.0/grid_size)*grid_size);
             }
             if (translateYaxis) {
-              ct.y=(int)Math.round((initalObjectPos.y-initalMousePoint.y+mousePoint.y)*1.0/grid_size)*grid_size;
+              ct.setY((int)Math.round((initalObjectPos.y-initalMousePoint.y+mousePoint.y)*1.0/grid_size)*grid_size);
             }
           } else {//if not in grid mdoe
             if (translateZaxis) {
-              ct.z=(int)initalObjectPos.z-(initalMousePoint.z-mousePoint.z);
+              ct.setZ((int)initalObjectPos.z-(initalMousePoint.z-mousePoint.z));
             }
             if (translateXaxis) {
-              ct.x=(int)initalObjectPos.x-(initalMousePoint.x-mousePoint.x);
+              ct.setX((int)initalObjectPos.x-(initalMousePoint.x-mousePoint.x));
             }
             if (translateYaxis) {
-              ct.y=(int)initalObjectPos.y-(initalMousePoint.y-mousePoint.y);
+              ct.setY((int)initalObjectPos.y-(initalMousePoint.y-mousePoint.y));
             }
           }
         }//end of 3d transform mode is move
@@ -685,34 +685,34 @@ void stageEditGUI() {
             if (transformComponentNumber==1) {
               if (translateZaxis) {
                 if (initialObjectDim.z-Math.round((initalMousePoint.z-mousePoint.z)*1.0/grid_size)*grid_size > 0)
-                  ct.dz=initialObjectDim.z-Math.round((initalMousePoint.z-mousePoint.z)*1.0/grid_size)*grid_size;
+                  ct.setDepth(initialObjectDim.z-Math.round((initalMousePoint.z-mousePoint.z)*1.0/grid_size)*grid_size);
               }
               if (translateXaxis) {
                 if (initialObjectDim.x-Math.round((initalMousePoint.x-mousePoint.x)*1.0/grid_size)*grid_size > 0)
-                  ct.dx=initialObjectDim.x-Math.round((initalMousePoint.x-mousePoint.x)*1.0/grid_size)*grid_size;
+                  ct.setWidth(initialObjectDim.x-Math.round((initalMousePoint.x-mousePoint.x)*1.0/grid_size)*grid_size);
               }
               if (translateYaxis) {
                 if (initialObjectDim.y-Math.round((initalMousePoint.y-mousePoint.y)*1.0/grid_size)*grid_size > 0)
-                  ct.dy=initialObjectDim.y-Math.round((initalMousePoint.y-mousePoint.y)*1.0/grid_size)*grid_size;
+                  ct.setHeight(initialObjectDim.y-Math.round((initalMousePoint.y-mousePoint.y)*1.0/grid_size)*grid_size);
               }
             }
             if (transformComponentNumber==2) {
               if (translateZaxis) {
                 if (initialObjectDim.z+Math.round((initalMousePoint.z-mousePoint.z)*1.0/grid_size)*grid_size > 0) {
-                  ct.dz=initialObjectDim.z+Math.round((initalMousePoint.z-mousePoint.z)*1.0/grid_size)*grid_size;
-                  ct.z=(initalObjectPos.z-Math.round((initalMousePoint.z-mousePoint.z)*1.0/grid_size)*grid_size);
+                  ct.setDepth(initialObjectDim.z+Math.round((initalMousePoint.z-mousePoint.z)*1.0/grid_size)*grid_size);
+                  ct.setZ((initalObjectPos.z-Math.round((initalMousePoint.z-mousePoint.z)*1.0/grid_size)*grid_size));
                 }
               }
               if (translateXaxis) {
                 if (initialObjectDim.x+Math.round((initalMousePoint.x-mousePoint.x)*1.0/grid_size)*grid_size > 0) {
-                  ct.dx=initialObjectDim.x+Math.round((initalMousePoint.x-mousePoint.x)*1.0/grid_size)*grid_size;
-                  ct.x=(initalObjectPos.x-Math.round((initalMousePoint.x-mousePoint.x)*1.0/grid_size)*grid_size);
+                  ct.setWidth(initialObjectDim.x+Math.round((initalMousePoint.x-mousePoint.x)*1.0/grid_size)*grid_size);
+                  ct.setX((initalObjectPos.x-Math.round((initalMousePoint.x-mousePoint.x)*1.0/grid_size)*grid_size));
                 }
               }
               if (translateYaxis) {
                 if (initialObjectDim.y+Math.round((initalMousePoint.y-mousePoint.y)*1.0/grid_size)*grid_size > 0) {
-                  ct.dy=initialObjectDim.y+Math.round((initalMousePoint.y-mousePoint.y)*1.0/grid_size)*grid_size;
-                  ct.y=(initalObjectPos.y-Math.round((initalMousePoint.y-mousePoint.y)*1.0/grid_size)*grid_size);
+                  ct.setHeight(initialObjectDim.y+Math.round((initalMousePoint.y-mousePoint.y)*1.0/grid_size)*grid_size);
+                  ct.setY((initalObjectPos.y-Math.round((initalMousePoint.y-mousePoint.y)*1.0/grid_size)*grid_size));
                 }
               }
             }
@@ -720,34 +720,34 @@ void stageEditGUI() {
             if (transformComponentNumber==1) {
               if (translateZaxis) {
                 if (initialObjectDim.z-(initalMousePoint.z-mousePoint.z) > 0)
-                  ct.dz=initialObjectDim.z-(initalMousePoint.z-mousePoint.z);
+                  ct.setDepth(initialObjectDim.z-(initalMousePoint.z-mousePoint.z));
               }
               if (translateXaxis) {
                 if (initialObjectDim.x-(initalMousePoint.x-mousePoint.x) > 0)
-                  ct.dx=initialObjectDim.x-(initalMousePoint.x-mousePoint.x);
+                  ct.setWidth(initialObjectDim.x-(initalMousePoint.x-mousePoint.x));
               }
               if (translateYaxis) {
                 if (initialObjectDim.y-(initalMousePoint.y-mousePoint.y) > 0);
-                ct.dy=initialObjectDim.y-(initalMousePoint.y-mousePoint.y);
+                ct.setHeight(initialObjectDim.y-(initalMousePoint.y-mousePoint.y));
               }
             }
             if (transformComponentNumber==2) {
               if (translateZaxis) {
                 if (initialObjectDim.z+(initalMousePoint.z-mousePoint.z) > 0) {
-                  ct.dz=initialObjectDim.z+(initalMousePoint.z-mousePoint.z);
-                  ct.z=initalObjectPos.z-(initalMousePoint.z-mousePoint.z);
+                  ct.setDepth(initialObjectDim.z+(initalMousePoint.z-mousePoint.z));
+                  ct.setZ(initalObjectPos.z-(initalMousePoint.z-mousePoint.z));
                 }
               }
               if (translateXaxis) {
                 if (initialObjectDim.x+(initalMousePoint.x-mousePoint.x) > 0) {
-                  ct.dx=initialObjectDim.x+(initalMousePoint.x-mousePoint.x);
-                  ct.x=initalObjectPos.x-(initalMousePoint.x-mousePoint.x);
+                  ct.setWidth(initialObjectDim.x+(initalMousePoint.x-mousePoint.x));
+                  ct.setX(initalObjectPos.x-(initalMousePoint.x-mousePoint.x));
                 }
               }
               if (translateYaxis) {
                 if (initialObjectDim.y+(initalMousePoint.y-mousePoint.y) > 0) {
-                  ct.dy=initialObjectDim.y+(initalMousePoint.y-mousePoint.y);
-                  ct.y=initalObjectPos.y-(initalMousePoint.y-mousePoint.y);
+                  ct.setHeight(initialObjectDim.y+(initalMousePoint.y-mousePoint.y));
+                  ct.setY(initalObjectPos.y-(initalMousePoint.y-mousePoint.y));
                 }
               }
             }
@@ -755,19 +755,19 @@ void stageEditGUI() {
         }//end of 3d transform mode is scale
         if(current3DTransformMode==3 && ct instanceof Rotatable){
           Rotatable rotb = (Rotatable)ct;
-          PVector center = new PVector(ct.x+ct.dx/2,ct.y+ct.dy/2,ct.z+ct.dz/2);
+          PVector center = ct.getCenter();
           PVector cameraVec = new PVector(cam3Dx+DX,cam3Dy-DY,cam3Dz-DZ), mousePointVec = new PVector(mousePoint.x,mousePoint.y,mousePoint.z);
           //calculate the position on the rotation plane that intersects with the mouse
           PVector inPlaneX = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rotb.getXRotationAxis());
           PVector inPlaneY = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rotb.getYRotationAxis());
           PVector inPlaneZ = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rotb.getZRotationAxis());
           
-          float sze = sqrt(pow(ct.dx/2,2)+pow(ct.dy/2,2)+pow(ct.dz/2,2))/28;
+          float sze = sqrt(pow(ct.getWidth()/2,2)+pow(ct.getHeight()/2,2)+pow(ct.getDepth()/2,2))/28;
           rotateCircleX.scale(sze);
           rotateCircleY.scale(sze);
           rotateCircleZ.scale(sze);
           rotateCircleHilight.scale(sze);
-          translate(ct.x+ct.dx/2, ct.y+ct.dy/2, ct.z+ct.dz/2);
+          translate(center.x, center.y, center.z);
           
           rotateZ(rotb.getRotateZ());
           rotateY(rotb.getRotateY());
@@ -806,7 +806,7 @@ void stageEditGUI() {
           
           rotateZ(-rotb.getRotateZ());
           //un translate and rescale everying
-          translate(-(ct.x+ct.dx/2), -(ct.y+ct.dy/2), -(ct.z+ct.dz/2));
+          translate(-center.x, -center.y, -center.z);
           rotateCircleX.scale(1/sze);
           rotateCircleY.scale(1/sze);
           rotateCircleZ.scale(1/sze);
@@ -831,14 +831,14 @@ void stageEditGUI() {
             
             if(!Float.isNaN(inPlane.x)){//only do the next part if the mouse if not parellel to the plane in question
               //start by fining the ange of rotation:
-              PVector objectCenter = new PVector(ct.x+ct.dx/2,ct.y+ct.dy/2,ct.z+ct.dz/2);
+              PVector objectCenter = ct.getCenter();
               PVector AB = PVector.sub(initalMousePoint.toPVector(),objectCenter,null);
               PVector BC = PVector.sub(objectCenter, inPlane,null);
               AB.normalize();
               BC.normalize();
               BC.mult(-1);//make both face the smae direction if the start and current points are the same place
               float angleDiff = acos(AB.dot(BC));
-              println(angleDiff+" "+initalMousePoint+" "+objectCenter+" "+inPlane);
+              //println(angleDiff+" "+initalMousePoint+" "+objectCenter+" "+inPlane);
               if(PVector.cross(AB,BC,null).dot(aNoraml) <= 0){
                 angleDiff*=-1;
               }

@@ -32,20 +32,20 @@ class Goal extends StageComponent {//ground component
     deserial(iterator);
   }
 
-  StageComponent copy() {
+  public StageComponent copy() {
     return new Goal(new StageComponentPlacementContext(x, y));
   }
   
-  StageComponent copy(float offsetX,float offsetY){
+  public StageComponent copy(float offsetX,float offsetY){
     return new Goal(new StageComponentPlacementContext(x+offsetX,y+offsetY));
   }
   
-  StageComponent copy(float offsetX,float offsetY,float offsetZ){
+  public StageComponent copy(float offsetX,float offsetY,float offsetZ){
     System.err.println("attempted to copy a goal in 3D. This opperation is not supported");
     return null;
   }
   
-  JSONObject save(boolean stage_3D) {
+  public JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();
     part.setFloat("x", x);
     part.setFloat("y", y);
@@ -57,7 +57,7 @@ class Goal extends StageComponent {//ground component
     return part;
   }
 
-  void draw(PGraphics render) {
+  public void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -84,10 +84,10 @@ class Goal extends StageComponent {//ground component
     }
   }
 
-  void draw3D(PGraphics render) {
+  public void draw3D(PGraphics render) {
   }
 
-  boolean colide(float x, float y, boolean c) {
+  public boolean colide(float x, float y, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;

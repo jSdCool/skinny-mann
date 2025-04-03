@@ -2772,37 +2772,38 @@ void mousePressed() {
         for (int i=0; i<5000; i++) {
           Point3D testPoint=genMousePoint(i);
           if(!(current3DTransformMode==3 && ct instanceof Rotatable)){
-            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z+ct.dz && testPoint.z <= ct.z+ct.dz+60) {
+            PVector center = ct.getCenter();
+            if (testPoint.x >= center.x-5 && testPoint.x <= center.x+5 && testPoint.y >= center.y-5 && testPoint.y <= center.y+5 && testPoint.z >= center.z+ct.getDepth()/2 && testPoint.z <= center.z+ct.getDepth()/2+60) {
               translateZaxis=true;
               transformComponentNumber=1;
               break;
             }
   
-            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z-60 && testPoint.z <= ct.z) {
+            if (testPoint.x >= center.x-5 && testPoint.x <= center.x+5 && testPoint.y >= center.y-5 && testPoint.y <= center.y+5 && testPoint.z >= center.z-ct.getDepth()/2-60 && testPoint.z <= center.z-ct.getDepth()/2) {
               translateZaxis=true;
               transformComponentNumber=2;
               break;
             }
   
-            if (testPoint.x >= ct.x-60 && testPoint.x <= ct.x && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+            if (testPoint.x >= center.x-ct.getWidth()/2-60 && testPoint.x <= center.x-ct.getWidth()/2 && testPoint.y >= center.y-5 && testPoint.y <= center.y+5 && testPoint.z >= center.z-5 && testPoint.z <= center.z+5) {
               translateXaxis=true;
               transformComponentNumber=2;
               break;
             }
   
-            if (testPoint.x >= ct.x+ct.dx && testPoint.x <= ct.x+ct.dx+60 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+            if (testPoint.x >= center.x+ct.getWidth()/2 && testPoint.x <= center.x+ct.getWidth()/2+60 && testPoint.y >= center.y-5 && testPoint.y <= center.y+5 && testPoint.z >= center.z-5 && testPoint.z <= center.z+5) {
               translateXaxis=true;
               transformComponentNumber=1;
               break;
             }
   
-            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= ct.y-60 && testPoint.y <= ct.y && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+            if (testPoint.x >= center.x-5 && testPoint.x <= center.x+5 && testPoint.y >= center.y-ct.getHeight()/2-60 && testPoint.y <= center.y-ct.getHeight()/2 && testPoint.z >= center.z-5 && testPoint.z <= center.z+5) {
               translateYaxis=true;
               transformComponentNumber=2;
               break;
             }
   
-            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= ct.y+ct.dy && testPoint.y <= ct.y+ct.dy+60 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+            if (testPoint.x >= center.x-5 && testPoint.x <= center.x+5 && testPoint.y >= center.y+ct.getHeight()/2 && testPoint.y <= center.y+ct.getHeight()/2+60 && testPoint.z >= center.z-5 && testPoint.z <= center.z+5) {
               translateYaxis=true;
               transformComponentNumber=1;
               break;
@@ -2811,8 +2812,8 @@ void mousePressed() {
         }
         
         if(current3DTransformMode==3 && ct instanceof Rotatable){
-            PVector center = new PVector(ct.x+ct.dx/2,ct.y+ct.dy/2,ct.z+ct.dz/2);
-            float sze = sqrt(pow(ct.dx/2,2)+pow(ct.dy/2,2)+pow(ct.dz/2,2))/28;
+            PVector center = ct.getCenter();
+            float sze = sqrt(pow(ct.getWidth()/2,2)+pow(ct.getHeight()/2,2)+pow(ct.getDepth()/2,2))/28;
             sze*=31;//scale factor to make the cyleners the right size
             Rotatable rota = (Rotatable)ct;
             PVector cameraVec = new PVector(cam3Dx+DX,cam3Dy-DY,cam3Dz-DZ), mousePointVec = new PVector(mousePoint.x,mousePoint.y,mousePoint.z);
@@ -2885,7 +2886,7 @@ void mousePressed() {
             initalMousePoint=mousePoint;
           }
         initalObjectPos=new Point3D(ct.x, ct.y, ct.z);
-        initialObjectDim=new Point3D(ct.dx, ct.dy, ct.dz);
+        initialObjectDim=new Point3D(ct.getWidth(), ct.getHeight(), ct.getDepth());
       }
       
       //placing a blueprint in 3D movement

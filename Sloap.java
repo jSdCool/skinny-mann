@@ -44,20 +44,20 @@ class Sloap extends StageComponent {//ground component
     direction = iterator.getInt();
   }
   
-  StageComponent copy() {
+  public StageComponent copy() {
     return new Sloap(new StageComponentDragPlacementContext(x, y, dx, dy, ccolor, direction));
   }
   
-  StageComponent copy(float offsetX,float offsetY){
+  public StageComponent copy(float offsetX,float offsetY){
     return new Sloap(new StageComponentDragPlacementContext(x+offsetX,y+offsetY,dx+offsetX,dy+offsetY,ccolor,direction));
   }
   
-  StageComponent copy(float offsetX,float offsetY,float offsetZ){
+  public StageComponent copy(float offsetX,float offsetY,float offsetZ){
     System.err.println("attempted to copy holotriangle in 3D. This opperation is not supported");
     return null;
   }
 
-  JSONObject save(boolean stage_3D) {
+  public JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();
     part.setFloat("x1", x);
     part.setFloat("y1", y);
@@ -70,7 +70,7 @@ class Sloap extends StageComponent {//ground component
     return part;
   }
 
-  void draw(PGraphics render) {
+  public void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -89,7 +89,7 @@ class Sloap extends StageComponent {//ground component
     }
   }
 
-  void draw3D(PGraphics render) {
+  public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -100,7 +100,7 @@ class Sloap extends StageComponent {//ground component
     render.translate(-1*((x+group.xOffset)+dx/2), -1*((y+group.yOffset)+dy/2), -1*(z+dz/2));
   }
 
-  boolean colide(float x, float y, boolean c) {
+  public boolean colide(float x, float y, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;

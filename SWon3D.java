@@ -32,19 +32,19 @@ class SWon3D extends StageComponent {//ground component
     deserial(iterator);
   }
   
-  StageComponent copy() {
+  public StageComponent copy() {
     return new SWon3D(new StageComponentPlacementContext(x, y, z));
   }
   
-  StageComponent copy(float offsetX,float offsetY){
+  public StageComponent copy(float offsetX,float offsetY){
     return new SWon3D(new StageComponentPlacementContext(x+offsetX,y+offsetY,z));
   }
   
-  StageComponent copy(float offsetX,float offsetY,float offsetZ){
+  public StageComponent copy(float offsetX,float offsetY,float offsetZ){
     return new SWon3D(new StageComponentPlacementContext(x+offsetX,y+offsetY,z+offsetZ));
   }
   
-  JSONObject save(boolean stage_3D) {
+  public JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();
     part.setFloat("x", x);
     part.setFloat("y", y);
@@ -56,7 +56,7 @@ class SWon3D extends StageComponent {//ground component
     return part;
   }
 
-  void draw(PGraphics render) {
+  public void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -72,14 +72,14 @@ class SWon3D extends StageComponent {//ground component
     }
   }
 
-  void draw3D(PGraphics render) {
+  public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
     source.draw3DSwitch1((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), source.Scale,render);
   }
 
-  boolean colide(float x, float y, boolean c) {
+  public boolean colide(float x, float y, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;
@@ -91,7 +91,7 @@ class SWon3D extends StageComponent {//ground component
     return false;
   }
 
-  boolean colide(float x, float y, float z, boolean c) {
+  public boolean colide(float x, float y, float z, boolean c) {
     Group group=getGroup();
     if (!group.visable)
       return false;
