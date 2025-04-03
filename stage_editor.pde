@@ -473,7 +473,11 @@ void stageEditGUI() {
               angleDiff*=-1;
             }
             //then apply it to the correct axis
-            rotb.rotateZ(currentComponentRotation.z+angleDiff);
+            if(grid_mode){
+              rotb.rotateZ(radians(Math.round(degrees(currentComponentRotation.z+angleDiff)/grid_size)*grid_size));
+            }else{
+              rotb.rotateZ(currentComponentRotation.z+angleDiff);
+            }
             
           }
         }
@@ -889,13 +893,25 @@ void stageEditGUI() {
               }
               //then apply it to the correct axis
               if(translateXaxis){
-                rotb.rotateX(currentComponentRotation.x+angleDiff);
+                if(grid_mode){
+                  rotb.rotateX(radians(Math.round(degrees(currentComponentRotation.x+angleDiff)/grid_size)*grid_size));
+                }else{
+                  rotb.rotateX(currentComponentRotation.x+angleDiff);
+                }
               }
               if(translateYaxis){
-                rotb.rotateY(currentComponentRotation.y+angleDiff);
+                if(grid_mode){
+                  rotb.rotateY(radians(Math.round(degrees(currentComponentRotation.y+angleDiff)/grid_size)*grid_size));
+                }else{
+                  rotb.rotateY(currentComponentRotation.y+angleDiff);
+                }
               }
               if(translateZaxis){
-                rotb.rotateZ(currentComponentRotation.z+angleDiff);
+                if(grid_mode){
+                  rotb.rotateZ(radians(Math.round(degrees(currentComponentRotation.z+angleDiff)/grid_size)*grid_size));
+                }else{
+                  rotb.rotateZ(currentComponentRotation.z+angleDiff);
+                }
               }
             }
           }
