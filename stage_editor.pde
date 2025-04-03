@@ -436,6 +436,51 @@ void stageEditGUI() {
         }
       }
       
+      if (selectedIndex!=-1) {
+        StageComponent ct=current.parts.get(selectedIndex);
+        //2D Rotation
+        if(current3DTransformMode==3 && ct instanceof Rotatable){//if rotating
+        //prepair the visual center pos
+          PVector center = ct.getCenter();
+          center.z=0;
+          center.mult(Scale);
+          center.x -= drawCamPosX*Scale;
+          center.y += drawCamPosY*Scale;
+          float sze = sqrt(pow(ct.getWidth()/2,2)+pow(ct.getHeight()/2,2))*2.5;
+          
+          //draw the circle
+          fill(0,0);
+          if(dist(mouseX,mouseY,center.x,center.y) <= sze/2*Scale){
+            stroke(255,255,0);
+          }else{
+            stroke(0,0,255);
+          }
+          strokeWeight(4);
+          circle(center.x,center.y,sze*Scale);
+          noStroke();
+          
+          //rotation functionality
+          if(translateZaxis){
+            Rotatable rotb = (Rotatable)ct;
+            PVector AB = PVector.sub(initalMousePoint.toPVector(),center,null);
+            PVector BC = PVector.sub(center, new PVector(mouseX,mouseY),null);
+            AB.normalize();
+            BC.normalize();
+            BC.mult(-1);//make both face the smae direction if the start and current points are the same place
+            float angleDiff = acos(AB.dot(BC));
+            //println(angleDiff+" "+initalMousePoint+" "+objectCenter+" "+inPlane);
+            if(PVector.cross(AB,BC,null).dot(rotb.getZRotationAxis()) <= 0){
+              angleDiff*=-1;
+            }
+            //then apply it to the correct axis
+            rotb.rotateZ(currentComponentRotation.z+angleDiff);
+            
+          }
+        }
+        
+      }
+      
+      
     }//end of is 3d mode off if statment
     else {//if 3dmode is on
       if (selectedIndex!=-1) {
@@ -481,8 +526,8 @@ void stageEditGUI() {
         if(current3DTransformMode==3 && ct instanceof Rotatable){//if rotating
           //figure out what circle to hilight
           if(!(translateXaxis || translateYaxis || translateZaxis)){
-            PVector center = new PVector(ct.x+ct.dx/2,ct.y+ct.dy/2,ct.z+ct.dz/2);
-            float sze = sqrt(pow(ct.dx/2,2)+pow(ct.dy/2,2)+pow(ct.dz/2,2))/28;
+            PVector center = ct.getCenter();
+            float sze = sqrt(pow(ct.getWidth()/2,2)+pow(ct.getHeight()/2,2)+pow(ct.getDepth()/2,2))/28;
             sze*=31;//scale factor to make the cyleners the right size
             Rotatable rota = (Rotatable)ct;
             PVector cameraVec = new PVector(cam3Dx+DX,cam3Dy-DY,cam3Dz-DZ), mousePointVec = new PVector(mousePoint.x,mousePoint.y,mousePoint.z);

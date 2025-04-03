@@ -2760,8 +2760,8 @@ void mousePressed() {
           }
         }
       }//end of editng logic board
+      StageComponent ct = null;
       if (e3DMode&&selectedIndex!=-1) {
-        StageComponent ct = null;
           if (editingStage) {
             ct=level.stages.get(currentStageIndex).parts.get(selectedIndex);
           }
@@ -2887,6 +2887,32 @@ void mousePressed() {
           }
         initalObjectPos=new Point3D(ct.x, ct.y, ct.z);
         initialObjectDim=new Point3D(ct.getWidth(), ct.getHeight(), ct.getDepth());
+      }else if (selectedIndex!=-1) {
+        if (editingStage) {
+          ct=level.stages.get(currentStageIndex).parts.get(selectedIndex);
+        }
+        if (editingBlueprint) {
+          ct = workingBlueprint.parts.get(selectedIndex);
+        }
+        //2D Rotation
+        if(current3DTransformMode==3 && ct instanceof Rotatable){//if rotating
+        //prepair the visual center pos
+          PVector center = ct.getCenter();
+          center.z=0;
+          center.mult(Scale);
+          center.x -= drawCamPosX*Scale;
+          center.y += drawCamPosY*Scale;
+          float sze = sqrt(pow(ct.getWidth()/2,2)+pow(ct.getHeight()/2,2))*2.5;
+          Rotatable rota = (Rotatable)ct;
+
+          if(dist(mouseX,mouseY,center.x,center.y) <= sze/2*Scale){
+            translateZaxis=true;
+            currentComponentRotation.z = rota.getRotateZ();
+            initalMousePoint=new Point3D(mouseX,mouseY,0);
+          }
+          
+        }
+        
       }
       
       //placing a blueprint in 3D movement
@@ -2995,7 +3021,7 @@ void mouseReleased() {
           }
         }
       }//end of editing logic board
-      if (e3DMode&&selectedIndex!=-1) {
+      if (selectedIndex!=-1) {
         translateZaxis=false;
         translateXaxis=false;
         translateYaxis=false;
