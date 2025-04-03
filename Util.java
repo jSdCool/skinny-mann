@@ -122,7 +122,7 @@ public class Util{
     return reslut;
   }
   
-  public static void shapeVertex(PGraphics g, PVector v){
-    g.vertex(v.x,v.y,v.z);
+  public static void shapeVertex(PGraphics g, PVector v,float offsetX, float offsetY, float scale){
+    g.vertex((v.x+offsetX)*scale,(v.y+offsetY)*scale,v.z*scale);
   }
 }

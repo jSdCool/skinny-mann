@@ -9,6 +9,7 @@ class Ground extends StageComponent implements Rotatable{//ground component
   private PMatrix3D transfomration = new PMatrix3D(), rotation =  new PMatrix3D(),tmpMat = new PMatrix3D();
   private float rx,ry,rz;
   PVector verticies[] = new PVector[]{new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector()};//8 long
+  PVector verticies2D[] = new PVector[]{new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector()};//8 long
   PVector center = new PVector();
   PVector prevoursGroupPos = new PVector();
   
@@ -82,14 +83,36 @@ class Ground extends StageComponent implements Rotatable{//ground component
     Group group=getGroup();
     if (!group.visable)
       return;
+    //if the group has been modified then recalculate the verticies
+    if(group.xOffset != prevoursGroupPos.x || group.yOffset!=prevoursGroupPos.y || group.zOffset!=prevoursGroupPos.z){
+      updateVerticies();
+      prevoursGroupPos.x = group.xOffset;
+      prevoursGroupPos.y = group.yOffset;
+      prevoursGroupPos.z = group.zOffset;
+    }
     render.fill(ccolor);
-    render.rect(source.Scale*((x+group.xOffset)-source.drawCamPosX)-0.02f, source.Scale*((y+group.yOffset)+source.drawCamPosY)-0.02f, source.Scale*dx+0.04f, source.Scale*dy+0.04f);
+    if(!isRotated()){
+      //draw a non rotated rect
+      render.rect(source.Scale*((x+group.xOffset)-source.drawCamPosX)-0.02f, source.Scale*((y+group.yOffset)+source.drawCamPosY)-0.02f, source.Scale*dx+0.04f, source.Scale*dy+0.04f);
+    }else if(!isRotated3D()){
+      //draw a 2D rotated rect
+      render.beginShape(PConstants.QUAD);
+      Util.shapeVertex(render,verticies2D[0],-source.drawCamPosX,source.drawCamPosY,source.Scale);
+      Util.shapeVertex(render,verticies2D[7],-source.drawCamPosX,source.drawCamPosY,source.Scale);
+      Util.shapeVertex(render,verticies2D[6],-source.drawCamPosX,source.drawCamPosY,source.Scale);
+      Util.shapeVertex(render,verticies2D[1],-source.drawCamPosX,source.drawCamPosY,source.Scale);
+      render.endShape();
+    }else{
+      //draw the 2D version of the 2D roatated box
+      verts2Box(render,verticies2D,-source.drawCamPosX,source.drawCamPosY,source.Scale);
+    }
   }
 
   public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
       return;
+    //if the group has been modified then recalculate the verticies
     if(group.xOffset != prevoursGroupPos.x || group.yOffset!=prevoursGroupPos.y || group.zOffset!=prevoursGroupPos.z){
       updateVerticies();
       prevoursGroupPos.x = group.xOffset;
@@ -102,43 +125,7 @@ class Ground extends StageComponent implements Rotatable{//ground component
       render.box(dx, dy, dz);
       render.translate(-1*((x+group.xOffset)+dx/2), -1*((y+group.yOffset)+dy/2), -1*((z+group.zOffset)+dz/2));
     }else{
-      render.beginShape(PConstants.QUAD);
-      Util.shapeVertex(render,verticies[0]);
-      Util.shapeVertex(render,verticies[1]);
-      Util.shapeVertex(render,verticies[2]);
-      Util.shapeVertex(render,verticies[3]);
-      
-      Util.shapeVertex(render,verticies[0]);
-      Util.shapeVertex(render,verticies[7]);
-      Util.shapeVertex(render,verticies[6]);
-      Util.shapeVertex(render,verticies[1]);
-      
-      Util.shapeVertex(render,verticies[4]);
-      Util.shapeVertex(render,verticies[5]);
-      Util.shapeVertex(render,verticies[6]);
-      Util.shapeVertex(render,verticies[7]);
-      
-      Util.shapeVertex(render,verticies[2]);
-      Util.shapeVertex(render,verticies[5]);
-      Util.shapeVertex(render,verticies[4]);
-      Util.shapeVertex(render,verticies[3]);
-      
-      Util.shapeVertex(render,verticies[1]);
-      Util.shapeVertex(render,verticies[6]);
-      Util.shapeVertex(render,verticies[5]);
-      Util.shapeVertex(render,verticies[2]);
-      
-      Util.shapeVertex(render,verticies[0]);
-      Util.shapeVertex(render,verticies[3]);
-      Util.shapeVertex(render,verticies[4]);
-      Util.shapeVertex(render,verticies[7]);
-      render.endShape();
-    }
-    for(PVector v: verticies){
-      render.translate(v.x,v.y,v.z);
-      render.fill(250,0,0);
-      render.box(5);
-      render.translate(-v.x,-v.y,-v.z);
+      verts2Box(render,verticies,0,0,1);
     }
   }
 
@@ -146,8 +133,9 @@ class Ground extends StageComponent implements Rotatable{//ground component
     Group group=getGroup();
     if (!group.visable)
       return false;
-    float x2 = (this.x+group.xOffset)+dx, y2=(this.y+group.yOffset)+dy;
-    if (x >= (this.x+group.xOffset) && x <= x2 && y >= (this.y+group.yOffset) && y <= y2/* terain hit box*/) {
+    Collider2D hv = collide2Dimplm();
+    Collider2D mp = new Collider2D(new PVector[]{new PVector(x-0.5f,y-0.5f),new PVector(x+0.5f,y-0.5f),new PVector(x+0.5f,y+0.5f),new PVector(x-0.5f,y+0.5f)});
+    if (CollisionDetection.collide2D(hv,mp)) {
       return true;
     }
     return false;
@@ -157,8 +145,10 @@ class Ground extends StageComponent implements Rotatable{//ground component
     Group group=getGroup();
     if (!group.visable)
       return false;
-    float x2 = (this.x+group.xOffset)+dx, y2=(this.y+group.yOffset)+dy, z2=(this.z+group.zOffset)+dz;
-    if (x >= (this.x+group.xOffset) && x <= x2 && y >= (this.y+group.yOffset) && y <= y2 && z>=(this.z+group.zOffset) && z<=z2/* terain hit box*/) {
+     Collider3D hv =new Collider3D(verticies);
+     Collider3D mp = new Collider3D(new PVector[]{new PVector(x-0.5f,y-0.5f,z-0.5f),new PVector(x+0.5f,y-0.5f,z-0.5f),new PVector(x+0.5f,y+0.5f,z-0.5f),new PVector(x-0.5f,y+0.5f,z-0.5f),
+   new PVector(x-0.5f,y-0.5f,z+0.5f),new PVector(x+0.5f,y-0.5f,z+0.5f),new PVector(x+0.5f,y+0.5f,z+0.5f),new PVector(x-0.5f,y+0.5f,z+0.5f)});
+    if (CollisionDetection.collide3D(hv,mp)) {
       return true;
     }
     return false;
@@ -168,13 +158,20 @@ class Ground extends StageComponent implements Rotatable{//ground component
     Group group=getGroup();
     if (!group.visable)
         return null;
-    return new Collider2D(new PVector[]{
-      new PVector(x+group.xOffset, y+group.yOffset),
-      new PVector(x+group.xOffset+dx, y+group.yOffset),
-      new PVector(x+group.xOffset+dx, y+group.yOffset+dy),
-      new PVector(x+group.xOffset, y+group.yOffset+dy)
-      });
+    return collide2Dimplm();
+    
   }
+  
+  private Collider2D collide2Dimplm(){
+    if(!isRotated3D()){
+      //draw a non rotated rect
+      return new Collider2D(new PVector[]{verticies2D[0],verticies2D[7],verticies2D[6],verticies2D[1]});
+    }else {
+      //draw the 2D version of the 2D roatated box
+      return new Collider2D(verticies2D);
+    }
+  }
+  
   public Collider3D getCollider3D() {
     Group group=getGroup();
     if (!group.visable)
@@ -296,6 +293,13 @@ class Ground extends StageComponent implements Rotatable{//ground component
     //transform all the verticies
     Util.transform4Vert(transfomration,verticies[0],verticies[1],verticies[2],verticies[3],tmpMat);
     Util.transform4Vert(transfomration,verticies[4],verticies[5],verticies[6],verticies[7],tmpMat);
+    
+    for(int i=0;i<verticies.length;i++){
+      //copy the 3D verticies to a diffrent array
+      verticies2D[i].set(verticies[i]);
+      //nuke the z coordinate
+      verticies2D[i].z=0;
+    }
   }
   
   public float getRotateX(){
@@ -344,5 +348,39 @@ class Ground extends StageComponent implements Rotatable{//ground component
   
   public boolean isRotated3D(){
     return Math.abs(rx) > EPSILON || Math.abs(ry) > EPSILON;
+  }
+  
+  private void verts2Box(PGraphics render, PVector[] verts,float offsetX, float offsetY, float scale){
+    render.beginShape(PConstants.QUAD);
+    Util.shapeVertex(render,verts[0], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[1], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[2], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[3], offsetX, offsetY, scale);
+    
+    Util.shapeVertex(render,verts[0], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[7], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[6], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[1], offsetX, offsetY, scale);
+    
+    Util.shapeVertex(render,verts[4], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[5], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[6], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[7], offsetX, offsetY, scale);
+    
+    Util.shapeVertex(render,verts[2], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[5], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[4], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[3], offsetX, offsetY, scale);
+    
+    Util.shapeVertex(render,verts[1], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[6], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[5], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[2], offsetX, offsetY, scale);
+    
+    Util.shapeVertex(render,verts[0], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[3], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[4], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[7], offsetX, offsetY, scale);
+    render.endShape();
   }
 }
