@@ -2,9 +2,18 @@ import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
-class Sloap extends StageComponent {//ground component
+class Sloap extends StageComponent implements Rotatable{//ground component
 
   public static final Identifier ID = new Identifier("sloap");
+  
+  private PMatrix3D transfomration = new PMatrix3D(), rotation =  new PMatrix3D(),tmpMat = new PMatrix3D();
+  private float rx,ry,rz;
+  PVector verticies[] = new PVector[]{new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector()};//6 long
+  PVector verticies2D[] = new PVector[]{new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector()};//6 long
+  PVector center = new PVector();
+  PVector prevoursGroupPos = new PVector();
+  
+  private final PVector F_XNORM = new PVector(1,0,0), F_YNORM = new PVector(0,1,0), F_ZNORM = new PVector(0,0,1);
 
   int direction;
   Sloap(JSONObject data) {
@@ -23,6 +32,7 @@ class Sloap extends StageComponent {//ground component
     if (!data.isNull("group")) {
       group=data.getInt("group");
     }
+    updateVerticies();
   }
   
   public Sloap(StageComponentDragPlacementContext context){
@@ -34,14 +44,16 @@ class Sloap extends StageComponent {//ground component
     ccolor = context.getColor();
     if(context.has3D()){
       z = context.getZ();
-      dx = context.getDZ();
+      dz = z+context.getDZ();
     }
     direction = context.getRotation();
+    updateVerticies();
   }
   
   public Sloap(SerialIterator iterator){
     deserial(iterator);
     direction = iterator.getInt();
+    updateVerticies();
   }
   
   public StageComponent copy() {
@@ -74,18 +86,31 @@ class Sloap extends StageComponent {//ground component
     Group group=getGroup();
     if (!group.visable)
       return;
+    
+    //if the group has been modified then recalculate the verticies
+    if(group.xOffset != prevoursGroupPos.x || group.yOffset!=prevoursGroupPos.y || group.zOffset!=prevoursGroupPos.z){
+      updateVerticies();
+      prevoursGroupPos.x = group.xOffset;
+      prevoursGroupPos.y = group.yOffset;
+      prevoursGroupPos.z = group.zOffset;
+    }
+    
     render.fill(ccolor);
-    if (direction==0) {
-      render.triangle(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY));
-    }
-    if (direction==1) {
-      render.triangle(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY));
-    }
-    if (direction==2) {
-      render.triangle(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY));
-    }
-    if (direction==3) {
-      render.triangle(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY));
+    if(!isRotated()){
+      if (direction==0) {
+        render.triangle(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY));
+      }
+      if (direction==1) {
+        render.triangle(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY));
+      }
+      if (direction==2) {
+        render.triangle(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY));
+      }
+      if (direction==3) {
+        render.triangle(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY));
+      }
+    }else{
+      verts2Tri(render,verticies2D,-source.drawCamPosX,source.drawCamPosY,source.Scale);
     }
   }
 
@@ -93,11 +118,16 @@ class Sloap extends StageComponent {//ground component
     Group group=getGroup();
     if (!group.visable)
       return;
+    
+    //if the group has been modified then recalculate the verticies
+    if(group.xOffset != prevoursGroupPos.x || group.yOffset!=prevoursGroupPos.y || group.zOffset!=prevoursGroupPos.z){
+      updateVerticies();
+      prevoursGroupPos.x = group.xOffset;
+      prevoursGroupPos.y = group.yOffset;
+      prevoursGroupPos.z = group.zOffset;
+    }
     render.fill(ccolor);
-    render.strokeWeight(0);
-    render.translate((x+group.xOffset)+dx/2, (y+group.yOffset)+dy/2, z+dz/2);
-    render.box(dx, dy, dz);
-    render.translate(-1*((x+group.xOffset)+dx/2), -1*((y+group.yOffset)+dy/2), -1*(z+dz/2));
+    verts2Tri(render,verticies,0,0,1);
   }
 
   public boolean colide(float x, float y, boolean c) {
@@ -128,6 +158,20 @@ class Sloap extends StageComponent {//ground component
         return true;
       }
       //triangle(X1,Y2,X2,Y2,X2,Y1);
+    }
+    return false;
+  }
+  
+  public boolean colide(float x, float y,float z, boolean c) {
+    Group group=getGroup();
+    if (!group.visable)
+      return false;
+     Collider3D hv =new Collider3D(verticies);
+     Collider3D mp = new Collider3D(new PVector[]{new PVector(x-0.5f,y-0.5f,z-0.5f),new PVector(x+0.5f,y-0.5f,z-0.5f),new PVector(x+0.5f,y+0.5f,z-0.5f),new PVector(x-0.5f,y+0.5f,z-0.5f),
+       new PVector(x-0.5f,y-0.5f,z+0.5f),new PVector(x+0.5f,y-0.5f,z+0.5f),new PVector(x+0.5f,y+0.5f,z+0.5f),new PVector(x-0.5f,y+0.5f,z+0.5f)
+     });
+    if (CollisionDetection.collide3D(hv,mp)) {
+      return true;
     }
     return false;
   }
@@ -172,7 +216,7 @@ class Sloap extends StageComponent {//ground component
     }
   }
   public Collider3D getCollider3D(){ 
-    return null;
+    return new Collider3D(verticies);
   }
   
   @Override
@@ -186,5 +230,308 @@ class Sloap extends StageComponent {//ground component
   @Override
   public Identifier id() {
     return ID;
+  }
+  
+  //overides for methods defined in StageComponenet
+  public float getX(){
+    return this.x;
+  }
+  
+  public float getY(){
+    return this.y;
+  }
+  
+  public float getZ(){
+    return this.z;
+  }
+  
+  public float getWidth(){
+    return dx-x;
+  }
+  
+  public float getHeight(){
+    return dy-y;
+  }
+  
+  public float getDepth(){
+    return dz-z;
+  }
+  
+  final float EPSILON = 0.00001f;
+  
+  public void setX(float x){
+    this.x=x;
+    updateVerticies();
+  }
+  public void setY(float y){
+    this.y=y;
+    updateVerticies();
+  }
+  public void setZ(float z){
+    this.z=z;
+    updateVerticies();
+  }
+  
+  public void setwidth(float w){
+    dx=this.x+w;
+    updateVerticies();
+  }
+  
+  public void setHeight(float h){
+    dy=this.y+h;
+    updateVerticies();
+  }
+  
+  public void setDepth(float d){
+    dz=this.z+d;
+    updateVerticies();
+  }
+  
+  public void resetRotate(){
+    rx=0;
+    ry=0;
+    rz=0;
+  }
+  
+  public void rotateX(float x){
+    if(Float.isNaN(x)){
+      return;
+    }
+    rx=x;
+    updateVerticies();
+  }
+  public void rotateY(float y){
+    if(Float.isNaN(y)){
+      return;
+    }
+    ry=y;
+    updateVerticies();
+  }
+  public void rotateZ(float z){
+    if(Float.isNaN(z)){
+      return;
+    }
+    rz=z;
+    updateVerticies();
+  }
+  
+  public void updateVerticies(){
+    Group group=getGroup();
+    transfomration.reset();
+    center.x = getX()+getWidth()/2+group.xOffset;
+    center.y = getY()+getHeight()/2+group.yOffset;
+    center.z = getZ()+getDepth()/2+group.zOffset;
+    //add the offset translation
+    transfomration.translate(center.x,center.y,center.z);
+    rotation.reset();
+    //get the current rotaiton matix
+    Util.rotateXYZ(rx,ry,rz,rotation);
+    
+    transfomration.apply(rotation);
+    //reset the vrticies
+    //TODO figure out what theese verticies should be per the rotation value
+    //triangle(X1,Y1,X2,Y2,X2,Y1);0
+    //triangle(X1,Y1,X1,Y2,X2,Y1);1
+    //triangle(X1,Y1,X2,Y2,X1,Y2);2
+    //triangle(X1,Y2,X2,Y2,X2,Y1);3
+    
+    float hdx = getWidth()/2;
+    float hdy = getHeight()/2;
+    float hdz = getDepth()/2;
+    
+    int j = 0;
+    switch(direction){
+      case 0:
+        verticies[j].x = -hdx;
+        verticies[j].y = -hdy;
+        verticies[j].z = hdz;
+        j++;
+        verticies[j].x = hdx;
+        verticies[j].y = hdy;
+        verticies[j].z = hdz;
+        j++;
+        verticies[j].x = hdx;
+        verticies[j].y = -hdy;
+        verticies[j].z = hdz;
+        j++;
+        verticies[j].x = -hdx;
+        verticies[j].y = -hdy;
+        verticies[j].z = -hdz;
+        j++;
+        verticies[j].x = hdx;
+        verticies[j].y = -hdy;
+        verticies[j].z = -hdz;
+        j++;
+        verticies[j].x = hdx;
+        verticies[j].y = hdy;
+        verticies[j].z = -hdz;
+        break;
+      case 1:
+        verticies[j].x = -hdx;
+        verticies[j].y = -hdy;
+        verticies[j].z = hdz;
+        j++;
+        verticies[j].x = -hdx;
+        verticies[j].y = hdy;
+        verticies[j].z = hdz;
+        j++;
+        verticies[j].x = hdx;
+        verticies[j].y = -hdy;
+        verticies[j].z = hdz;
+        j++;
+        verticies[j].x = -hdx;
+        verticies[j].y = -hdy;
+        verticies[j].z = -hdz;
+        j++;
+        verticies[j].x = hdx;
+        verticies[j].y = -hdy;
+        verticies[j].z = -hdz;
+        j++;
+        verticies[j].x = -hdx;
+        verticies[j].y = hdy;
+        verticies[j].z = -hdz;
+        break;
+      case 2:
+        verticies[j].x = -hdx;
+        verticies[j].y = -hdy;
+        verticies[j].z = hdz;
+        j++;
+        verticies[j].x = -hdx;
+        verticies[j].y = hdy;
+        verticies[j].z = hdz;
+        j++;
+        verticies[j].x = hdx;
+        verticies[j].y = hdy;
+        verticies[j].z = hdz;
+        j++;
+        verticies[j].x = -hdx;
+        verticies[j].y = -hdy;
+        verticies[j].z = -hdz;
+        j++;
+        verticies[j].x = hdx;
+        verticies[j].y = hdy;
+        verticies[j].z = -hdz;
+        j++;
+        verticies[j].x = -hdx;
+        verticies[j].y = hdy;
+        verticies[j].z = -hdz;
+        break;
+      case 3:
+        verticies[j].x = -hdx;
+        verticies[j].y = hdy;
+        verticies[j].z = hdz;
+        j++;
+        verticies[j].x = hdx;
+        verticies[j].y = hdy;
+        verticies[j].z = hdz;
+        j++;
+        verticies[j].x = hdx;
+        verticies[j].y = -hdy;
+        verticies[j].z = hdz;
+        j++;
+        verticies[j].x = -hdx;
+        verticies[j].y = hdy;
+        verticies[j].z = -hdz;
+        j++;
+        verticies[j].x = hdx;
+        verticies[j].y = -hdy;
+        verticies[j].z = -hdz;
+        j++;
+        verticies[j].x = hdx;
+        verticies[j].y = hdy;
+        verticies[j].z = -hdz;
+        break;
+    }
+    //transform all the verticies
+    Util.transform4Vert(transfomration,verticies[0],verticies[1],verticies[2],verticies[3],tmpMat);
+    Util.transform4Vert(transfomration,verticies[4],verticies[5],verticies[4],verticies[5],tmpMat);//the repetishen of theese verticies may pose an issue
+    
+    for(int i=0;i<verticies.length;i++){
+      //copy the 3D verticies to a diffrent array
+      verticies2D[i].set(verticies[i]);
+      //nuke the z coordinate
+      verticies2D[i].z=0;
+    }
+  }
+  
+  public float getRotateX(){
+    return rx;
+  }
+  public float getRotateY(){
+    return ry;
+  }
+  public float getRotateZ(){
+    return rz;
+  }
+  
+  public PVector getXLocal(){
+    PVector norm = new PVector();
+    rotation.mult(F_XNORM,norm);
+    return norm;
+  }
+  public PVector getYLocal(){
+    PVector norm = new PVector();
+    rotation.mult(F_YNORM,norm);
+    return norm;
+  }
+  public PVector getZLocal(){
+    PVector norm = new PVector();
+    rotation.mult(F_ZNORM,norm);
+    return norm;
+  }
+  
+  public PVector getXRotationAxis(){
+    return getXLocal();
+  }
+  public PVector getYRotationAxis(){
+    tmpMat.reset();
+    Util.rotateXYZ(0,0,rz,tmpMat);
+    PVector result = new PVector();
+    tmpMat.mult(F_YNORM, result);
+    return result;
+  }
+  public PVector getZRotationAxis(){
+    return new PVector(0,0,1);
+  }
+  
+  public boolean isRotated(){
+    return Math.abs(rx) > EPSILON || Math.abs(ry) > EPSILON || Math.abs(rz) > EPSILON;
+  }
+  
+  public boolean isRotated3D(){
+    return Math.abs(rx) > EPSILON || Math.abs(ry) > EPSILON;
+  }
+  
+  private void verts2Tri(PGraphics render, PVector[] verts,float offsetX, float offsetY, float scale){
+    //3 quads (faces)
+    render.beginShape(PConstants.QUAD);
+
+    Util.shapeVertex(render,verts[0], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[3], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[4], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[2], offsetX, offsetY, scale);
+
+    Util.shapeVertex(render,verts[1], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[2], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[4], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[5], offsetX, offsetY, scale);
+    
+    Util.shapeVertex(render,verts[0], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[1], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[5], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[3], offsetX, offsetY, scale);
+    render.endShape();
+    
+    //2 triangles
+    render.beginShape(PConstants.TRIANGLES);
+
+    Util.shapeVertex(render,verts[0], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[2], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[1], offsetX, offsetY, scale);
+
+    Util.shapeVertex(render,verts[3], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[5], offsetX, offsetY, scale);
+    Util.shapeVertex(render,verts[4], offsetX, offsetY, scale);
+    render.endShape();
   }
 }
