@@ -40,7 +40,7 @@ class ToolBox extends PApplet {
     int buttonPosIndex = 0;
     int[] buttonPos = calcButtonPos(buttonPosIndex++);
     //NOTE: save, back to overiew, delete and select are common between level and logic tools
-    saveLevel=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "save", 255, 203).setStrokeWeight(5).setHoverText("save level");
+    saveLevel=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("save level");
     buttonPos = calcButtonPos(buttonPosIndex++);
     exitStageEdit= new Button(this, buttonPos[0], buttonPos[1], 50, 50, " < ", 255, 203).setStrokeWeight(5).setHoverText("exit to overview");
     buttonPos = calcButtonPos(buttonPosIndex++);
@@ -320,6 +320,7 @@ class ToolBox extends PApplet {
             move3DButton.draw();
           }
           saveLevel.draw();
+          saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
           if(stageIs3D){
             if (e3DMode) {
               toggle3DMode.setColor(255, #F2F258);
@@ -482,6 +483,7 @@ class ToolBox extends PApplet {
             text(grid_size, gridModeButton.x+10, gridModeButton.y+40);
             strokeWeight(0);
             saveLevel.draw();
+            saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
             exitStageEdit.draw();
             
             //Components
@@ -560,6 +562,7 @@ class ToolBox extends PApplet {
             text(grid_size, gridModeButton.x+10, gridModeButton.y+40);
             strokeWeight(0);
             saveLevel.draw();
+            saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
             if(!e3DMode){
               exitStageEdit.draw();
             }
@@ -659,6 +662,7 @@ class ToolBox extends PApplet {
           rect(deleteButton.x+27, deleteButton.y+20, 5, 20);
           
           saveLevel.draw();
+          saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
           exitStageEdit.draw();
           
           if (selecting) {

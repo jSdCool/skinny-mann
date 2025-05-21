@@ -2,7 +2,7 @@ import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
-class Sloap extends StageComponent implements Rotatable,Resizeable{//ground component
+class Sloap extends StageComponent implements Rotatable,Resizeable{//sloap component
 
   public static final Identifier ID = new Identifier("sloap");
   
@@ -24,7 +24,7 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
     dy=data.getFloat("y2");
     ccolor=data.getInt("color");
     boolean stage_3D = data.getBoolean("s3d");
-    if (stage_3D) {
+    if (stage_3D && !data.isNull("z")) {
       z=data.getFloat("z");
       dz=data.getFloat("dz");
     }
@@ -45,7 +45,7 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
   }
   
   public Sloap(StageComponentDragPlacementContext context){
-    type="ground";
+    type="sloap";
     x = context.getX();
     y = context.getY();
     dx = x+context.getDX();
@@ -94,6 +94,8 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
     part.setFloat("rotateX",rx);
     part.setFloat("rotateY",ry);
     part.setFloat("rotateZ",rz);
+    part.setFloat("z",z);
+    part.setFloat("dz",dz);
     return part;
   }
 
@@ -183,7 +185,6 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
     if(!isRotated3D()){
       Group group=getGroup();
       //draw a non rotated rect
-      float x2 = dx+group.xOffset, y2=dy+group.yOffset, y1=(this.y+group.yOffset), x1=(this.x+group.xOffset);
       int rot=direction;
       switch(rot){
         case 0:
@@ -243,69 +244,72 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
   }
   
   //overides for methods defined in StageComponenet
+  @Override
   public float getX(){
     return this.x;
   }
-  
+  @Override
   public float getY(){
     return this.y;
   }
-  
+  @Override
   public float getZ(){
     return this.z;
   }
-  
+  @Override
   public float getWidth(){
     return dx-x;
   }
-  
+  @Override
   public float getHeight(){
     return dy-y;
   }
-  
+  @Override
   public float getDepth(){
     return dz-z;
   }
   
   final float EPSILON = 0.00001f;
-  
+  @Override
   public void setX(float x){
     dx = x + getWidth();
     this.x=x;
     updateVerticies();
   }
+  @Override
   public void setY(float y){
     dy = y + getHeight();
     this.y=y;
     updateVerticies();
   }
+  @Override
   public void setZ(float z){
     dz = z + getDepth();
     this.z=z;
     updateVerticies();
   }
-  
+  @Override
   public void setWidth(float w){
     dx=this.x+w;
     updateVerticies();
   }
-  
+  @Override
   public void setHeight(float h){
     dy=this.y+h;
     updateVerticies();
   }
-  
+  @Override
   public void setDepth(float d){
     dz=this.z+d;
     updateVerticies();
   }
-  
+  @Override
   public void resetRotate(){
     rx=0;
     ry=0;
     rz=0;
   }
-  
+  @Override
   public void rotateX(float x){
     if(Float.isNaN(x)){
       return;
@@ -313,6 +317,7 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
     rx=x;
     updateVerticies();
   }
+  @Override
   public void rotateY(float y){
     if(Float.isNaN(y)){
       return;
@@ -320,6 +325,7 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
     ry=y;
     updateVerticies();
   }
+  @Override
   public void rotateZ(float z){
     if(Float.isNaN(z)){
       return;
@@ -327,7 +333,7 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
     rz=z;
     updateVerticies();
   }
-  
+  @Override
   public void updateVerticies(){
     Group group=getGroup();
     transfomration.reset();
@@ -466,36 +472,41 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
       verticies2D[i].z=0;
     }
   }
-  
+  @Override
   public float getRotateX(){
     return rx;
   }
+  @Override
   public float getRotateY(){
     return ry;
   }
+  @Override
   public float getRotateZ(){
     return rz;
   }
-  
+  @Override
   public PVector getXLocal(){
     PVector norm = new PVector();
     rotation.mult(F_XNORM,norm);
     return norm;
   }
+  @Override
   public PVector getYLocal(){
     PVector norm = new PVector();
     rotation.mult(F_YNORM,norm);
     return norm;
   }
+  @Override
   public PVector getZLocal(){
     PVector norm = new PVector();
     rotation.mult(F_ZNORM,norm);
     return norm;
   }
-  
+  @Override
   public PVector getXRotationAxis(){
     return getXLocal();
   }
+  @Override
   public PVector getYRotationAxis(){
     tmpMat.reset();
     Util.rotateXYZ(0,0,rz,tmpMat);
@@ -503,14 +514,15 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
     tmpMat.mult(F_YNORM, result);
     return result;
   }
+  @Override
   public PVector getZRotationAxis(){
     return new PVector(0,0,1);
   }
-  
+  @Override
   public boolean isRotated(){
     return Math.abs(rx) > EPSILON || Math.abs(ry) > EPSILON || Math.abs(rz) > EPSILON;
   }
-  
+  @Override
   public boolean isRotated3D(){
     return Math.abs(rx) > EPSILON || Math.abs(ry) > EPSILON;
   }

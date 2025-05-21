@@ -208,3 +208,35 @@ void draw3DStageIcon(float x, float y, float scale,PGraphics render) {
   render.translate(-x, -y, 0);
   render.noLights();
 }
+
+void saveIcon(float x, float y, float scale, PGraphics render){
+  //floopy background color
+  render.fill(#4E74FA);
+  render.rect(x-20*scale,y-20*scale,35*scale,40*scale);
+  render.rect(x+15*scale,y-15*scale,5*scale,30*scale);
+  render.rect(x+15*scale,y+17*scale,5*scale,3*scale);
+  render.rect(x+15*scale,y+15*scale,2*scale,2*scale);
+  render.rect(x+19*scale,y+15*scale,1*scale,2*scale);
+  render.triangle(x+15*scale,y-20*scale,x+15*scale,y-15*scale,x+20*scale,y-15*scale);
+  
+  render.fill(0);//wright protect
+  render.rect(x-19*scale,y+15*scale,2*scale,2*scale);
+  
+  render.fill(#C4C4C4);//disk protector
+  render.rect(x-10*scale,y-20*scale,12*scale,10*scale);
+  render.rect(x+5*scale,y-20*scale,3*scale,10*scale);
+  render.rect(x+2*scale,y-20*scale,3*scale,2*scale);
+  render.rect(x+2*scale,y-12*scale,3*scale,2*scale);
+  
+  render.fill(255);//label
+  render.rect(x-15*scale,y-7*scale,30*scale,25*scale);
+  render.fill(255,0,0);//red lines on lebel
+  render.rect(x-15*scale,y+18*scale,30*scale,2*scale);
+  
+  render.rect(x-15*scale,y-5*scale,30*scale,1*scale);
+  render.rect(x-15*scale,y-1*scale,30*scale,1*scale);
+  render.rect(x-15*scale,y+3*scale,30*scale,1*scale);
+  render.rect(x-15*scale,y+7*scale,30*scale,1*scale);
+  render.rect(x-15*scale,y+11*scale,30*scale,1*scale);
+  render.rect(x-15*scale,y+15*scale,30*scale,1*scale);
+}

@@ -4,7 +4,7 @@ import processing.data.*;
 import processing.core.*;
 class SimpleEntity extends StageEntity{
   
-  public static final Identifier ID = new Identifier("SimpleEntity");
+  public static final Identifier ID = new Identifier("simple_entity");
   
   public SimpleEntity(StageEntityPlacementContext context){
     spawnX=context.getX();

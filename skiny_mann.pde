@@ -744,6 +744,7 @@ void draw() {// the function that is called every fraim
         respawnStage=level.mainStage;
 
         overview_saveLevel.draw();//draw save button
+        saveIcon(overview_saveLevel.x+overview_saveLevel.lengthX/2,overview_saveLevel.y+overview_saveLevel.lengthY/2,settings.getScale(),g);
         help.draw();//draw help button
         if (filesScrole>0)//draw scroll buttons
           overviewUp.draw();
@@ -4308,7 +4309,7 @@ void  initButtons() {
   new3DStage=new UiButton(ui, 600, 200, 80, 80, "3D", #BB48ED, #4857ED).setStrokeWeight(5);
   addSound=new UiButton(ui, 800, 200, 80, 80, #BB48ED, #4857ED).setStrokeWeight(5);
 
-  overview_saveLevel=new UiButton(ui, 60, 20, 50, 50, "Save", #0092FF, 0).setStrokeWeight(5);
+  overview_saveLevel=new UiButton(ui, 60, 20, 50, 50, #0092FF, 0).setStrokeWeight(5);
   help=new UiButton(ui, 130, 20, 50, 50, " ? ", #0092FF, 0).setStrokeWeight(3);
   overviewUp=new UiButton(ui, 270, 20, 50, 50, " ^ ", #0092FF, 0).setStrokeWeight(3);
   overviewDown=new UiButton(ui, 200, 20, 50, 50, " v ", #0092FF, 0).setStrokeWeight(3);
