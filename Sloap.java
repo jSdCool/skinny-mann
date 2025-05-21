@@ -134,30 +134,10 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
     Group group=getGroup();
     if (!group.visable)
       return false;
-    float x2 = dx+group.xOffset, y2=dy+group.yOffset, y1=(this.y+group.yOffset), x1=(this.x+group.xOffset), rot=direction;
-    if (rot==0) {
-      if (x<=x2&&y>=y1&&y<=x*((y2-y1)/(x2-x1)) + (y2-(x2*((y2-y1)/(x2-x1))))  ) {
-        return true;
-      }
-      //triangle(X1,Y1,X2,Y2,X2,Y1);
-    }
-    if (rot==1) {
-      if (x>=x1&&y>=y1&&y<=x*((y2-y1)/(x1-x2)) + ( y1-(x2*((y2-y1)/(x1-x2))))  ) {
-        return true;
-      }
-      //triangle(X1,Y1,X1,Y2,X2,Y1);
-    }
-    if (rot==2) {
-      if (x>=x1&&y<=y2&&y>=x*((y2-y1)/(x2-x1)) + ( y2-(x2*((y2-y1)/(x2-x1))))  ) {
-        return true;
-      }
-      //triangle(X1,Y1,X2,Y2,X1,Y2);
-    }
-    if (rot==3) {
-      if (x<=x2&&y<=y2&&y>=x*((y2-y1)/(x1-x2)) + ( y1-(x2*((y2-y1)/(x1-x2))))  ) {
-        return true;
-      }
-      //triangle(X1,Y2,X2,Y2,X2,Y1);
+    Collider2D hv = collide2Dimplm();
+    Collider2D mp = new Collider2D(new PVector[]{new PVector(x-0.5f,y-0.5f),new PVector(x+0.5f,y-0.5f),new PVector(x+0.5f,y+0.5f),new PVector(x-0.5f,y+0.5f)});
+    if (CollisionDetection.collide2D(hv,mp)) {
+      return true;
     }
     return false;
   }
