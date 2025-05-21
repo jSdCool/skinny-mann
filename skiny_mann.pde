@@ -2885,7 +2885,7 @@ void mousePressed() {
           }else{
             initalMousePoint=mousePoint;
           }
-        initalObjectPos=new Point3D(ct.x, ct.y, ct.z);
+        initalObjectPos=new Point3D(ct.getX(), ct.getY(), ct.getZ());
         initialObjectDim=new Point3D(ct.getWidth(), ct.getHeight(), ct.getDepth());
       }else if (selectedIndex!=-1) {
         if (editingStage) {

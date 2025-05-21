@@ -260,14 +260,19 @@ class Sloap extends StageComponent implements Rotatable{//ground component
   final float EPSILON = 0.00001f;
   
   public void setX(float x){
+    System.out.println("Sx: "+x);
+    dx = x + getWidth();
     this.x=x;
+    
     updateVerticies();
   }
   public void setY(float y){
+    dy = y + getHeight();
     this.y=y;
     updateVerticies();
   }
   public void setZ(float z){
+    dz = z + getDepth();
     this.z=z;
     updateVerticies();
   }

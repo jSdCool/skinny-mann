@@ -487,7 +487,7 @@ void stageEditGUI() {
       
     }//end of is 3d mode off if statment
     else {//if 3dmode is on
-      if (selectedIndex!=-1) {
+      if (selectedIndex!=-1) { 
         //wether the red/green/blue arrows are currrntly being hoverd over
         boolean b1=false, b2=false, r1=false, r2=false, g1=false, g2=false, rix=false,riy=false,riz=false;
         StageComponent ct=current.parts.get(selectedIndex);
@@ -495,32 +495,32 @@ void stageEditGUI() {
         for (int i=0; i<5000; i++) {
           Point3D testPoint=genMousePoint(i);
           if(!(current3DTransformMode==3 && ct instanceof Rotatable)){
-            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z+ct.dz && testPoint.z <= ct.z+ct.dz+60) {
+            if (testPoint.x >= (ct.getX()+ct.getWidth()/2)-5 && testPoint.x <= (ct.getX()+ct.getWidth()/2)+5 && testPoint.y >= (ct.getY()+ct.getHeight()/2)-5 && testPoint.y <= (ct.getY()+ct.getHeight()/2)+5 && testPoint.z >= ct.getZ()+ct.getDepth() && testPoint.z <= ct.getZ()+ct.getDepth()+60) {
               b1=true;
               break;
             }
   
-            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= ct.z-60 && testPoint.z <= ct.z) {
+            if (testPoint.x >= (ct.getX()+ct.getWidth()/2)-5 && testPoint.x <= (ct.getX()+ct.getWidth()/2)+5 && testPoint.y >= (ct.getY()+ct.getHeight()/2)-5 && testPoint.y <= (ct.getY()+ct.getHeight()/2)+5 && testPoint.z >= ct.getZ()-60 && testPoint.z <= ct.getZ()) {
               b2=true;
               break;
             }
   
-            if (testPoint.x >= ct.x-60 && testPoint.x <= ct.x && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+            if (testPoint.x >= ct.getX()-60 && testPoint.x <= ct.getX() && testPoint.y >= (ct.getY()+ct.getHeight()/2)-5 && testPoint.y <= (ct.getY()+ct.getHeight()/2)+5 && testPoint.z >= (ct.getZ()+ct.getDepth()/2)-5 && testPoint.z <= (ct.getZ()+ct.getDepth()/2)+5) {
               r1=true;
               break;
             }
   
-            if (testPoint.x >= ct.x+ct.dx && testPoint.x <= ct.x+ct.dx+60 && testPoint.y >= (ct.y+ct.dy/2)-5 && testPoint.y <= (ct.y+ct.dy/2)+5 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+            if (testPoint.x >= ct.getX()+ct.getWidth() && testPoint.x <= ct.getX()+ct.getWidth()+60 && testPoint.y >= (ct.getY()+ct.getHeight()/2)-5 && testPoint.y <= (ct.getY()+ct.getHeight()/2)+5 && testPoint.z >= (ct.getZ()+ct.getDepth()/2)-5 && testPoint.z <= (ct.getZ()+ct.getDepth()/2)+5) {
               r2=true;
               break;
             }
   
-            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= ct.y-60 && testPoint.y <= ct.y && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+            if (testPoint.x >= (ct.getX()+ct.getWidth()/2)-5 && testPoint.x <= (ct.getX()+ct.getWidth()/2)+5 && testPoint.y >= ct.getY()-60 && testPoint.y <= ct.getY() && testPoint.z >= (ct.getZ()+ct.getDepth()/2)-5 && testPoint.z <= (ct.getZ()+ct.getDepth()/2)+5) {
               g1=true;
               break;
             }
   
-            if (testPoint.x >= (ct.x+ct.dx/2)-5 && testPoint.x <= (ct.x+ct.dx/2)+5 && testPoint.y >= ct.y+ct.dy && testPoint.y <= ct.y+ct.dy+60 && testPoint.z >= (ct.z+ct.dz/2)-5 && testPoint.z <= (ct.z+ct.dz/2)+5) {
+            if (testPoint.x >= (ct.getX()+ct.getWidth()/2)-5 && testPoint.x <= (ct.getX()+ct.getWidth()/2)+5 && testPoint.y >= ct.getY()+ct.getHeight() && testPoint.y <= ct.getY()+ct.getHeight()+60 && testPoint.z >= (ct.getZ()+ct.getDepth()/2)-5 && testPoint.z <= (ct.getZ()+ct.getDepth()/2)+5) {
               g2=true;
               break;
             }
@@ -598,58 +598,58 @@ void stageEditGUI() {
         
         //render the arrow for translation
         if (current3DTransformMode==1) {
-          translate(ct.x+ct.dx/2, ct.y+ct.dy/2, ct.z+ct.dz);
+          translate(ct.getX()+ct.getWidth()/2, ct.getY()+ct.getHeight()/2, ct.getZ()+ct.getDepth());
           if (b1)
             shape(yellowArrow);
           else
             shape(blueArrow);
 
-          translate(-(ct.x+ct.dx/2), -(ct.y+ct.dy/2), -(ct.z+ct.dz));
+          translate(-(ct.getX()+ct.getWidth()/2), -(ct.getY()+ct.getHeight()/2), -(ct.getZ()+ct.getDepth()));
 
-          translate(ct.x+ct.dx/2, ct.y+ct.dy/2, ct.z);
+          translate(ct.getX()+ct.getWidth()/2, ct.getY()+ct.getHeight()/2, ct.getZ());
           rotateY(radians(180));
           if (b2)
             shape(yellowArrow);
           else
             shape(blueArrow);
           rotateY(-radians(180));
-          translate(-(ct.x+ct.dx/2), -(ct.y+ct.dy/2), -(ct.z));
+          translate(-(ct.getX()+ct.getWidth()/2), -(ct.getY()+ct.getHeight()/2), -(ct.getZ()));
 
-          translate(ct.x, ct.y+ct.dy/2, ct.z+ct.dz/2);
+          translate(ct.getX(), ct.getY()+ct.getHeight()/2, ct.getZ()+ct.getDepth()/2);
           rotateY(-radians(90));
           if (r1)
             shape(yellowArrow);
           else
             shape(redArrow);
           rotateY(radians(90));
-          translate(-(ct.x), -(ct.y+ct.dy/2), -(ct.z+ct.dz/2));
+          translate(-(ct.getX()), -(ct.getY()+ct.getHeight()/2), -(ct.getZ()+ct.getDepth()/2));
 
-          translate(ct.x+ct.dx, ct.y+ct.dy/2, ct.z+ct.dz/2);
+          translate(ct.getX()+ct.getWidth(), ct.getY()+ct.getHeight()/2, ct.getZ()+ct.getDepth()/2);
           rotateY(radians(90));
           if (r2)
             shape(yellowArrow);
           else
             shape(redArrow);
           rotateY(-radians(90));
-          translate(-(ct.x+ct.dx), -(ct.y+ct.dy/2), -(ct.z+ct.dz/2));
+          translate(-(ct.getX()+ct.getWidth()), -(ct.getY()+ct.getHeight()/2), -(ct.getZ()+ct.getDepth()/2));
 
-          translate(ct.x+ct.dx/2, ct.y, ct.z+ct.dz/2);
+          translate(ct.getX()+ct.getWidth()/2, ct.getY(), ct.getZ()+ct.getDepth()/2);
           rotateX(radians(90));
           if (g1)
             shape(yellowArrow);
           else
             shape(greenArrow);
           rotateX(-radians(90));
-          translate(-(ct.x+ct.dx/2), -(ct.y), -(ct.z+ct.dz/2));
+          translate(-(ct.getX()+ct.getWidth()/2), -(ct.getY()), -(ct.getZ()+ct.getDepth()/2));
 
-          translate(ct.x+ct.dx/2, ct.y+ct.dy, ct.z+ct.dz/2);
+          translate(ct.getX()+ct.getWidth()/2, ct.getY()+ct.getHeight(), ct.getZ()+ct.getDepth()/2);
           rotateX(-radians(90));
           if (g2)
             shape(yellowArrow);
           else
             shape(greenArrow);
           rotateX(radians(90));
-          translate(-(ct.x+ct.dx/2), -(ct.y+ct.dy), -(ct.z+ct.dz/2));
+          translate(-(ct.getX()+ct.getWidth()/2), -(ct.getY()+ct.getHeight()), -(ct.getZ()+ct.getDepth()/2));
 
           //translte objects in 3D
           if (grid_mode) {//Math.round(((int)mouseX+camPos)*1.0/grid_size)*grid_size
@@ -676,58 +676,58 @@ void stageEditGUI() {
         }//end of 3d transform mode is move
 
         if (current3DTransformMode==2&&(ct instanceof Ground || ct instanceof Holo)) {
-          translate(ct.x+ct.dx/2, ct.y+ct.dy/2, ct.z+ct.dz);
+          translate(ct.getX()+ct.getWidth()/2, ct.getY()+ct.getHeight()/2, ct.getZ()+ct.getDepth());
           if (b1)
             shape(yellowScaler);
           else
             shape(blueScaler);
 
-          translate(-(ct.x+ct.dx/2), -(ct.y+ct.dy/2), -(ct.z+ct.dz));
+          translate(-(ct.getX()+ct.getWidth()/2), -(ct.getY()+ct.getHeight()/2), -(ct.getZ()+ct.getDepth()));
 
-          translate(ct.x+ct.dx/2, ct.y+ct.dy/2, ct.z);
+          translate(ct.getX()+ct.getWidth()/2, ct.getY()+ct.getHeight()/2, ct.getZ());
           rotateY(radians(180));
           if (b2)
             shape(yellowScaler);
           else
             shape(blueScaler);
           rotateY(-radians(180));
-          translate(-(ct.x+ct.dx/2), -(ct.y+ct.dy/2), -(ct.z));
+          translate(-(ct.getX()+ct.getWidth()/2), -(ct.getY()+ct.getHeight()/2), -(ct.getZ()));
 
-          translate(ct.x, ct.y+ct.dy/2, ct.z+ct.dz/2);
+          translate(ct.getX(), ct.getY()+ct.getHeight()/2, ct.getZ()+ct.getDepth()/2);
           rotateY(-radians(90));
           if (r1)
             shape(yellowScaler);
           else
             shape(redScaler);
           rotateY(radians(90));
-          translate(-(ct.x), -(ct.y+ct.dy/2), -(ct.z+ct.dz/2));
+          translate(-(ct.getX()), -(ct.getY()+ct.getHeight()/2), -(ct.getZ()+ct.getDepth()/2));
 
-          translate(ct.x+ct.dx, ct.y+ct.dy/2, ct.z+ct.dz/2);
+          translate(ct.getX()+ct.getWidth(), ct.getY()+ct.getHeight()/2, ct.getZ()+ct.getDepth()/2);
           rotateY(radians(90));
           if (r2)
             shape(yellowScaler);
           else
             shape(redScaler);
           rotateY(-radians(90));
-          translate(-(ct.x+ct.dx), -(ct.y+ct.dy/2), -(ct.z+ct.dz/2));
+          translate(-(ct.getX()+ct.getWidth()), -(ct.getY()+ct.getHeight()/2), -(ct.getZ()+ct.getDepth()/2));
 
-          translate(ct.x+ct.dx/2, ct.y, ct.z+ct.dz/2);
+          translate(ct.getX()+ct.getWidth()/2, ct.getY(), ct.getZ()+ct.getDepth()/2);
           rotateX(radians(90));
           if (g1)
             shape(yellowScaler);
           else
             shape(greenScaler);
           rotateX(-radians(90));
-          translate(-(ct.x+ct.dx/2), -(ct.y), -(ct.z+ct.dz/2));
+          translate(-(ct.getX()+ct.getWidth()/2), -(ct.getY()), -(ct.getZ()+ct.getDepth()/2));
 
-          translate(ct.x+ct.dx/2, ct.y+ct.dy, ct.z+ct.dz/2);
+          translate(ct.getX()+ct.getWidth()/2, ct.getY()+ct.getHeight(), ct.getZ()+ct.getDepth()/2);
           rotateX(-radians(90));
           if (g2)
             shape(yellowScaler);
           else
             shape(greenScaler);
           rotateX(radians(90));
-          translate(-(ct.x+ct.dx/2), -(ct.y+ct.dy), -(ct.z+ct.dz/2));
+          translate(-(ct.getX()+ct.getWidth()/2), -(ct.getY()+ct.getHeight()), -(ct.getZ()+ct.getDepth()/2));
 
           //scaling of objects in 3D
           if (grid_mode) {
