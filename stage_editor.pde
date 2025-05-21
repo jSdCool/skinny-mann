@@ -487,7 +487,7 @@ void stageEditGUI() {
       
     }//end of is 3d mode off if statment
     else {//if 3dmode is on
-      if (selectedIndex!=-1) { 
+      if (selectedIndex!=-1) {
         //wether the red/green/blue arrows are currrntly being hoverd over
         boolean b1=false, b2=false, r1=false, r2=false, g1=false, g2=false, rix=false,riy=false,riz=false;
         StageComponent ct=current.parts.get(selectedIndex);
