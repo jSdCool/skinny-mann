@@ -32,6 +32,15 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
     if (!data.isNull("group")) {
       group=data.getInt("group");
     }
+    if(!data.isNull("rotateX")){
+      rx = data.getFloat("rotateX");
+    }
+    if(!data.isNull("rotateY")){
+      ry = data.getFloat("rotateY");
+    }
+    if(!data.isNull("rotateZ")){
+      rz = data.getFloat("rotateZ");
+    }
     updateVerticies();
   }
   
@@ -53,6 +62,9 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
   public Sloap(SerialIterator iterator){
     deserial(iterator);
     direction = iterator.getInt();
+    rx = iterator.getFloat();
+    ry = iterator.getFloat();
+    rz = iterator.getFloat();
     updateVerticies();
   }
   
@@ -79,6 +91,9 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
     part.setString("type", type);
     part.setInt("rotation", direction);
     part.setInt("group", group);
+    part.setFloat("rotateX",rx);
+    part.setFloat("rotateY",ry);
+    part.setFloat("rotateZ",rz);
     return part;
   }
 
@@ -216,6 +231,9 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//ground comp
     SerializedData data = new SerializedData(id());
     serialize(data);
     data.addInt(direction);
+    data.addFloat(rx);
+    data.addFloat(ry);
+    data.addFloat(rz);
     return data;
   }
   
