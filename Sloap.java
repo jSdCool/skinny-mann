@@ -2,7 +2,7 @@ import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
-class Sloap extends StageComponent implements Rotatable{//ground component
+class Sloap extends StageComponent implements Rotatable,Resizeable{//ground component
 
   public static final Identifier ID = new Identifier("sloap");
   
@@ -272,10 +272,8 @@ class Sloap extends StageComponent implements Rotatable{//ground component
   final float EPSILON = 0.00001f;
   
   public void setX(float x){
-    System.out.println("Sx: "+x);
     dx = x + getWidth();
     this.x=x;
-    
     updateVerticies();
   }
   public void setY(float y){
@@ -289,7 +287,7 @@ class Sloap extends StageComponent implements Rotatable{//ground component
     updateVerticies();
   }
   
-  public void setwidth(float w){
+  public void setWidth(float w){
     dx=this.x+w;
     updateVerticies();
   }

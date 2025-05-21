@@ -675,7 +675,7 @@ void stageEditGUI() {
           }
         }//end of 3d transform mode is move
 
-        if (current3DTransformMode==2&&(ct instanceof Ground || ct instanceof Holo)) {
+        if (current3DTransformMode == 2 && ct instanceof Resizeable) {
           translate(ct.getX()+ct.getWidth()/2, ct.getY()+ct.getHeight()/2, ct.getZ()+ct.getDepth());
           if (b1)
             shape(yellowScaler);
@@ -733,16 +733,19 @@ void stageEditGUI() {
           if (grid_mode) {
             if (transformComponentNumber==1) {
               if (translateZaxis) {
-                if (initialObjectDim.z-Math.round((initalMousePoint.z-mousePoint.z)*1.0/grid_size)*grid_size > 0)
+                if (initialObjectDim.z-Math.round((initalMousePoint.z-mousePoint.z)*1.0/grid_size)*grid_size > 0){
                   ct.setDepth(initialObjectDim.z-Math.round((initalMousePoint.z-mousePoint.z)*1.0/grid_size)*grid_size);
+                }
               }
               if (translateXaxis) {
-                if (initialObjectDim.x-Math.round((initalMousePoint.x-mousePoint.x)*1.0/grid_size)*grid_size > 0)
+                if (initialObjectDim.x-Math.round((initalMousePoint.x-mousePoint.x)*1.0/grid_size)*grid_size > 0){
                   ct.setWidth(initialObjectDim.x-Math.round((initalMousePoint.x-mousePoint.x)*1.0/grid_size)*grid_size);
+                }
               }
               if (translateYaxis) {
-                if (initialObjectDim.y-Math.round((initalMousePoint.y-mousePoint.y)*1.0/grid_size)*grid_size > 0)
+                if (initialObjectDim.y-Math.round((initalMousePoint.y-mousePoint.y)*1.0/grid_size)*grid_size > 0){
                   ct.setHeight(initialObjectDim.y-Math.round((initalMousePoint.y-mousePoint.y)*1.0/grid_size)*grid_size);
+                }
               }
             }
             if (transformComponentNumber==2) {
@@ -768,16 +771,19 @@ void stageEditGUI() {
           } else {//if not in grid mode
             if (transformComponentNumber==1) {
               if (translateZaxis) {
-                if (initialObjectDim.z-(initalMousePoint.z-mousePoint.z) > 0)
+                if (initialObjectDim.z-(initalMousePoint.z-mousePoint.z) > 0){
                   ct.setDepth(initialObjectDim.z-(initalMousePoint.z-mousePoint.z));
+                }
               }
               if (translateXaxis) {
-                if (initialObjectDim.x-(initalMousePoint.x-mousePoint.x) > 0)
+                if (initialObjectDim.x-(initalMousePoint.x-mousePoint.x) > 0){
                   ct.setWidth(initialObjectDim.x-(initalMousePoint.x-mousePoint.x));
+                }
               }
               if (translateYaxis) {
-                if (initialObjectDim.y-(initalMousePoint.y-mousePoint.y) > 0);
-                ct.setHeight(initialObjectDim.y-(initalMousePoint.y-mousePoint.y));
+                if (initialObjectDim.y-(initalMousePoint.y-mousePoint.y) > 0){
+                  ct.setHeight(initialObjectDim.y-(initalMousePoint.y-mousePoint.y));
+                }
               }
             }
             if (transformComponentNumber==2) {

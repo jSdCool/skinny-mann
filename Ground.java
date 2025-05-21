@@ -2,7 +2,7 @@ import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
-class Ground extends StageComponent implements Rotatable{//ground component
+class Ground extends StageComponent implements Rotatable,Resizeable{//ground component
 
   public static final Identifier ID = new Identifier("ground");
   
@@ -226,7 +226,7 @@ class Ground extends StageComponent implements Rotatable{//ground component
     updateVerticies();
   }
   
-  public void setwidth(float w){
+  public void setWidth(float w){
     dx=w;
     updateVerticies();
   }

@@ -2,7 +2,7 @@ import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
-class Holo extends StageComponent implements Rotatable{//ground component
+class Holo extends StageComponent implements Rotatable,Resizeable{//ground component
 
   public static final Identifier ID = new Identifier("holo");
   
@@ -223,7 +223,7 @@ class Holo extends StageComponent implements Rotatable{//ground component
     updateVerticies();
   }
   
-  public void setwidth(float w){
+  public void setWidth(float w){
     dx=w;
     updateVerticies();
   }
