@@ -749,23 +749,30 @@ void playerPhysics() {
     players[calcingPlayer].verticalVelocity=0;
   }
 
+  //if in coop multyplayer mode and thyis player is the host or is in the level creator
   if (level.multyplayerMode==2 && (isHost||levelCreator)) {
+    //loop through all the stages
     for (Stage stage : level.stages) {
+      //get the 2 and 3D hitboxes for each stage
       ArrayList<Collider2D> entityStageBoxes;
       ArrayList<Collider3D> entityStageBoxes3D;
+      //if this iteration of the loop refers to the current stage
       if(stage.equals(level.stages.get(currentStageIndex))){
+        //dont recalculate it
         entityStageBoxes = stageBoxes;
         entityStageBoxes3D = stageBoxes3D;
       }else{
+        //calculate the hitboex
         entityStageBoxes = generateLevel2DComboBox(stage);
         entityStageBoxes3D = generateLevel3DComboBox(stage);
       }
+      //calculate the physics for each entity in this stage
       for (int i=0; i<stage.entities.size(); i++) {
-        stage.entities.get(i).update(mspc,entityStageBoxes);
         entityPhysics(stage.entities.get(i), stage, entityStageBoxes,entityStageBoxes3D);
       }
     }
-  } else if (level.multyplayerMode!=2) {
+  } else if (level.multyplayerMode!=2) {//if the level is not in co-op mode
+    //calculate the physics for only the entites on this stage
     for (int i=0; i<level.stages.get(currentStageIndex).entities.size(); i++) {
       entityPhysics(level.stages.get(currentStageIndex).entities.get(i), level.stages.get(currentStageIndex),stageBoxes,stageBoxes3D);
     }
@@ -783,13 +790,17 @@ void playerPhysics() {
       logicTickingThread.shouldRun=false;//then stop it
     }
   }
-}
+}//player physics
 
 void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBoxs2D, ArrayList<Collider3D> stageHitBoxs3D) {
   MovementManager movement = entity.getMovementmanager();
   //if the movement manager is no movement manager then stop becasue it does not move on its own
   if (movement instanceof NoMovementManager) {
     return;
+  }
+  if(entity instanceof StageEntity){
+    StageEntity stageEnt = (StageEntity)entity;
+    stageEnt.update(mspc, stageHitBoxs2D);
   }
 
   //if the entity is dead then do not calculate physics on them
