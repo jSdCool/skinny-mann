@@ -228,7 +228,54 @@ void stageEditGUI() {
         drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, 1,g);//draw a portal
       }
     }
-    //the accual gut part
+    //Transformations 
+    if (selectedIndex!=-1) {
+      StageComponent ct=current.parts.get(selectedIndex);
+      //2D Rotation
+      if(current3DTransformMode==3 && ct instanceof Rotatable){//if rotating
+      //prepair the visual center pos
+        PVector center = ct.getCenter();
+        center.z=0;
+        center.mult(Scale);
+        center.x -= drawCamPosX*Scale;
+        center.y += drawCamPosY*Scale;
+        float sze = sqrt(pow(ct.getWidth()/2,2)+pow(ct.getHeight()/2,2))*2.5;
+        
+        //draw the circle
+        fill(0,0);
+        if(dist(mouseX,mouseY,center.x,center.y) <= sze/2*Scale){
+          stroke(255,255,0);
+        }else{
+          stroke(0,0,255);
+        }
+        strokeWeight(4);
+        circle(center.x,center.y,sze*Scale);
+        noStroke();
+        
+        //rotation functionality
+        if(translateZaxis){
+          Rotatable rotb = (Rotatable)ct;
+          PVector AB = PVector.sub(initalMousePoint.toPVector(),center,null);
+          PVector BC = PVector.sub(center, new PVector(mouseX,mouseY),null);
+          AB.normalize();
+          BC.normalize();
+          BC.mult(-1);//make both face the smae direction if the start and current points are the same place
+          float angleDiff = acos(AB.dot(BC));
+          //println(angleDiff+" "+initalMousePoint+" "+objectCenter+" "+inPlane);
+          if(PVector.cross(AB,BC,null).dot(rotb.getZRotationAxis()) <= 0){
+            angleDiff*=-1;
+          }
+          //then apply it to the correct axis
+          if(grid_mode){
+            rotb.rotateZ(radians(Math.round(degrees(currentComponentRotation.z+angleDiff)/grid_size)*grid_size));
+          }else{
+            rotb.rotateZ(currentComponentRotation.z+angleDiff);
+          }
+          
+        }
+      }//end of rotating
+      
+    }//end of transformations
   }
 
   if (current.type.equals("3Dstage") || current.type.equals("3D blueprint")) {//if in a 3D stage
