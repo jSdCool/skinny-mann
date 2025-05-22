@@ -111,7 +111,7 @@ PVector currentComponentRotation = new PVector();
 
 String Menue = "creds";
 String version = "0.10.0_Early_Access";
-String EDITOR_version = "0.2.1_EAc";
+String EDITOR_version = "0.3.0_EAc";
 String ip = "localhost";
 String name = "can't_be_botherd_to_chane_it";
 String rootPath;
