@@ -1432,6 +1432,7 @@ void mouseClicked3D() {
           placementContext = new StageComponentPlacementContext((int)(testPoint.x+5*direction), (int)(testPoint.y), (float)(int)(testPoint.z), numCoins);
           if(!editingBlueprint){
              level.numOfCoins++;
+             level.reloadCoins();
            }
         }else{
           placementContext = new StageComponentPlacementContext((int)(testPoint.x+5*direction), (int)(testPoint.y), (float)(int)(testPoint.z));
@@ -1450,6 +1451,7 @@ void mouseClicked3D() {
            placementContext = new StageComponentPlacementContext((int)(testPoint.x), (int)(testPoint.y), (float)(int)(testPoint.z), numCoins);
            if(!editingBlueprint){
              level.numOfCoins++;
+             level.reloadCoins();
            }
          }else{
            placementContext = new StageComponentPlacementContext((int)(testPoint.x), (int)(testPoint.y), (float)(int)(testPoint.z));
@@ -1468,6 +1470,7 @@ void mouseClicked3D() {
           placementContext = new StageComponentPlacementContext((int)(testPoint.x), (int)(testPoint.y), (float)(int)(testPoint.z+5*direction), numCoins);
           if(!editingBlueprint){
              level.numOfCoins++;
+             level.reloadCoins();
            }
         }else{
           placementContext = new StageComponentPlacementContext((int)(testPoint.x), (int)(testPoint.y), (float)(int)(testPoint.z+5*direction));
