@@ -330,6 +330,8 @@ Button disableMenuTransistionsButton;
 Button enableMenuTransitionButton;
 Button select_lvl_13;
 Button select_lvl_14;
+Button select_lvl_15;
+Button select_lvl_16;
 Button select_lvl_next;
 
 UiFrame ui;

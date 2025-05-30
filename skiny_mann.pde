@@ -1280,8 +1280,18 @@ void mouseClicked() {// when you click the mouse
             menue=false;
             inGame=true;
           }
-          if (select_lvl_2.isMouseOver()&&progress>=14) {
+          if (select_lvl_14.isMouseOver()&&progress>=14) {
             loadLevel("data/levels/level-14");
+            menue=false;
+            inGame=true;
+          }
+          if (select_lvl_15.isMouseOver()&&progress>=15) {
+            loadLevel("data/levels/level-15");
+            menue=false;
+            inGame=true;
+          }
+          if (select_lvl_16.isMouseOver()&&progress>=16) {
+            loadLevel("data/levels/level-16");
             menue=false;
             inGame=true;
           }
@@ -3359,9 +3369,21 @@ void drawLevelSelect2(boolean bcakground){
   } else {
     select_lvl_14.setColor(-59135, -1791);
   }
+  if (progress<15) {
+    select_lvl_15.setColor(#B40F00, #B4AF00);
+  } else {
+    select_lvl_15.setColor(-59135, -1791);
+  }
+  if (progress<16) {
+    select_lvl_16.setColor(#B40F00, #B4AF00);
+  } else {
+    select_lvl_16.setColor(-59135, -1791);
+  }
   
   select_lvl_13.draw();
   select_lvl_14.draw();
+  select_lvl_15.draw();
+  select_lvl_16.draw();
   select_lvl_back.draw();
 }
 
@@ -4258,6 +4280,8 @@ void  initButtons() {
   disableMenuTransistionsButton = new UiButton(ui, (1200), (260), (40), (40), 255, 0).setStrokeWeight(5);
   select_lvl_13 = new UiButton(ui, (100), (100), (200), (100), "lvl 13", -59135, -1791).setStrokeWeight( (10));
   select_lvl_14 = new UiButton(ui, (350), (100), (200), (100), "lvl 14", -59135, -1791).setStrokeWeight( (10));
+  select_lvl_15 =new UiButton(ui, (600), (100), (200), (100), "lvl 15", -59135, -1791).setStrokeWeight( (10));
+  select_lvl_16 =new UiButton(ui, (850), (100), (200), (100), "lvl 16", -59135, -1791).setStrokeWeight( (10));
 
 
 
