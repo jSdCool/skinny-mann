@@ -82,7 +82,7 @@ class StageComponentDragPlacementContext{
   }
   
   public String toString(){
-    return "x: "+x+" y: "+y+" z: "+z+" dx: "+dx+" dy: "+dy+" dz: "+dz+" has3D: "+has3D;
+    return "x: "+x+" y: "+y+" z: "+z+" dx: "+dx+" dy: "+dy+" dz: "+dz+" has3D: "+has3D+" Rotation: "+rotation;
   }
   
 }

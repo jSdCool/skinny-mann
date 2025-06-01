@@ -71,15 +71,15 @@ class HoloTriangle extends StageComponent implements Rotatable,Resizeable{//non 
   }
   
   public StageComponent copy() {
-    return new HoloTriangle(new StageComponentDragPlacementContext(x, y, dx, dy, ccolor, direction));
+    return new HoloTriangle(new StageComponentDragPlacementContext(x, y, getWidth(), getHeight(), ccolor, direction));
   }
   
   public StageComponent copy(float offsetX,float offsetY){
-    return new HoloTriangle(new StageComponentDragPlacementContext(x+offsetX,y+offsetY,dx+offsetX,dy+offsetY,direction,ccolor));
+    return new HoloTriangle(new StageComponentDragPlacementContext(x+offsetX,y+offsetY,getWidth(),getHeight(),ccolor,direction));
   }
   
   public StageComponent copy(float offsetX,float offsetY,float offsetZ){
-    return new HoloTriangle(new StageComponentDragPlacementContext(x+offsetX,y+offsetY,z+offsetZ,dx+offsetX,dy+offsetY,dz+offsetZ,direction,ccolor));
+    return new HoloTriangle(new StageComponentDragPlacementContext(x+offsetX,y+offsetY,z+offsetZ,getWidth(),getHeight(),getDepth(),ccolor,direction));
   }
 
   public JSONObject save(boolean stage_3D) {
@@ -212,6 +212,7 @@ class HoloTriangle extends StageComponent implements Rotatable,Resizeable{//non 
             new PVector(dx+group.xOffset, y+group.yOffset)
           });
         default:
+          System.err.println("Attempted to get collider for 2D tirangle with triangle mdoe of: "+rot);
           return null;
       }
     }else {

@@ -135,7 +135,7 @@ ArrayList<String> playerNames=new ArrayList<>();
 
 //String[] musicTracks ={"data/music/track1.wav", "data/music/track2.wav", "data/music/track3.wav"};
 //String[] sfxTracks={"data/sounds/level complete.wav"};
-String[] compatibleVersions={"0.9.1_Early_Access","0.9.2_Early_Access","0.10.0_Early_Access"};
+String[] compatibleVersions={"0.10.0_Early_Access"};
 
 float Scale;
 float gravity = 0.001;

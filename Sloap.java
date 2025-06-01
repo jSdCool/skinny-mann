@@ -69,16 +69,15 @@ class Sloap extends StageComponent implements Rotatable,Resizeable{//sloap compo
   }
   
   public StageComponent copy() {
-    return new Sloap(new StageComponentDragPlacementContext(x, y, dx, dy, ccolor, direction));
+    return new Sloap(new StageComponentDragPlacementContext(x, y, getWidth(), getHeight(), ccolor, direction));
   }
   
   public StageComponent copy(float offsetX,float offsetY){
-    return new Sloap(new StageComponentDragPlacementContext(x+offsetX,y+offsetY,dx+offsetX,dy+offsetY,ccolor,direction));
+    return new Sloap(new StageComponentDragPlacementContext(x+offsetX,y+offsetY,getWidth(),getHeight(),ccolor,direction));
   }
   
   public StageComponent copy(float offsetX,float offsetY,float offsetZ){
-    System.err.println("attempted to copy holotriangle in 3D. This opperation is not supported");
-    return null;
+    return new Sloap(new StageComponentDragPlacementContext(x+offsetX,y+offsetY,z+offsetZ,getWidth(),getHeight(),getDepth(),ccolor,direction));
   }
 
   public JSONObject save(boolean stage_3D) {
