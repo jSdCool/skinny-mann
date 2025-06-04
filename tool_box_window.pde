@@ -1437,7 +1437,7 @@ class ToolBox extends PApplet {
             selecting=true;
           }
           if (logicHelpButton.isMouseOver()) {
-            link("https://youtu.be/3ac1G1qWK6g");
+            link("https://youtu.be/RIgViL-a3zs");//logic tutorial video
           }
           for(int i=0;i<logicComponentButtons.length;i++){             
             if(logicComponentButtons[i].isMouseOver()){
