@@ -16,71 +16,80 @@ import java.util.function.Function;
 
 
 void settings() {//first function called
+  //setup the univertal error handler
   UniversalErrorManager.init(this);
+  //if on winodws
   if (platform==WINDOWS) {
-    appdata=System.getenv("AppData");
+    appdata=System.getenv("AppData");//set the appadata path to the users appdata directory
   } else {
-    appdata=System.getenv("HOME");
+    appdata=System.getenv("HOME");//set the appdata path to the current users home directory
   }
   try {
     println("attempting to load settings");
+    //load settings
     settings = new Settings(appdata+"/CBi-games/skinny mann/settings.json");
     
     if (!settings.getFullScreen()) {//check for fullscreeen
-      //Scale=rez.getFloat("scale");//TODO, replace scale
+      //set the window size to what is congfigured in settings
       size(settings.getResolutionHorozontal(), settings.getResolutionVertical(), P3D);
     } else {
-      fullScreen(P3D, settings.getFullScreenScreen());//if full screen then turn full screen on
+      //create a fullscreen window on the requested display, note the displays start at index 1, index 0 will streach across all displays
+      fullScreen(P3D, settings.getFullScreenScreen());
     }
     println("loading window icon");
+    //smet the window icon / task bar icon, why does this not wotk on lunix?
     PJOGL.setIcon("data/assets/skinny mann face.PNG");
+    //give a fair ammount of classes a static refence to this class, note: WE NEED TO REMOVE THIS!
     sourceInitilize();
-  }
-  catch(Throwable e) {
+  }catch(Throwable e) {
     println("an error orrored in the settings function");
     handleError(e);
   }
-}
+}//after this setup will be called after more initilization happens like creating the window surface 
 
 
 
 void setup() {//seccond function called
   try {
-    frameRate(60);//limet the frame reate
+    frameRate(60);//set the FPS limit, note set this to a lerger number to get higher frame rates
     background(0);
-    if (settings.getFullScreen()) {//get and set some data if in fullscreen
-      Scale=height/720.0;
+    if (settings.getFullScreen()) {
+      Scale=height/720.0;//if in fullscreen calculate the scale
     }else{
-      Scale = settings.getScale();
+      Scale = settings.getScale();//if not in fullscreen then load the scale from settings
     }
+    //cretae the Ui frame
     ui=new UiFrame(this, 1280, 720);
+    
     println(height+" "+Scale);//debung info
     println("loading texture for start screen");
     CBi = loadImage("data/assets/CBi.png");//load the CBi logo
 
+    //load the font at a size of 500 so that normal sized fronts dont look like 3 pixles
     textSize(100*Scale);//500
     println("initilizing buttons");
+    //initilize all buttons and text
     initButtons();
     initText();
 
+    //initilize variables re;ated to the 3D sphere in the startup logo
     ptsW=100;
     ptsH=100;
     println("initilizing CBi sphere");
+    //genrate the verticies coordintaes for the 3D sphere
     initializeSphere(ptsW, ptsH);
+    //generate the PSahoe for the sphere and apply the texture to it
     textureSphere(200, 200, 200, CBi);
     
     //start the load thread
     thread("programLoad");
     
-    
-  }
-  catch(Throwable e) {
+  } catch(Throwable e) {
     println("an error occored in the setup function");
     handleError(e);
   }
   
-}
-//define a shit tone of varibles
+}//after this normal program execution begins with draw being called for every frame
 
 
 PApplet primaryWindow=this;
@@ -112,13 +121,14 @@ ArrayList<Client> clients= new ArrayList<>();
 
 //▄
 
-
+//definitiion of the default camera function
 //camera() = camera(defCameraX, defCameraY, defCameraZ,    defCameraX, defCameraY, 0,    0, 1, 0);
 //defCameraX = width/2;
 //defCameraY = height/2;
 //defCameraFOV = 60 * DEG_TO_RAD;
 //defCameraZ = defCameraY / ((float) Math.tan(defCameraFOV / 2.0f));
-void draw() {// the function that is called every fraim
+void draw() {// the function that is called every frame
+  //cursor blinking things, perhas this should be changed 
   if (frameCount%20==0) {
     cursor="|";
     coursorr="|";
@@ -129,23 +139,25 @@ void draw() {// the function that is called every fraim
     coursorr="";
     coursor=false;
   }
+  
+  //if  the depth buffer bas been requested to be initilized (usually from the load thread)
   if(requestDepthBufferInit){
-    requestDepthBufferInit=false;
-    initDepthBuffer();
-    skipFrameInumeration = true;
+    requestDepthBufferInit=false;//set the varaible back to false
+    initDepthBuffer();//initilize the depth buffer (this is what causes the game to freez on startup, it must be done on a thread with an opengl context)
+    skipFrameInumeration = true;//for startup logo animarion purpuses dont advance the animation for a frame becaus if extream lag
   }
   
 
   try {//catch all fatal errors and display them
 
-    if (saveColors) {//save the saved colors if you want to save colors
-      saveJSONArray(colors, appdata+"/CBi-games/skinny mann level creator/colors.json");
+    if (saveColors) {//if saved colors should be saved
+      saveJSONArray(colors, appdata+"/CBi-games/skinny mann level creator/colors.json");//save the saved colors
       saveColors=false;
     }
 
-    if (!levelCreator) {
-      if (transitioningMenu) {
-        menuTransition();
+    if (!levelCreator) {//if not in the level creator
+      if (transitioningMenu) {//if a menu transition is currently in progress
+        menuTransition();//process the menu transistion 
       }
 
       if (menue) {//when in a menue
@@ -153,29 +165,31 @@ void draw() {// the function that is called every fraim
           background(0);
           noStroke();
 
-          drawlogo(true, true);
+          drawlogo(true, true);//draw the 3D sphere 
 
           if (start_wate>=2&&loaded) {// wait for the animation to complete and loading to finish before continuing to the game 
-            soundHandler.startSounds();
-            if (dev_mode) {
-              Menue="dev";
+            soundHandler.startSounds();//start the sound engine
+            if (dev_mode) {//if dev mode is on
+              Menue="dev";//set the menu to the dev menu 
               println("dev mode activated");
-              return;
+              return;//dont conitnue to process anything else in this frame 
             }
 
             try {
               String inver = readFileFromGithub("https://raw.githubusercontent.com/jSdCool/CBI-games-version-checker/master/skinny_mann.txt");//check for updates  inver = internet version
-              inver =inver.substring(0, inver.length()-1);
-              internetVersion=inver;
+              inver =inver.substring(0, inver.length()-1);//remove the last char from the string (its a new line)
+              internetVersion=inver;//not sure why this is here
               if (!inver.equals(version)) {//if an update exists
-                Menue="update";//go to update menue
-              } else {//if no update exists go to main menue
-                if (settings.getSettingsAfterStart()) {
+                Menue="update";//go to update menu
+              } else {//if no update exists go to main menu
+                if (settings.getSettingsAfterStart()) {//if no settings file exsisted or was the wrong version,
+                  //start the treansition to the settings menu
                   menue=false;
                   Menue="settings";
                   initMenuTransition(Transitions.LOGO_TO_SETTINGS);
                   return;
                 } else {
+                  //start the transition to the main menu
                   menue=false;
                   Menue="main";
                   initMenuTransition(Transitions.LOGO_TO_MAIN);
@@ -185,12 +199,14 @@ void draw() {// the function that is called every fraim
             }
             catch(Throwable e) {//if an error occors or no return then go to main menue
               println(e);//print to console the cause of the error
-              if (settings.getSettingsAfterStart()) {
+              if (settings.getSettingsAfterStart()) {//if no settings file exsisted or was the wrong version,
+                //start the treansition to the settings menu
                 menue=false;
                 Menue="settings";
                 initMenuTransition(Transitions.LOGO_TO_SETTINGS);
                 return;
               } else {
+                //start the transition to the main menu
                 menue=false;
                 Menue="main";
                 initMenuTransition(Transitions.LOGO_TO_MAIN);
@@ -200,35 +216,36 @@ void draw() {// the function that is called every fraim
           }
         }
 
-        if (Menue.equals("update")) {//if there is an updat draw the update screen
+        if (Menue.equals("update")) {//if there is an update draw the update screen
           draw_updae_screen();
         }
-        if (Menue.equals("downloading update")) {
+        if (Menue.equals("downloading update")) {//if on the dwnloading update the draw the downloading update screen
           drawUpdateDownloadingScreen();
         }
 
         if (Menue.equals("main")) {//if on main menue
           hint(DISABLE_KEY_REPEAT);
-          drawMainMenu(true);
+          drawMainMenu(true);//draw the main menu
         }
         if (Menue.equals("level select")) {//if selecting level
-          drawLevelSelect(true,0);
+          drawLevelSelect(true,0);//draw the level select screen
         }
-        if (Menue.equals("level select UGC")) {
-          drawLevelSelectUGC();
+        if (Menue.equals("level select UGC")) {//if on the UGC menu
+          drawLevelSelectUGC();//draw the UGC menu
         }
-        if(Menue.equals("level select 2")){
-         drawLevelSelect2(true); 
+        if(Menue.equals("level select 2")){//if on the second level selct menu
+         drawLevelSelect2(true); //draw the second level selcet menu
         }
-        if (Menue.equals("pause")) {//when in the pause emnue cancle all motion
+        if (Menue.equals("pause")) {//when in the pause menu cancel all motion
           player1_moving_right=false;
           player1_moving_left=false;
           player1_jumping=false;
+          playerMovementManager.reset();
         }
 
 
         if (Menue.equals("settings")) {//the settings menue
-          hint(ENABLE_KEY_REPEAT);
+          hint(ENABLE_KEY_REPEAT);//allow key repeat for the text box
           drawSettings();
         }
 
@@ -249,85 +266,76 @@ void draw() {// the function that is called every fraim
           text("back", 60*Scale, 655*Scale);
         }
 
-        if (Menue.equals("multiplayer strart")) {
+        if (Menue.equals("multiplayer strart")) {//if on the multyplayer starting menu
           background(#FF8000);
-          hint(ENABLE_KEY_REPEAT);
+          hint(ENABLE_KEY_REPEAT);//allow key repeat for the textb boxes
           fill(0);
-          initMultyplayerScreenTitle.draw();
+          initMultyplayerScreenTitle.draw();//draw the page title
 
+          //draw the join, host, and exit button
           multyplayerJoin.draw();
           multyplayerHost.draw();
           multyplayerExit.draw();
         }
 
-        if (Menue.equals("start host")) {
+        if (Menue.equals("start host")) {//if on the seting up hosting menu
           background(#FF8000);
           fill(0);
+          //draw the text on the menu
           mp_hostSeccion.draw();
           mp_host_Name.draw();
-          //mp_host_enterdName.setText(name+((enteringName)? cursor:""));
-          //mp_host_enterdName.draw();
           mp_host_port.draw();
-          //mp_host_endterdPort.setText(port+((enteringPort)? cursor:""));
-          //mp_host_endterdPort.draw();
           
+          //draw the text boxes on the menu
           multyPlayerNameTextBox.draw();
           multyPlayerPortTextBox.draw();
-
-          //noStroke();
-          //rect(width/2-width*0.4, height*0.2, width*0.8, 2*Scale);
-
-          //rect(width/2-width*0.05, height*0.31, width*0.1, 2*Scale);
-
+          //draw the exit an go buttons
           multyplayerExit.draw();
           multyplayerGo.draw();
         }
-        if (Menue.equals("start join")) {
+        
+        if (Menue.equals("start join")) {//if on the setup joining menu
           background(#FF8000);
           fill(0);
+          //draw the text on the menu
           mp_joinSession.draw();
           mp_join_name.draw();
-          //mp_join_enterdName.setText(name+((enteringName)? cursor:""));
-          //mp_join_enterdName.draw();
           mp_join_port.draw();
-          //mp_join_enterdPort.setText(port+((enteringPort)? cursor:""));
-          //mp_join_enterdPort.draw();
           mp_join_ip.draw();
-          //mp_join_enterdIp.setText(ip+((enteringIP)?cursor:""));
-          //mp_join_enterdIp.draw();
-          
+          //draw the text boxes on the menu
           multyPlayerNameTextBox.draw();
           multyPlayerPortTextBox.draw();
           multyPlayerIpTextBox.draw();
-          
-          //noStroke();
-          //rect(width/2-width*0.4, height*0.2, width*0.8, 2*Scale);
-          //rect(width/2-width*0.05, height*0.31, width*0.1, 2*Scale);
-          //rect(width/2-width*0.3, height*0.42, width*0.6, 2*Scale);
-
+          //draw the exit and go buttons
           multyplayerExit.draw();
           multyplayerGo.draw();
         }
-        if (Menue.equals("disconnected")) {
+        
+        if (Menue.equals("disconnected")) {//if on the multyplauer disconnection screen 
 
           background(200);
           fill(0);
+          //draw the menu title
           mp_disconnected.draw();
+          //set then draw the disconnect reason(error)
           mp_dc_reason.setText(disconnectReason);
           mp_dc_reason.draw();
-
+          //draw the exit button
           multyplayerExit.draw();
         }
         //TODO: update text in multyplayer selection menu to UiText
-        if (Menue.equals("multiplayer selection")) {
+        if (Menue.equals("multiplayer selection")) {//the main multyplayer screen
           background(-9131009);
           fill(0);
+          
+          //oh god what the fuck did I do here
           rect(width*0.171875, 0, 2*Scale, height);//verticle line on the left of the screen
           textAlign(CENTER, CENTER);
           textSize(20*Scale);
           text("players", width*0.086, height*0.015);
           rect(0, height*0.04, width*0.171875, height*(2.0/720));//horozontal line ath the top of the left colum
-
+          //why have I not modernized any of this yet?
+          
           //horozontal lines that seperate the names of the players
           for (int i=0; i<10; i++) {
             rect(0, height*0.04+((height*0.91666-height*0.04)/10)*i, width*0.171875, height*(1.0/720));
@@ -341,7 +349,7 @@ void draw() {// the function that is called every fraim
           rect(width*0.8, height*0.2, width*0.2, height*(2.0/720));
           textSize(10*Scale);
           textAlign(LEFT, CENTER);
-          if (multyplayerSelectedLevel.exsists) {
+          if (multyplayerSelectedLevel.exsists) {//if something is selcted then display its information
             text("Name: "+multyplayerSelectedLevel.name, width*0.81, height*0.22);
             text("Author: "+multyplayerSelectedLevel.author, width*0.81, height*0.24);
             text("Game Version: "+multyplayerSelectedLevel.gameVersion, width*0.81, height*0.26);
@@ -358,7 +366,7 @@ void draw() {// the function that is called every fraim
               calcTextSize(time, width*0.96609375-width*0.8463194444);
               text(time, width*0.901, height*0.72);
             }
-            if (multyplayerSelectedLevel.gameVersion!=null&&!gameVersionCompatibilityCheck(multyplayerSelectedLevel.gameVersion)) {
+            if (multyplayerSelectedLevel.gameVersion!=null&&!gameVersionCompatibilityCheck(multyplayerSelectedLevel.gameVersion)) {//check if the currenly selected level is compatiable with this version of the game
               textSize(10*Scale);
               textAlign(LEFT, CENTER);
               text("Level is incompatible with current version of game", width*0.81, height*0.34);
@@ -484,66 +492,70 @@ void draw() {// the function that is called every fraim
             }
           }
           multyplayerLeave.draw();
+          
+          //if you are wondering what that was, it was an attempt at amking a scalable UI but clearly it did not work very well. no I am just not able to be botherd to fix it
         }//end of multyplayer selection
 
-        if (Menue.equals("dev")) {
-          drawDevMenue();
+        if (Menue.equals("dev")) {//if on the dev menu
+          drawDevMenue();//draw the dev menu
         }
       }
       //end of menue draw
 
 
-      if (inGame) {
-        hint(DISABLE_KEY_REPEAT);
-        //================================================================================================
-        background(7646207);
-        stageLevelDraw();
-        if (level_complete&&!levelCompleteSoundPlayed) {
-          if (multiplayer) {
-            if (level.multyplayerMode==1) {
-              players[currentPlayer].setX(-100);
+      if (inGame) {//if in game
+        hint(DISABLE_KEY_REPEAT);//diable the key repeat because it causes issues with input handling 
+        //================================================================================================ dont remember what this was for anymore
+        background(7646207);//wait, this should not be here anymore
+        stageLevelDraw();//render the level
+        
+        if (level_complete&&!levelCompleteSoundPlayed) {//if the level has been completed and the sound has not been played yet
+          if (multiplayer) {//if in multyplayer
+            if (level.multyplayerMode==1) {//if this level is in speedrun mode
+              players[currentPlayer].setX(-100);//move the player to -100,-100
               players[currentPlayer].setY(-100);
-              level.psudoLoad();
-              level_complete=false;
-              int completeTime=millis()-startTime;
+              level.psudoLoad();//run a fake load on the level
+              level_complete=false;//set the level to not be complete
+              int completeTime=millis()-startTime;//calculate the time it took to complete
               println("completed in: "+completeTime+" "+formatMillis(completeTime));
-              if (completeTime<bestTime||bestTime==0) {
-                bestTime=completeTime;
+              if (completeTime<bestTime||bestTime==0) {//if this was better then your best time, or your best time was 0
+                bestTime=completeTime;//set this to be your best time
               }
-              startTime=millis();
+              startTime=millis();//reset stage start time
             }
-          } else {
-            soundHandler.addToQueue(0);
-            levelCompleteSoundPlayed=true;
+          } else {//if not in multyplayer
+            soundHandler.addToQueue(0);//queue the level complete sound to playe (sound 0)
+            levelCompleteSoundPlayed=true;//set the sound to played
           }
         }
       }
-      perspective();//reset the perspecive / fov fro 3D mode
+      perspective();//reset the perspecive / fov for 3D mode
 
-      if (tutorialMode&&!inGame) {
-        if (Menue.equals("settings")) {
+      if (tutorialMode&&!inGame) {//if in the tutorial and not currenly in a level
+        if (Menue.equals("settings")) {//if the menu is settings
           background(0);
           fill(255);
-          tut_notToday.draw();
-        } else {
+          tut_notToday.draw();//display the rejection message
+        } else {//otherwize 
           background(0);
-          fill(255);
+          fill(255);//dsiplay the disclaimer text 
           tut_disclaimer.draw();
           tut_toClose.draw();
         }
       }
-      engageHUDPosition();//anything hud
+      engageHUDPosition();//prepair for rendering HUD elements
 
-      if (inGame) {
-        fill(255);
+      if (inGame) {//if in the game
+        fill(255);//render the coin count
         coinCountText.setText("coins: "+coinCount);
         coinCountText.draw();
       }
 
       if (menue) {
         if (Menue.equals("pause")) {//when paused
+        //render the pause menu
           fill(50, 200);
-          rect(0, 0, width, height);
+          rect(0, 0, width, height);//darken the background
           fill(0);
           pa_title.draw();
 
@@ -551,17 +563,18 @@ void draw() {// the function that is called every fraim
           pauseOptionsButton.draw();
           pauseQuitButton.draw();
 
-          if (multiplayer) {
+          if (multiplayer) {//if in multyplayer then display the reset time button
             if (level.multyplayerMode==1) {
               pauseRestart.draw();
             }
           }
         }
       }
-      //level creator here
+      //end of not in level creator
     } else {
+      //if in the level creator
       if (startup) {//if on the startup screen
-        hint(ENABLE_KEY_REPEAT);
+        hint(ENABLE_KEY_REPEAT);//allow key repeat for the author field
         background(#48EDD8);
         translate(width/2, 150*Scale, 0);
         rotateX(PI);
@@ -571,7 +584,6 @@ void draw() {// the function that is called every fraim
         noLights();
         rotateX(-PI);
         translate(-width/2, -150*Scale, 0);
-
 
         newLevelButton.draw();
         loadLevelButton.draw();
@@ -610,7 +622,7 @@ void draw() {// the function that is called every fraim
       }//end of loading level
 
       if (newLevel) {//if creating a new level
-      hint(ENABLE_KEY_REPEAT);
+        hint(ENABLE_KEY_REPEAT);
         background(#48EDD8);
         fill(0);
         lc_load_new_describe.draw();
@@ -621,7 +633,7 @@ void draw() {// the function that is called every fraim
       }//end of make new level
 
       if (editingStage) {//if edditing the stage
-      hint(DISABLE_KEY_REPEAT);
+        hint(DISABLE_KEY_REPEAT);//again disable the key repeat for input reasons
         if (!simulating) {//if not simulating allow the camera to be moved by the arrow keys
           if (cam_left&&camPos>0) {
             camPos-=4;
@@ -637,28 +649,29 @@ void draw() {// the function that is called every fraim
           }
         }
 
-        stageLevelDraw();//level draw code
+        stageLevelDraw();//render the level
         
         //if placing a blueprint in 3D, render the blueprint that is being palced
         if (e3DMode && selectingBlueprint && blueprints.length!=0){
           generateDisplayBlueprint3D();
           renderBlueprint3D();
+          //calculate the width, height, and depth of the blueprint
           float cdx = blueprintMax[0]-blueprintMin[0];
           float cdy = blueprintMax[1]-blueprintMin[1];
           float cdz = blueprintMax[2]-blueprintMin[2];
           renderTranslationArrows(blueprintMin[0],blueprintMin[1],blueprintMin[2],cdx,cdy,cdz);
         }
         
-        stageEditGUI();//level gui code
+        stageEditGUI();//draw the editing gui/placemnt logic 
 
         if (selectingBlueprint&&blueprints.length!=0) {//if selecting blueprint
-        if(!e3DMode){
-            generateDisplayBlueprint();//visualize the blueprint that is selected
+          if(!e3DMode){//if not in 3D mode 
+            generateDisplayBlueprint();//prepair to visualize the blueprint that is selected
             renderBlueprint();//render blueprint
           }
         }
         perspective();//reset the perspecive / fov
-        engageHUDPosition();
+        engageHUDPosition();//setup for rendering HUD elements
       }
 
       if (levelOverview) {//if on the level overview
@@ -670,7 +683,7 @@ void draw() {// the function that is called every fraim
         if (overviewSelection!=-1) {//if something is selected
           rect(0, ((overviewSelection- filesScrole)*60+80)*Scale, 1280*Scale, 60*Scale);//draw the highlight
           if (overviewSelection<level.stages.size()) {//if the selection is in rage of the stages
-            if (level.stages.get(overviewSelection).type.equals("stage")) {//if the selected thing is a stage
+            if (level.stages.get(overviewSelection).type.equals("stage")) {//if the selected thing is a 2D stage
               edditStage.draw();//draw edit button
               fill(255, 255, 0);
               strokeWeight(1*Scale);
@@ -707,9 +720,10 @@ void draw() {// the function that is called every fraim
         fill(0);
         textSize(30*Scale);
         //TODO: update the text here. outher stuff def needs to be changed to scale well with it
+        //load the names of the sounds
         String[] keys=new String[0];//create a string array that can be used to place the sound keys in
         keys=level.sounds.keySet().toArray(keys);//place the sound keys into the array
-        for (int i=0; i < 11 && i + filesScrole < level.stages.size()+level.sounds.size()+level.logicBoards.size(); i++) {//loop through all the stages and sounds and display 11 of them on screen
+        for (int i=0; i < 11 && i + filesScrole < level.stages.size()+level.sounds.size()+level.logicBoards.size(); i++) {//loop through all the stages, sounds, and logic boards to display 11 of them on screen
           if (i+ filesScrole<level.stages.size()) {//if the current thing attemping to diaply is in the range of stages
             fill(0);
             String displayName=level.stages.get(i+ filesScrole).name, type=level.stages.get(i+ filesScrole).type;//get the name and type of the stages
@@ -727,11 +741,11 @@ void draw() {// the function that is called every fraim
             if (type.equals("sound")) {//if the thing is a sound then display the sound icon
               drawSpeakericon(40*Scale, (110+60*(i))*Scale, 0.5*Scale,g);
             }
-          } else {
+          } else {//at this point in the the only other type of thing is a logic board
             fill(0);
             String displayName=level.logicBoards.get(i+ filesScrole-(level.stages.size()+level.sounds.size())).name;//get the name of the logic board
             text(displayName, 80*Scale, (130+60*(i))*Scale);//display the name
-            logicIcon(40*Scale, (100+60*i)*Scale, 1*Scale,g);
+            logicIcon(40*Scale, (100+60*i)*Scale, 1*Scale,g);//draw the logic board icon
           }
         }
 
@@ -739,6 +753,7 @@ void draw() {// the function that is called every fraim
         textAlign(CENTER, CENTER);
         newStage.draw();//draw the new file button
         textAlign(LEFT, BOTTOM);
+        //why is this happening every frame on the overview?
         respawnX=(int)level.SpawnX;//set the respawn info to that of the current level
         respawnY=(int)level.SpawnY;
         respawnStage=level.mainStage;
@@ -746,19 +761,19 @@ void draw() {// the function that is called every fraim
         overview_saveLevel.draw();//draw save button
         saveIcon(overview_saveLevel.x+overview_saveLevel.lengthX/2,overview_saveLevel.y+overview_saveLevel.lengthY/2,settings.getScale(),g);
         help.draw();//draw help button
-        if (filesScrole>0)//draw scroll buttons
+        if (filesScrole>0)//draw scroll buttons if nessarry
           overviewUp.draw();
         if (filesScrole+11<level.stages.size()+level.sounds.size()+level.logicBoards.size())
           overviewDown.draw();
         lcOverviewExitButton.draw();
-      }//end of level over view
+      }//end of level overview
 
       if (newFile) {//if on the new file screen
-        hint(ENABLE_KEY_REPEAT);
+        hint(ENABLE_KEY_REPEAT);//allow key repeat for text boxes
         background(#0092FF);
         stroke(0);
         strokeWeight(2*Scale);
-        line(100*Scale, 450*Scale, 1200*Scale, 450*Scale);
+        line(100*Scale, 450*Scale, 1200*Scale, 450*Scale);//text input line
         //highlight the option that is currently set
         if (newFileType.equals("2D")) {
           new2DStage.setColor(#BB48ED, #51DFFA);
@@ -787,7 +802,7 @@ void draw() {// the function that is called every fraim
           lc_newf_fileName.setText(pathSegments[pathSegments.length-1]);//display the name of the selected file
           lc_newf_fileName.draw();
           chooseFileButton.draw();
-          if(newSoundAsNarration){
+          if(newSoundAsNarration){//change the hilight for the sound vs narration options
             lc_newSoundAsSoundButton.setColor(#BB48ED, #4857ED);
             lc_newSoundAsNarrationButton.setColor(#BB48ED, #51DFFA);
           }else{
@@ -801,6 +816,7 @@ void draw() {// the function that is called every fraim
       }//end of new file
 
       if (drawingPortal2) {//if drawing portal part 2 aka outher overview selection screen
+        //cant be bottherd to do more comments in this part becasue it is bascially the same as the ovreview
         background(#0092FF);
         fill(#7CC7FF);
         stroke(#7CC7FF);
@@ -866,7 +882,7 @@ void draw() {// the function that is called every fraim
 
         createBlueprintGo.draw();//create button
         lc_backButton.draw();
-        if(newBlueprintIs3D){
+        if(newBlueprintIs3D){//hilght for 2D or 3D bluepint buttons
           new2DStage.setColor(#BB48ED, #4857ED);
           new3DStage.setColor(#BB48ED, #51DFFA);
         }else{
@@ -890,7 +906,7 @@ void draw() {// the function that is called every fraim
       if (editingBlueprint) {//if edditing blueprint
         hint(DISABLE_KEY_REPEAT);
         background(7646207);
-        if(!e3DMode){
+        if(!e3DMode){//if not in 3D mode
           fill(0);
           strokeWeight(0);
           rect(width/2-0.5, 0, 1, height);//draw lines in the center of the screen that indicate wherer (0,0) is
@@ -904,28 +920,28 @@ void draw() {// the function that is called every fraim
       if (editinglogicBoard) {//if editing a logic board
         background(#FFECA0);
         for (int i=0; i<level.logicBoards.get(logicBoardIndex).components.size(); i++) {//draw the components
-          if (selectedIndex==i) {
+          if (selectedIndex==i) {//if the current component is selected
             strokeWeight(0);
-            fill(255, 0, 0);
+            fill(255, 0, 0);//draw the hilight arrounf the comonnent
             rect((level.logicBoards.get(logicBoardIndex).components.get(i).x-5-camPos)*Scale, (level.logicBoards.get(logicBoardIndex).components.get(i).y-5-camPosY)*Scale, (level.logicBoards.get(logicBoardIndex).components.get(i).button.lengthX+10*Scale), (level.logicBoards.get(logicBoardIndex).components.get(i).button.lengthY+10*Scale));
           }
-          level.logicBoards.get(logicBoardIndex).components.get(i).draw();
+          level.logicBoards.get(logicBoardIndex).components.get(i).draw();//draw the component
         }
         for (int i=0; i<level.logicBoards.get(logicBoardIndex).components.size(); i++) {//draw the connections
           level.logicBoards.get(logicBoardIndex).components.get(i).drawConnections();
         }
 
-        if (connectingLogic&&connecting) {//draw the connnecting line
+        if (connectingLogic&&connecting) {//draw the connnecting line to the mouse
           float[] nodePos = level.logicBoards.get(logicBoardIndex).components.get(connectingFromIndex).getTerminalPos(2);
           stroke(0);
           strokeWeight(5*Scale);
           line(nodePos[0]*Scale, nodePos[1]*Scale, mouseX, mouseY);
         }
 
-        if (movingLogicComponent&&moveLogicComponents) {
+        if (movingLogicComponent&&moveLogicComponents) {//if moving logic components
           level.logicBoards.get(logicBoardIndex).components.get(movingLogicIndex).setPos(mouseX/Scale+camPos, mouseY/Scale+camPosY);
         }
-        if (cam_left&&camPos>0) {
+        if (cam_left&&camPos>0) {//camera movement
           camPos-=4;
         }
         if (cam_right) {
@@ -939,7 +955,7 @@ void draw() {// the function that is called every fraim
         }
       }
 
-      if (exitLevelCreator) {
+      if (exitLevelCreator) {//if on the exiting level creator screen
         background(#0092FF);
         fill(0);
         lc_exit_question.draw();
@@ -953,36 +969,37 @@ void draw() {// the function that is called every fraim
 
     if (dead) {// when  dead
       fill(255, 0, 0);
-      deadText.draw();
+      deadText.draw();//draw the dead text
       death_cool_down++;
       if (death_cool_down>75) {// respawn cool down
         dead=false;
         inGame=true;
-        player1_moving_right=false;
+        player1_moving_right=false;//reset movemnt 
         player1_moving_left=false;
         player1_jumping=false;
         SPressed=false;
         WPressed=false;
+        playerMovementManager.reset();
       }
-      if(!inGame){
+      if(!inGame){//if not in game then turn dead off
         dead=false;
       }
     }
     
-    if (settingPlayerSpawn && levelCreator) {
-      draw_mann(mouseX, mouseY, 1, Scale, 0,g);
+    if (settingPlayerSpawn && levelCreator) {//if setting the player spawn point 
+      draw_mann(mouseX, mouseY, 1, Scale, 0,g);//draw the example player
       fill(0);
-      settingPlayerSpawnText.draw();
+      settingPlayerSpawnText.draw();//draw the explain text
     }
 
 
-    if (settings.getDebugFPS()) {
+    if (settings.getDebugFPS()) {//if displaying FPS
       fill(255);
-      fpsText.setText("FPS: "+ frameRate);
+      fpsText.setText("FPS: "+ frameRate);//redner the FPS
       fpsText.draw();
     }
-    if (settings.getDebugInfo()) {
-      fill(255);
+    if (settings.getDebugInfo()) {//if displaying debug info
+      fill(255);//render the debig info as long as the current player exsists
       if (players[currentPlayer]!=null) {
         dbg_mspc.setText("mspc: "+ mspc);
         dbg_playerX.setText("player X: "+ players[currentPlayer].x);
@@ -994,21 +1011,22 @@ void draw() {// the function that is called every fraim
         dbg_camY.setText("camera y: "+camPosY);
         dbg_tutorialPos.setText("tutorial position: "+tutorialPos);
       }
-      if(multiplayer){
-        if(clients.size()==0){
-          dbg_ping.setText("Ping: N/A");
-        }else if(clients.size()==1){
-          long pingl = clients.get(0).ping;
+      if(multiplayer){//if in multyplayer
+        if(clients.size()==0){//if there are no conections
+          dbg_ping.setText("Ping: N/A");//report the ping as N/A
+        }else if(clients.size()==1){//if there is exactly 1 connection
+          long pingl = clients.get(0).ping;//displaly the ping of that connection
           float pingDisp = (int)(pingl/10000)/100.0;
           dbg_ping.setText("Ping: "+pingDisp);
-        }else{
+        }else{//if there is more then 1 connection
+          //display the average ping
           long totalPing = clients.stream().map( c -> c.ping).reduce(0l, Long::sum);
           long avgPingl = totalPing / clients.size();
           float pingDisp = (int)(avgPingl/10000)/100.0;
           dbg_ping.setText("avgPing: "+pingDisp);
         }
-      }else{
-        dbg_ping.setText("Ping: N/A");
+      }else{//if not in multyplayer
+        dbg_ping.setText("Ping: N/A");//display the ping as N/A
       }
       dbg_mspc.draw();
       dbg_playerX.draw();
@@ -1022,23 +1040,23 @@ void draw() {// the function that is called every fraim
       dbg_ping.draw();
     }
 
-    if (millis()<gmillis) {
-      glitchEffect();
+    if (millis()<gmillis) {//if the glish effect should be shown 
+      glitchEffect();//draw the glitch effect
     }
     
-    if(showDepthBuffer&&dev_mode&&shadowMap!=null){
-      image(shadowMap,0,height/2,width/2,height/2);
+    if(showDepthBuffer&&dev_mode&&shadowMap!=null){//if the depth buffer should be renderd
+      image(shadowMap,0,height/2,width/2,height/2);//redner the depth buffer
     }
 
-    if (displayTextUntill>=millis()) {
+    if (displayTextUntill>=millis()) {//if text is being displayed on screen
       fill(255);
-      game_displayText.setText(displayText);
+      game_displayText.setText(displayText);//render the display text
       game_displayText.draw();
     }
     
-    if(soundHandler!=null && settings.getSoundNarrationVolume()< 0.2 && soundHandler.anyNarrationPlaying()){
+    if(soundHandler!=null && settings.getSoundNarrationVolume()< 0.2 && soundHandler.anyNarrationPlaying()){//if a narration is playing and the volume is low,
       fill(255);
-      narrationCaptionText.draw();
+      narrationCaptionText.draw();//display the cation notice
     }
     //TODO: text stuff for multyplayer in game
     if (multiplayer&&inGame) {
@@ -1047,8 +1065,8 @@ void draw() {// the function that is called every fraim
         String curtime=formatMillis(millis()-startTime);
         calcTextSize(curtime, width*0.06);
         textAlign(CENTER, CENTER);
-        text(curtime, width/2, height*0.015);
-
+        text(curtime, width/2, height*0.015);//redner the current level time
+        //if host calculate the order of the score board
         if (isHost) {
           BestScore[] scores=new BestScore[10];
           for (int i=0; i<10; i++) {
@@ -1079,6 +1097,7 @@ void draw() {// the function that is called every fraim
         }
         calcTextSize("12345678910", width*0.06);
         textAlign(LEFT, TOP);
+        //redner the leaderboard
         String lb ="Leader Board\n";
         for (int i=0; i<leaderBoard.leaderboard.length; i++) {
           lb+=leaderBoard.leaderboard[i]+"\n";
@@ -1088,17 +1107,18 @@ void draw() {// the function that is called every fraim
         calcTextSize(timeLeft, width*0.05);
         text(timeLeft, width*0.01, height*0.12);
         calcTextSize("Time Left", width*0.05);
+        //redner ho much time is left in this level
         text("Time Left", width*0.01, height*0.1);
-        if (isHost) {
+        if (isHost) {//if your the host and time is up,
           if (timerEndTime-millis()<=0) {
             Menue="multiplayer selection";
-            returnToSlection();
+            returnToSlection();//return to the seldction screen
             menue=true;
             inGame=false;
           }
         }
       }
-      if (level.multyplayerMode==2) {
+      if (level.multyplayerMode==2) {//if in co-op mode and all players are on a finish line
         if (isHost) {
           boolean allDone=true;
           for (int i=0; i<clients.size(); i++) {
@@ -1107,14 +1127,14 @@ void draw() {// the function that is called every fraim
           }
           allDone = allDone && reachedEnd;
           if (allDone) {
-            level_complete=true;
+            level_complete=true;//complete the level
           }
         }
       }
     }
 
 
-    disEngageHUDPosition();
+    disEngageHUDPosition();//turn the HUD things off
   }
   catch(Throwable e) {//cath and display all the fatail errors that occor
     handleError(e);
