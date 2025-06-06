@@ -2451,7 +2451,7 @@ void keyPressed() {// when a key is pressed
       shadowShaderOutputSampledDepthInfo = !shadowShaderOutputSampledDepthInfo;
     }
     if(keyCode == 106 && dev_mode){//F10
-      shadowShader = loadShader("shaders/shadowMapFrag.glsl","shaders/shadowMapVert.glsl");
+      shadowShader = loadShader("data/shaders/shadowMapFrag.glsl","data/shaders/shadowMapVert.glsl");
       println("Relaoded Shaders");
     }
     
@@ -3907,8 +3907,8 @@ String formatMillis(int millis) {
 void programLoad() {
   //do this first becasue it causes a momentary freez on the render thread that we want to avoid later in the animation
   println("loading shaders");
-  depthBufferShader = loadShader("data/shaders/depthBufferFrag.glsl","shaders/depthBufferVert.glsl");
-  shadowShader = loadShader("data/shaders/shadowMapFrag.glsl","shaders/shadowMapVert.glsl");
+  depthBufferShader = loadShader("data/shaders/depthBufferFrag.glsl","data/shaders/depthBufferVert.glsl");
+  shadowShader = loadShader("data/shaders/shadowMapFrag.glsl","data/shaders/shadowMapVert.glsl");
 
   requestDepthBufferInit = true;
   //this init can only happen on the main render thread
