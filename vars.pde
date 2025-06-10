@@ -208,6 +208,9 @@ int connectingFromIndex = 0;
 int movingLogicIndex = 0;
 int loadProgress = 0;
 int totalLoad = 55;
+int curMills = 0;
+int lasMills = 0;
+int mspc = 0;
 int[][] tutorialNarration=new int[2][17];
 
 JSONArray colors;

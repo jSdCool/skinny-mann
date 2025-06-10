@@ -3,6 +3,7 @@
     "mainStage": 0,
     "coins": 202,
     "min players": 2,
+	"author": "jSdCool",
     "level_id": 7,
     "spawnX": 20,
     "groups": ["group 0"],
@@ -10,7 +11,7 @@
     "spawnY": 700,
     "max players": 2,
     "number of variable": 5,
-    "name": "level-6",
+    "name": "level-7",
     "spawn pointX": 20,
     "spawn pointY": 700,
     "multyplayer mode": 1

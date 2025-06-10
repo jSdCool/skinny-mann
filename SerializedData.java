@@ -14,7 +14,7 @@ public class SerializedData {
     }
 
     /**get the serialized data as an array of bytes that can be sent to an output stream and interpreted on the other side
-     * @return byte array with the following arrangement: {identifier\<string: null terminated\> length\<int: 4bytes\> data\<length bytes\>}
+     * @return byte array with the following arrangement: {identifierLength: 4 bytes, Identifier: length bytes, objectLength: 4 bytes, objectData: length bytes}
      */
     public byte[] getSerializedData(){
         byte[] idAsBytes = identifier.asBytes();

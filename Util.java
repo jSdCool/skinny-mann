@@ -74,7 +74,7 @@ public class Util{
   @param x the angle in the x-axis to rotate (in radians)
   @param y the angle in the y-axis to rotate (in radians)
   @param z the angle in the z-axis to rotate (in radians)
-  @returns a matrix containing the requirested 3D roation
+  @return a matrix containing the requirested 3D roation
   */
   public static PMatrix3D rotateXYZ(float x, float y,float z){
     return rotateXYZ(x, y,z,null);
@@ -85,7 +85,7 @@ public class Util{
   @param y the angle in the y-axis to rotate (in radians)
   @param z the angle in the z-axis to rotate (in radians)
   @param currentTransform the current transformation to apply the rotation to
-  @returns the new transforamtion including the rotation, note the input matrix is also updateing with this transformation
+  @return the new transforamtion including the rotation, note the input matrix is also updateing with this transformation
   */
   public static PMatrix3D rotateXYZ(float x, float y,float z,PMatrix3D currentTransform){
     if(currentTransform == null){
