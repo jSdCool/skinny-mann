@@ -4092,249 +4092,269 @@ String formatMillis(int millis) {
 /**Thread responcible for most of the loading and configuration of the game during startup
 */
 void programLoad() {
-  //do this first becasue it causes a momentary freez on the render thread that we want to avoid later in the animation
-  println("loading shaders");
-  depthBufferShader = loadShader("data/shaders/depthBufferFrag.glsl","data/shaders/depthBufferVert.glsl");
-  shadowShader = loadShader("data/shaders/shadowMapFrag.glsl","data/shaders/shadowMapVert.glsl");
-
-  requestDepthBufferInit = true;
-  //this init can only happen on the main render thread
+  try{
+    //do this first becasue it causes a momentary freez on the render thread that we want to avoid later in the animation
+    println("loading shaders");
+    depthBufferShader = loadShader("data/shaders/depthBufferFrag.glsl","data/shaders/depthBufferVert.glsl");
+    shadowShader = loadShader("data/shaders/shadowMapFrag.glsl","data/shaders/shadowMapVert.glsl");
   
-  println("loading 3D coin modle");
-  coin3D=loadShape("data/modles/coin/tinker.obj");
-  loadProgress++;
-  coin3D.scale(3);
-
-  defaultAuthorNameTextBox.setContence(settings.getDefaultAuthor());
-  author = settings.getDefaultAuthor();
-  loadProgress++;
-
-  println("loading level progress");
-  try {//load level prgress
-    levelProgress=loadJSONArray(appdata+"/CBi-games/skinny mann/progressions.json");
-    levelProgress.getJSONObject(0);
+    requestDepthBufferInit = true;
+    //this init can only happen on the main render thread because it requires an open Gl context
+    
+    println("loading 3D coin modle");//load the 3D coin modle
+    coin3D=loadShape("data/modles/coin/tinker.obj");
     loadProgress++;
-  }
-  catch(Throwable e) {
-    println("failed to load level progress. creating new progress data");
-    levelProgress=new JSONArray();
-    JSONObject p=new JSONObject();
-    p.setInt("progress", 0);
-    levelProgress.setJSONObject(0, p);
-    saveJSONArray(levelProgress, appdata+"/CBi-games/skinny mann/progressions.json");
+    coin3D.scale(3);
+    
+    //load the default author value
+    defaultAuthorNameTextBox.setContence(settings.getDefaultAuthor());
+    author = settings.getDefaultAuthor();
     loadProgress++;
+  
+    println("loading level progress");
+    try {//load level prgress
+      levelProgress=loadJSONArray(appdata+"/CBi-games/skinny mann/progressions.json");
+      levelProgress.getJSONObject(0);//throw an error if loadin failed
+      loadProgress++;
+    } catch(Throwable e) {//basically if there is not progress loaded then create the file with new progress
+      println("failed to load level progress. creating new progress data");
+      levelProgress=new JSONArray();
+      JSONObject p=new JSONObject();
+      p.setInt("progress", 0);
+      levelProgress.setJSONObject(0, p);
+      saveJSONArray(levelProgress, appdata+"/CBi-games/skinny mann/progressions.json");
+      loadProgress++;
+    }
+  
+    //initilize each player in the players array, this does not really need to be done here
+    println("inililizing players");
+    players[0]=new Player(20, 699, 1, 0);
+    players[1]=new Player(20, 699, 1, 1);
+    players[2]=new Player(20, 699, 1, 2);
+    players[3]=new Player(20, 699, 1, 3);
+    players[4]=new Player(20, 699, 1, 4);
+    players[5]=new Player(20, 699, 1, 5);
+    players[6]=new Player(20, 699, 1, 6);
+    players[7]=new Player(20, 699, 1, 7);
+    players[8]=new Player(20, 699, 1, 8);
+    players[9]=new Player(20, 699, 1, 9);
+    loadProgress++;
+    
+    //register all the classes in the corresponding registries
+    registerThings();
+  
+    println("initlizing sound handler");
+    //create the sound handler
+    SoundHandler.Builder soundBuilder = SoundHandler.builder(this);
+    //load the list of music tracks
+    String[] musicTracks=loadStrings("data/music/music.txt");
+    for (int i=0; i<musicTracks.length; i++) {
+      soundBuilder.addMusic(musicTracks[i], 0);
+    }
+    //load the list of global sounds
+    String[] sfxTracks=loadStrings("data/sounds/sounds.txt");
+    for (int i=0; i<sfxTracks.length; i++) {
+      soundBuilder.addSound(sfxTracks[i]);
+    }
+  
+    int[] idcb = {0};//narration id call back array. used to get the id of the narration, will be set to out of the builder
+    //register all the narrations for the tutorial
+    soundBuilder.addNarration("data/sounds/tutorial/T1a.wav",idcb);
+    tutorialNarration[0][0]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T2a.wav",idcb);
+    tutorialNarration[0][1]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T3.wav",idcb);
+    tutorialNarration[0][2]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T4a.wav",idcb);
+    tutorialNarration[0][3]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T5a.wav",idcb);
+    tutorialNarration[0][4]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T6a.wav",idcb);
+    tutorialNarration[0][5]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T7.wav",idcb);
+    tutorialNarration[0][6]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T8a.wav",idcb);
+    tutorialNarration[0][7]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T9a.wav",idcb);
+    tutorialNarration[0][8]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T10.wav",idcb);
+    tutorialNarration[0][9]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T11.wav",idcb);
+    tutorialNarration[0][10]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T12.wav",idcb);
+    tutorialNarration[0][11]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T13.wav",idcb);
+    tutorialNarration[0][12]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T14a.wav",idcb);
+    tutorialNarration[0][13]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T15.wav",idcb);
+    tutorialNarration[0][14]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T16.wav",idcb);
+    tutorialNarration[0][15]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T17.wav",idcb);
+    tutorialNarration[0][16]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T1b.wav",idcb);
+    tutorialNarration[1][0]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T2b.wav",idcb);
+    tutorialNarration[1][1]=idcb[0];
+   
+    soundBuilder.addNarration("data/sounds/tutorial/T3.wav",idcb);
+    tutorialNarration[1][2]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T4b.wav",idcb);
+    tutorialNarration[1][3]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T5b.wav",idcb);
+    tutorialNarration[1][4]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T6b.wav",idcb);
+    tutorialNarration[1][5]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T7.wav",idcb);
+    tutorialNarration[1][6]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T8b.wav",idcb);
+    tutorialNarration[1][7]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T9b.wav",idcb);
+    tutorialNarration[1][8]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T10.wav",idcb);
+    tutorialNarration[1][9]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T11.wav",idcb);
+    tutorialNarration[1][10]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T12.wav",idcb);
+    tutorialNarration[1][11]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T13.wav",idcb);
+    tutorialNarration[1][12]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T14b.wav",idcb);
+    tutorialNarration[1][13]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T15.wav",idcb);
+    tutorialNarration[1][14]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T16.wav",idcb);
+    tutorialNarration[1][15]=idcb[0];
+    
+    soundBuilder.addNarration("data/sounds/tutorial/T17.wav",idcb);
+    tutorialNarration[1][16]=idcb[0];
+    
+    println("loading sounds");
+    soundHandler = soundBuilder.build();//finilze the sound handler. this is what accualy loads the sound files
+    loadProgress++;
+  
+    //set the volumes to what is set in settings
+    soundHandler.setMusicVolume(settings.getSoundMusicVolume());
+    soundHandler.setSoundsVolume(settings.getSoundSoundVolume());
+    soundHandler.setNarrationVolume(settings.getSoundNarrationVolume());
+    
+    
+    
+    //load the saved colors for the level creator or create them if they do not exsist
+    println("loading saved colors");
+    if (new File(appdata+"/CBi-games/skinny mann level creator/colors.json").exists()) {
+      colors=loadJSONArray(appdata+"/CBi-games/skinny mann level creator/colors.json");//load saved colors
+    } else {
+      colors=JSONArray.parse("[{\"red\": 0,\"green\": 175,\"blue\": 0},{\"red\": 145,\"green\": 77,\"blue\": 0}]");
+    }
+    loadProgress++;
+  
+    //load 3D modles for 3D transfomrations
+    println("loading 3D arrows and scalar moddles");
+    redArrow=loadShape("data/modles/red arrow/arrow.obj");
+    loadProgress++;
+    greenArrow=loadShape("data/modles/green arrow/arrow.obj");
+    loadProgress++;
+    blueArrow=loadShape("data/modles/blue arrow/arrow.obj");
+    loadProgress++;
+    yellowArrow=loadShape("data/modles/yellow arrow/arrow.obj");
+    loadProgress++;
+  
+    redScaler=loadShape("data/modles/red scaler/obj.obj");
+    loadProgress++;
+    greenScaler=loadShape("data/modles/green scaler/obj.obj");
+    loadProgress++;
+    blueScaler=loadShape("data/modles/blue scaler/obj.obj");
+    loadProgress++;
+    yellowScaler=loadShape("data/modles/yellow scaler/obj.obj");
+    loadProgress++;
+    rotateCircleX = loadShape("data/modles/Rotate_X/obj.obj");
+    loadProgress++;
+    rotateCircleY = loadShape("data/modles/Rotate_Y/obj.obj");
+    loadProgress++;
+    rotateCircleZ = loadShape("data/modles/Rotate_Z/obj.obj");
+    loadProgress++;
+    rotateCircleHilight = loadShape("data/modles/Rotate_Hilight/obj.obj");
+    loadProgress++;
+  
+    //load the level creator logo
+    LevelCreatorLogo=loadShape("data/modles/LevelCreatorLogo/LCL.obj");
+    loadProgress++;
+    LevelCreatorLogo.scale(3*Scale);
+    
+    //setup the various sliders in the settings menu
+    musicVolumeSlider.setValue(settings.getSoundMusicVolume()*100);
+    SFXVolumeSlider.setValue(settings.getSoundSoundVolume()*100);
+    narrationVolumeSlider.setValue(settings.getSoundNarrationVolume()*100);
+    verticleEdgeScrollSlider.setValue(settings.getSrollVertical());
+    horozontalEdgeScrollSlider.setValue(settings.getScrollHorozontal());
+    fovSlider.setValue(degrees(settings.getFOV()));
+    
+    //load the boxes for the glitch effect
+    String[] rawGlitchBoxes = loadStrings("data/glitch.txt");
+    loadProgress++;
+    for(int i=0;i<rawGlitchBoxes.length;i++){
+      glitchBoxes.add(new GlitchBox(rawGlitchBoxes[i]));
+    }
+    
+    //load statistics
+    println("loading stats");
+    stats = new StatisticManager(appdata+"/CBi-games/skinny mann/stats.json",this);
+    loadProgress++;
+     
+    //load UV test image
+    uvTester = loadImage("data/assets/ic.png");
+  
+    //spawn the physics thread
+    println("starting physics thread");
+    thread("thrdCalc2");
+    //signal loading has completed
+    loaded=true;
+    println("loading complete");
+    println(loadProgress);
+  } catch(Throwable e) {
+    handleError(e);
   }
-
-  println("inililizing players");
-  players[0]=new Player(20, 699, 1, 0);
-  players[1]=new Player(20, 699, 1, 1);
-  players[2]=new Player(20, 699, 1, 2);
-  players[3]=new Player(20, 699, 1, 3);
-  players[4]=new Player(20, 699, 1, 4);
-  players[5]=new Player(20, 699, 1, 5);
-  players[6]=new Player(20, 699, 1, 6);
-  players[7]=new Player(20, 699, 1, 7);
-  players[8]=new Player(20, 699, 1, 8);
-  players[9]=new Player(20, 699, 1, 9);
-  loadProgress++;
-  
-  //register all the classes in the corresponding registries
-  registerThings();
-
-  println("initlizing sound handler");
-
-  SoundHandler.Builder soundBuilder = SoundHandler.builder(this);
-  String[] musicTracks=loadStrings("data/music/music.txt");
-  for (int i=0; i<musicTracks.length; i++) {
-    soundBuilder.addMusic(musicTracks[i], 0);
-  }
-  String[] sfxTracks=loadStrings("data/sounds/sounds.txt");
-  for (int i=0; i<sfxTracks.length; i++) {
-    soundBuilder.addSound(sfxTracks[i]);
-  }
-
-  int[] idcb = {0};//narration id call back array. used to get the id the narration will be set to out of the builder
-  soundBuilder.addNarration("data/sounds/tutorial/T1a.wav",idcb);
-  tutorialNarration[0][0]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T2a.wav",idcb);
-  tutorialNarration[0][1]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T3.wav",idcb);
-  tutorialNarration[0][2]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T4a.wav",idcb);
-  tutorialNarration[0][3]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T5a.wav",idcb);
-  tutorialNarration[0][4]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T6a.wav",idcb);
-  tutorialNarration[0][5]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T7.wav",idcb);
-  tutorialNarration[0][6]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T8a.wav",idcb);
-  tutorialNarration[0][7]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T9a.wav",idcb);
-  tutorialNarration[0][8]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T10.wav",idcb);
-  tutorialNarration[0][9]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T11.wav",idcb);
-  tutorialNarration[0][10]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T12.wav",idcb);
-  tutorialNarration[0][11]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T13.wav",idcb);
-  tutorialNarration[0][12]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T14a.wav",idcb);
-  tutorialNarration[0][13]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T15.wav",idcb);
-  tutorialNarration[0][14]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T16.wav",idcb);
-  tutorialNarration[0][15]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T17.wav",idcb);
-  tutorialNarration[0][16]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T1b.wav",idcb);
-  tutorialNarration[1][0]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T2b.wav",idcb);
-  tutorialNarration[1][1]=idcb[0];
- 
-  soundBuilder.addNarration("data/sounds/tutorial/T3.wav",idcb);
-  tutorialNarration[1][2]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T4b.wav",idcb);
-  tutorialNarration[1][3]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T5b.wav",idcb);
-  tutorialNarration[1][4]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T6b.wav",idcb);
-  tutorialNarration[1][5]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T7.wav",idcb);
-  tutorialNarration[1][6]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T8b.wav",idcb);
-  tutorialNarration[1][7]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T9b.wav",idcb);
-  tutorialNarration[1][8]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T10.wav",idcb);
-  tutorialNarration[1][9]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T11.wav",idcb);
-  tutorialNarration[1][10]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T12.wav",idcb);
-  tutorialNarration[1][11]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T13.wav",idcb);
-  tutorialNarration[1][12]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T14b.wav",idcb);
-  tutorialNarration[1][13]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T15.wav",idcb);
-  tutorialNarration[1][14]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T16.wav",idcb);
-  tutorialNarration[1][15]=idcb[0];
-  
-  soundBuilder.addNarration("data/sounds/tutorial/T17.wav",idcb);
-  tutorialNarration[1][16]=idcb[0];
-  
-  println("loading sounds");
-  soundHandler = soundBuilder.build();//finilze the sound handler. this is what accualy loads the sound files
-  loadProgress++;
-
-  soundHandler.setMusicVolume(settings.getSoundMusicVolume());
-  soundHandler.setSoundsVolume(settings.getSoundSoundVolume());
-  soundHandler.setNarrationVolume(settings.getSoundNarrationVolume());
-  
-  
-  
-
-  println("loading saved colors");
-  if (new File(appdata+"/CBi-games/skinny mann level creator/colors.json").exists()) {
-    colors=loadJSONArray(appdata+"/CBi-games/skinny mann level creator/colors.json");//load saved colors
-  } else {
-    colors=JSONArray.parse("[{\"red\": 0,\"green\": 175,\"blue\": 0},{\"red\": 145,\"green\": 77,\"blue\": 0}]");
-  }
-  loadProgress++;
-
-  println("loading 3D arrows and scalar moddles");
-  redArrow=loadShape("data/modles/red arrow/arrow.obj");
-  loadProgress++;
-  greenArrow=loadShape("data/modles/green arrow/arrow.obj");
-  loadProgress++;
-  blueArrow=loadShape("data/modles/blue arrow/arrow.obj");
-  loadProgress++;
-  yellowArrow=loadShape("data/modles/yellow arrow/arrow.obj");
-  loadProgress++;
-
-  redScaler=loadShape("data/modles/red scaler/obj.obj");
-  loadProgress++;
-  greenScaler=loadShape("data/modles/green scaler/obj.obj");
-  loadProgress++;
-  blueScaler=loadShape("data/modles/blue scaler/obj.obj");
-  loadProgress++;
-  yellowScaler=loadShape("data/modles/yellow scaler/obj.obj");
-  loadProgress++;
-  rotateCircleX = loadShape("data/modles/Rotate_X/obj.obj");
-  loadProgress++;
-  rotateCircleY = loadShape("data/modles/Rotate_Y/obj.obj");
-  loadProgress++;
-  rotateCircleZ = loadShape("data/modles/Rotate_Z/obj.obj");
-  loadProgress++;
-  rotateCircleHilight = loadShape("data/modles/Rotate_Hilight/obj.obj");
-  loadProgress++;
-
-  LevelCreatorLogo=loadShape("data/modles/LevelCreatorLogo/LCL.obj");
-  loadProgress++;
-  LevelCreatorLogo.scale(3*Scale);
-
-  musicVolumeSlider.setValue(settings.getSoundMusicVolume()*100);
-  SFXVolumeSlider.setValue(settings.getSoundSoundVolume()*100);
-  narrationVolumeSlider.setValue(settings.getSoundNarrationVolume()*100);
-  verticleEdgeScrollSlider.setValue(settings.getSrollVertical());
-  horozontalEdgeScrollSlider.setValue(settings.getScrollHorozontal());
-  fovSlider.setValue(degrees(settings.getFOV()));
-  
-  String[] rawGlitchBoxes = loadStrings("data/glitch.txt");
-  loadProgress++;
-  for(int i=0;i<rawGlitchBoxes.length;i++){
-    glitchBoxes.add(new GlitchBox(rawGlitchBoxes[i]));
-  }
-  
-  println("loading stats");
-  stats = new StatisticManager(appdata+"/CBi-games/skinny mann/stats.json",this);
-  loadProgress++;
- 
-  uvTester = loadImage("data/assets/ic.png");
-
-  println("starting physics thread");
-  thread("thrdCalc2");
-  loaded=true;
-  println("loading complete");
-  println(loadProgress);
 }
 
+/**Initilise the depth buffer's render targets and initilize the sub shaodw maps.<br>
+IMPORTANT: This funtion must be run on a thread with an OpenGL context
+*/
 void initDepthBuffer(){
   int bufferSize;
-  switch(settings.getShadows()){
+  switch(settings.getShadows()){//figureout the buffer resolution
     case 2: 
       bufferSize =1024;
       break;
@@ -4352,12 +4372,13 @@ void initDepthBuffer(){
     default:
       bufferSize = 512;
   };
+  //create the on GPU buffers
   shadowMap = createGraphics(bufferSize, bufferSize, P3D);
   subShadowMaps[0] = createGraphics(bufferSize/2, bufferSize/2, P3D);
   subShadowMaps[1] = createGraphics(bufferSize/2, bufferSize/2, P3D);
   subShadowMaps[2] = createGraphics(bufferSize/2, bufferSize/2, P3D);
   subShadowMaps[3] = createGraphics(bufferSize/2, bufferSize/2, P3D);
-  cameraMatrixMap = createGraphics(bufferSize/2, bufferSize/2, P3D);
+  cameraMatrixMap = createGraphics(bufferSize/2, bufferSize/2, P3D);//this one is just for getting camera matrixes not for actual rendering
   
   println(bufferSize);
   
@@ -4366,20 +4387,21 @@ void initDepthBuffer(){
   lightDir.mult(800);
 
   shadowMap.noSmooth(); // Antialiasing on the shadowMap leads to weird artifacts
-  //shadowMap.loadPixels(); // Will interfere with noSmooth() (probably a bug in Processing)
+  
   shadowMap.beginDraw();
-  //shadowMap.noStroke();
+  
   shadowMap.shader(depthBufferShader);
-  //TODO: set the area coverd by shadows here
+  //set the area coverd by shadows here
   int shadowMapClibBoxSize = 2000;
   shadowMap.ortho(-shadowMapClibBoxSize, shadowMapClibBoxSize, -shadowMapClibBoxSize, shadowMapClibBoxSize, 1, 13000); // Setup orthogonal view matrix for the directional light
   shadowMap.endDraw();
+  //disable anti alising on the sub shaodw maps
   subShadowMaps[0].noSmooth();
   subShadowMaps[1].noSmooth();
   subShadowMaps[2].noSmooth();
   subShadowMaps[3].noSmooth();
   
-  cameraMatrixMap.beginDraw();
+  cameraMatrixMap.beginDraw();//setup the size of the camera matrix to be used for fun math
   cameraMatrixMap.ortho(-shadowMapClibBoxSize/2, shadowMapClibBoxSize/2, -shadowMapClibBoxSize/2, shadowMapClibBoxSize/2, 1, 13000);
   cameraMatrixMap.endDraw();
   
@@ -4387,7 +4409,7 @@ void initDepthBuffer(){
   shader(shadowShader);
   resetShader();
   
-  for(int i=0;i<subShadowMaps.length;i++){
+  for(int i=0;i<subShadowMaps.length;i++){//set the starting background on each sub map to be the infinite distance
     subShadowMaps[i].beginDraw();
     subShadowMaps[i].background(255);
     subShadowMaps[i].endDraw();
@@ -4395,8 +4417,11 @@ void initDepthBuffer(){
   
 }
 
-//musicVolumeSlider,SFXVolumeSlider,verticleEdgeScrollSlider,horozontalEdgeScrollSlider;
+/**Initilize all buttons.<br>
+This is nessrray becuse buttons require the renderer to exsist to properly get set up
+*/
 void  initButtons() {
+  //there buttons I do not need to explain them
   select_lvl_1=new UiButton(ui, (100), (100), (200), (100), "lvl 1", -59135, -1791).setStrokeWeight( (10));
   select_lvl_back=new UiButton(ui, (100), (600), (200), (50), "Back", -59135, -1791).setStrokeWeight( (10));
   select_lvl_next=new UiButton(ui, (600), (600), (200), (50), "Next", -59135, -1791).setStrokeWeight( (10));
@@ -4562,21 +4587,26 @@ void  initButtons() {
   
 }
 
-
+/**Get the combined file hash of a given level
+@param path The file path to the level folder of the level to calculaet the hash of
+@return the concatenated SHA-256 hash of all the files that make up a level
+*/
 String getLevelHash(String path) {
   String basePath="";
-  if (path.startsWith("data")) {
-    basePath=sketchPath()+"/"+path;
+  if (path.startsWith("data")) {//check for levels that are bundled with the sketch (their paths will begin with data/)
+    basePath=sketchPath()+"/"+path;//prepend the sketch path to the path of local levels
   } else {
     basePath=path;
   }
-  String hash="";
+  String hash="";//get the hash of the level index file
   hash+=Hasher.getFileHash(basePath+"/index.json");
 
-  JSONArray file = loadJSONArray(basePath+"/index.json");
+  JSONArray file = loadJSONArray(basePath+"/index.json");//load the index file
   JSONObject job;
+  //for each file listed in the index file
   for (int i=1; i<file.size(); i++) {
     job=file.getJSONObject(i);
+    //extract the file name for each component and generate its hash
     if (job.getString("type").equals("stage")||job.getString("type").equals("3Dstage")) {
       hash+=Hasher.getFileHash(basePath+job.getString("location"));
       continue;
@@ -4589,22 +4619,26 @@ String getLevelHash(String path) {
       hash+=Hasher.getFileHash(basePath+job.getString("location"));
     }
   }
+  //return the total hash calculated
   return hash;
 }
 
+/**Generate the list of avawable UGC levels
+*/
 void loadUGCList() {
-  new File(appdata+"/CBi-games/skinny mann/UGC/levels").mkdirs();
-  String[] files=new File(appdata+"/CBi-games/skinny mann/UGC/levels").list();
+  new File(appdata+"/CBi-games/skinny mann/UGC/levels").mkdirs();//create the level folder if it does not exsist
+  String[] files=new File(appdata+"/CBi-games/skinny mann/UGC/levels").list();//get the list of files/folder in the levels folder
 
-  compatibles=new ArrayList<>();
-  UGCNames=new ArrayList<>();
+  compatibles=new ArrayList<>();//list of comparable levels
+  UGCNames=new ArrayList<>();//list of the level names
   try {
-    if (files.length==0)
+    if (files.length==0){//if there are not levels stop
       return;
-  }
-  catch(NullPointerException e) {
+    }
+  } catch(NullPointerException e) {//if there are no levels and no object was returned
     return;
   }
+  //go through the levels and check if they are compatable with this verison of the game
   for (int i=0; i<files.length; i++) {
     if (FileIsLevel(files[i])) {
       UGCNames.add(files[i]);
@@ -4617,6 +4651,9 @@ void loadUGCList() {
   }
 }
 
+/**Rest various level creator variables to their default/off states.<br>
+Primarily used when switching tools to make sure everything is in the correct stsate
+*/
 void turnThingsOff() {
   selectedIndex=-1;
   deleteing=false;
@@ -4634,16 +4671,18 @@ void turnThingsOff() {
   rotating = false;
 }
 
+/**File selection callback from the level creator add sound screen
+@param selection The file that was selected
+*/
 void fileSelected(File selection) {
-  if (selection == null) {
+  if (selection == null) {//if there was no selection just return
     return;
   }
-  String path = selection.getAbsolutePath();
+  String path = selection.getAbsolutePath();//get the file path
   System.out.println(path);
-  String extenchen=path.substring(path.length()-3, path.length()).toLowerCase();
+  String extenchen=path.substring(path.length()-3, path.length()).toLowerCase();//get the extention
   System.out.println(extenchen);
   if (extenchen.equals("wav")||extenchen.equals("mp3")||extenchen.equals("aif")) {//check if the file type is valid
-
     fileToCoppyPath=path;
   } else {
     System.out.println("invalid extenchen");
@@ -4651,7 +4690,11 @@ void fileSelected(File selection) {
   }
 }
 
+/**Initilize all scale managed text.<br>
+This is nessrray becuse text require the renderer to exsist to properly get set up
+*/
 void initText() {
+  //very simple not going to explain what is happening heres
   mm_title = new UiText(ui, "Skinny Mann", 640, 80, 100, CENTER, CENTER);
   mm_EarlyAccess = new UiText(ui, "Early Access", 640, 180, 100, CENTER, CENTER);
   mm_version = new UiText(ui, version, 0, 718, 20, LEFT, BOTTOM);
@@ -4779,3 +4822,4 @@ void initText() {
 //DO NOT EDIT THEESE LINES, EVER
 //+++++++++++++++++++++++++++++++++++++++++++++++++++
 //===================================================
+//end of skiny_mann.pde
