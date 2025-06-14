@@ -1,6 +1,6 @@
 /**A network request to send a clients best score to the server
 */
-class BestScore extends DataPacket {
+public class BestScore extends DataPacket {
   
   public static final Identifier ID = new Identifier("BestScore");
   
@@ -8,7 +8,7 @@ class BestScore extends DataPacket {
   int score;
   /**Create a new score
   */
-  BestScore(String n, int s) {
+  public BestScore(String n, int s) {
     name=n;
     score=s;
   }

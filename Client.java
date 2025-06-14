@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.ArrayList;
 /**Multyplayer client connection and handler
 */
-class Client extends Thread {
+public class Client extends Thread {
   static transient skiny_mann source;
   int playernumber, blockSize=10240, currentDownloadIndex, currentDownloadblock;
   Socket socket;
@@ -24,7 +24,7 @@ class Client extends Thread {
   /**Create a new client. This is used when you are the client
   @param s The socket communicate over
   */
-  Client(Socket s) {
+  public Client(Socket s) {
     super("Client thread");
     init(s);
   }
@@ -32,7 +32,7 @@ class Client extends Thread {
   @param s The socket to communicate over
   @param num the client player number
   */
-  Client(Socket s, int num) {
+  public Client(Socket s, int num) {
     super("Client thread number: "+num);
     playernumber=num;
     init(s);
@@ -41,7 +41,7 @@ class Client extends Thread {
   /**Initilize the common components of this class.<br>
   This exsists because I could not figure out how to call one constructor from another
   */
-  void init(Socket s) {
+  private void init(Socket s) {
     System.out.println("creating new client");
     try {
       socket=s;
@@ -77,7 +77,7 @@ class Client extends Thread {
 
   /**The host side network functions 
   */
-  void host() {
+  private void host() {
     try {
       //untill the connection closes
       while (socket.isConnected()&&!socket.isClosed()) {
@@ -218,7 +218,7 @@ class Client extends Thread {
 
   /**Client side networking functions
   */
-  void joined() {
+  private void joined() {
     try {
       //untill the connection closes
       while (socket.isConnected()&&!socket.isClosed()) {
@@ -384,7 +384,7 @@ class Client extends Thread {
 
   /**Properly and safley disconnect the client fully closing the connection
   */
-  void disconnect() {
+  public void disconnect() {
     System.out.println("disconnecting client "+ip);
     try {
       source.clients.remove(this);//remove this client from the list of clients
@@ -417,7 +417,7 @@ class Client extends Thread {
 
   /**genrate the finall packet that will be sent to the other side
   */
-  void generateSendPacket() {
+  private void generateSendPacket() {
     toSend=new NetworkDataPacket();
     while (dataToSend.size()>0) {
       toSend.data.add(dataToSend.remove(0));//take eveyhting in the to send buffer and add it to the to send data packet
@@ -428,7 +428,7 @@ class Client extends Thread {
   @param size How many charater to generate
   @return a string of the given length continaing random characters
   */
-  String generateRandomString(int size) {
+  public String generateRandomString(int size) {
     String out="";
     for (int i=0; i<size; i++) {
       out+=letters.charAt((int)source.random(0, letters.length()-1));
@@ -438,7 +438,7 @@ class Client extends Thread {
 
   /**called by the client to initiate requesting the next level component from the server
   */
-  void getNextLevelComponent() {
+  private void getNextLevelComponent() {
     //if this is the first thing to be rquested
     if (currentDownloadIndex==-1) {
       

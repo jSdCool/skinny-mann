@@ -4,7 +4,7 @@ import processing.core.*;
 import processing.data.*;
 /**A button for a userinterface that contains utitlies for rendering and using a button
 */
-class Button implements Serialization {
+public class Button implements Serialization {
   public static final Identifier ID = new Identifier("Button");
   protected float x, y, lengthX, lengthY;
   private int fColor=255, sColor=-5592405, textcolor=0, htFill=200, htStroke=0, htColor=0;
@@ -18,7 +18,7 @@ class Button implements Serialization {
   @param DX The width of the button
   @param DY The height of the button
   */
-  Button(PApplet window, float X, float Y, float DX, float DY) {
+  public Button(PApplet window, float X, float Y, float DX, float DY) {
     this.window=window;
     x=X;
     y=Y;
@@ -35,7 +35,7 @@ class Button implements Serialization {
   @param DY The height of the button
   @param Text the text on the button
   */
-  Button(PApplet window, float X, float Y, float DX, float DY, String Text) {
+  public Button(PApplet window, float X, float Y, float DX, float DY, String Text) {
     this.window=window;
     x=X;
     y=Y;
@@ -54,7 +54,7 @@ class Button implements Serialization {
   @param c1 The fill color of the button
   @param c2 The outline color of the button
   */
-  Button(PApplet window, float X, float Y, float DX, float DY, int c1, int c2) {
+  public Button(PApplet window, float X, float Y, float DX, float DY, int c1, int c2) {
     this.window=window;
     x=X;
     y=Y;
@@ -75,7 +75,7 @@ class Button implements Serialization {
   @param c1 The fill color of the button
   @param c2 The outline color of the button
   */
-  Button(PApplet window, float X, float Y, float DX, float DY, String Text, int c1, int c2) {
+  public Button(PApplet window, float X, float Y, float DX, float DY, String Text, int c1, int c2) {
     this.window=window;
     x=X;
     y=Y;

@@ -1,13 +1,13 @@
 import processing.core.*;
 /**A Circular 2D hitbox 
 */
-class CircleCollider extends Collider2D{
+public class CircleCollider extends Collider2D{
   float radius;
   /**Create a 2D Circle Collider
   @param ceneter The center position of the circle
   @param radius The radius of the circle
   */
-  CircleCollider(PVector center,float radius){
+  public CircleCollider(PVector center,float radius){
     super(new PVector[]{});
     this.center=center;
     this.radius=radius;
@@ -17,14 +17,14 @@ class CircleCollider extends Collider2D{
   
   /**Recalculate the minimum coordinate value 
   */
-  void updateMin(){
+  public void updateMin(){
     min.x = center.x-radius;
     min.y = center.y-radius;
   }
   
   /**Recalculate the maximum coordinate value
   */
-  void updateMax(){
+  public void updateMax(){
     max.x = center.x+radius;
     max.y = center.y+radius;
   }

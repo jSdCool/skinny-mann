@@ -1,6 +1,6 @@
 /**A network request to request the client go back to the menu
 */
-class BackToMenuRequest extends DataPacket {
+public class BackToMenuRequest extends DataPacket {
   
   public static final Identifier ID = new Identifier("BackToMenuRequest");
   

@@ -5,20 +5,20 @@ import java.util.ArrayList;
 
 /**A logic gate for the AND opperation on logic boards
 */
-class AndGate extends LogicComponent {
+public class AndGate extends LogicComponent {
   public static final Identifier ID = new Identifier("AND");
   
   /**Place a new and gate 
   @param context The context for the placement
   */
-  AndGate(LogicCompoentnPlacementContext context) {
+  public AndGate(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "AND", context.getLogicBoard());
   }
   
   /**Create a new and gate from saved json data
   @param data The saved json data
   */
-  AndGate(JSONObject data) {
+  public AndGate(JSONObject data) {
     super(data.getFloat("x"), data.getFloat("y"), "AND", data.getJSONArray("connections"));
   }
   /**Create an and gate from serialized binarry data
@@ -30,7 +30,7 @@ class AndGate extends LogicComponent {
 
   /**The function where the logic/functionality of this component is execuated
   */
-  void tick() {
+  public void tick() {
     outputTerminal=inputTerminal1&&inputTerminal2;
   }
   

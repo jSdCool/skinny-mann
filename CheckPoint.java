@@ -5,13 +5,13 @@ import processing.core.*;
 
 /**Checkpoint stage component
 */
-class CheckPoint extends StageComponent {
+public class CheckPoint extends StageComponent {
   static transient skiny_mann source;
   public static final Identifier ID = new Identifier("check_point");
   /**Load a checkpoint from saved JOSN data
   @param data The JSON Object containing the check point data
   */
-  CheckPoint(JSONObject data) {
+  public CheckPoint(JSONObject data) {
     type="check point";
     x=data.getFloat("x");
     y=data.getFloat("y");
