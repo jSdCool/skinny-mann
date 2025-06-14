@@ -2,7 +2,7 @@ import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 
-/**The base class for all components that exsist inside pf and make up a stage
+/**The base class for all components that exsist inside of and make up a stage
 */
 abstract class StageComponent implements Serialization {//the base class for all components that exsist inside a stage
   static transient skiny_mann source;
