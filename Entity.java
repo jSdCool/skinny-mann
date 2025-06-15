@@ -18,7 +18,7 @@ abstract public class Entity{
   @param offsetX How far to offset the returned box from the entities current position in the x axis
   @param offsetY How far to offset the returned box from the entities current position in the y axis
   @param offsetZ How far to offset the returned box from the entities current position in the z axis
-  @return The 2D hitbox for this entity offset from the entities' position by the given ammount
+  @return The 3D hitbox for this entity offset from the entities' position by the given ammount
   */
   public abstract Collider3D getHitBox3D(float offsetX, float offsetY, float offsetZ);
 
@@ -61,7 +61,7 @@ abstract public class Entity{
   */
   public abstract Entity setVerticalVelocity(float v);
   
-  /*Get wether or not this entity colides with outher entities
+  /**Get wether or not this entity colides with outher entities
   @return true if this entity collides with other collideable entities
   */
   public abstract boolean collidesWithEntites();
