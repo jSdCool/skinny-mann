@@ -282,14 +282,14 @@ public class Ground extends StageComponent implements Rotatable,Resizeable{//gro
     updateVerticies();
   }
   /**Set the height position of the upper left corner of the compoent, or the height value of the component
-  @param h The new x position
+  @param h The new height
   */
   public void setHeight(float h){
     dy=h;
     updateVerticies();
   }
   /**Set the depth position of the upper left corner of the compoent, or the depth value of the component
-  @param d The new depth position
+  @param d The new depth
   */
   public void setDepth(float d){
     dz=d;
