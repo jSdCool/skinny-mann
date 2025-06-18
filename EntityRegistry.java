@@ -19,8 +19,8 @@ public class EntityRegistry{
   @param serialConstructor A refrence to the constructor that takes a SerialIterator as an argument. This constructor will be automcatally registerd with the serial registry. (use MyClass::new for this)
   @param jsonConstructor A refrence to the constructor that takes a JSONObject as an argument. This constructor is used to laod the entity from saved json data. (use MyClass::new for this)
   @param placementConstructor A refrence to the constructor that takes a StageEntityPlacementContext as an argument. This constructor is used to create a new entity from placment in the level creator. (use MyClass::new for this)
-  @param icon The instructrions for drawing an icon on the level creator toolbox button fot this entitys. (can be implmeted as a lambda expression)
-  @param description A short description of this entity for the level creator toolbox button
+  @param icon The instructrions for drawing an icon on the level creator toolbox button for this entitys. (can be implmeted as a lambda expression)
+  @param description A short description of this entity for the level creator toolbox button. Tipically the name of this entity
   */
   public static void register(Identifier id, Function<SerialIterator,Serialization> serialConstructor, Function<JSONObject, StageEntity> jsonConstructor, Function<StageEntityPlacementContext, StageEntity> placementConstructor, EntityButtonIconDraw icon, String description){
     SerialRegistry.register(id,serialConstructor);
@@ -40,7 +40,7 @@ public class EntityRegistry{
     return ids.size();
   }
   /**Get the identifier of an entity for the given index
-  @param index The index of the entity ti get
+  @param index The index of the entity to get
   @return The identifier of the given entity
   */
   public static Identifier get(int index){

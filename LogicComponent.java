@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**The base of all logic gates and components
 */
-abstract class LogicComponent implements Serialization {//the base of all logic gates and things
+public abstract class LogicComponent implements Serialization {//the base of all logic gates and things
   static transient skiny_mann source;
   float x, y;//for visuals only
   String type;
@@ -18,7 +18,7 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
   @param type The type name to display on the component
   @param board The logic board the component is on
   */
-  LogicComponent(float x, float y, String type, LogicBoard board) {
+  public LogicComponent(float x, float y, String type, LogicBoard board) {
     this.x=x;
     this.y=y;
     this.type=type;
@@ -32,7 +32,7 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
   @param type The type name to display on the component
   @param cnects JSONArray containing a list of connections consisting of an index and terminal integers
   */
-  LogicComponent(float x, float y, String type, JSONArray cnects) {
+  public LogicComponent(float x, float y, String type, JSONArray cnects) {
     this.x=x;
     this.y=y;
     this.type=type;
@@ -44,7 +44,7 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
   }
   /**Creates a logic component from serialized data
   */
-  LogicComponent(SerialIterator iterator){
+  public LogicComponent(SerialIterator iterator){
     x = iterator.getFloat();
     y = iterator.getFloat();
     type = iterator.getString();
@@ -65,7 +65,7 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
 
   /**renders the logic component a long with its I/O terminals
   */
-  void draw() {
+  public void draw() {
     button.x=(x-source.camPos)*source.Scale;
     button.y=(y-source.camPosY)*source.Scale;
     button.draw();
@@ -80,7 +80,7 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
   @param t The index of the terminal to get
   @return A float array containg 2 elemts represeting the on screen x,y coords of the terminal. NOTE: theese have allready been camera adjusted
   */
-  float[] getTerminalPos(int t) {
+  public float[] getTerminalPos(int t) {
     if (t==0) {
       return new float[]{x-2-source.camPos, y+20-source.camPosY};
     }
@@ -97,7 +97,7 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
   @param index The index of the other component to connect to
   @param terminal the index of the terminal on the other component to connect to
   */
-  void connect(int index, int terminal) {
+  public void connect(int index, int terminal) {
     if (index>=lb.components.size()||index<0)//check if the index is valid
       return;
     if (terminal<0||terminal>1)//check id the terminal attemping to connect to is valid
@@ -107,7 +107,7 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
 
   /**Render the connections to other components
   */
-  void drawConnections() {
+  public void drawConnections() {
     //for each connection
     for (int i=0; i<connections.size(); i++) {
       //this uses stroke
@@ -130,7 +130,7 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
   @param x The x position of the component at the components center
   @param y The y position of the component at the components center
   */
-  void setPos(float x, float y) {
+  public void setPos(float x, float y) {
     this.x=x-button.lengthX/2;//adjust coordinate from center to corner
     this.y=y-button.lengthY/2;
     button.setX(this.x).setY(this.y);//set the position of the actual button
@@ -140,7 +140,7 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
   @param terminal The index of the terminal to set
   @param state the value to apply to that terminal
   */
-  void setTerminal(int terminal, boolean state) {
+  public void setTerminal(int terminal, boolean state) {
     if (terminal==0){
       inputTerminal1Buffer=state;
     }
@@ -151,18 +151,18 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
   
   /**Set copy the values passed in to the terminals to the acutal internal varables used
   */
-  void flushBuffer() {
+  public void flushBuffer() {
     inputTerminal1=inputTerminal1Buffer;
     inputTerminal2=inputTerminal2Buffer;
   }
   
   /**The function where the logic/functionality of this component is execuated
   */
-  abstract void tick();
+  public abstract void tick();
   
   /**Copy the data from the output terminal of this component to the input terminal of all conncetions
   */
-  void sendOut() {
+  public void sendOut() {
     for (int i=0; i<connections.size(); i++) {
       lb.components.get(connections.get(i)[0]).setTerminal( connections.get(i)[1], outputTerminal);
     }
@@ -171,7 +171,7 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
   /**Get a JSONObject representation of this component that can be saved to a file
   @return JSONObject representation of this object
   */
-  JSONObject save() {
+  public JSONObject save() {
     JSONObject component=new JSONObject();
     component.setString("type", type);
     component.setFloat("x", x);
@@ -191,14 +191,14 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
   @param data The data to set
   */
   @Deprecated
-  void setData(int data) {
+  public void setData(int data) {
   }
   
   /**Get an integer data field
   @return the value of that data
   */
   @Deprecated
-  int getData() {
+  public int getData() {
     return 0;
   }
   
@@ -217,13 +217,3 @@ abstract class LogicComponent implements Serialization {//the base of all logic 
     }
   }
 }
-///*Convert this component to a byte representation that can be sent over the network or saved to a file.<br>
-//  @return This component as a binarry representation
-//  */
-//  @Override
-//  public SerializedData serialize() {
-//    
-//  /**Get the id of this objet
-//  @return The Identifier representing this object
-//  */
-//   id()
