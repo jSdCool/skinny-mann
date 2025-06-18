@@ -43,6 +43,7 @@ public abstract class LogicComponent implements Serialization {//the base of all
     }
   }
   /**Creates a logic component from serialized data
+  @param iterator The source of the data
   */
   public LogicComponent(SerialIterator iterator){
     x = iterator.getFloat();
