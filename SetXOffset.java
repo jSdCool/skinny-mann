@@ -1,10 +1,10 @@
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
-
-public class SetXOffset extends LogicOutputComponent {
-  /**A logic component to set the x offset of a group
+/**A logic component to set the x offset of a group
   */
+public class SetXOffset extends LogicOutputComponent {
+  
   public static final Identifier ID = new Identifier("x-offset");
   
   int groupNumber=0;

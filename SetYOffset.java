@@ -1,7 +1,7 @@
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
-/**A loigc component to set the y offset of a group
+/**A logic component to set the y offset of a group
 */
 public class SetYOffset extends LogicOutputComponent {
   
