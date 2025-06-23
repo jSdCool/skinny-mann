@@ -285,32 +285,44 @@ public class HoloTriangle extends StageComponent implements Rotatable,Resizeable
   }
   
   //overides for methods defined in StageComponenet
-  
+  /**Get the X position of the upper left corner of the compoent, or the x value of the component
+  @return the x position of this compoenent
+  */
   @Override
   public float getX(){
     return this.x;
   }
-  
+  /**Get the Y position of the upper left corner of the compoent, or the y value of the component
+  @return the y position of this compoenent
+  */
   @Override
   public float getY(){
     return this.y;
   }
-  
+  /**Get the Z position of the upper left corner of the compoent, or the z value of the component
+  @return the z position of this compoenent
+  */
   @Override
   public float getZ(){
     return this.z;
   }
-  
+  /**Get the width of the component
+  @return the width position of this compoenent
+  */
   @Override
   public float getWidth(){
     return dx-x;
   }
-  
+  /**Get the height of the component
+  @return the height position of this compoenent
+  */
   @Override
   public float getHeight(){
     return dy-y;
   }
-  
+  /**Get the depth of the component
+  @return the depth position of this compoenent
+  */
   @Override
   public float getDepth(){
     return dz-z;

@@ -2,14 +2,17 @@ import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 import processing.sound.*;
-
-class SoundBox extends StageComponent {
+/**Stage component that allow the player to trigger a sound while standing inside of it
+*/
+public class SoundBox extends StageComponent {
   
   public static final Identifier ID = new Identifier("sound_box");
   
   String soundKey="";
-
-  SoundBox(JSONObject data) {
+  /**Load a sound box from saved JOSN data
+  @param data The JSON Object containing the sound box data
+  */
+  public SoundBox(JSONObject data) {
     type = "sound box";
     x=data.getFloat("x");
     y=data.getFloat("y");
@@ -18,7 +21,9 @@ class SoundBox extends StageComponent {
       group=data.getInt("group");
     }
   }
-  
+  /**Place a new sound box
+  @param context The sound box for the placement
+  */
   public SoundBox(StageComponentPlacementContext context){
     type="sound box";
     x = context.getX();
@@ -27,12 +32,17 @@ class SoundBox extends StageComponent {
       z = context.getZ();
     }
   }
-  
+  /**Create a sound box from serialized binarry data
+  @param iterator The source of the data
+  */
   public SoundBox(SerialIterator iterator){
     deserial(iterator);
     soundKey = iterator.getString();
   }
-
+  /**Render the 2D representation of this component.<br>
+  NOTE: this method may be called more then once per frame
+  @param render The surface to draw to
+  */
   public void draw(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)
@@ -66,9 +76,17 @@ class SoundBox extends StageComponent {
       }
     }
   }
-  
+  /**Render the 3D representation of this component.<br>
+  NOTE: this method may be called more then once per frame
+  @param render The surface to draw to
+  */
   public void draw3D(PGraphics render){}
-
+  /**used for mouse click detecteion
+  @param x The x position of the mouse
+  @param y The y position of the mouse
+  @param c Check colliding with hitbox reghuardless of if the compoennt normally has collision during gameplay
+  @return true if a collision is occoring
+  */
   public boolean colide(float x, float y, boolean c) {
     Group group=getGroup();
     if (!group.visable)
@@ -80,7 +98,10 @@ class SoundBox extends StageComponent {
     }
     return false;
   }
-
+  /**Get a JSONObject representation of this component that can be saved to a file
+  @param stage_3D Wether this stage is a 3D stage
+  @return JSONObject representation of this object
+  */
   public JSONObject save(boolean stage_3D) {
     JSONObject part=new JSONObject();
     part.setFloat("x", x);
@@ -107,22 +128,33 @@ class SoundBox extends StageComponent {
     System.err.println("Attempted to copy sound box in 3D. This opperation is not allowed");
     return null;
   }
-
+  /**Set a string data property
+  @param data The data to set
+  */
   public void setData(String data) {
     soundKey=data;
   }
-
+  /**Get the value of a string data proerty
+  @return The value of the string data
+  */
   public String getData() {
     return soundKey;
   }
-  
+  /**Get the 2D collision box for entitiy collisions
+  @return 2D hitbox for this component or null for none
+  */
   public Collider2D getCollider2D(){
     return null;
   }
+  /**Get the 3D collision box for entitiy collisions
+  @return 3D hitbox for this component or null for none
+  */
   public Collider3D getCollider3D(){ 
     return null;
   }
- 
+  /**Convert this component to a byte representation that can be sent over the network or saved to a file.<br>
+  @return This component as a binarry representation
+  */
   @Override
   public SerializedData serialize() {
     SerializedData data = new SerializedData(id());
@@ -130,7 +162,9 @@ class SoundBox extends StageComponent {
     data.addObject(SerializedData.ofString(soundKey));
     return data;
   }
-  
+  /**Get the id of this objet
+  @return The Identifier representing this object
+  */
   @Override
   public Identifier id() {
     return ID;
