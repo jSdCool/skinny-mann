@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**The base class for all components that exsist inside of and make up a stage
 */
-abstract class StageComponent implements Serialization {//the base class for all components that exsist inside a stage
+public abstract class StageComponent implements Serialization {//the base class for all components that exsist inside a stage
   static transient skiny_mann source;
   public float x, y, z, dx, dy, dz;
   public int ccolor, group=-1;

@@ -72,7 +72,7 @@ public class LogicComponentRegistry{
   public static String getDescription(Identifier id){
     return descriptions.get(id);
   }
-  /**Level creator tool box icon render instrion interface.
+  /**Level creator tool box icon render instructions interface.
   */
   public interface ComponentButtonIconDraw{
     /**Draw the icon for this component on the tool box button
