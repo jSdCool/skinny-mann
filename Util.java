@@ -1,29 +1,30 @@
 import processing.core.PMatrix3D;
 import processing.core.PVector;
 import processing.core.PGraphics;
-
+/**Various utility methods
+*/
 public class Util{
-  /** apply the given transformation to 4 verticies at the same time
+  /** Apply the given transformation to 4 verticies at the same time,
   the values of the input verticies will be modified by this function
-  @param transform the transformation to apply
-  @param a the first vertex to transform
-  @param b the second vertex to transform
-  @param c the third vertex to transform
-  @param d the forth vertex to transform
+  @param transform The transformation to apply
+  @param a The first vertex to transform
+  @param b The second vertex to transform
+  @param c The third vertex to transform
+  @param d The forth vertex to transform
   */
   public static void transform4Vert(PMatrix3D transform, PVector a, PVector b, PVector c, PVector d){
     transform4Vert(transform,a,b,c,d,new PMatrix3D());
   }
   
-  /** apply the given transformation to 4 verticies at the same time
-  the values of the input verticies will be modified by this function
+  /** Apply the given transformation to 4 verticies at the same time,
+  the values of the input verticies will be modified by this function.<br>
   NOTE: supplying and reusing a value for tmpMat will improve preformace when calling repetidly
-  @param transform the transformation to apply
-  @param a the first vertex to transform
-  @param b the second vertex to transform
-  @param c the third vertex to transform
-  @param d the forth vertex to transform
-  @param tmpMat temportaty matrix used for transformations, reuse in each call for imporved preformace
+  @param transform The transformation to apply
+  @param a The first vertex to transform
+  @param b The second vertex to transform
+  @param c The third vertex to transform
+  @param d The forth vertex to transform
+  @param tmpMat Temportaty matrix used for transformations, reuse in each call for imporved preformace
   */
   public static void transform4Vert(PMatrix3D transform, PVector a, PVector b, PVector c, PVector d,PMatrix3D tmpMat){
     if(tmpMat == null){
@@ -70,22 +71,22 @@ public class Util{
     
   }
   
-  /**creates a 3D rotation matix for a rotation in all 3 axsis
-  @param x the angle in the x-axis to rotate (in radians)
-  @param y the angle in the y-axis to rotate (in radians)
-  @param z the angle in the z-axis to rotate (in radians)
-  @return a matrix containing the requirested 3D roation
+  /**Creates a 3D rotation matix for a rotation in all 3 axsis
+  @param x The angle in the x-axis to rotate (in radians)
+  @param y The angle in the y-axis to rotate (in radians)
+  @param z The angle in the z-axis to rotate (in radians)
+  @return A matrix containing the requirested 3D roation
   */
   public static PMatrix3D rotateXYZ(float x, float y,float z){
     return rotateXYZ(x, y,z,null);
   }
   
-  /**applies a 3D rotation to the input transformation matix
-  @param x the angle in the x-axis to rotate (in radians)
-  @param y the angle in the y-axis to rotate (in radians)
-  @param z the angle in the z-axis to rotate (in radians)
-  @param currentTransform the current transformation to apply the rotation to
-  @return the new transforamtion including the rotation, note the input matrix is also updateing with this transformation
+  /**Applies a 3D rotation to the input transformation matix
+  @param x The angle in the x-axis to rotate (in radians)
+  @param y The angle in the y-axis to rotate (in radians)
+  @param z The angle in the z-axis to rotate (in radians)
+  @param currentTransform The current transformation to apply the rotation to
+  @return The new transforamtion including the rotation, note the input matrix is also updateing with this transformation
   */
   public static PMatrix3D rotateXYZ(float x, float y,float z,PMatrix3D currentTransform){
     if(currentTransform == null){
@@ -108,12 +109,25 @@ public class Util{
     
   }
   
+  /**Project a 3D point into a 2D plane in 3D space
+  @param point The point to project
+  @param center The center point the the 2D plane
+  @param normal The normal vector of the 2D plane
+  @return The inputted point projected onto the closetd point on the 2D plane
+  */
   public static PVector projectToPlane(PVector point, PVector center,PVector normal){
     PVector work = new PVector();
     // P - ((((P-C) dot N )/ (N dot N)) dot N)
     return PVector.sub(point,PVector.mult(normal,((PVector.sub(point,center,work).dot(normal))/(normal.dot(normal))),work),work);
   }
   
+  /**Calculate the point at witch a line intersects a 2D plane in 3D space
+  @param lineA The first point on the line
+  @param lineB The seccond point on the line
+  @param planePoint The center point of the 2D plane
+  @param planeNormal The normal vector of the 2D plane
+  @return The point in 3D space where the line and the plane intersect. Will have NaN values if the line and place are parallel
+  */
   public static PVector intersectPlaneAndLine(PVector lineA,PVector lineB, PVector planePoint,PVector planeNormal){
     float t = planeNormal.x*(planePoint.x-lineA.x) + planeNormal.y*(planePoint.y-lineA.y) + planeNormal.z*(planePoint.z-lineA.z);
     t /= planeNormal.x*(lineB.x-lineA.x) + planeNormal.y*(lineB.y-lineA.y) + planeNormal.z*(lineB.z-lineA.z);
@@ -122,6 +136,13 @@ public class Util{
     return reslut;
   }
   
+  /**Scale and offset the vertex of a shape currently being renderd. primarily for 2D graphics but can also be used in 3D
+  @param g The graphics object to write the vertex to
+  @param v The base vertex to wright
+  @param offsetX How far to offset the x value by pre scale
+  @param offsetY How far to offset the y value by pre scale
+  @param scale The factor by witch to scale the vertex position by after offsetting(1 for 3D)
+  */
   public static void shapeVertex(PGraphics g, PVector v,float offsetX, float offsetY, float scale){
     g.vertex((v.x+offsetX)*scale,(v.y+offsetY)*scale,v.z*scale);
   }
