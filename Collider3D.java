@@ -81,6 +81,8 @@ public class Collider3D{
    @param z The lower z position
    @param dx The width of the box
    @param dy The height of the box
+   @param dz The depth of the box
+   @return An axis aligned hitbox for the specified box dimentions
    */
   public static Collider3D createBoxHitBox(float x,float y,float z,float dx,float dy,float dz){
     return new Collider3D(new PVector[]{

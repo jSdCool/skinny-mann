@@ -1,8 +1,9 @@
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
-
-public class Interdimentional_Portal extends StageComponent {//ground component
+/**A portal stage component to allow the player to switch between stages
+*/
+public class Interdimentional_Portal extends StageComponent {
 
   public static final Identifier ID = new Identifier("interdimentional_Portal");
   

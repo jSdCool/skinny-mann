@@ -1,3 +1,5 @@
+//start of assets.pde
+
 void drawCoin(float x, float y, float Scale,PGraphics render) {
   render.fill(#FCC703);
   render.circle(x, y, 12*Scale);

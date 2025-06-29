@@ -413,7 +413,7 @@ public class UiTextBox{
   
   /**Set the content of the text box
   @param text The new content of the text box
-  @param this
+  @return this
   */
   public UiTextBox setContence(String text){
     contence = text;
@@ -506,8 +506,7 @@ public class UiTextBox{
     controlPressed = false;
   }
   
-  /**Get wether this text box is currently being editied
-  @return true if this text box is being typed in
+  /**Set this text box to activly typing
   */
   public void activate(){
     typing = true;

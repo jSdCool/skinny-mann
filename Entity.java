@@ -5,6 +5,7 @@ NOTE: all further implmentations should be of the class StageEntity
 abstract public class Entity{
   /**Get this entities' specific movemnt manger.<br>
   Responcable for storing movement commands.
+  @return The movement manager for this entity
   */
   public abstract MovementManager getMovementmanager();
   
@@ -68,6 +69,7 @@ abstract public class Entity{
   
   /**Get wether to render / process this entity in 3D mode
   @param playerIn3D wether the current player is in 3D mode
+  @return true if thhis entity should be renderd in 3D
   */
   public abstract boolean in3D(boolean playerIn3D);
 

@@ -177,9 +177,9 @@ public class LogicButton extends StageComponent implements Interactable {
     return false;
   }
 
-  /**Get the value of a string data proerty<br>
+  /**set the value of an in data proerty<br>
   In this case the variable index
-  @return The value of the string data
+  @param data The new data value
   */
   public void setData(int data) {
     variable=data;

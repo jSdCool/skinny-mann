@@ -59,6 +59,7 @@ public abstract class LogicComponent implements Serialization {//the base of all
   }
   
   /**sets the logic board for this component
+  @param board The logic board to set for this component
   */
   protected void setLogicBoard(LogicBoard board){
     lb = board;

@@ -12,6 +12,7 @@ public class DownloadFile {
   @param link The URL to download the file from
   @param fileName The file name/path to save the file at
   @param progress An array of length 2 where element 0 is the total ammount to be downloaded and element 1 is how much has been downloaded so far. This parameter acts as an output parameter. Can be null
+  @throws IOException yeah it can theow execeptions some times, it does io
   */
   public static void download(String link, String fileName,long[] progress) throws IOException {
 

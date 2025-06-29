@@ -2,7 +2,8 @@
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
-
+/**A logic gate for the OR opperation on logic boards
+*/
 public class NOrGate extends LogicComponent {
   
   public static final Identifier ID = new Identifier("NOR");

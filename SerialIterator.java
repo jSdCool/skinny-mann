@@ -26,7 +26,7 @@ public class SerialIterator {
 
     /**Move the position of the iterator.<br>
     Use of this method is not reccomneded unless you need to specifically skip serialized data. 
-     * @param Amount how much to increase the position
+     * @param amount How much to increase the position
      */
     public void advance(int amount){
         value+=amount;

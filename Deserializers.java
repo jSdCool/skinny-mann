@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-/**This class contains methods for taking binarry data and converting it into java primitives and objects.<br<
+/**This class contains methods for taking binarry data and converting it into java primitives and objects.<br>
 NOTE: It is reccomended that you use the modthods from SerialIterator instead of using this class directly
 */
 public class Deserializers {
@@ -127,7 +127,7 @@ public class Deserializers {
     /**Deserialize an array list from an array of bytes
      *
      * @param bytes The bytes to read from
-     * @param offset The index of the start of the array list bytes
+     * @param iterator The index of the start of the array list bytes
      * @return An array list containing deserialized objects
      * @param <E> The type of the output array list
      */

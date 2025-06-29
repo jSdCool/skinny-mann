@@ -6,7 +6,7 @@ public class ClientInfo extends DataPacket {
   
   public String name;
   boolean readdy, atEnd;
-  /*Create a basic client informatio packet
+  /**Create a basic client informatio packet
   @param name The multyplayer namme of this client
   @param ready Wether this client is ready to start the level
   @param atEnd Wether this client has reached the end of the level in co op mode

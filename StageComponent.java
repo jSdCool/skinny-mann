@@ -48,7 +48,7 @@ public abstract class StageComponent implements Serialization {//the base class 
   @param y The y position
   @return true if a collision is occoring
   */
-  public boolean colideDethPlane(float x, float Y) {
+  public boolean colideDethPlane(float x, float y) {
     return false;
   }
   

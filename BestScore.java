@@ -7,12 +7,15 @@ public class BestScore extends DataPacket {
   String name;
   int score;
   /**Create a new score
+  @param n The name of the player this score is from
+  @param s The value of the score
   */
   public BestScore(String n, int s) {
     name=n;
     score=s;
   }
   /**Recreate a score from Serialized data
+  @param iterator the source of the data
   */
   public BestScore(SerialIterator iterator){
     score = iterator.getInt();

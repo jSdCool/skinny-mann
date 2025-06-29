@@ -317,7 +317,7 @@ public class SoundHandler extends Thread {
   }
   
   /**Play the given narration
-  @parma n The id of the narration to play
+  @param n The id of the narration to play
   */
   public void playNarration(int n){
     SoundFile sound;

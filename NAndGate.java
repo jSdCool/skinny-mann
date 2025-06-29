@@ -2,7 +2,8 @@
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
-
+/**A logic gate for the NAND opperation on logic boards
+*/
 public class NAndGate extends LogicComponent {
   
   public static final Identifier ID = new Identifier("NAND");

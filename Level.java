@@ -2,7 +2,8 @@ import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+/**A level, it holds things
+*/
 public class Level implements Serialization {//this is a big and important one
   
   public static final Identifier ID = new Identifier("Level");

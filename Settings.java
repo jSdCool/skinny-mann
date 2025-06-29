@@ -245,7 +245,7 @@ public class Settings {
     return debugFPS;
   }
   /**Get wether genreal debug info should be displayed
-  @rerurn true if debug info should be drawn on screen
+  @return true if debug info should be drawn on screen
   */
   public boolean getDebugInfo() {
     return debugInfo;

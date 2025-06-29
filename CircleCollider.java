@@ -4,7 +4,7 @@ import processing.core.*;
 public class CircleCollider extends Collider2D{
   float radius;
   /**Create a 2D Circle Collider
-  @param ceneter The center position of the circle
+  @param center The center position of the circle
   @param radius The radius of the circle
   */
   public CircleCollider(PVector center,float radius){

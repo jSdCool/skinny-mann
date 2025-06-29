@@ -26,6 +26,7 @@ public abstract class LogicInputComponent extends LogicComponent {
     button=new Button(source, x, y, 100*source.Scale, 40*source.Scale, "  "+type+"  ");
   }
   /**Creates a logic component from serialized data
+  @param iterator The source of the data
   */
   public LogicInputComponent(SerialIterator iterator){
     super(iterator);

@@ -42,7 +42,7 @@ public class Player extends Entity implements Serialization {
     name = iterator.getString();
   }
   /**set the entities' x position
-  @param x The new x position
+  @param X The new x position
   @return this
   */
   public Entity setX(float X) {
@@ -50,7 +50,7 @@ public class Player extends Entity implements Serialization {
     return this;
   }
   /**set the entities' y position
-  @param y The new y position
+  @param Y The new y position
   @return this
   */
   public Entity setY(float Y) {
@@ -58,7 +58,7 @@ public class Player extends Entity implements Serialization {
     return this;
   }
   /**set the entities' z position
-  @param z The new z position
+  @param Z The new z position
   @return this
   */
   public Entity setZ(float Z){

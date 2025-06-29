@@ -40,6 +40,7 @@ public class Client extends Thread {
   
   /**Initilize the common components of this class.<br>
   This exsists because I could not figure out how to call one constructor from another
+  @param s The socket
   */
   private void init(Socket s) {
     System.out.println("creating new client");

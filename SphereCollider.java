@@ -5,7 +5,7 @@ public class SphereCollider extends Collider3D{
   PVector center = new PVector();
   float radius;
   /**Create a 3D sphereical collider
-  @param ceneter The center position of the sphere
+  @param center The center position of the sphere
   @param radius The radius of the sphere
   */
   public SphereCollider(PVector center,float radius){
