@@ -1,27 +1,28 @@
+//start of render_and_physics.pde
 int xangle=25+180, yangle=15, dist=700;//camera presets
 float DY=sin(radians(yangle))*dist, hd=cos(radians(yangle))*dist, DX=sin(radians(xangle))*hd, DZ=cos(radians(xangle))*hd, cam3Dx, cam3Dy, cam3Dz;//camera rotation
 
-/**draws all the elements of a stage
- 
+/**Draws all the elements of a stage
  */
 void stageLevelDraw() {
-  Stage stage=level.stages.get(currentStageIndex);
+  Stage stage=level.stages.get(currentStageIndex);//get the current stage
   background(stage.skyColor);//sky color
-  int selectIndex=-1;//reset the selected obejct
+  int selectIndex=-1;//reset the selcting obejct
   if (selecting) {//if you are currently using the selection tool
-    selectIndex=colid_index(mouseX/Scale+camPos, mouseY/Scale-camPosY, stage);//figure out what eleiment you are hovering over
+    selectIndex=colid_index(mouseX/Scale+camPos, mouseY/Scale-camPosY, stage);//figure out what element you are hovering over
   }
-  if (E_pressed&&viewingItemContents) {//if you are viewing the contence of an element and you press E
-    E_pressed=false;//close the contence of the eleiment
-    viewingItemContents=false;
+  //currently only being used by signs
+  if (E_pressed && viewingItemContents) {//if you are viewing the contence of an element and you press E
+    E_pressed=false;//reset E being pressed
+    viewingItemContents=false;//close the contence of the eleiment
     viewingItemIndex=-1;
   }
-  if (stage.type.equals("stage")) {//if the cuurent thing that is being drawn is a stage
-    SPressed=false;
+  if (stage.type.equals("stage")) {//if the cuurent thing that is being drawn is a 2D stage
+    SPressed=false;//reset the state of the 3rd dimention movemnt
     WPressed=false;
     e3DMode=false;//turn 3D mode off
     camera();//reset the camera
-    drawCamPosX=camPos;//versions of the camera position variblaes that only get updated once every frame and not on every physics tick
+    drawCamPosX=camPos;//get versions of the camera position variblaes that only get updated once every frame and not on every physics tick
     drawCamPosY=camPosY;
     for (int i=0; stageLoopCondishen(i, stage); i++) {//loop through all elements in the stage
       strokeWeight(0);
@@ -35,62 +36,66 @@ void stageLevelDraw() {
         strokeWeight(2);
       }
       stage.parts.get(i).draw(g);//draw the element
-      if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
+      if (viewingItemContents && viewingItemIndex == -1) {//if the current element has decided that you want to view it's contence but no element has been selected
         viewingItemIndex=i;//set the cuurent viewing item to this element
       }
     }
-    noStroke();
-    //render all the Entites on this stage
-    for (int i=0; i<stage.entities.size(); i++) {
-      if (!stage.entities.get(i).isDead())//if not dead
-        stage.entities.get(i).draw(this, g);
+    noStroke();//turn the outline off again
+    
+    for (int i=0; i<stage.entities.size(); i++) {//render all the Entites on this stage
+      if (!stage.entities.get(i).isDead())//if this entity is not dead
+        stage.entities.get(i).draw(this, g);//render the entity
     }
-    players[currentPlayer].in3D=false;
-    if (clients.size()>0)
-      for (int i=currentNumberOfPlayers-1; i>=0; i--) {
-        if (i==currentPlayer)
-          continue;
-        if (players[i].stage==currentStageIndex&&clients.get(0).viablePlayers[i]) {//if this player is on the same stage as the userser then
-          draw_mann(Scale*(players[i].getX()-drawCamPosX), Scale*(players[i].getY()+drawCamPosY), players[i].getPose(), Scale*players[i].getScale(), players[i].getColor(), g);//draw the outher players
+    players[currentPlayer].in3D=false;//set this player to be in 2D mode
+    if (clients.size()>0){//if anyone is connected / you are connected to someone
+      for (int i=currentNumberOfPlayers-1; i>=0; i--) {//draw each player in reverse order
+        if (i==currentPlayer){//if this index is for the player being played as
+          continue;//skip this render, it will happen latter
+        }
+        if (players[i].stage==currentStageIndex&&clients.get(0).viablePlayers[i]) {//if this player is on the same stage as you then
+          draw_mann(Scale*(players[i].getX()-drawCamPosX), Scale*(players[i].getY()+drawCamPosY), players[i].getPose(), Scale*players[i].getScale(), players[i].getColor(), g);//draw the outher player
           fill(255);
           textSize(15*Scale);
           textAlign(CENTER, CENTER);
+          //draw their name above them
           text(players[i].name, Scale*(players[i].getX()-drawCamPosX), Scale*(players[i].getY()+drawCamPosY-85));
         }
       }
+    }
 
     draw_mann(Scale*(players[currentPlayer].getX()-drawCamPosX), Scale*(players[currentPlayer].getY()+drawCamPosY), players[currentPlayer].getPose(), Scale*players[currentPlayer].getScale(), players[currentPlayer].getColor(), g);//draw this users player
-    players[currentPlayer].stage=currentStageIndex;
-    //====================================================================================================================================================================================================
-    //====================================================================================================================================================================================================
-    //====================================================================================================================================================================================================
-    //====================================================================================================================================================================================================
-    //====================================================================================================================================================================================================
+    players[currentPlayer].stage=currentStageIndex;//update the stage this player is in
+    //end of rendering 2D stage
   } else if (stage.type.equals("3Dstage")) {//if the stage is a 3D stage
     if (e3DMode) {//if 3D mode is turned on
-      ArrayList<Collider3D> stageCollisions = generateLevel3DComboBox(stage);
+      ArrayList<Collider3D> stageCollisions = generateLevel3DComboBox(stage);//generate the hitboxes for this stage
 
-      if ((simulating&&levelCreator)||!levelCreator)
-        camera3DpositionSimulating(stageCollisions);
-      else
-        camera3DpositionNotSimulating();
+      if ((simulating && levelCreator) || !levelCreator){//if not in the level creator or not paused while in the level cretor
+        camera3DpositionSimulating(stageCollisions);//calculate the position of the 3D camera
+      } else {//if paused and in the level creator
+        camera3DpositionNotSimulating();//calculate the manually controlled poisiton of the camera
+      }
 
       camera(cam3Dx+DX, cam3Dy-DY, cam3Dz-DZ, cam3Dx, cam3Dy, cam3Dz, 0, 1, 0);//set the camera
       directionalLight(255, 255, 255, 0.8, 1, -0.35);//set up the old lighting (for when shadows are old or off)
       ambientLight(102, 102, 102);
-      perspective(settings.getFOV(),width*1.0/height,0.5,1048576);
       
+      perspective(settings.getFOV(),width*1.0/height,0.5,1048576);//set the FOV and min/max draw distance for 3D
+      
+      //TODO decouple this from frame rate
       coinRotation+=3;//rotate the coins
-      if (coinRotation>360)//reset the coin totation if  it is over 360 degrees
+      
+      if (coinRotation>360) {//reset the coin totation if  it is over 360 degrees
         coinRotation-=360;
-      drawCamPosX=camPos;//versions of the camera position variblaes that only get updated once every frame and not on every physics tick
+      }
+      drawCamPosX=camPos;//get versions of the camera position variblaes that only get updated once every frame and not on every physics tick
       drawCamPosY=camPosY;
 
 
-      players[currentPlayer].in3D=true;
-
-      players[currentPlayer].stage=currentStageIndex;
+      players[currentPlayer].in3D=true;//set this player to be rendering in 3D
+      players[currentPlayer].stage=currentStageIndex;//set this player to be on this stage
       
+      //get local versions of the player's position and other properties that will not change during the rendering of this frame
       float ppx =  players[currentPlayer].getX(), ppy =  players[currentPlayer].getY(), ppz = players[currentPlayer].getZ();
       int ppp =  players[currentPlayer].getPose();
       float pps =  players[currentPlayer].getScale();
@@ -98,47 +103,47 @@ void stageLevelDraw() {
 
       //if proper shadows are enabled
       if ( settings.getShadows() > 1) {
-        shadowMap.beginDraw();
-        shadowMap.camera(cam3Dx+lightDir.x, cam3Dy+lightDir.y, cam3Dz+lightDir.z, cam3Dx, cam3Dy, cam3Dz, 0, 1, 0);
-        shadowMap.background(0xffffffff); // Will set the depth to 1.0 (maximum depth)
+        shadowMap.beginDraw();//start the process of rendering to the depth buffer
+        shadowMap.camera(cam3Dx+lightDir.x, cam3Dy+lightDir.y, cam3Dz+lightDir.z, cam3Dx, cam3Dy, cam3Dz, 0, 1, 0);//pocition the depth buffer camera
+        shadowMap.background(0xffffffff); // Will set the depth to 1.0 (maximum depth) by default
         //render to the depth buffer
         render3DLevel(shadowMap, stage,ppx,ppy,ppz,ppp,pps,ppc);
-        shadowMap.endDraw();
-        //shadowMap.updatePixels();
+        shadowMap.endDraw();//finish provideing data to the depth buffer and trigger the GPU to render it
 
 
-        shader(shadowShader);
-        perepLightingPass();
+        shader(shadowShader);//apply the shadowing shader to the main renderer
+        perepLightingPass();//prepair adn apply the lighting uniforms
       }
-      render3DLevel(g, stage,ppx,ppy,ppz,ppp,pps,ppc);
+      
+      render3DLevel(g, stage,ppx,ppy,ppz,ppp,pps,ppc);//redner the level to what will be shown on the screen
 
-      if ( settings.getShadows() > 1) {
-        resetShader();
+      if ( settings.getShadows() > 1) {//if proper shadows are enabled
+        resetShader();//turn the shadow shader off so UI elemtns render correctly
       }
 
-      if (settings.getShadows() == 1) {//if the 3D shadow is enabled
-        float shadowAltitude=players[currentPlayer].y;
+      if (settings.getShadows() == 1) {//if the old 3D shadow is enabled
+        float shadowAltitude=players[currentPlayer].y;//set the starting y posoiton to search form 
         boolean shadowHit=false;
         for (int i=0; i<500&&!shadowHit; i++) {//ray cast to find solid ground underneath the player
-          Collider3D groundDetect = players[currentPlayer].getHitBox3D(0, i, 0);
-          if (level_colide(groundDetect, stageCollisions)) {
-            shadowAltitude+=i-1;
+          Collider3D groundDetect = players[currentPlayer].getHitBox3D(0, i, 0);//create a simple hitbox to use in detecting the ground
+          if (level_colide(groundDetect, stageCollisions)) {//if the hitbox detecteds the ground
+            shadowAltitude+=i-1;//reduce the number by 1 so it will be renderd on top
             shadowHit=true;
             continue;
           }
         }
         if (shadowHit) {//if solid ground was found under the player then draw the shadow
-          translate(players[currentPlayer].x, shadowAltitude-1.1, players[currentPlayer].z);
+          translate(players[currentPlayer].x, shadowAltitude-1.1, players[currentPlayer].z);//move to the postition
           fill(0, 127);
           rotateX(radians(90));
-          ellipse(0, 0, 40, 40);
+          ellipse(0, 0, 40, 40);//draw the shadow
           rotateX(radians(-90));
-          translate(-players[currentPlayer].x, -(shadowAltitude-2), -players[currentPlayer].z);
+          translate(-players[currentPlayer].x, -(shadowAltitude-2), -players[currentPlayer].z);//reser the position
         }
       }
       //prespecitve is reset in the main draw function acter all stage drawings have finished
-    } else {//redner the level in 2D
-      SPressed=false;
+    } else {//if rednering the level in 2D
+      SPressed=false;//reset the state of the 3rd dimention movemnt
       WPressed=false;
       camera();//reset the camera
       drawCamPosX=camPos;//versions of the camera position variblaes that only get updated once every frame and not on every physics tick
@@ -161,42 +166,48 @@ void stageLevelDraw() {
       }
 
       //render all the Entites on this stage
-      //TODO: respect wether the entoity is renderd in 3D or not
+      //TODO: respect wether the entity is renderd in 3D or not
       noStroke();
       for (int i=0; i<stage.entities.size(); i++) {
-        stage.entities.get(i).draw(this, g);
+        stage.entities.get(i).draw(this, g);//redner this entity
       }
 
-      players[currentPlayer].in3D=false;
-      if (clients.size()>0)
-        for (int i=currentNumberOfPlayers-1; i>=0; i--) {
-          if (i==currentPlayer)
+      players[currentPlayer].in3D=false;//set this player to not be in 3D
+      if (clients.size()>0){//if any one is connected to you / you are connected to someone
+        for (int i=currentNumberOfPlayers-1; i>=0; i--) {//for each connected player
+          if (i==currentPlayer){//if that player is you then SKIP
             continue;
+          }
           if (players[i].stage==currentStageIndex&&!players[i].in3D&&clients.get(0).viablePlayers[i]) {//if this player is on the same stage as the userser then
-            draw_mann(Scale*(players[i].getX()-camPos), Scale*(players[i].getY()+camPosY), players[i].getPose(), Scale*players[i].getScale(), players[i].getColor(), g);//draw the outher players
+            draw_mann(Scale*(players[i].getX()-camPos), Scale*(players[i].getY()+camPosY), players[i].getPose(), Scale*players[i].getScale(), players[i].getColor(), g);//draw the outher player
             fill(255);
             textSize(15*Scale);
             textAlign(CENTER, CENTER);
+            //render the player's name above them
             text(players[i].name, Scale*(players[i].getX()-drawCamPosX), Scale*(players[i].getY()+drawCamPosY-Scale*85));
           }
         }
+      }
+      
       draw_mann(Scale*(players[currentPlayer].getX()-camPos), Scale*(players[currentPlayer].getY()+camPosY), players[currentPlayer].getPose(), Scale*players[currentPlayer].getScale(), players[currentPlayer].getColor(), g);//draw the player
-      players[currentPlayer].stage=currentStageIndex;
+      players[currentPlayer].stage=currentStageIndex;//set the player as on this stage
     }
-  }
+  }//end of stage is 3D stage
 
 
   if (level_complete) {//if the level has been completed
     fill(255, 255, 0);
+    //wow this variable is mispelled
     lebelCompleteText.draw();
-    if (level.multyplayerMode!=2||isHost) {
-      endOfLevelButton.draw();
+    if (level.multyplayerMode!=2||isHost) {//if in speed run mode or hosting the level
+      endOfLevelButton.draw();//draw the continue button
     }
   }
 
   if (viewingItemContents) {//if viewing the contence of an element
     engageHUDPosition();//engage the HUD position in case of 3D mode to make shure it renders on top
-    StageComponent item = level.stages.get(currentStageIndex).parts.get(viewingItemIndex);
+    StageComponent item = level.stages.get(currentStageIndex).parts.get(viewingItemIndex);//get the thing that is being viewed
+    //TODO make this modular
     if (item.type.equals("WritableSign")) {//if your are reeding a sign then show the contents of the sign
       fill(#A54A00);
       rect(width*0.05, height*0.05, width*0.9, height*0.9);//background of the sign
@@ -207,60 +218,77 @@ void stageLevelDraw() {
       fill(0);
       text(item.getData(), width/2, height/2);//the text of the sign
       textSize(20*Scale);
-      text("press E to continue", width/2, height*0.85);
-      displayTextUntill=millis()-1;//make shure that "Press R" is not displayed on the screen while in the sign
+      text("press E to continue", width/2, height*0.85);//closing instructions
+      displayTextUntill=millis()-1;//make shure that "Press E" is not displayed on the screen while in the sign
     }
-    disEngageHUDPosition();//rest the hud condishen
+    disEngageHUDPosition();//rest the hud situation
   }
-}
+}//end of stage level draw
 
+/**Render a stage in 3D
+@param render The place to render the stage to
+@param stage The stage to render
+@param playerX The x position of the player
+@param playerY The y position of the player
+@param playerZ The z position of the player
+@param playerPose The current pose the player is in
+@param playerScale The scale to draw the player at
+@param playerColor The shirt color index of the player
+*/
 void render3DLevel(PGraphics render, Stage stage,float playerX,float playerY, float playerZ,int playerPose,float playerScale,int playerColor) {
   for (int i=0; stageLoopCondishen(i, stage); i++) {//loop through all elements in the stage
     render.strokeWeight(0);
     render.noStroke();
-    if (selectedIndex==i) {//if the current element is the element the mouse is hovering over while the selection tool is active
-      render.stroke(#FFFF00);//give that element a blue border
+    if (selectedIndex==i) {//if the current element is selected
+      render.stroke(#FFFF00);//give that element a yellow border
       render.strokeWeight(2);
     }
     stage.parts.get(i).draw3D(render);//draw the element in 3D
-    if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
+    if (viewingItemContents && viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
       viewingItemIndex=i;//set the cuurent viewing item to this element
     }
   }
-  if (clients.size()>0)
-    for (int i=currentNumberOfPlayers-1; i>=0; i--) {
-      if (i==currentPlayer)
-        continue;
-      if (players[i].stage==currentStageIndex&&i!=currentPlayer&&clients.get(0).viablePlayers[i]) {//if this player is on the same stage as the userser then
-        if (players[i].in3D) {
-          draw_mann_3D(players[i].x, players[i].y, players[i].z, players[i].getPose(), players[i].getScale(), players[i].getColor(), render);//draw the players in 3D
+  if (clients.size()>0){//if anyone is connected to you / you are connected to someone
+    for (int i=currentNumberOfPlayers-1; i>=0; i--) {//go through each player
+      if (i==currentPlayer){//if the current player index is you
+        continue;//SKIP
+      }
+      if (players[i].stage==currentStageIndex&&i!=currentPlayer&&clients.get(0).viablePlayers[i]) {//if this player is on the same stage as the you then
+        if (players[i].in3D) {//if this player is in 3D
+          draw_mann_3D(players[i].x, players[i].y, players[i].z, players[i].getPose(), players[i].getScale(), players[i].getColor(), render);//draw that player in 3D
           render.fill(255);
           render.textSize(15*Scale);
           render.textAlign(CENTER, CENTER);
           render.translate(0, 0, players[i].z);
+          //draw the text above the player's head
           render.text(players[i].name, (players[i].getX()), (players[i].getY()-85));
           render.translate(0, 0, -players[i].z);
-        } else {
-          draw_mann((players[i].getX()), (players[i].getY()), players[i].getPose(), players[i].getScale(), players[i].getColor(), render);//draw the outher players in 2D
+        } else {//if the player is in 2D
+          draw_mann((players[i].getX()), (players[i].getY()), players[i].getPose(), players[i].getScale(), players[i].getColor(), render);//draw that player in 2D
           render.fill(255);
           render.textSize(15);
           render.textAlign(CENTER, CENTER);
+          //draw their name above their head
           render.text(players[i].name, players[i].getX(), players[i].getY()-85);
         }
       }
     }
-
+  }
   draw_mann_3D(playerX, playerY, playerZ, playerPose, playerScale, playerColor, render);//draw the player
 
   //render all the Entites on this stage
   //TODO: respect wether the entoity is renderd in 3D or not
   render.noStroke();
-  for (int i=0; i<stage.entities.size(); i++) {
-    if (!stage.entities.get(i).isDead())//if not dead
-      stage.entities.get(i).draw3D(this, render);
+  for (int i=0; i<stage.entities.size(); i++) {//for each entity on this stage
+    if (!stage.entities.get(i).isDead()){//if not dead
+      stage.entities.get(i).draw3D(this, render);//render this entity
+    }
   }
-}
+}//end of draw 3D stage
 
+/**Do various calculations to prepair the uniform values for the shadow creation on the main shader.<br>
+This includes splitting the depth buffer up into 4 smaller images to improve shadow resolution
+*/
 void perepLightingPass() {
   int halfBuffer = shadowMap.width/2;
   //split the high res shadow map into serveal smaller ones
@@ -278,7 +306,6 @@ void perepLightingPass() {
   subShadowMaps[3].endDraw();
 
   // Bias matrix to move homogeneous shadowCoords into the UV texture space
-  //TODO: make this an array
   PMatrix3D shadowTransform[] = new PMatrix3D[4];
   shadowTransform[0] = new PMatrix3D(
     0.5, 0.0, 0.0, 0.5,
@@ -305,26 +332,24 @@ void perepLightingPass() {
     0.0, 0.0, 0.0, 1.0
   );
   
-  PMatrix3D oldShadowTransform= new PMatrix3D(
+  PMatrix3D oldShadowTransform = new PMatrix3D(
     0.5, 0.0, 0.0, 0.5,
     0.0, 0.5, 0.0, 0.5,
     0.0, 0.0, 0.5, 0.5,
     0.0, 0.0, 0.0, 1.0
   );
-  //lightDir.set(-0.8, -1, 0.35);
-  //lightDir.mult(800);
   
-  
+  //do not rememer what uve was but it does seem important
   PVector uve = new PVector(-0.8,0,0.35);
   PVector superNormalLight = PVector.div(lightDir,lightDir.magSq());
   
-  //calculate the vecators for the supporting plane the camera is being moved in
+  //calculate the vecators for the supporting plane the camera is being moved in for the smaller depth buffers
   PVector v1 = PVector.sub(uve,PVector.mult(superNormalLight,PVector.dot(uve,lightDir)));
   v1.normalize();
   PVector v2 = PVector.cross(lightDir,v1,null);
   v2.normalize();
   
-  //calculate the direction vectors
+  //calculate the direction vectors for each small depth buffer
   PVector d0 = PVector.add(PVector.mult(v1,cos(3*PI/4)),PVector.mult(v2,sin(3*PI/4)));
   PVector d1 = PVector.add(PVector.mult(v1,cos(PI/4)),PVector.mult(v2,sin(PI/4)));
   PVector d2 = PVector.add(PVector.mult(v1,cos(-PI/4)),PVector.mult(v2,sin(-PI/4)));
@@ -335,13 +360,15 @@ void perepLightingPass() {
   d2.normalize();
   d3.normalize();
   
-  float plainerDist = sqrt(2*pow(2000/2,2));
+  float plainerDist = sqrt(2*pow(2000/2,2));//calculate the distacne from the center of the big depth buffer each of the smaller depth buffer's center is
   
+  //apply that distance to the directions we found earlier
   d0.mult(plainerDist);
   d1.mult(plainerDist);
   d2.mult(plainerDist);
   d3.mult(plainerDist);
-
+  
+  //use theese center position with the camera command to calculate the proper camera projection matricies for each of the sub depth buffers
   cameraMatrixMap.beginDraw();
   cameraMatrixMap.camera(cam3Dx+lightDir.x+d0.x, cam3Dy+lightDir.y+d0.y, cam3Dz+lightDir.z+d0.z, cam3Dx+d0.x, cam3Dy+d0.y, cam3Dz+d0.z, 0, 1, 0);
   // Apply project modelview matrix from the shadow pass (light direction)
@@ -360,7 +387,7 @@ void perepLightingPass() {
   shadowTransform[3].apply(((PGraphicsOpenGL)cameraMatrixMap).projmodelview);
   cameraMatrixMap.endDraw();
   
-  oldShadowTransform.apply(((PGraphicsOpenGL)shadowMap).projmodelview);
+  oldShadowTransform.apply(((PGraphicsOpenGL)shadowMap).projmodelview);//the paraent matrix for the origional depth buffer
 
   // Apply the inverted modelview matrix from the default pass to get the original vertex
   // positions inside the shader. This is needed because Processing is pre-multiplying
@@ -407,15 +434,13 @@ void perepLightingPass() {
   float normalLength = sqrt(lightNormalX * lightNormalX + lightNormalY * lightNormalY + lightNormalZ * lightNormalZ);
   shadowShader.set("lightDirection", lightNormalX / -normalLength, lightNormalY / -normalLength, lightNormalZ / -normalLength);
 
-
-  //TODO: send each section of the shadow map to the shader
-  // Send the shadowmap to the default shader
+  // Send each section the shadowmap to the default shader
   shadowShader.set("shadowMap0", subShadowMaps[0]);
-  shadowShader.set("shadowMap1", subShadowMaps[3]);
+  shadowShader.set("shadowMap1", subShadowMaps[3]);//apperently I got the order of theese wrong, simple fix tho
   shadowShader.set("shadowMap2", subShadowMaps[2]);
   shadowShader.set("shadowMap3", subShadowMaps[1]);
   
-  shadowShader.set("outputSampledValue",shadowShaderOutputSampledDepthInfo);
+  shadowShader.set("outputSampledValue",shadowShaderOutputSampledDepthInfo);//not really used, why am I keeping this arround?
 }
 
 
@@ -1512,3 +1537,4 @@ class LogicThread extends Thread {
     }
   }
 }
+//end of render_and_physics.pde
