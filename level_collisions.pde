@@ -445,14 +445,13 @@ void perepLightingPass() {
 
 
 /**draws all the elements of a blueprint
- 
  */
 void blueprintEditDraw() {
   int selectIndex=-1;
   if (selecting) {//if you are currently using the selection tool
     selectIndex=colid_index(mouseX+camPos, mouseY-camPosY, workingBlueprint);//figure out what eleiment you are hovering over
   }
-  if (workingBlueprint.type.equals("blueprint")) {//if the type is a normalk blueprint
+  if (workingBlueprint.type.equals("blueprint")) {//if the type is a normal blueprint
     e3DMode=false;//turn 3D mode off
     camera();//reset the camera
     drawCamPosX=camPos;//camera positions used for drawing that only gets updted once every fram instead of evcery physics tick
@@ -468,34 +467,36 @@ void blueprintEditDraw() {
         stroke(#0A03FF);
         strokeWeight(2);
       }
-      workingBlueprint.parts.get(i).draw(g);//draw sll the elements in the blueprint
+      workingBlueprint.parts.get(i).draw(g);//draw this component
+      //why is this in the blurpeint drawerer?
       if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
-        viewingItemIndex=i;//set the cuurent viewing item to this element
+        viewingItemIndex=i;//set the current viewing item to this element
       }
     }
   }
-  if (workingBlueprint.type.equals("3D blueprint")) {//if the type is a normalk blueprint
-    if (e3DMode) {
-      cam3Dx=0;
+  if (workingBlueprint.type.equals("3D blueprint")) {//if the type is a 3D blueprint
+    if (e3DMode) {//if in 3D mode
+      cam3Dx=0;//force the camera to 0 0 0
       cam3Dy=0;
       cam3Dz=0;
-      camera3DpositionNotSimulating();
-      cam3Dx=0;
+      camera3DpositionNotSimulating();//camera rotating 
+      cam3Dx=0;//reset the camera again for some reason
       cam3Dy=0;
       cam3Dz=0;
       camera(cam3Dx+DX, cam3Dy-DY, cam3Dz-DZ, cam3Dx, cam3Dy, cam3Dz, 0, 1, 0);//set the camera
-      directionalLight(255, 255, 255, 0.8, 1, -0.35);//setr up the lighting
+      directionalLight(255, 255, 255, 0.8, 1, -0.35);//set up the lighting ofr old/off shadow modes
       ambientLight(102, 102, 102);
       coinRotation+=3;//rotate the coins
-      if (coinRotation>360)//reset the coin totation if  it is over 360 degrees
+      if (coinRotation>360){//reset the coin totation if  it is over 360 degrees
         coinRotation-=360;
+      }
       stroke(255, 0, 0);
       strokeWeight(2);
-      line(-700, 0, 0, 700, 0, 0);//x-axis
+      line(-700, 0, 0, 700, 0, 0);//draw the x-axis
       stroke(0, 255, 0);
-      line(0, 700, 0, 0, -700, 0);
+      line(0, 700, 0, 0, -700, 0);//draw the y-axis
       stroke(0, 0, 255);
-      line(0, 0, 700, 0, 0, -700);
+      line(0, 0, 700, 0, 0, -700);//draw the z-axis
       noStroke();
       for (int i=0; stageLoopCondishen(i, workingBlueprint); i++) {//loop through all elements in the blueprint
         strokeWeight(0);
@@ -508,12 +509,13 @@ void blueprintEditDraw() {
           stroke(#0A03FF);
           strokeWeight(2);
         }
-        workingBlueprint.parts.get(i).draw3D(g);//draw sll the elements in the blueprint
+        workingBlueprint.parts.get(i).draw3D(g);//draw the blurprint component
+        //why is this nessarry for a blueprint
         if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
           viewingItemIndex=i;//set the cuurent viewing item to this element
         }
       }
-    } else {
+    } else {//if in 2D mode
       camera();//reset the camera
       drawCamPosX=camPos;//camera positions used for drawing that only gets updted once every fram instead of evcery physics tick
       drawCamPosY=camPosY;
@@ -537,30 +539,39 @@ void blueprintEditDraw() {
   }
 }
 
+/**Calculate the camera position for nomral 3D gameplay, including the cmera colliding with the stage between the normal position and the player
+@param stageCollision The hitboxes of the stage
+*/
 void camera3DpositionSimulating(ArrayList<Collider3D> stageCollision) {
-  cam3Dx=players[currentPlayer].x;
-  cam3Dy=players[currentPlayer].y-37;//camera Y pos in the bille of the body instead of the bottom
-  cam3Dz=players[currentPlayer].z;
+  //set the center position of the camera to be in the player
+  cam3Dx=players[currentPlayer].getX();
+  cam3Dy=players[currentPlayer].getY()-37;//camera Y pos in the middle of the body instead of the bottom
+  cam3Dz=players[currentPlayer].getZ();
   //handle roatation
-  if (cam_left) {
-    xangle+=2;
-    if (xangle>240)
-      xangle=240;
+  //TODO: decouple this from FPS
+  if (cam_left) {//if the user is trying to rotate the camera left
+    xangle+=2;//increase the angle by a bit
+    if (xangle>240){//if the angle exceeds the limit
+      xangle=240;//force it back to the limit
+    }
   }
-  if (cam_right) {
-    xangle-=2;
-    if (xangle<190)
-      xangle=190;
+  if (cam_right) {//if the user is truong to rotate the camera right
+    xangle-=2;//decrese the angle by a bit
+    if (xangle<190){//if hte angle exceeds the limit
+      xangle=190;//force it back to the limit
+    }
   }
-  if (cam_up) {
-    yangle+=1;
-    if (yangle>=30)
-      yangle=30;
+  if (cam_up) {//if the user is trying  to rotate the camera up
+    yangle+=1;//increse the angle by a bit
+    if (yangle>=30){//if the angle exceeds the limit
+      yangle=30;//force it back to the limit
+    }
   }
-  if (cam_down) {
-    yangle-=1;
-    if (yangle<10)
-      yangle=10;
+  if (cam_down) {//if the user is trying  to rotate the camera down
+    yangle-=1;//decrease the angle by a bit
+    if (yangle<10){//if the angle exceeds the limit
+      yangle=10;//force it back to the limit
+    }
   }
   //xangle=205;
   //yangle=15;
@@ -590,7 +601,7 @@ void camera3DpositionSimulating(ArrayList<Collider3D> stageCollision) {
     //split the box in 2
     //select the box closest to the player
     //narrow down where it is
-    int iterations = 10;
+    int iterations = 10;//narrow it down 10 times
     for(int i=0;i<iterations;i++){
       //divide the collision area in 2
       float mid = (fard - neard)/2 + neard;
@@ -627,6 +638,7 @@ void camera3DpositionSimulating(ArrayList<Collider3D> stageCollision) {
   //if the box did not collide
   //retun 700
 
+  //calculate the coordinates of the camrea's eye position
   DY=sin(radians(yangle))*camDist;
   hd=cos(radians(yangle))*camDist;
   DX=sin(radians(xangle))*hd;
@@ -634,45 +646,57 @@ void camera3DpositionSimulating(ArrayList<Collider3D> stageCollision) {
   //+ - -
 }
 
+/**Calculate a point for the camrea's eyes that is a certain distace from the player
+@param dist The distace from the player the point is at
+@return A point in line with the camera's eyes that is the given distacne from the cmarea center
+*/
 PVector calcCameraBasePoint(float dist){
-  float tmp = cos(radians(yangle)) * dist;
+  float tmp = cos(radians(yangle)) * dist;//tmp distacne frop the X and Z coord calulcattions
   return new PVector(cam3Dx+sin(radians(xangle))*tmp,cam3Dy-sin(radians(yangle))*dist,cam3Dz-cos(radians(xangle))*tmp);
 }
 
+/**Generate a hitbox for the camrea between the near and far coordinate avlues provided
+@param near The near distance to the camera center to calculate the hit box from
+@pram far The far distnce from the camera center to calulcate the hit box from
+@return A hitbox covering a possible area the camrea could be in
+*/
 Collider3D calcCameraHitBox(PVector near,PVector far){
-  float smalDist=0.1;
+  float smalDist=0.1;//the bit box needs to be a bit more then a 1D line so this is that little bit of depth we give it
   return new Collider3D(
-    new PVector[]{
+    new PVector[]{//basically just add/subtract that small distacne from the near and far points to form the 8 verticies of the hitbox
       new PVector(near.x+smalDist,near.y,near.z+smalDist),new PVector(near.x+smalDist,near.y,near.z-smalDist),new PVector(near.x-smalDist,near.y,near.z-smalDist),new PVector(near.x-smalDist,near.y,near.z+smalDist),
       new PVector(far.x+smalDist,far.y,far.z+smalDist),new PVector(far.x+smalDist,far.y,far.z-smalDist),new PVector(far.x-smalDist,far.y,far.z-smalDist),new PVector(far.x-smalDist,far.y,far.z+smalDist)
     });
 }
 
+/**Calculate the position of the camera for 3D level creation. manual camera controll with almost no angle limits
+*/
 void camera3DpositionNotSimulating() {
-  if (space3D) {
-    cam3Dy-=20;
+  //TODO decouple this from FPs
+  if (space3D) {//if the user is attempting to go up
+    cam3Dy-=20;//move the camera postion up
   }
-  if (shift3D) {
-    cam3Dy+=20;
+  if (shift3D) {//if the user is attempting to go down
+    cam3Dy+=20;//move the camrea position down
   }
-  if (w3D) {
-    cam3Dx+=20*sin(radians(-xangle));
+  if (w3D) {//if the user is trying to move forwards
+    cam3Dx+=20*sin(radians(-xangle));//calulcate a new position forwards of the current position
     cam3Dz+=20*cos(radians(-xangle));
   }
-  if (s3D) {
-    cam3Dx-=20*sin(radians(-xangle));
+  if (s3D) {//if the user is trying to move backwards
+    cam3Dx-=20*sin(radians(-xangle));//calculate a new position beckwards of the current position
     cam3Dz-=20*cos(radians(-xangle));
   }
-  if (a3D) {
-    cam3Dx+=20*cos(radians(xangle));
+  if (a3D) {//if the user is trying to move left
+    cam3Dx+=20*cos(radians(xangle));//calculate a new position left of the current position
     cam3Dz+=20*sin(radians(xangle));
   }
-  if (d3D) {
-    cam3Dx-=20*cos(radians(xangle));
+  if (d3D) {//if the user is trying to move right
+    cam3Dx-=20*cos(radians(xangle));//calcukate a new position right of the player
     cam3Dz-=20*sin(radians(xangle));
   }
 
-
+  //bla bla bla camera rotations. if you can not figure this out look at the simulation position function
   if (cam_left) {
     xangle+=2;
   }
@@ -689,20 +713,26 @@ void camera3DpositionNotSimulating() {
     if (yangle<0)
       yangle=0;
   }
+  //calculate the new camera eye position
   DY=sin(radians(yangle))*dist;
   hd=cos(radians(yangle))*dist;
   DX=sin(radians(xangle))*hd;
   DZ=cos(radians(xangle))*hd;
 }
+
+//end of the render zone
 //////////////////////////////////////////-----------------------------------------------------
+//start of the physics zone
 
-
-
+/**Preform p[hyscics calucaltions for the current player and all entities if nessarry.<br>
+note this method also preforms monitoring for the logic thread.
+Executed on the physcics thread
+*/
 void playerPhysics() {
-  int calcingPlayer = currentPlayer;
-  ArrayList<Collider2D> stageBoxes = generateLevel2DComboBox(level.stages.get(currentStageIndex));
+  int calcingPlayer = currentPlayer;//store the current player
+  ArrayList<Collider2D> stageBoxes = generateLevel2DComboBox(level.stages.get(currentStageIndex));//genreate the hitboxes for this stage
   ArrayList<Collider3D> stageBoxes3D = null;
-  if(level.stages.get(currentStageIndex).is3D){
+  if(level.stages.get(currentStageIndex).is3D){//if this stage is 3D then generate the 3D hitboxes as well
     stageBoxes3D = generateLevel3DComboBox(level.stages.get(currentStageIndex));
   }
 
@@ -719,36 +749,37 @@ void playerPhysics() {
   }
 
   //test for entity interactions
-  Collider2D player2DHitbox = players[calcingPlayer].getHitBox2D(0, 0);
+  Collider2D player2DHitbox = players[calcingPlayer].getHitBox2D(0, 0);//get the player hitboxes
   Collider3D player3DHitbox = players[calcingPlayer].getHitBox3D(0, 0, 0);
   PlayerIniteractionResult result = null;
-  for (int i=0; i<level.stages.get(currentStageIndex).entities.size(); i++) {
-    if (!level.stages.get(currentStageIndex).entities.get(i).isDead()) {
+  for (int i=0; i<level.stages.get(currentStageIndex).entities.size(); i++) {//for each entity in the current stage
+    if (!level.stages.get(currentStageIndex).entities.get(i).isDead()) {//if this entity is not dead
       if (e3DMode) {//3d mdoe
         Collider3D enitiyHitBox = level.stages.get(currentStageIndex).entities.get(i).getHitBox3D(0, 0, 0);
         if (enitiyHitBox!=null && CollisionDetection.collide3D(player3DHitbox, enitiyHitBox)) {
           //if collideing
-          result = level.stages.get(currentStageIndex).entities.get(i).playerInteraction(player3DHitbox);
+          result = level.stages.get(currentStageIndex).entities.get(i).playerInteraction(player3DHitbox);//get a result
         }
       } else {//not 3D mode
         Collider2D entityHitBox = level.stages.get(currentStageIndex).entities.get(i).getHitBox2D(0, 0);
         if (entityHitBox !=null && CollisionDetection.collide2D(player2DHitbox, entityHitBox)) {
           //if collideing
-          result = level.stages.get(currentStageIndex).entities.get(i).playerInteraction(player2DHitbox);
+          result = level.stages.get(currentStageIndex).entities.get(i).playerInteraction(player2DHitbox);//get a result
         }
       }
-
+      //(still in loop) hanle the result of that interaction
       if (result!=null) {
-        if (result.isKill()) {
-          dead=true;
+        if (result.isKill()) {//if the result says to kill
+          dead=true;//kill the player
           death_cool_down=0;
           if (!levelCreator) {
             stats.incrementTimesDied();
           }
-          break;
+          break;//stop this looop
         }
       }
-      if (level.multyplayerMode==2 && !isHost) {
+      
+      if (level.multyplayerMode==2 && !isHost) {//if in co op mode or not hosting
         //if the entitie was killed
         if (level.stages.get(currentStageIndex).entities.get(i).isDead()) {
           //inform the server of the death
@@ -756,7 +787,7 @@ void playerPhysics() {
         }
       }
     }
-  }
+  }//end of each entity looop
 
   if (dead) {//if the player is dead
     currentStageIndex=respawnStage;//go back to the stage they last checkpointed on
@@ -764,17 +795,17 @@ void playerPhysics() {
 
     players[calcingPlayer].setX(respawnX);//move the player back to their spawnpoint
     players[calcingPlayer].setY(respawnY);
-    players[calcingPlayer].z=respawnZ;
+    players[calcingPlayer].setZ(respawnZ);
     //set 3D mode based on last chekpoint pass
   }
   if (setPlayerPosTo) {//move the player to a position that is wanted
     players[calcingPlayer].setX(tpCords[0]).setY(tpCords[1]);
-    players[calcingPlayer].z=tpCords[2];
+    players[calcingPlayer].setZ(tpCords[2]);
     setPlayerPosTo=false;
-    players[calcingPlayer].verticalVelocity=0;
+    players[calcingPlayer].setVerticalVelocity(0);
   }
 
-  //if in coop multyplayer mode and thyis player is the host or is in the level creator
+  //if in coop multyplayer mode and this player is the host or is in the level creator
   if (level.multyplayerMode==2 && (isHost||levelCreator)) {
     //loop through all the stages
     for (Stage stage : level.stages) {
@@ -787,7 +818,7 @@ void playerPhysics() {
         entityStageBoxes = stageBoxes;
         entityStageBoxes3D = stageBoxes3D;
       }else{
-        //calculate the hitboex
+        //calculate the hitboxs
         entityStageBoxes = generateLevel2DComboBox(stage);
         entityStageBoxes3D = generateLevel3DComboBox(stage);
       }
@@ -804,30 +835,33 @@ void playerPhysics() {
   }
 
   ////////////////////////////// Logic Thread monitroing
-  if ((!levelCreator && (level.multyplayerMode==1 || (level.multyplayerMode==2 && isHost))) || (levelCreator&&simulating)) {
+  //if: (not in the level cretaor and (in speed run mode or is the host))  or in the level creator and not paused
+  if ((!levelCreator && (level.multyplayerMode==1 || (level.multyplayerMode==2 && isHost))) || (levelCreator && simulating)) {
     if (!logicTickingThread.isAlive()) {//if the ticking thread has stoped for some reason
-      logicTickingThread=new LogicThread();
+      logicTickingThread=new LogicThread();//re create the thread
       logicTickingThread.shouldRun=true;//then start it
       logicTickingThread.start();
     }
-  } else {
+  } else {//otherwise
     if (logicTickingThread.isAlive()) {//if the ticking thread is running when we dont want it to be
       logicTickingThread.shouldRun=false;//then stop it
     }
   }
 }//player physics
 
+/**Calculate in stage physics for an entity
+@param entity The entity to calculate physics for
+@param stage The stage the entity is on
+@param stageHitBoxs2D The 2D hitboxs for the stage
+@param stageHitBoxs3D The 3D hitboxs for the stage(if it has them)
+*/
 void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBoxs2D, ArrayList<Collider3D> stageHitBoxs3D) {
-  MovementManager movement = entity.getMovementmanager();
+  MovementManager movement = entity.getMovementmanager();//get the movement manager for this entity
   //if the movement manager is no movement manager then stop becasue it does not move on its own
   if (movement instanceof NoMovementManager) {
     return;
   }
-  if(entity instanceof StageEntity){
-    StageEntity stageEnt = (StageEntity)entity;
-    stageEnt.update(mspc, stageHitBoxs2D);
-  }
-
+  
   //if the entity is dead then do not calculate physics on them
   if (entity instanceof Killable) {
     Killable k = (Killable) entity;
@@ -835,38 +869,46 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
       return;
     }
   }
+  
+  //if this entity is a stage entity (not a player)
+  if(entity instanceof StageEntity){
+    StageEntity stageEnt = (StageEntity)entity;
+    stageEnt.update(mspc, stageHitBoxs2D);//run and AI update on the entity
+  }
 
-  if (viewingItemContents && movement instanceof PlayerMovementManager) {//stop movment while intertacting with an object
+  if (viewingItemContents && movement instanceof PlayerMovementManager) {//if this entity is a player then stop movment while intertacting with an object, but still process gravity
     movement.reset();
   }
 
-  if (!entity.in3D(e3DMode) || stageHitBoxs3D == null) {
+  if (!entity.in3D(e3DMode) || stageHitBoxs3D == null) {//if the entity is not in 3D mode or no 3D hitboxes exists
 
-    if (simulating||!levelCreator) {
+    if (simulating||!levelCreator) {//if not in the level creator or not paused
 
-      if (movement.right()) {//move the player right
-        float offset  = mspc*((entity instanceof StageEntity)? 0.2: 0.4), newpos = entity.getX()+offset;
-        Collider2D newboxPos = entity.getHitBox2D(offset, 0);
+      if (movement.right()) {//move the entity right
+        float offset  = mspc*((entity instanceof StageEntity)? 0.2: 0.4), newpos = entity.getX()+offset;//calculate how far to offset them to the right
+        Collider2D newboxPos = entity.getHitBox2D(offset, 0);//calculate a hit box for the new position
 
         if (!level_colide(newboxPos, stageHitBoxs2D)) {//check if the new posistion collids with anything
-          if (!entity.collidesWithEntites() || !entityCollide(entity, newboxPos, stage)) {
-            entity.setX(newpos);//move the player if all is good
+          //if it does not
+          if (!entity.collidesWithEntites() || !entityCollide(entity, newboxPos, stage)) {//if this entity can collide with other entities check if this noew position would
+            entity.setX(newpos);//move the entity if all is good
           }
-          //if it does check if it can climb stairs
+          //if it collided with the ground check if it can climb stairs
         } else if (entity.getVerticalVelocity()<0.008) {//check if the player is not falling
           for (int i=1; i<11; i++) {//check to see if the player can walk up a "step"
-            newboxPos = entity.getHitBox2D(offset, -i);
-            if (!level_colide(newboxPos, stageHitBoxs2D)) {
-              //maby allw use of entites as stairs
-              entity.setX(newpos);
+            newboxPos = entity.getHitBox2D(offset, -i);//generate a new hitbox
+            if (!level_colide(newboxPos, stageHitBoxs2D)) {//if it does not hit something then
+              //maby allow use of entites as stairs
+              entity.setX(newpos);//move the entity forwards (anti in ground will take care of moving the entity up)
               break;
             }
           }
         }
 
-        if (entity instanceof Player) {
+        if (entity instanceof Player) {//if this entity is a player
+          //walking animation
           Player player = (Player)entity;
-          if (player.getAnimationCooldown()<=0) {//change the player pose to make them look like there waljking
+          if (player.getAnimationCooldown()<=0) {//change the player pose to make them look like there walking
             player.setPose(player.getPose()+1);
             player.setAnimationCooldown(4);
             if (player.getPose()==13) {
@@ -876,30 +918,30 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
             player.setAnimationCooldown(player.getAnimationCooldown()-0.05*mspc);//animation cooldown
           }
         }
-      }
+      }//end of moving right
 
-      if (movement.left()) {//player moving left
-        float offset  = mspc*((entity instanceof StageEntity)? 0.2: 0.4), newpos = entity.getX()-offset;
-        Collider2D newboxPos = entity.getHitBox2D(-offset, 0);
+      if (movement.left()) {//move entity moving left
+        float offset  = mspc*((entity instanceof StageEntity)? 0.2: 0.4), newpos = entity.getX()-offset;//calculate how far to offset them to the left
+        Collider2D newboxPos = entity.getHitBox2D(-offset, 0);//calculate a hit box for the new position
         if (!level_colide(newboxPos, stageHitBoxs2D)) {//check if the new posistion collids with anything
           //if the entity can coolide with other entites check if it is doing so, otherwise continue
           if (!entity.collidesWithEntites() || !entityCollide(entity, newboxPos, stage)) {
-            entity.setX(newpos);//move the player if all is good
+            entity.setX(newpos);//move the entity if all is good
           }
         } else if (entity.getVerticalVelocity()<0.008) {//check if the player is not falling
           //check to see if the player can walk up a "step"
           for (int i=1; i<11; i++) {//check to see if the player can walk up a "step"
-            newboxPos = entity.getHitBox2D(-offset, -i);
+            newboxPos = entity.getHitBox2D(-offset, -i);//generate a new hitbox
             if (!level_colide(newboxPos, stageHitBoxs2D)) {
-              entity.setX(newpos);
+              entity.setX(newpos);//move the entity backwards (anti in ground will take care of moving the entity up)
               break;
             }
           }
         }
 
-        if (entity instanceof Player) {
+        if (entity instanceof Player) {//if this entity is a player
           Player player = (Player)entity;
-          if (player.getAnimationCooldown()<=0) {//change the player pose to make them look like there waljking
+          if (player.getAnimationCooldown()<=0) {//change the player pose to make them look like there walking
             player.setPose(player.getPose()-1);
             player.setAnimationCooldown(4);
             if (player.getPose()==0) {
@@ -909,7 +951,7 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
             player.setAnimationCooldown(player.getAnimationCooldown()-0.05*mspc);//animation cooldown
           }
         }
-      }
+      }//end of move left
 
       if (entity instanceof Player) {
         Player player = (Player)entity;
@@ -920,8 +962,8 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
       }
     }
 
-    if (simulating||!levelCreator)
-      if (true) {//gravity
+    if (simulating || !levelCreator){
+        //gravity
         //    d  =                      vi*t          + 0.5 * a * t^2
         float pd = (entity.getVerticalVelocity()*mspc + 0.5*gravity*(float)Math.pow(mspc, 2));//calculate the new verticle position the player shoud be at
         float newPos = pd +  entity.getY();
@@ -933,21 +975,21 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
             //           vf          =         vi                  +    a * t
             entity.setVerticalVelocity(entity.getVerticalVelocity()+gravity*mspc);//calculate the players new verticle velocity
             entity.setY(newPos);//update the postiton of the player
-          } else {
-            entity.setVerticalVelocity(0);
+          } else {//if you collided with an entity
+            entity.setVerticalVelocity(0);//stop moving down/up
           }
         } else {
           //if the new position would collide with something
           entity.setVerticalVelocity(0);//stop the entity's verticle motion
         }
-      }
+      }//end of gravity
 
     //prbly should add a can be killed by this check
-    Collider2D dethCheck = entity.getHitBox2D(0, 1);
-    if ((entity instanceof Player || entity instanceof Killable )&& player_kill(dethCheck, stage)) {//if the player is on top of a death plane
+    Collider2D dethCheck = entity.getHitBox2D(0, 1);//check to see if standing on death plane
+    if ((entity instanceof Player || entity instanceof Killable )&& player_kill(dethCheck, stage)) {//if the entity is on top of a death plane
       if (entity instanceof Killable) {
         Killable k = (Killable) entity;
-        k.kill();
+        k.kill();//kill them
       } else {
         dead=true;//kill the player
         death_cool_down=0;
@@ -958,11 +1000,12 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
     }
 
     //in ground detection and rectification
-    if (level_colide(entity.getHitBox2D(0, 0.5), stageHitBoxs2D)) {//check if the player's position is in the ground
-      //if the entity can coolide with other entites check if it is doing so, otherwise continue
+    if (level_colide(entity.getHitBox2D(0, 0.5), stageHitBoxs2D)) {//check if the entitie's position is in the ground
+      //if the entity can colide with other entites check if it is doing so, otherwise continue
 
+      //TODO make this conditional on not colliding with something else. this is hard becasue this whole thing is colliding with something 
       entity.setY(entity.getY()-1);//move the player up
-      entity.setVerticalVelocity(0);//stop the entity's verticle motion
+      entity.setVerticalVelocity(0);//stop the entitie's verticle motion
     }
 
     if (entity.collidesWithEntites()) {
@@ -974,6 +1017,7 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
         //if your center is gerter y then the other
         if (otherEntity.getCenter().y < hb.getCenter().y) {
           //if the new position would not collide with terrain
+          //TODO: this does not seems to work
           if (level_colide(entity.getHitBox2D(0, 2), stageHitBoxs2D)) {
             entity.setY(entity.getY()+1);//move the entity down
             entity.setVerticalVelocity(0);//stop the entity's verticle motion
@@ -997,30 +1041,31 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
       entity.setVerticalVelocity(0.01);//make the entity move down
     }
 
-    if (movement instanceof PlayerMovementManager) {
-      if (simulating||!levelCreator)
+    if (movement instanceof PlayerMovementManager) {//if the entity is a player
+      if (simulating||!levelCreator){
         if (entity.getX()-camPos>(1280-settings.getScrollHorozontal())) {//move the camera if the player goes too close to the end of the screen
           camPos=(int)(entity.getX()-(1280-settings.getScrollHorozontal()));
         }
 
-      if (simulating||!levelCreator)
         if (entity.getX()-camPos<settings.getScrollHorozontal()&&camPos>0) {//move the camera if the player goes too close to the end of the screen
           camPos=(int)(entity.getX()-settings.getScrollHorozontal());
         }
 
-      if (simulating||!levelCreator)
+
         if (entity.getY()+camPosY>720-settings.getSrollVertical()&&camPosY>0) {//move the camera if the player goes too close to the end of the screen
           camPosY-=entity.getY()+camPosY-(720-settings.getSrollVertical());
         }
 
-      if (simulating||!levelCreator)
         if (entity.getY()+camPosY<settings.getSrollVertical()+75) {//move the camera if the player goes too close to the end of the screen
           camPosY-=entity.getY()+camPosY-(settings.getSrollVertical()+75);
         }
-      if (camPos<0)//prevent the camera from moving out of the valid areia
+      }
+      if (camPos<0){//prevent the camera from moving out of the valid areia
         camPos=0;
-      if (camPosY<0)
+      }
+      if (camPosY<0){
         camPosY=0;
+      }
     }
   } else {//end of not in 3D mode
     if (simulating||!levelCreator) {
@@ -1192,6 +1237,7 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
       entity.setY(entity.getY()-1);
       entity.setVerticalVelocity(0);
     }
+    //never tested this and have no idea if it works
     /*//entity on entity collisoion
      if(entity.collidesWithEntites()){
      //if colliding with other entitys
@@ -1241,8 +1287,10 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
 }
 
 
-/**check if a point is inside of a solid object
- 
+/**Check if a point is inside of a solid object
+@param hitbox The hitbox to check for collision of
+@param stageBoxes All the hitboxes of the stage to test with
+@return true if a collision occors
  */
 boolean level_colide(Collider2D hitbox, ArrayList<Collider2D> stageBoxes) {
   for (Collider2D stageBox:stageBoxes) {//loop over all the objects in the stage
@@ -1255,8 +1303,10 @@ boolean level_colide(Collider2D hitbox, ArrayList<Collider2D> stageBoxes) {
 }
 
 /**check if a point is inside of a solid object IN 3D
- 
- */
+@param hitbox The hitbox to check for collision of
+@param stageBoxes All the hitboxes of the stage to test with
+@return true if a collision occors
+*/
 boolean level_colide(Collider3D hitbox, ArrayList<Collider3D> stageBoxes) {//3d collions
   for (Collider3D stageBox:stageBoxes) {//loop over all the objects in the stage
     if (CollisionDetection.collide3D(hitbox, stageBox)) {//check if the objects collide
@@ -1266,6 +1316,10 @@ boolean level_colide(Collider3D hitbox, ArrayList<Collider3D> stageBoxes) {//3d 
   return false;
 }
 
+/**Generate all the hitboxes 2D hitboxes for the given stage
+@param stage The stage to generate the hitboxes for
+@return A collection containing all the hitboxes for this stage
+*/
 ArrayList<Collider2D> generateLevel2DComboBox(Stage stage){
   ArrayList<Collider2D> boxes = new ArrayList<>();
   //generate stage 1
@@ -1288,8 +1342,8 @@ ArrayList<Collider2D> generateLevel2DComboBox(Stage stage){
       }
     }
   }
-  if(counter != 0){
-    boxes.add(comboBox);
+  if(counter != 0){//if the number of boxes was not evenly divisable by 10
+    boxes.add(comboBox);//add the last combo box to the main list
   }
   comboBox = new ComboBox2D();
   counter = 0;
@@ -1311,8 +1365,8 @@ ArrayList<Collider2D> generateLevel2DComboBox(Stage stage){
       }
     
   }
-  if(counter != 0){
-    boxes.add(comboBox);
+  if(counter != 0){//if the number of boxes was not evenly divisable by 10
+    boxes.add(comboBox);//add the last combo box to the main list
   }
   comboBox = new ComboBox2D();
   counter = 0;
@@ -1332,14 +1386,16 @@ ArrayList<Collider2D> generateLevel2DComboBox(Stage stage){
       }
     
   }
-  if(counter != 0){
-    boxes.add(comboBox);
+  if(counter != 0){//if the number of boxes was not evenly divisable by 10. At this point it is unlikely that there will be more then 1 box but there is a chance
+    boxes.add(comboBox);//add the last combo box to the main list
   }
-  
   
   return boxes;
 }
-
+/**Generate all the hitboxes 3D hitboxes for the given stage
+@param stage The stage to generate the hitboxes for
+@return A collection containing all the hitboxes for this stage
+*/
 ArrayList<Collider3D> generateLevel3DComboBox(Stage stage){
   ArrayList<Collider3D> boxes = new ArrayList<>();
   //generate stage 1
@@ -1410,14 +1466,25 @@ ArrayList<Collider3D> generateLevel3DComboBox(Stage stage){
     boxes.add(comboBox);
   }
   
-  
   return boxes;
 }
 
+/**Test if an entity collides with other entities
+@param self The entity to check collision for
+@param hitbox The hitbox of the entity
+@param stage The stage to check the collision of ther entities
+@return true if this entity colliders with any onther on the same stage
+*/
 boolean entityCollide(Entity self, Collider2D hitbox, Stage stage) {
   return entityCollideObject(self, hitbox, stage) != null;
 }
 
+/**Test if an entity collides with other entities
+@param self The entity to check collision for
+@param hitbox The hitbox of the entity
+@param stage The stage to check the collision of ther entities
+@return The entitiy that was collided with or null if no collison occored
+*/
 Collider2D entityCollideObject(Entity self, Collider2D hitbox, Stage stage) {
   for (Entity other : stage.entities) {
     if (self == other)//dont check for collison with self
@@ -1433,11 +1500,21 @@ Collider2D entityCollideObject(Entity self, Collider2D hitbox, Stage stage) {
   }
   return null;
 }
-
+/**Test if an entity collides with other entities
+@param self The entity to check collision for
+@param hitbox The hitbox of the entity
+@param stage The stage to check the collision of ther entities
+@return true if this entity colliders with any onther on the same stage
+*/
 boolean entityCollide(Entity self, Collider3D hitbox, Stage stage) {
   return entityCollideObject(self, hitbox, stage) != null;
 }
-
+/**Test if an entity collides with other entities
+@param self The entity to check collision for
+@param hitbox The hitbox of the entity
+@param stage The stage to check the collision of ther entities
+@return The entitiy that was collided with or null if no collison occored
+*/
 Collider3D entityCollideObject(Entity self, Collider3D hitbox, Stage stage) {
   for (Entity other : stage.entities) {
     if (self == other)//dont check for collison with self
@@ -1455,7 +1532,9 @@ Collider3D entityCollideObject(Entity self, Collider3D hitbox, Stage stage) {
 }
 
 /**check if entity hitbox is touching a death plane
- 
+ @param hitbox The hitbox of the entity
+ @param stage The stage the entity is on
+ @return true if the entitiy is touching a death plane
  */
 boolean player_kill(Collider2D hitbox, Stage stage) {
   for (int i=0; stageLoopCondishen(i, stage); i++) {
@@ -1472,8 +1551,11 @@ boolean player_kill(Collider2D hitbox, Stage stage) {
   return false;
 }
 
-/**the index of the element that the point is inside of
- 
+/**Get the index of the element that the point is inside of
+ @param x The x position of the point to check
+ @param y The y position of the point to check
+ @param stage The stage to check the point in
+ @return The index of the element collided with or -1 if no collision occored
  */
 int colid_index(float x, float y, Stage stage) {
   for (int i=stage.parts.size()-1; i>=0; i--) {
@@ -1484,8 +1566,12 @@ int colid_index(float x, float y, Stage stage) {
   return -1;
 }
 
-/**the index of the 3d element that the point is inside of
- 
+/**Get the index of the 3D element that the point is inside of
+ @param x The x position of the point to check
+ @param y The y position of the point to check
+ @param z The z position of the point to check
+ @param stage The stage to check the point in
+ @return The index of the element collided with or -1 if no collision occored
  */
 int colid_index(float x, float y, float z, Stage stage) {
   for (int i=stage.parts.size()-1; i>=0; i--) {
@@ -1496,9 +1582,11 @@ int colid_index(float x, float y, float z, Stage stage) {
   return -1;
 }
 
-/** wather the for loop drawing the stage shouold continue
- 
- */
+/**Only draw as much of the staeg as is required for the tutorial (or all for everything else)
+@param i The current index of the loop
+@param stage The stage that is being looped over
+@return Wather the for loop drawing the stage shouold continue
+*/
 boolean stageLoopCondishen(int i, Stage stage) {
   if (!tutorialMode) {
     return i<stage.parts.size();
@@ -1511,12 +1599,13 @@ boolean stageLoopCondishen(int i, Stage stage) {
   }
 }
 
-/**thread responcable for ticking the logic baord tick
- 
+/**Thread responcable for ticking the logic baord tick
  */
 class LogicThread extends Thread {
   boolean shouldRun=true;
   int lastRun;
+  /**Create a new logic ticking thread
+  */
   LogicThread() {
     super("logic ticking thread");
   }
