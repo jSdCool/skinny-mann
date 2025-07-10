@@ -1,3 +1,6 @@
+//start of register.pde
+/**Register all things from the base game that need to be registerd to the various registries
+*/
 void registerThings(){
   //Stage components
   StageComponentRegistry.register(Ground.ID, Ground::new,  Ground::new, Ground::new, (render, x, y) -> {
@@ -393,3 +396,4 @@ void registerThings(){
   SerialRegistry.register(Stage.ID,Stage::new);
   SerialRegistry.register(StageSound.ID,StageSound::new);
 }
+//end of register.pde
