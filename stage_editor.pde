@@ -1,3 +1,6 @@
+//start of stage_editor.pde
+/**Render the GUI for the stage editor. Note: this is also generaly responcable for component placement
+*/
 void stageEditGUI() {
 
   textAlign(LEFT, BOTTOM);
@@ -9,18 +12,18 @@ void stageEditGUI() {
   } else {
     adj=0;
   }
-  Color=(int)(RC*Math.pow(16, 4)+GC*Math.pow(16, 2)+BC+adj)-16777215;
+  Color=(int)(RC*Math.pow(16, 4)+GC*Math.pow(16, 2)+BC+adj)-16777215;//calculate the color from the level creator, this may be useless
   Color=scr2.CC;
 
   Stage current=null;//setup a varable that can be used for the current stage or blueprint
-  if (editingStage) {
+  if (editingStage) {//if editing a stage
     current=level.stages.get(currentStageIndex);
   }
-  if (editingBlueprint) {
+  if (editingBlueprint) {//if editing a blueprint
     current=workingBlueprint;
   }
 
-  if (current.type.equals("stage")||current.type.equals("blueprint")) {//if current is a stage or blueprint
+  if (current.type.equals("stage")||current.type.equals("blueprint")) {//if current is a 2D stage or blueprint
   
     if (grid_mode) {//grid mode position box
       int X2=0, Y2=0, X1=0, Y1=0;
@@ -34,7 +37,8 @@ void stageEditGUI() {
 
     if (drawing && currentlyPlaceing != null && StageComponentRegistry.isDraggable(currentlyPlaceing)) {//if drawing a dragable shape
       StageComponentRegistry.DraggablePlacementPreview preview = StageComponentRegistry.getDragPreview(currentlyPlaceing);
-      boolean isSloap = currentlyPlaceing.equals(Sloap.ID) || currentlyPlaceing.equals(HoloTriangle.ID);
+      boolean isSloap = currentlyPlaceing.equals(Sloap.ID) || currentlyPlaceing.equals(HoloTriangle.ID);//figure out if the thing currently being placed is a slope type
+      //becasue slopes are special and palce alightly diffrently
       if (grid_mode) {//if gridmode is on
         if (isSloap) {//if your currenly drawing a triangle type
           int X2=0, Y2=0, X1=0, Y1=0;//calcaute the location of the mouese press and unpress location
@@ -100,7 +104,7 @@ void stageEditGUI() {
           }
           
             
-          preview.draw(g, X1*Scale, Y1*Scale, X2*Scale, Y2*Scale, Color, triangleMode, Scale);
+          preview.draw(g, X1*Scale, Y1*Scale, X2*Scale, Y2*Scale, Color, triangleMode, Scale);//draw the preview of that os being placed
               
         } else {
           strokeWeight(0);
@@ -1639,3 +1643,5 @@ class Point3D {
     return new PVector(x,y,z);
   }
 }
+
+//end of stage_editor.pde
