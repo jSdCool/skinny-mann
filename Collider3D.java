@@ -4,7 +4,7 @@ import java.util.ArrayList;
 */
 public class Collider3D{
   /**Create a 3D collider from a cloud of verticies
-  @param vertices The verices that make up the hitbox
+  @param verticies The verices that make up the hitbox
   */
   Collider3D(PVector[] verticies){
     for(PVector p: verticies){

@@ -3,7 +3,7 @@
 
 /**used to easaly process keyboard inputs
  @param mode what character mode to use
- @param letter the char from the keyboard to be processed
+ @param leter the char from the keyboard to be processed
  @return a char that is compatbale with the selected mode
  */
 char getCh(int mode, char leter) {
@@ -73,7 +73,7 @@ String doBackspace(String imp, int code) {
  @param in the string to be modified
  @param x the allowed character mode
  @param code keyCode value
- @param letter key value
+ @param leter key value
  @return in modified according to the mode selected by x
  */
 String getInput(String in, int x, int code, char leter) {//code and leter exsist to allow sub windows to use this function correctly they shoud send the keyCode and key vaible in respectivlky

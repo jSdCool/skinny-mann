@@ -212,7 +212,7 @@ String readFileFromGithub(String link)throws Throwable {//used to read text file
 }
 
 /**Converts the content of an input stream to a single string
-@param Strem The input stream
+@param Stream The input stream
 */
 String GetStringFromStream(InputStream Stream) throws IOException {//turns the raw html data into a string java can understand
   if (Stream != null) {

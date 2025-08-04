@@ -16,7 +16,7 @@ void drawCoin(float x, float y, float Scale,PGraphics render) {
 
 /**Draw the 2D stage icon
 @param x The x position to draw the icon at
-@parma y The y position to draw the icon at
+@param y The y position to draw the icon at
 @param render The place to draw the icon to
 */
 void drawWorldSymbol(float x, float y,PGraphics render) {

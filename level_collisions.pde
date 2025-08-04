@@ -657,7 +657,7 @@ PVector calcCameraBasePoint(float dist){
 
 /**Generate a hitbox for the camrea between the near and far coordinate avlues provided
 @param near The near distance to the camera center to calculate the hit box from
-@pram far The far distnce from the camera center to calulcate the hit box from
+@param far The far distnce from the camera center to calulcate the hit box from
 @return A hitbox covering a possible area the camrea could be in
 */
 Collider3D calcCameraHitBox(PVector near,PVector far){
