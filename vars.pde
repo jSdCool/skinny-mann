@@ -1,3 +1,5 @@
+//start of vars.pde
+//this file is just a mass of global vars
 PShader shadowShader;
 PShader depthBufferShader;
 
@@ -497,3 +499,7 @@ Identifier currentlyPlaceing = null;
 //+++++++++++++++++++++++++++++++++++++++++++++++++++
 //===================================================
 //reserverd for other external var decaliresion
+
+
+
+//end of vars.pde
