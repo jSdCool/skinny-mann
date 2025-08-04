@@ -1,15 +1,26 @@
-class ToolBox extends PApplet {
+//start of tool_box_window.pde
 
+/**Primarry object responcable for the level creator tool box window
+*/
+class ToolBox extends PApplet {
+  
+  /**Create a new tool box window,
+  please only create one of theese 
+  @param miliOffset The millis time of the main program when this window is created
+  */
   public ToolBox(int miliOffset) {
-    super();
+    super();//setup the papplet
+    //create the new window using this as the base for that window
     PApplet.runSketch(new String[]{this.getClass().getName()}, this);
     millisOffset=miliOffset;
   }
 
+  //oh fuck all the variables
   public int redVal=0, greenVal=0, blueVal=0, CC=0;
   int rsp=0, gsp=0, bsp=0, selectedColor=0, millisOffset, variableScroll=0, groupScroll=0;
   String page="colors", newGroopName="";
   Button colorPage, toolsPage,  toggle3DMode, saveLevel, exitStageEdit, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, nextSound, prevSound,  playPauseButton,  deleteButton, movePlayerButton, gridModeButton, connectLogicButton, moveComponentsButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, runLoad, logicHelpButton, move3DButton, size3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton, rotateButton;
+  //thank goodness we do not need theese anymore
   //Button draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, switch3D1, switch3D2, sign, checkpointButton, groundButton, goalButton, holoButton, logicButtonButton, playSound;
   //Button andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, delayButton, zOffsetButton, set3DButton, read3DButton, playLogicSoundButton, pulseButton, randomButton;
   Button[] stageComponetButtons, logicComponentButtons, entityButtons;
@@ -19,12 +30,18 @@ class ToolBox extends PApplet {
   Boolean[][] componentAllowedDimentions;
   boolean typingSign=false, settingSkyColor=false, typingGroopName=false;
 
+  /**Processing's settings method.
+  sets the size of the new window
+  */
   public void settings() {
-    size(1280, 720, P2D);//mac os requires a render to be specified
+    //not resizable for now, or perhaps ever
+    size(1280, 720, P2D);//mac os requires a render to be specified, because for some reason JAVA2D does not work on mac
     smooth();
   }
+  /**Processing's setup function
+  */
   void setup() {
-    textSize(50);
+    textSize(50);//set the inital text size
     //all page buttons
     colorPage=new Button(this, 50, 50, 100, 50, "colors/depth");
     toolsPage=new Button(this, 155, 50, 100, 50, "tools");
@@ -47,6 +64,7 @@ class ToolBox extends PApplet {
     select=new Button(this, buttonPos[0], buttonPos[1], 50, 50, "select", 255, 203).setStrokeWeight(5).setHoverText("select");
     buttonPos = calcButtonPos(buttonPosIndex++);
     deleteButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("delete");
+    //end of common tool buttons    
     buttonPos = calcButtonPos(buttonPosIndex++);
     playPauseButton=new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText("play/pause the simulation");
     buttonPos = calcButtonPos(buttonPosIndex++);
@@ -64,19 +82,22 @@ class ToolBox extends PApplet {
     buttonPos = calcButtonPos(buttonPosIndex++);
     placeBlueprint=new Button(this, buttonPos[0], buttonPos[1], 50, 50, #0F1AD3, 203).setStrokeWeight(5).setHoverText("place blurprint");
     
+    
     stageComponetButtons = new Button[StageComponentRegistry.size()];
     componentIcons = new StageComponentRegistry.ComponentButtonIconDraw[stageComponetButtons.length];
     componentAllowedDimentions = new Boolean[stageComponetButtons.length][];
+    //generate all the component tool buttons from what is registerd in the registries
     for(int i=0;i<stageComponetButtons.length;i++){
       Identifier component = StageComponentRegistry.get(i);
-      buttonPos = calcButtonPos(buttonPosIndex++);
-      stageComponetButtons[i] = new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText(StageComponentRegistry.getDescription(component));
+      buttonPos = calcButtonPos(buttonPosIndex++);//calculate the locaion of this button
+      stageComponetButtons[i] = new Button(this, buttonPos[0], buttonPos[1], 50, 50, 255, 203).setStrokeWeight(5).setHoverText(StageComponentRegistry.getDescription(component));//create the button
       componentIcons[i] = StageComponentRegistry.getIcon(component);
       componentAllowedDimentions[i] = StageComponentRegistry.getAllowedDimentions(component);
     }
     
     entityButtons = new Button[EntityRegistry.size()];
     entityIcons = new EntityRegistry.EntityButtonIconDraw[entityButtons.length];
+    //generate entitie buttons
     for(int i=0;i<entityButtons.length;i++){
       Identifier component = EntityRegistry.get(i);
       buttonPos = calcButtonPos(buttonPosIndex++);
@@ -101,6 +122,7 @@ class ToolBox extends PApplet {
     
     logicComponentButtons = new Button[LogicComponentRegistry.size()];
     logicComponentIcons = new LogicComponentRegistry.ComponentButtonIconDraw[logicComponentButtons.length];
+    //generate the logic component tools
     for(int i=0;i<logicComponentButtons.length;i++){
       Identifier compId = LogicComponentRegistry.get(i);
       buttonPos = calcButtonPos(buttonPosIndex++);
@@ -142,29 +164,39 @@ class ToolBox extends PApplet {
     resetSkyColor=new Button(this, 200, 165, 40, 40, "reset", 255, 203).setStrokeWeight(0);
   }
 
-  int[] calcButtonPos(int index){
+  /**Calculate the XY positions of a given tool button
+  @param index The index of the button.
+  @return An array of 2 elements that represent the x and y positions of the button
+  */
+  private int[] calcButtonPos(int index){
     final int numPerRow= 20;
     int x = 40+60*(index%numPerRow);
     int y = 140+ 60*(index/numPerRow);
     return new int[]{x,y};
   }
 
+  /**The main render loop for the toolbox
+  */
   public void draw() {
-    if (levelCreator) {
+    if (levelCreator) {//if in the level creator
+      //calculate the color selector RGB values
+      //This may be unused now
       redVal=(int)((rsp/1080.0)*255);
       greenVal=(int)((gsp/1080.0)*255);
       blueVal=(int)((bsp/1080.0)*255);
 
 
-      if (blueVal==255) {
+      if (blueVal==255) {//limit the blue val becasuse if it is 255 it does not work for some reason
         blueVal=254;
       }
+      //calculate the final color
       CC=(int)(Math.pow(16, 4)*redVal+Math.pow(16, 2)*greenVal+blueVal);
       CC=CC-16777215;
 
-      if (page.equals("colors")) {
+      if (page.equals("colors")) {//if on the colors page
         stroke(0);
         background(CC);
+        //render the color selector
         fill(255);
         strokeWeight(10);
         rect(100, 150, 1080, 50);
@@ -186,7 +218,7 @@ class ToolBox extends PApplet {
         text(greenVal, 640, 250);
         text(blueVal, 640, 400);
         JSONObject colo=colors.getJSONObject(selectedColor);
-        fill((int)(colo.getInt("red")*Math.pow(16, 4)+colo.getInt("green")*Math.pow(16, 2)+colo.getInt("blue"))-16777215);
+        fill((int)(colo.getInt("red")*Math.pow(16, 4)+colo.getInt("green")*Math.pow(16, 2)+colo.getInt("blue"))-16777215);//calculate the fill color for the given saved color
         rect(600, 600, 80, 80);
         fill(180);
         rect(500, 600, 50, 80);
@@ -198,8 +230,9 @@ class ToolBox extends PApplet {
         fill(0);
         textSize(15);
         text("save color", 640, 570);
-        if ((level!=null&&level.stages.size()>0&&currentStageIndex!=-1&&level.stages.get(currentStageIndex).type.equals("3Dstage")) || (workingBlueprint!=null && workingBlueprint.type.equals("3D blueprint"))) {
-
+        //if in 3D mode
+        if ((level != null && level.stages.size() > 0 && currentStageIndex != -1 && level.stages.get(currentStageIndex).type.equals("3Dstage")) || (workingBlueprint!=null && workingBlueprint.type.equals("3D blueprint"))) {
+          //draw the depth stuff
           fill(255);
           rect(100, 550, 200, 150);
           rect(950, 550, 200, 150);
@@ -210,17 +243,21 @@ class ToolBox extends PApplet {
           text(startingDepth, 200, 650);
           text(totalDepth, 1050, 650);
         }
+        //draw the page buttons
         colorPage.draw();
         toolsPage.draw();
         selectionPage.draw();
         stageSettings.draw();
         variablesAndGroups.draw();
         levelSettingsPage.draw();
-        if (settingSkyColor)
+        if (settingSkyColor) {//if setting the sky color, show the set sky color button
           setSkyColor.draw();
+        }
       }//end of if page is colors
-      if (page.equals("tools")) {
+      
+      if (page.equals("tools")) {//if the page is the tools page
         background(255*0.5);
+        //draw the page buttons
         colorPage.draw();
         toolsPage.draw();
         selectionPage.draw();
@@ -228,10 +265,11 @@ class ToolBox extends PApplet {
         variablesAndGroups.draw();
         levelSettingsPage.draw();
 
-        if (editingStage) {
-          boolean stageIs3D = level.stages.get(currentStageIndex).type.equals("3Dstage");
+        if (editingStage) {//if editing a stage
+          boolean stageIs3D = level.stages.get(currentStageIndex).type.equals("3Dstage");//get if this stage is 3D
 
           //Tools
+          //play pause button
           playPauseButton.draw();
           fill(0);
           stroke(0);
@@ -242,7 +280,7 @@ class ToolBox extends PApplet {
           } else {
             triangle(playPauseButton.x+10, playPauseButton.y+10, playPauseButton.x+35, playPauseButton.y+25, playPauseButton.x+10, playPauseButton.y+40);
           }
-          
+          //delete button
           if (deleteing) {
             deleteButton.setColor(255, #F2F258);
           } else {
@@ -252,6 +290,7 @@ class ToolBox extends PApplet {
           fill(203);
           stroke(203);
           strokeWeight(0);
+          //trash can
           rect(deleteButton.x+5, deleteButton.y+15, 40, 5);
           rect(deleteButton.x+20, deleteButton.y+10, 10, 5);
           rect(deleteButton.x+10, deleteButton.y+20, 5, 20);
@@ -260,6 +299,7 @@ class ToolBox extends PApplet {
           rect(deleteButton.x+18, deleteButton.y+20, 5, 20);
           rect(deleteButton.x+27, deleteButton.y+20, 5, 20);
 
+          //move player button
           if(!e3DMode){//only render when not in 3D
             if (moving_player) {
               movePlayerButton.setColor(255, #F2F258);
@@ -270,6 +310,7 @@ class ToolBox extends PApplet {
             strokeWeight(0);
             draw_mann(movePlayerButton.x+25, movePlayerButton.y+48, 1, 0.6, 0,g);
           }
+          //grid mode button
           if (grid_mode) {
             gridModeButton.setColor(255, #F2F258);
           } else {
@@ -290,14 +331,14 @@ class ToolBox extends PApplet {
           line(gridModeButton.x+2, gridModeButton.y+40, gridModeButton.x+48, gridModeButton.y+40);
           text(grid_size, gridModeButton.x+10, gridModeButton.y+40);
           strokeWeight(0);
-          
+          //blueprint button
           if (selectingBlueprint) {
             placeBlueprint.setColor(#0F1AD3, #F2F258);
           } else {
             placeBlueprint.setColor(#0F1AD3, 203);
           }
           placeBlueprint.draw();
-          
+          //select button and 3D move/size button
           if(!e3DMode){//only render when not in 3D
             if (selecting) {
               select.setColor(255, #F2F258);
@@ -319,8 +360,10 @@ class ToolBox extends PApplet {
             }
             move3DButton.draw();
           }
+          //save button
           saveLevel.draw();
           saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
+          //toggle 3D button
           if(stageIs3D){
             if (e3DMode) {
               toggle3DMode.setColor(255, #F2F258);
@@ -329,10 +372,11 @@ class ToolBox extends PApplet {
             }
             toggle3DMode.draw();
           }
+          //exit stage button
           if(!e3DMode){//only render when not in 3D
             exitStageEdit.draw();
           }
-          
+          //rotate button
           if(rotating){
             rotateButton.setColor(255, #F2F258);
           } else {
@@ -402,7 +446,7 @@ class ToolBox extends PApplet {
             toggle3DMode.drawHoverText();
           }
           rotateButton.drawHoverText();
-          
+          //component hover text
           for(int i=0;i<stageComponetButtons.length;i++){
             //check allowed dimentions
             //[0] = allow in 2D stage [1] = allow in 3D stage [2] = allow place in 3D mode in 3D stage (default true) [3] allow in blueprints (default true)
@@ -414,7 +458,7 @@ class ToolBox extends PApplet {
             }
           }
           
-
+          //blueprint selection stuff
           if (selectingBlueprint) {
             textAlign(CENTER, CENTER);
             if (blueprints.length==0) {
@@ -425,27 +469,34 @@ class ToolBox extends PApplet {
               fill(0);
               textSize(25);
               text(blueprints[currentBluieprintIndex].name, width/2, height*0.7);
-              if (currentBluieprintIndex>0)
+              if (currentBluieprintIndex>0) {
                 prevBlueprint.draw();
-              if (currentBluieprintIndex<blueprints.length-1)
+              }
+              if (currentBluieprintIndex<blueprints.length-1) {
                 nexBlueprint.draw();
+              }
               
               //TODO: place blueprint button for 3D
             }
           }
+          //co op mode player switcher
           if (level.multyplayerMode==2) {
             fill(0);
             textSize(20);
             textAlign(LEFT, CENTER);
             text("current player:            "+currentPlayer, 200, 120);
-            if (currentPlayer>0)
+            if (currentPlayer > 0) {
               prevousPlayerButton.draw();
-            if (currentPlayer<level.maxPLayers-1)
+            }
+            if (currentPlayer<level.maxPLayers-1) {
               nextPlayerButton.draw();
+            }
           }
         }//end of if edditing
-        else if (editingBlueprint) {//if editing a 2D Blueprint
-          if (workingBlueprint.type.equals("blueprint")) {
+        else if (editingBlueprint) {//if editing a Blueprint
+          if (workingBlueprint.type.equals("blueprint")) {//if its a 2D blueprint
+            
+            //deleteing button
             if (deleteing) {
               deleteButton.setColor(255, #F2F258);
             } else {
@@ -462,6 +513,7 @@ class ToolBox extends PApplet {
             rect(deleteButton.x+35, deleteButton.y+20, 5, 20);
             rect(deleteButton.x+18, deleteButton.y+20, 5, 20);
             rect(deleteButton.x+27, deleteButton.y+20, 5, 20);
+            //gid mode button
             if (grid_mode) {
               gridModeButton.setColor(255, #F2F258);
             } else {
@@ -482,6 +534,7 @@ class ToolBox extends PApplet {
             line(gridModeButton.x+2, gridModeButton.y+40, gridModeButton.x+48, gridModeButton.y+40);
             text(grid_size, gridModeButton.x+10, gridModeButton.y+40);
             strokeWeight(0);
+            //save button
             saveLevel.draw();
             saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
             exitStageEdit.draw();
@@ -524,7 +577,8 @@ class ToolBox extends PApplet {
             }
             
           }//end of type is 2D blueprint
-          else if (workingBlueprint.type.equals("3D blueprint")) {
+          else if (workingBlueprint.type.equals("3D blueprint")) {//if its a 3D blueprint
+            //delete button
             if (deleteing) {
               deleteButton.setColor(255, #F2F258);
             } else {
@@ -541,6 +595,7 @@ class ToolBox extends PApplet {
             rect(deleteButton.x+35, deleteButton.y+20, 5, 20);
             rect(deleteButton.x+18, deleteButton.y+20, 5, 20);
             rect(deleteButton.x+27, deleteButton.y+20, 5, 20);
+            //gridmode button
             if (grid_mode) {
               gridModeButton.setColor(255, #F2F258);
             } else {
@@ -561,11 +616,13 @@ class ToolBox extends PApplet {
             line(gridModeButton.x+2, gridModeButton.y+40, gridModeButton.x+48, gridModeButton.y+40);
             text(grid_size, gridModeButton.x+10, gridModeButton.y+40);
             strokeWeight(0);
+            //save button
             saveLevel.draw();
             saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
             if(!e3DMode){
               exitStageEdit.draw();
             }
+            //move and size buttons
             if(e3DMode){//only render when not in 3D
               if (current3DTransformMode==2&&selecting) {
                 size3DButton.setColor(255, #F2F258);
@@ -580,6 +637,7 @@ class ToolBox extends PApplet {
               }
               move3DButton.draw();
             }
+            //3D button
             if (e3DMode) {
               toggle3DMode.setColor(255, #F2F258);
             } else {
@@ -630,7 +688,7 @@ class ToolBox extends PApplet {
               }
             }
           }//end of type is 3D blueprint
-        } else if (editinglogicBoard) {
+        } else if (editinglogicBoard) {//if editing a logic board
           //draw buttons
           if (connectingLogic) {
             connectLogicButton.setColor(255, #F2F258);
@@ -700,8 +758,10 @@ class ToolBox extends PApplet {
           text("you are not currently editing a stage", 300, 300);
         }
       }//end of if page is tools
-      if (page.equals("selection")) {
+      
+      if (page.equals("selection")) {//if the page is a selection page
         background(#790101);
+        //page buttons
         colorPage.draw();
         toolsPage.draw();
         selectionPage.draw();
@@ -715,6 +775,8 @@ class ToolBox extends PApplet {
           textAlign(CENTER, CENTER);
           text("nothing is selected", width/2, height/2);
         } else {
+          //TODO replace this with a completely modular system
+          //due to this i can not be fucked to document this further
           String type="";
           //theese are assigned to things so that I do not get pesterd about them having the potential to be null
           //this stuf has to so with thigns being selected
@@ -913,18 +975,23 @@ class ToolBox extends PApplet {
           }
         }//end of thing is selected
       }//end of selection page
-      if (page.equals("stage settings")) {
+      
+      
+      if (page.equals("stage settings")) {//if the page is stage settings
         background(#92CED8);
+        //page buttons
         colorPage.draw();
         toolsPage.draw();
         selectionPage.draw();
         stageSettings.draw();
         variablesAndGroups.draw();
         levelSettingsPage.draw();
-        if (editingStage) {
+        
+        if (editingStage) {//if editing a stage
           fill(0);
           textSize(25);
           textAlign(LEFT, CENTER);
+          //display the name and sky color button
           text("stage name: "+level.stages.get(currentStageIndex).name, 50, 150);
           text("sky color: ", 50, 180);
           skyColorB1.setColor(level.stages.get(currentStageIndex).skyColor, 0);
@@ -937,8 +1004,11 @@ class ToolBox extends PApplet {
           text("you are not currently editing a stage", width/2, height/2);
         }//end of not editing stage
       }//end of stage settings page
-      if (page.equals("variables and groups")) {
+      
+      
+      if (page.equals("variables and groups")) {//if the page is variables and groups
         background(#FCC740);
+        //page buttons
         colorPage.draw();
         toolsPage.draw();
         selectionPage.draw();
@@ -948,9 +1018,11 @@ class ToolBox extends PApplet {
         fill(0);
         textSize(25);
         textAlign(LEFT, CENTER);
+        //if there is a level
         if (level!=null) {
           text("variables", 80, 200);
           text("groups", 560, 200);
+          //show the state of each variable
           for (int i=0; i<10&&i+variableScroll<level.variables.size(); i++) {
             fill(0);
             text("b"+(i+variableScroll), 90, 230+i*21);
@@ -961,20 +1033,25 @@ class ToolBox extends PApplet {
             }
             rect(70, 225+i*21, 20, 20);
           }
-          if (variableScroll>0)
+          if (variableScroll>0) {
             variablesUP.draw();
-          if (variableScroll+10<level.variables.size())
+          }
+          if (variableScroll+10<level.variables.size()) {
             variablesDOWN.draw();
+          }
           textSize(25);
           textAlign(LEFT, CENTER);
+          //display the name of each group
           for (int i=0; i+groupScroll<level.groupNames.size()&&i<10; i++) {
             fill(0);
             text(level.groupNames.get(i+groupScroll), 565, 230+i*21);
           }
-          if (groupScroll>0)
+          if (groupScroll>0) {
             groupsUP.draw();
-          if (groupScroll+10<level.groupNames.size())
+          }
+          if (groupScroll+10<level.groupNames.size()) {
             groupsDOWN.draw();
+          }
           addVariable.draw();
           addGroup.draw();
           fill(0);
@@ -982,21 +1059,24 @@ class ToolBox extends PApplet {
           rect(680, 220, 400, 1);
           textSize(20);
           textAlign(LEFT, BOTTOM);
-          if (typingGroopName)
+          if (typingGroopName) {
             text(newGroopName+coursorr, 680, 218);
-          else
+          } else {
             text(newGroopName, 680, 218);
+          }
           runLoad.draw();
 
-          if (editinglogicBoard) {
+          if (editinglogicBoard) {//if on a logic board show the tick button
             tickLogicButton.draw();
             tickLogicButton.drawHoverText();
           }
           runLoad.drawHoverText();
         }//end of editing level
       }//end of variables and groups
-      if (page.equals("level settings")) {
+      
+      if (page.equals("level settings")) {//if the page is level settings
         background(#BA90FF);
+        //page buttons
         colorPage.draw();
         toolsPage.draw();
         selectionPage.draw();
@@ -1004,17 +1084,19 @@ class ToolBox extends PApplet {
         variablesAndGroups.draw();
         levelSettingsPage.draw();
 
-        if (level==null||!(editingStage||levelOverview)) {
+        if (level==null || !(editingStage || levelOverview)) {//if there is no level or your not editing a level
+          //display an error
           textAlign(CENTER, CENTER);
           fill(0);
           textSize(25);
           text("no level loaded", width/2, height/2);
-        } else {
+        } else {//if you are editing a level
           textSize(20);
           fill(0);
           textAlign(LEFT, CENTER);
           text("level name: "+level.name, 50, 150);
           text("multyplayer mode:", 50, 200);
+          //multyplayer mode buttons
           if (level.multyplayerMode==1) {
             multyplayerModeCoOpButton.setColor(255, 100);
             multyplayerModeSpeedrunButton.setColor(255, #F6FF03);
@@ -1028,7 +1110,8 @@ class ToolBox extends PApplet {
           multyplayerModeCoOpButton.draw();
           multyplayerModeSpeedrunButton.draw();
 
-          if (level.multyplayerMode==2) {
+          if (level.multyplayerMode==2) {//if level is set to co op mode
+            //show the number of players selector
             textSize(20);
             fill(0);
             textAlign(LEFT, CENTER);
@@ -1037,19 +1120,25 @@ class ToolBox extends PApplet {
             text(level.minPlayers, 200, 250);
             text(level.maxPLayers, 200, 300);
             currentNumberOfPlayers=level.maxPLayers;
-            if (level.minPlayers<level.maxPLayers)
+            if (level.minPlayers<level.maxPLayers) {
               minplayersIncrease.draw();
-            if (level.minPlayers>2)
+            }
+            if (level.minPlayers > 2) {
               minPlayersDecrease.draw();
-            if (level.maxPLayers<10)
+            }
+            if (level.maxPLayers < 10) {
               maxplayersIncrease.draw();
-            if (level.maxPLayers>level.minPlayers)
+            }
+            if (level.maxPLayers > level.minPlayers) {
               maxplayersDecrease.draw();
+            }
           }
           respawnEntitiesButton.draw();
         }
       }//end of page is level settings
-    } else {
+      
+    } else {//if not in the level creator
+      //show the API limitation screen
       background(200);
       fill(0);
       textAlign(CENTER, CENTER);
@@ -1058,9 +1147,12 @@ class ToolBox extends PApplet {
     }
   }//end of draw
 
+  /**Processings mouse clicked function
+  */
   public void mouseClicked() {
-    if (levelCreator) {
+    if (levelCreator) {//if in the level creator
       if (page.equals("colors")) {
+        //if the mouse is in the range for one of the sliders
         if (mouseX >= 100-25 && mouseX <= 1180-25 && mouseY >= 150 && mouseY <= 200) {
           rsp=mouseX-75;
         }
@@ -1070,19 +1162,22 @@ class ToolBox extends PApplet {
         if (mouseX >= 100-25 && mouseX <= 1180-25 && mouseY >= 450 && mouseY <= 500) {
           bsp=mouseX-75;
         }
+        //load a saved color button
         if (mouseX >= 600 && mouseX <=680 && mouseY >= 600 && mouseY <=680) {
           JSONObject colo=colors.getJSONObject(selectedColor);
           rsp=(int)Math.ceil(colo.getInt("red")/255.0*1080);
           gsp=(int)Math.ceil(colo.getInt("green")/255.0*1080);
           bsp=(int)Math.ceil(colo.getInt("blue")/255.0*1080);
         }
+        //change selected saved color button
         if (mouseX >= 500 && mouseX <= 550 && mouseY >= 600 && mouseY <=680&&selectedColor>0) {
           selectedColor--;
         }
-
+        //chnage selected saved color button
         if (mouseX >= 730 && mouseX <= 780 && mouseY >= 600 && mouseY <=680&&selectedColor<colors.size()-1) {
           selectedColor++;
         }
+        //save the current color button
         if (mouseX >= 600 && mouseX <=680  && mouseY >= 560 && mouseY <=590) {
           JSONObject colo=new JSONObject();
           colo.setInt("red", redVal);
@@ -1091,15 +1186,18 @@ class ToolBox extends PApplet {
           colors.setJSONObject(colors.size(), colo);
           saveColors=true;
         }
+        //if setting sky color
         if (settingSkyColor) {
-          if (setSkyColor.isMouseOver()) {
+          if (setSkyColor.isMouseOver()) {//if the setting sky color button has been clicked on
             settingSkyColor=false;
             page="stage settings";
             level.stages.get(currentStageIndex).skyColor=CC;
+            //set this stage's sky color to the current color
           }
         }
       }//end of if pages is colors
 
+      //page buttons 
       if (colorPage.isMouseOver()) {
         page="colors";
       }
@@ -1119,8 +1217,9 @@ class ToolBox extends PApplet {
         page="level settings";
       }
 
+      //if on the tools page
       if (page.equals("tools")) {
-        if (editingStage) {
+        if (editingStage) {//and editing a stage
           boolean stageIs3D = level.stages.get(currentStageIndex).type.equals("3Dstage");
           
           //mouse clicked processing for stage compoentns
@@ -1145,7 +1244,7 @@ class ToolBox extends PApplet {
             }
           }
           //everything else that is hard coded
-          
+          //dont feel like going into specifics
           if (playPauseButton.isMouseOver()) {
             simulating=!simulating;
           }
@@ -1178,9 +1277,9 @@ class ToolBox extends PApplet {
 
           if (placeBlueprint.isMouseOver()) {
             turnThingsOff();
-
+            //blueprint things are complicated
             String blueprintType = stageIs3D ? "3D blueprint" : "blueprint";
-            
+            //start by finding all valid blueprints
             String[] files=new File(appdata+"/CBi-games/skinny mann level creator/blueprints").list();
             int numofjsons=0;
             //count the number of valid blueprints
@@ -1206,17 +1305,23 @@ class ToolBox extends PApplet {
             System.out.println("loaded "+blueprints.length+" blueprints");
             selectingBlueprint=true;
             currentBluieprintIndex=0;
+            //setup the placement
             blueprintPlacemntX=cam3Dx;
             blueprintPlacemntY=cam3Dy;
             blueprintPlacemntZ=cam3Dz;
           }
-          if (selectingBlueprint) {
-            if (currentBluieprintIndex>0&&prevBlueprint.isMouseOver())
+          
+          if (selectingBlueprint) { //if the blurprint is being selected
+            //blueprint selection things
+            if (currentBluieprintIndex > 0 && prevBlueprint.isMouseOver()) {
               currentBluieprintIndex--;
-            if (currentBluieprintIndex<blueprints.length-1&&nexBlueprint.isMouseOver())
+            }
+            if (currentBluieprintIndex < blueprints.length - 1 && nexBlueprint.isMouseOver()) {
               currentBluieprintIndex++;
+            }
           }
           
+          //entity buttons
           if(!stageIs3D){
             for(int i=0;i<entityButtons.length;i++){
               Identifier component = EntityRegistry.get(i);
@@ -1227,9 +1332,10 @@ class ToolBox extends PApplet {
             }
           }
           
+          //3D buttons
           if(stageIs3D){
             if (toggle3DMode.isMouseOver()) {
-              e3DMode=!e3DMode;
+              e3DMode =! e3DMode;
               turnThingsOff();
               if(e3DMode){
                 selecting=true;
@@ -1237,6 +1343,7 @@ class ToolBox extends PApplet {
               return;
             }
           }
+          
           if(rotateButton.isMouseOver()){
             current3DTransformMode=3;
             turnThingsOff();
@@ -1282,6 +1389,7 @@ class ToolBox extends PApplet {
             }
           }
 
+          //save button
           if (saveLevel.isMouseOver()) {
             System.out.println("saving level");
             level.save(true);
@@ -1289,22 +1397,24 @@ class ToolBox extends PApplet {
             System.out.println("save complete"+gmillis);
           }
 
-          if (level.multyplayerMode==2) {
-            if (currentPlayer>0&&prevousPlayerButton.isMouseOver()) {
+          //player swithing buttons
+          if (level.multyplayerMode == 2) {
+            if (currentPlayer > 0 && prevousPlayerButton.isMouseOver()) {
               currentPlayer--;
               currentStageIndex=players[currentPlayer].stage;
               e3DMode=players[currentPlayer].in3D;
             }
-            if (currentPlayer<level.maxPLayers-1&&nextPlayerButton.isMouseOver()) {
+            if (currentPlayer < level.maxPLayers - 1 && nextPlayerButton.isMouseOver()) {
               currentPlayer++;
               currentStageIndex=players[currentPlayer].stage;
               e3DMode=players[currentPlayer].in3D;
             }
           }
         }//end of edditing stage
-        else if (editingBlueprint) {
+        else if (editingBlueprint) {//if editing blueprint
           if (workingBlueprint.type.equals("blueprint")) {
             
+            //bla bla bla very similar things
             if (deleteButton.isMouseOver()) {
               turnThingsOff();
               deleteing=true;
@@ -1324,7 +1434,7 @@ class ToolBox extends PApplet {
               levelCreator=false;
               editingBlueprint=false;
             }
-            
+            //component buttons
             for(int i=0;i<stageComponetButtons.length;i++){
               //check allowed dimentions
               //[0] = allow in 2D stage [1] = allow in 3D stage [2] = allow place in 3D mode in 3D stage (default true) [3] allow in blueprints (default true)
@@ -1388,6 +1498,9 @@ class ToolBox extends PApplet {
                 selecting=true;
               }
             }//end of 3D mode on
+            
+            //component buttons
+            
             for(int i=0;i<stageComponetButtons.length;i++){
               //check allowed dimentions
               //[0] = allow in 2D stage [1] = allow in 3D stage [2] = allow place in 3D mode in 3D stage (default true) [3] allow in blueprints (default true)
@@ -1407,6 +1520,7 @@ class ToolBox extends PApplet {
           }
         }//end of editing blueprint
         else if (editinglogicBoard) {
+          //hard coded logic board buttons
           if (connectLogicButton.isMouseOver()) {
             turnThingsOff();
             connectingLogic=true;
@@ -1436,9 +1550,11 @@ class ToolBox extends PApplet {
             turnThingsOff();
             selecting=true;
           }
+          //help link
           if (logicHelpButton.isMouseOver()) {
             link("https://youtu.be/RIgViL-a3zs");//logic tutorial video
           }
+          //component buttons
           for(int i=0;i<logicComponentButtons.length;i++){             
             if(logicComponentButtons[i].isMouseOver()){
               turnThingsOff();
@@ -1450,11 +1566,12 @@ class ToolBox extends PApplet {
         }//end of edditing logic board
       }//end of tools
 
-      if (page.equals("selection")) {
-        if (selectedIndex!=-1) {
+      if (page.equals("selection")) {//if the page is the selection page
+        if (selectedIndex!=-1) {//if something is elected
           String type="";
           StageComponent thing= new GenericStageComponent();
           LogicComponent logicThing=new GenericLogicComponent(new LogicCompoentnPlacementContext(-10000,-10000,null));
+          //get the thing that is being editied
           if (editingStage) {
             thing= level.stages.get(currentStageIndex).parts.get(selectedIndex);
             type=thing.type;
@@ -1463,6 +1580,8 @@ class ToolBox extends PApplet {
             logicThing=level.logicBoards.get(logicBoardIndex).components.get(selectedIndex);
             type=logicThing.type;
           }
+          //component specific hard coded actions
+          //not going to document this shit as this will be replaced with a better system in the near future
           if (type.equals("WritableSign")) {//if the current selected object is a sign
             if (mouseX>=width*0.05&&mouseX<=width*0.9&&mouseY>=height*0.21&&mouseY<=height*0.29) {//place to click to start typing
               typingSign=true;
@@ -1624,85 +1743,97 @@ class ToolBox extends PApplet {
           }
         }//if something is selected
       }//end of page is selection
-      if (page.equals("stage settings")) {
+      
+      if (page.equals("stage settings")) {//if page is stage settings
         if (editingStage) {
+          //sky color button
           if (skyColorB1.isMouseOver()) {
             settingSkyColor=true;
             page="colors";
           }//end of clicked on skyColorB1
+          //reset sky color button
           if (resetSkyColor.isMouseOver()) {
             level.stages.get(currentStageIndex).skyColor=#74ABFF;
             println(#74ABFF);
           }//end of clicked on reset sky color
         }//end of editing stage
       }//end of page is stage settings
-      if (page.equals("variables and groups")) {
-        if (level!=null) {
-          if (variablesUP.isMouseOver()&&variableScroll>0) {
+      
+      if (page.equals("variables and groups")) {//varaibles and groups page
+        if (level != null) {//if in a level
+          //variable scrolling buttons
+          if (variablesUP.isMouseOver() && variableScroll > 0) {
             variableScroll--;
           }
-          if (variablesDOWN.isMouseOver()&&variableScroll+10<level.variables.size()) {
+          if (variablesDOWN.isMouseOver() && variableScroll + 10 < level.variables.size()) {
             variableScroll++;
           }
-          //rect(70,225+i*21,20,20);
+          //change varaible state buttons
           if (mouseX>=20&&mouseX<=90&&mouseY>=225&&mouseY<=435) {//if clicking on a variable state
-            int varSel=((mouseY-225)/21)+variableScroll;
-            if (varSel<level.variables.size()) {
-              level.variables.set(varSel, !level.variables.get(varSel));
+            int varSel = ((mouseY-225)/21)+variableScroll;//figure out what var is being clicked on
+            if (varSel < level.variables.size()) {
+              level.variables.set(varSel, !level.variables.get(varSel));//flip the state of the varaible
             }
           }
+          //group scrolling
           if (groupsUP.isMouseOver()&&groupScroll>0) {
             groupScroll--;
           }
           if (groupsDOWN.isMouseOver()&&groupScroll+10<level.groupNames.size()) {
             groupScroll++;
           }
+          //new group name typing stuff
           if (typeGroopName.isMouseOver()) {
             typingGroopName=true;
           }
           if (addVariable.isMouseOver()) {
             level.variables.add(false);
           }
-          if (addGroup.isMouseOver()&&!newGroopName.equals("")) {
+          //add new group button
+          if (addGroup.isMouseOver() && !newGroopName.equals("")) {
             level.groupNames.add(newGroopName);
             level.groups.add(new Group());
             newGroopName="";
             typingGroopName=false;
           }
+          //run the load board button
           if (runLoad.isMouseOver()) {
             level.logicBoards.get(level.loadBoard).superTick();
           }
+          //tick current board by 1 button
           if (editinglogicBoard && tickLogicButton.isMouseOver()) {
             level.logicBoards.get(logicBoardIndex).tick();
           }
         }//end of editing a level
       }//end if page is varioables and groups
-      if (page.equals("level settings")) {
+      
+      if (page.equals("level settings")) {//if the page is level settings
         if(editingStage||levelOverview){
-        if (multyplayerModeSpeedrunButton.isMouseOver()) {
-          level.multyplayerMode=1;
-        }
-        if (multyplayerModeCoOpButton.isMouseOver()) {
-          level.multyplayerMode=2;
-        }
-        if (level.multyplayerMode==2) {
-
-          if (level.minPlayers<level.maxPLayers&&minplayersIncrease.isMouseOver()) {
-            level.minPlayers++;
+          //the things for level settings very basic and eazy to under stand
+          if (multyplayerModeSpeedrunButton.isMouseOver()) {
+            level.multyplayerMode=1;
           }
-          if (level.minPlayers>2&&minPlayersDecrease.isMouseOver()) {
-            level.minPlayers--;
+          if (multyplayerModeCoOpButton.isMouseOver()) {
+            level.multyplayerMode=2;
           }
-          if (level.maxPLayers<10&&maxplayersIncrease.isMouseOver()) {
-            level.maxPLayers++;
+          if (level.multyplayerMode==2) {
+  
+            if (level.minPlayers < level.maxPLayers && minplayersIncrease.isMouseOver()) {
+              level.minPlayers++;
+            }
+            if (level.minPlayers > 2 && minPlayersDecrease.isMouseOver()) {
+              level.minPlayers--;
+            }
+            if (level.maxPLayers < 10 && maxplayersIncrease.isMouseOver()) {
+              level.maxPLayers++;
+            }
+            if (level.maxPLayers > level.minPlayers && maxplayersDecrease.isMouseOver()) {
+              level.maxPLayers--;
+            }
           }
-          if (level.maxPLayers>level.minPlayers&&maxplayersDecrease.isMouseOver()) {
-            level.maxPLayers--;
+          if(respawnEntitiesButton.isMouseOver()){
+            level.respawnEntities();
           }
-        }
-        if(respawnEntitiesButton.isMouseOver()){
-          level.respawnEntities();
-        }
         }
       }//end of page is level settings
       
@@ -1710,9 +1841,12 @@ class ToolBox extends PApplet {
     }
   }
 
+  /**Processings mouse dragged button
+  */
   public void mouseDragged() {
     if (levelCreator) {
       if (page.equals("colors")) {
+        //color selector sliders
         if (mouseX >= 100-25 && mouseX <= 1180-25 && mouseY >= 150 && mouseY <= 200) {
           rsp=mouseX-75;
         }
@@ -1726,35 +1860,44 @@ class ToolBox extends PApplet {
     }
   }
 
+  /**Processings mouse wheel function
+  @param event Mouse event information
+  */
   void mouseWheel(MouseEvent event) {
     if (levelCreator) {
       if (page.equals("colors")) {
         float wheel_direction = event.getCount()*-1;
-
-        if ((level!=null&&level.stages.size()>0&&currentStageIndex!=-1&&level.stages.get(currentStageIndex).type.equals("3Dstage")) || (workingBlueprint!=null && workingBlueprint.type.equals("3D blueprint"))) {
+        //if in a level and there are stages and there is a current stage and this stage is a 3D stage or blueprint
+        if ((level != null && level.stages.size() > 0 && currentStageIndex != -1 && level.stages.get(currentStageIndex).type.equals("3Dstage")) || (workingBlueprint!=null && workingBlueprint.type.equals("3D blueprint"))) {
+          //if scrolling in the starting depth box
           if (mouseX>=100&&mouseX<=300&&mouseY>=550&&mouseY<=700) {
             startingDepth+=wheel_direction*5;
-            if (startingDepth<0) {
+            if (startingDepth<0) {//limit min to 0
               startingDepth=0;
             }
           }
+          //if scrolling in the total depth box
           if (mouseX>=950&&mouseX<=1150&&mouseY>=550&&mouseY<=700) {
             totalDepth+=wheel_direction*5;
-            if (totalDepth<5) {
+            if (totalDepth<5) {//limit min to 5
               totalDepth=5;
             }
           }
         }
       }//end of if page is colors
-      if (page.equals("tools")) {
+      
+      if (page.equals("tools")) {//if on the tools page
         float wheel_direction = event.getCount()*-1;
+        //addjust the grid size value if grid mode is on
         if (grid_mode) {//if grid mode is active
-          if (grid_size==10&&wheel_direction<0) {
+          if (grid_size==10 && wheel_direction < 0) {//id the grid size is 10 and the wheel whent in the down direction
+            //uhhhhhhhhhh do nothing
           } else {
-
+            //otherize
             grid_size+=wheel_direction*10;//change the grid size
           }
-          if (grid_size<10) {
+          
+          if (grid_size<10) {//enforce a minimum of 10
             grid_size=10;
           }
         }
@@ -1762,22 +1905,26 @@ class ToolBox extends PApplet {
     }
   }
 
-
+  /**Processing's key pressed function
+  */
   void keyPressed() {
     if (levelCreator) {
       if (page.equals("selection")) {
+        //sign selection text entering
+        //this will be modularized in the near future
         if (selectedIndex!=-1&&editingStage) {
-          StageComponent thing = level.stages.get(currentStageIndex).parts.get(selectedIndex);
+          StageComponent thing = level.stages.get(currentStageIndex).parts.get(selectedIndex);//get the component
           String type=thing.type;
           if (type.equals("WritableSign")) {//if the current selected object is a sign
             if (typingSign) {
-
               thing.setData(getInput(thing.getData(), 3, keyCode, key));
             }
           }
         }
       }//end of page is selection
+      
       if (page.equals("variables and groups")) {
+        //new group name typing
         if (level!=null) {
           if (typingGroopName) {
             newGroopName=getInput(newGroopName, 0, keyCode, key);
@@ -1786,4 +1933,6 @@ class ToolBox extends PApplet {
       }//end of page is variables and groops
     }
   }//end of keypressed
-}//end of ColorSelectorScreen class
+}//end of ToolBox class
+
+//end of tool_box_window.pde
