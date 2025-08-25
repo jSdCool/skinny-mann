@@ -35,18 +35,7 @@ public class LogicButton extends StageComponent implements Interactable {
       z = context.getZ();
     }
   }
-  
-  public StageComponent copy() {
-    return new LogicButton(new StageComponentPlacementContext(x, y, z));
-  }
-  
-  public StageComponent copy(float offsetX,float offsetY){
-    return new LogicButton(new StageComponentPlacementContext(x+offsetX,y+offsetY));
-  }
-  
-  public StageComponent copy(float offsetX,float offsetY,float offsetZ){
-    return new LogicButton(new StageComponentPlacementContext(x+offsetX,y+offsetY,z+offsetZ));
-  }
+
   /**Create a logic button from serialized binarry data
   @param iterator The source of the data
   */

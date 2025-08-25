@@ -112,22 +112,6 @@ public class SoundBox extends StageComponent {
     return part;
   }
 
-  public StageComponent copy() {
-    SoundBox e=new SoundBox(new StageComponentPlacementContext(x, y));
-    e.soundKey=soundKey;
-    return  e;
-  }
-  
-  public StageComponent copy(float offsetX,float offsetY){
-    SoundBox e = new SoundBox(new StageComponentPlacementContext(x+offsetX,y+offsetY));
-    e.soundKey=soundKey;
-    return e;
-  }
-  
-  public StageComponent copy(float offsetX,float offsetY,float offsetZ){
-    System.err.println("Attempted to copy sound box in 3D. This opperation is not allowed");
-    return null;
-  }
   /**Set a string data property
   @param data The data to set
   */

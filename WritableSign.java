@@ -47,24 +47,6 @@ public class WritableSign extends StageComponent {
     contents = iterator.getString();
   }
   
-  public StageComponent copy() {
-    WritableSign e=new WritableSign(new StageComponentPlacementContext(x, y, z));
-    e.contents=contents;
-    return  e;
-  }
-  
-  public StageComponent copy(float offsetX,float offsetY){
-    WritableSign e = new WritableSign(new StageComponentPlacementContext(x+offsetX,y+offsetY));
-    e.contents = contents;
-    return e;
-  }
-  
-  public StageComponent copy(float offsetX,float offsetY,float offsetZ){
-    WritableSign e = new WritableSign(new StageComponentPlacementContext(x+offsetX,y+offsetY,z+offsetZ));
-    e.contents = contents;
-    return e;
-  }
-  
   /**Render the 2D representation of this component.<br>
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
