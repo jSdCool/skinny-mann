@@ -359,6 +359,10 @@ class ToolBox extends PApplet {
               move3DButton.setColor(255, 203);
             }
             move3DButton.draw();
+            
+            if (selectingBlueprint && blueprints.length != 0){//ony render this when placeing a blueprint in 3D mdoe and there is a blueprint to place
+              placeBlueprint3DButton.draw();
+            }
           }
           //save button
           saveLevel.draw();
@@ -1367,13 +1371,23 @@ class ToolBox extends PApplet {
             if (selectingBlueprint && blueprints.length != 0 && placeBlueprint3DButton.isMouseOver()) {
               StageComponent tmp;
               Stage current=level.stages.get(currentStageIndex);
-              for (int i=0; i<blueprints[currentBluieprintIndex].parts.size(); i++) {//translate the objects from blueprint form into stage readdy form
-                tmp=blueprints[currentBluieprintIndex].parts.get(i);
+              
+              //make a clone of the blueprint
+              SerializedData serializedBlueprintData = blueprints[currentBluieprintIndex].serialize();
+              byte[] serialBytes = serializedBlueprintData.getSerializedData();
+              Stage tmpBlueprint = (Stage)Deserializers.deserializeObject(serialBytes,new SerialIterator(0,serialBytes));
+              
+              for (int i=0; i<tmpBlueprint.parts.size(); i++) {//translate the objects from blueprint form into stage readdy form
+                tmp=tmpBlueprint.parts.get(i);
+                //modify the posstion of the component to be correct
+                tmp.setX(tmp.getX()+blueprintPlacemntX);
+                tmp.setY(tmp.getY()+blueprintPlacemntY);
+                tmp.setZ(tmp.getZ()+blueprintPlacemntZ);
                 //coins are special
                 if (tmp instanceof Coin) {
                   Coin g;
                   //make a copy of the coin for the apprirate dimention 
-                  g=(Coin)tmp.copy(blueprintPlacemntX,blueprintPlacemntY,blueprintPlacemntZ);
+                  g =(Coin)tmp;
   
                   //set the correct ID for the coin
                   g.coinId = level.numOfCoins;
@@ -1383,7 +1397,7 @@ class ToolBox extends PApplet {
                   level.numOfCoins++;
                   continue;
                 }
-                current.parts.add(tmp.copy(blueprintPlacemntX,blueprintPlacemntY,blueprintPlacemntZ));//preform a 3D copy on the curernt part and add it to the stage
+                current.parts.add(tmp);
               }
                 
             }

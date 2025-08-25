@@ -88,27 +88,6 @@ public abstract class StageComponent implements Serialization {//the base class 
     return -1;
   }
   
-  /**Make a copy of this component.<br>
-  Used by blueprint pasting.
-  @return A new object that is a carbon coppy of this object but points to a diffrent place in memory
-  */
-  public abstract StageComponent copy();
-  /**Make a copy of this component.<br>
-  Used by blueprint pasting.
-  @param offsetX How far to offset the copy in the X - axis
-  @param offsetY How far to offset the copy in the Y - axis
-  @return A new object that is a carbon coppy of this object but points to a diffrent place in memory
-  */
-  public abstract StageComponent copy(float offsetX,float  offsetY);
-  /**Make a copy of this component.<br>
-  Used by blueprint pasting.
-  @param offsetX How far to offset the copy in the X - axis
-  @param offsetY How far to offset the copy in the Y - axis
-  @param offsetZ How far to offset the copy in the Z - axis
-  @return A new object that is a carbon coppy of this object but points to a diffrent place in memory
-  */
-  public abstract StageComponent copy(float offsetX,float  offsetY,float offsetZ);
-  
   /**Get the current group this component is accosicated with
   @return The group this object is accocitated with
   */
