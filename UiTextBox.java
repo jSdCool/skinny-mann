@@ -12,6 +12,12 @@ public class UiTextBox{
   private int textColor = 0, placeHolderColor = 0xFFA6A6A6, cursorPos = 0 , highLightStart,highLightEnd , highLightColor = 0x8000D7FF;
   private boolean typing =false, highLighting = false, shiftPressed =false , controlPressed = false, useAllowList =false;
   
+  public void setY(float newY){
+    iy = newY;
+    button.setIy(newY);
+    reScale();
+  }
+  
   /**Create a new text box
   @param ui The frame to scale to
   @param x The base upper left x position of the text box
@@ -510,6 +516,20 @@ public class UiTextBox{
   */
   public void activate(){
     typing = true;
+  }
+  
+  /**Set the typing status of this text box
+  @param typing if this text box is currently activly typing
+  */
+  public void setTyping(boolean typing){
+    this.typing = typing;
+  }
+  
+  /**Get wther this text box is actibly typing
+  @return true if this text box is activly being typed in
+  */
+  public boolean isTyping(){
+    return typing;
   }
   
 }

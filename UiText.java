@@ -54,6 +54,10 @@ public class UiText {
     x=ui.topX()+ix*ui.scale();
     y=ui.topY()+iy*ui.scale();
     size=isize*ui.scale();
-    ;
+  }
+  
+  public void setY(float newY){
+    iy = newY;
+    y=ui.topY()+newY*ui.scale();
   }
 }
