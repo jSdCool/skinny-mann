@@ -29,7 +29,7 @@ public abstract class Property<T>{
     return name;
   }
   
-  //TODO add a method to get a refrence to the Tool Box Ui things.
+  public abstract PropertyConfigUi<?> getConfigUi();
   
   /**Functional interface used as a getter for this property's value.<br>
   Implment this as a lambda expression

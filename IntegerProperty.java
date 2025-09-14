@@ -28,4 +28,8 @@ public class IntegerProperty extends Property<Integer>{
   public Integer get(){
     return getter.get();
   }
+  
+  public PropertyConfigUi<IntegerProperty> getConfigUi(){
+    return IntPropertyConfigUi.getInstace();
+  }
 }

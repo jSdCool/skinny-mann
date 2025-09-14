@@ -40,6 +40,7 @@ public class StringPropertyConfigUi extends PropertyConfigUi<StringProperty>{
   @parma property The specific property that is being renderd
   */
   public void draw(int slotId, StringProperty property){
+    render.fill(0);
     title.setText(property.getName());
     title.setY(START_CONFIG_Y+25+SLOT_HEIGHT*slotId);
     title.draw();
@@ -76,6 +77,7 @@ public class StringPropertyConfigUi extends PropertyConfigUi<StringProperty>{
     text.setTyping(activeSlot == slotId);
     text.setContence(property.get());
     text.keyPressed();
+    property.set(text.getContence());
   }
   
   /**Process key released that happen while a property is being configured.
@@ -87,6 +89,7 @@ public class StringPropertyConfigUi extends PropertyConfigUi<StringProperty>{
     text.setTyping(activeSlot == slotId);
     text.setContence(property.get());
     text.keyReleased();
+    property.set(text.getContence());
   }
   
   /**Process key typed events that happen while a property is being configured.
@@ -98,6 +101,7 @@ public class StringPropertyConfigUi extends PropertyConfigUi<StringProperty>{
     text.setTyping(activeSlot == slotId);
     text.setContence(property.get());
     text.keyTyped();
+    property.set(text.getContence());
   }
   
   

@@ -29,4 +29,8 @@ public class StringProperty extends Property<String>{
   public String get(){
     return getter.get();
   }
+  
+  public PropertyConfigUi<StringProperty> getConfigUi(){
+    return StringPropertyConfigUi.getInstace();
+  }
 }
