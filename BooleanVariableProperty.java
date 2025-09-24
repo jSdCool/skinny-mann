@@ -11,4 +11,11 @@ public class BooleanVariableProperty extends IntegerProperty{
   public BooleanVariableProperty(Getter<Integer> getter, Setter<Integer> setter, String name){
     super(getter,setter,name);
   }
+  
+  /**Get the config UI for this type of property
+  @return The single instace of the config ui for this property
+  */
+  public PropertyConfigUi<Integer,IntegerProperty> getConfigUi(){
+    return BooleanVariablePropertyConfigUi.getInstace();
+  }
 }

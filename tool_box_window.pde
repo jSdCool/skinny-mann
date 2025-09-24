@@ -171,7 +171,7 @@ class ToolBox extends PApplet {
     
     //create all the property Uis
     for(PropertyConfigUi.PropConfigUiFactory propUi:propertyConfigRegistry){
-      propUi.create(g, this, toolBoxUi);
+      propUi.create(g, toolBoxUi);
     }
     
     hint(ENABLE_KEY_REPEAT);//allow keys to be held down to repeat that letter while typing
@@ -825,8 +825,9 @@ class ToolBox extends PApplet {
             if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
               selectionPropertiesPage = 0;
             }
+            PropertyConfigEnviormentContext context = createPropertyConfigContext();
             for(int i=PROPERTIES_PER_PAGE*selectionPropertiesPage;i<properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage +PROPERTIES_PER_PAGE;i++){
-              properties[i].draw(i%PROPERTIES_PER_PAGE);
+              properties[i].draw(i%PROPERTIES_PER_PAGE,context);
             }
             if(selectionPropertiesPage < (properties.length-1)/PROPERTIES_PER_PAGE){
               nextPropertyPageButton.draw();
@@ -1651,9 +1652,9 @@ class ToolBox extends PApplet {
             if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
               selectionPropertiesPage = 0;
             }
-           
+            PropertyConfigEnviormentContext context = createPropertyConfigContext();
             for(int i = PROPERTIES_PER_PAGE * selectionPropertiesPage; i < properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage + PROPERTIES_PER_PAGE;i++){
-              properties[i].mouseClicked(i%PROPERTIES_PER_PAGE);
+              properties[i].mouseClicked(i%PROPERTIES_PER_PAGE, context);
             }
             
             if(selectionPropertiesPage < (properties.length-1)/PROPERTIES_PER_PAGE){
@@ -2028,9 +2029,9 @@ class ToolBox extends PApplet {
             if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
               selectionPropertiesPage = 0;
             }
-           
+            PropertyConfigEnviormentContext context = createPropertyConfigContext();
             for(int i=PROPERTIES_PER_PAGE*selectionPropertiesPage;i<properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage +PROPERTIES_PER_PAGE;i++){
-              properties[i].keyPressed(i%PROPERTIES_PER_PAGE);
+              properties[i].keyPressed(i%PROPERTIES_PER_PAGE, context);
             }
           }
           
@@ -2081,8 +2082,9 @@ class ToolBox extends PApplet {
               selectionPropertiesPage = 0;
             }
            
+            PropertyConfigEnviormentContext context = createPropertyConfigContext();
             for(int i = PROPERTIES_PER_PAGE * selectionPropertiesPage; i < properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage + PROPERTIES_PER_PAGE;i++){
-              properties[i].keyReleased(i%PROPERTIES_PER_PAGE);
+              properties[i].keyReleased(i%PROPERTIES_PER_PAGE, context);
             }
           }
         }
@@ -2115,15 +2117,22 @@ class ToolBox extends PApplet {
             if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
               selectionPropertiesPage = 0;
             }
-           
+            PropertyConfigEnviormentContext context = createPropertyConfigContext();
             for(int i = PROPERTIES_PER_PAGE * selectionPropertiesPage; i < properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage + PROPERTIES_PER_PAGE; i++){
-              properties[i].keyTyped(i%PROPERTIES_PER_PAGE);
+              properties[i].keyTyped(i%PROPERTIES_PER_PAGE, context);
             }
           }
         }
       }
     }
   }//end of key typed
+  
+  /**Create a new config property context with all the required info
+  @return a new property config context object
+  */
+  private PropertyConfigEnviormentContext createPropertyConfigContext(){
+    return new PropertyConfigEnviormentContext(level.variables.size(),level.groupNames.toArray(String[]::new),level.sounds.keySet().toArray(String[]::new));
+  }
 }//end of ToolBox class
 
 //end of tool_box_window.pde

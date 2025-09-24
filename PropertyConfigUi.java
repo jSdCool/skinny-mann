@@ -13,62 +13,68 @@ public abstract class PropertyConfigUi<R,T extends Property<R,T>>{
   /**The surface that the UI will be renderd to
   */
   protected PGraphics render;
-  /**The tool box instance that will be renderd to and the player will interact with. Note: this will hopefuly be removed in the future
+
+  /**The Ui frame of the tool box
   */
-  protected skiny_mann.ToolBox toolbox;
-  
   protected UiFrame ui;
   
   /**Create a new property config ui
   @param render The surface to render to
-  @param toolbox the tool box window
+  @param toolboxUi the tool box window
   */
-  public PropertyConfigUi(PGraphics render, skiny_mann.ToolBox toolbox, UiFrame toolBoxUi){
+  public PropertyConfigUi(PGraphics render, UiFrame toolBoxUi){
     this.render = render;
     this.ui = toolBoxUi;
   }
   
   /**Render the configuration for this propery at the given slot
   @param slotId The index of the slot to display this property
-  @parma property The specific property that is being renderd
+  @param property The specific property that is being renderd
+  @param context The context for the property configuration
   */
-  public abstract void draw(int slotId, T property);
+  public abstract void draw(int slotId, T property, PropertyConfigEnviormentContext context);
   
   /**Process mouse clicks that happen while a property is being configured.
   @param slotId The index of the slot to display this property
-  @parma property The specific property that is being procesed
+  @param property The specific property that is being procesed
+  @param context The context for the property configuration
   */
-  public abstract void mouseClicked(int slotId, T property);
+  public abstract void mouseClicked(int slotId, T property, PropertyConfigEnviormentContext context);
   
   /**Process mouse pressed events that happen while a property is being configured.
   @param slotId The index of the slot to display this property
-  @parma property The specific property that is being procesed
+  @param property The specific property that is being procesed
+  @param context The context for the property configuration
   */
-  public void mousePressed(int slotId, T property){}
+  public void mousePressed(int slotId, T property, PropertyConfigEnviormentContext context){}
   
   /**Process mouse released that happen while a property is being configured.
   @param slotId The index of the slot to display this property
-  @parma property The specific property that is being procesed
+  @param property The specific property that is being procesed
+  @param context The context for the property configuration
   */
-  public void mouseReleased(int slotId, T property){}
+  public void mouseReleased(int slotId, T property, PropertyConfigEnviormentContext context){}
   
   /**Process key pressed events that happen while a property is being configured.
   @param slotId The index of the slot to display this property
-  @parma property The specific property that is being procesed
+  @param property The specific property that is being procesed
+  @param context The context for the property configuration
   */
-  public void keyPressed(int slotId, T property){}
+  public void keyPressed(int slotId, T property, PropertyConfigEnviormentContext context){}
   
   /**Process key released that happen while a property is being configured.
   @param slotId The index of the slot to display this property
-  @parma property The specific property that is being procesed
+  @param property The specific property that is being procesed
+  @param context The context for the property configuration
   */
-  public void keyReleased(int slotId, T property){}
+  public void keyReleased(int slotId, T property, PropertyConfigEnviormentContext context){}
   
   /**Process key typed events that happen while a property is being configured.
   @param slotId The index of the slot to display this property
-  @parma property The specific property that is being procesed
+  @param property The specific property that is being procesed
+  @param context The context for the property configuration
   */
-  public void keyTyped(int slotId, T property){}
+  public void keyTyped(int slotId, T property, PropertyConfigEnviormentContext context){}
   
   /**A functional interface that represents the constructor for a Property config ui.<br>
   used for where the constructor is needed to be passed in for registratcion
@@ -76,8 +82,8 @@ public abstract class PropertyConfigUi<R,T extends Property<R,T>>{
   public interface PropConfigUiFactory{
     /**Create a new property config ui
     @param render The surface to render to
-    @param toolbox the tool box window
+    @param toolboxUi the tool box window
     */
-    PropertyConfigUi<?,?> create(PGraphics render, skiny_mann.ToolBox toolbox,UiFrame toolBoxUi);
+    PropertyConfigUi<?,?> create(PGraphics render, UiFrame toolBoxUi);
   }
 }

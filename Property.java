@@ -60,57 +60,64 @@ public abstract class Property<T, P extends Property<T,P>>{
   /**Render the configuration for this propery at the given slot.<br>
   Called by the tool box window, do not call
   @param slotId The index of the slot to display this property
+  @param context The context for the property configuration
   */
-  public final void draw(int slotId){
-    getConfigUi().draw(slotId,self());
+  public final void draw(int slotId, PropertyConfigEnviormentContext context){
+    getConfigUi().draw(slotId,self(), context);
   }
   
   /**Process mouse clicks that happen while a property is being configured..<br>
   Called by the tool box window, do not call
   @param slotId The index of the slot to display this property
+  @param context The context for the property configuration
   */
-  public final void mouseClicked(int slotId){
-    getConfigUi().mouseClicked(slotId,self());
+  public final void mouseClicked(int slotId, PropertyConfigEnviormentContext context){
+    getConfigUi().mouseClicked(slotId,self(), context);
   }
   
   /**Process mouse pressed events that happen while a property is being configured..<br>
   Called by the tool box window, do not call
   @param slotId The index of the slot to display this property
+  @param context The context for the property configuration
   */
-  public final void mousePressed(int slotId){
-    getConfigUi().mousePressed(slotId,self());
+  public final void mousePressed(int slotId, PropertyConfigEnviormentContext context){
+    getConfigUi().mousePressed(slotId,self(), context);
   }
   
   /**Process mouse released that happen while a property is being configured..<br>
   Called by the tool box window, do not call
   @param slotId The index of the slot to display this property
+  @param context The context for the property configuration
   */
-  public final void mouseReleased(int slotId){
-    getConfigUi().mouseReleased(slotId,self());
+  public final void mouseReleased(int slotId, PropertyConfigEnviormentContext context){
+    getConfigUi().mouseReleased(slotId,self(), context);
   }
   
   /**Process key pressed events that happen while a property is being configured..<br>
   Called by the tool box window, do not call
   @param slotId The index of the slot to display this property
+  @param context The context for the property configuration
   */
-  public final void keyPressed(int slotId){
-    getConfigUi().keyPressed(slotId,self());
+  public final void keyPressed(int slotId, PropertyConfigEnviormentContext context){
+    getConfigUi().keyPressed(slotId,self(), context);
   }
   
   /**Process key released that happen while a property is being configured..<br>
   Called by the tool box window, do not call
   @param slotId The index of the slot to display this property
+  @param context The context for the property configuration
   */
-  public final void keyReleased(int slotId){
-    getConfigUi().keyReleased(slotId,self());
+  public final void keyReleased(int slotId, PropertyConfigEnviormentContext context){
+    getConfigUi().keyReleased(slotId,self(), context);
   }
   
   /**Process key typed events that happen while a property is being configured..<br>
   Called by the tool box window, do not call
   @param slotId The index of the slot to display this property
+  @param context The context for the property configuration
   */
-  public final void keyTyped(int slotId){
-    getConfigUi().keyTyped(slotId,self());
+  public final void keyTyped(int slotId, PropertyConfigEnviormentContext context){
+    getConfigUi().keyTyped(slotId,self(), context);
   }
   
   /**Return this but cast to whatever type P is because generics can be a bit of a bith

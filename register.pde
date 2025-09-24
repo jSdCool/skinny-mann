@@ -399,5 +399,8 @@ void registerThings(){
   //register the property config UIs
   propertyConfigRegistry.add(StringPropertyConfigUi::new);
   propertyConfigRegistry.add(IntPropertyConfigUi::new);
+  propertyConfigRegistry.add(BooleanVariablePropertyConfigUi::new);
+  propertyConfigRegistry.add(GroupPropertyConfigUi::new);
+  propertyConfigRegistry.add(SoundPropertyConfigUi::new);
 }
 //end of register.pde

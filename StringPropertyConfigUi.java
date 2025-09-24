@@ -30,10 +30,10 @@ public class StringPropertyConfigUi extends PropertyConfigUi<String,StringProper
   
   /**Create a new string property config ui
   @param render The surface to render to
-  @param toolbox the tool box window
+  @param toolboxUi the tool box window
   */
-  public StringPropertyConfigUi(PGraphics render, skiny_mann.ToolBox toolbox, UiFrame toolboxUi){
-    super(render,toolbox,toolboxUi);
+  public StringPropertyConfigUi(PGraphics render, UiFrame toolboxUi){
+    super(render,toolboxUi);
     instace = this;
     text = new UiTextBox(ui, 150,10,980,50);
     title = new UiText(ui, "",640,10,TEXT_SIZE,PApplet.CENTER,PApplet.CENTER);
@@ -41,9 +41,10 @@ public class StringPropertyConfigUi extends PropertyConfigUi<String,StringProper
   
   /**Render the configuration for this propery at the given slot
   @param slotId The index of the slot to display this property
-  @parma property The specific property that is being renderd
+  @param property The specific property that is being renderd
+  @param context The context for the property configuration
   */
-  public void draw(int slotId, StringProperty property){
+  public void draw(int slotId, StringProperty property, PropertyConfigEnviormentContext context){
     render.fill(0);
     title.setText(property.getName());
     title.setY(START_CONFIG_Y+25+SLOT_HEIGHT*slotId);
@@ -57,9 +58,10 @@ public class StringPropertyConfigUi extends PropertyConfigUi<String,StringProper
   
   /**Process mouse clicks that happen while a property is being configured.
   @param slotId The index of the slot to display this property
-  @parma property The specific property that is being procesed
+  @param property The specific property that is being procesed
+  @param context The context for the property configuration
   */
-  public void mouseClicked(int slotId, StringProperty property){
+  public void mouseClicked(int slotId, StringProperty property, PropertyConfigEnviormentContext context){
     text.setY(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
     text.setTyping(activeSlot == slotId);
     if(activeSlot == slotId){
@@ -81,9 +83,10 @@ public class StringPropertyConfigUi extends PropertyConfigUi<String,StringProper
   
   /**Process key pressed events that happen while a property is being configured.
   @param slotId The index of the slot to display this property
-  @parma property The specific property that is being procesed
+  @param property The specific property that is being procesed
+  @param context The context for the property configuration
   */
-  public void keyPressed(int slotId, StringProperty property){
+  public void keyPressed(int slotId, StringProperty property, PropertyConfigEnviormentContext context){
     System.out.println("Key pressed: "+ui.getSource().key+" "+ui.getSource().keyCode);
     text.setTyping(activeSlot == slotId);
     if(activeSlot == slotId){
@@ -96,9 +99,10 @@ public class StringPropertyConfigUi extends PropertyConfigUi<String,StringProper
   
   /**Process key released that happen while a property is being configured.
   @param slotId The index of the slot to display this property
-  @parma property The specific property that is being procesed
+  @param property The specific property that is being procesed
+  @param context The context for the property configuration
   */
-  public void keyReleased(int slotId, StringProperty property){
+  public void keyReleased(int slotId, StringProperty property, PropertyConfigEnviormentContext context){
     text.setTyping(activeSlot == slotId);
     if(activeSlot == slotId){
       text.setContence(property.get(),cursorPos);
@@ -110,9 +114,10 @@ public class StringPropertyConfigUi extends PropertyConfigUi<String,StringProper
   
   /**Process key typed events that happen while a property is being configured.
   @param slotId The index of the slot to display this property
-  @parma property The specific property that is being procesed
+  @param property The specific property that is being procesed
+  @param context The context for the property configuration
   */
-  public void keyTyped(int slotId, StringProperty property){
+  public void keyTyped(int slotId, StringProperty property, PropertyConfigEnviormentContext context){
     text.setTyping(activeSlot == slotId);
     if(activeSlot == slotId){
       text.setContence(property.get(),cursorPos);

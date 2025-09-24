@@ -11,4 +11,11 @@ public class SoundProperty extends StringProperty{
   public SoundProperty(Getter<String> getter, Setter<String> setter, String name){
     super(getter,setter,name);
   }
+  
+  /**Get the config UI for this type of property
+  @return The single instace of the config ui for this property
+  */
+  public PropertyConfigUi<String,StringProperty> getConfigUi(){
+    return SoundPropertyConfigUi.getInstace();
+  }
 }
