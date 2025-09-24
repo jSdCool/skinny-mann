@@ -484,6 +484,8 @@ ToolBox scr2;
 
 Identifier currentlyPlaceing = null;
 
+ArrayList<PropertyConfigUi.PropConfigUiFactory> propertyConfigRegistry = new ArrayList<>();
+
 
 //DO NOT EDIT BELOW THIS LINE ON THE MAIN PROJECT!
 //===================================================

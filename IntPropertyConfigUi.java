@@ -1,6 +1,6 @@
 import processing.core.*;
 
-public class IntPropertyConfigUi extends PropertyConfigUi<IntegerProperty>{
+public class IntPropertyConfigUi extends PropertyConfigUi<Integer,IntegerProperty>{
   
   /**The singleton instace of this class
   */
@@ -29,12 +29,12 @@ public class IntPropertyConfigUi extends PropertyConfigUi<IntegerProperty>{
   public IntPropertyConfigUi(PGraphics render, skiny_mann.ToolBox toolbox, UiFrame toolboxUi){
     super(render,toolbox,toolboxUi);
     title = new UiText(ui, "",640,10,TEXT_SIZE,PApplet.CENTER,PApplet.CENTER);
-    increase = (UiButton)new UiButton(ui, 820, 10, 50, 50, "+", 255, 203).setStrokeWeight(5);
-    increaseMore = (UiButton)new UiButton(ui, 880, 10, 50, 50, "++", 255, 203).setStrokeWeight(5);
-    increaseAlot = (UiButton)new UiButton(ui, 940, 10, 50, 50, "+++", 255, 203).setStrokeWeight(5);
-    decrease = (UiButton)new UiButton(ui, 460, 10, 50, 50, "-", 255, 203).setStrokeWeight(5);
-    decreaseMore = (UiButton)new UiButton(ui,400, 10, 50, 50, "--", 255, 203).setStrokeWeight(5);
-    decreaseAlot = (UiButton)new UiButton(ui, 340, 10, 50, 50, "---", 255, 203).setStrokeWeight(5);
+    increase = (UiButton)new UiButton(ui, 1005, 10, 50, 50, "+", 255, 203).setStrokeWeight(5);
+    increaseMore = (UiButton)new UiButton(ui, 1065, 10, 50, 50, "++", 255, 203).setStrokeWeight(5);
+    increaseAlot = (UiButton)new UiButton(ui, 1125, 10, 50, 50, "+++", 255, 203).setStrokeWeight(5);
+    decrease = (UiButton)new UiButton(ui, 225, 10, 50, 50, "-", 255, 203).setStrokeWeight(5);
+    decreaseMore = (UiButton)new UiButton(ui,165, 10, 50, 50, "--", 255, 203).setStrokeWeight(5);
+    decreaseAlot = (UiButton)new UiButton(ui, 105, 10, 50, 50, "---", 255, 203).setStrokeWeight(5);
     valueDisplay = new UiText(ui,"",640,10,TEXT_SIZE,PApplet.CENTER,PApplet.CENTER);
     instace = this;
   }
@@ -48,12 +48,20 @@ public class IntPropertyConfigUi extends PropertyConfigUi<IntegerProperty>{
     title.setText(property.getName());
     title.setY(START_CONFIG_Y+25+SLOT_HEIGHT*slotId);
     title.draw();
-    increase.setIy(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
-    increaseMore.setIy(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
-    increaseAlot.setIy(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
-    decrease.setIy(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
-    decreaseMore.setIy(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
-    decreaseAlot.setIy(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
+    increase.setIy(START_CONFIG_Y+25+SLOT_HEIGHT*slotId);
+    increaseMore.setIy(START_CONFIG_Y+25+SLOT_HEIGHT*slotId);
+    increaseAlot.setIy(START_CONFIG_Y+25+SLOT_HEIGHT*slotId);
+    decrease.setIy(START_CONFIG_Y+25+SLOT_HEIGHT*slotId);
+    decreaseMore.setIy(START_CONFIG_Y+25+SLOT_HEIGHT*slotId);
+    decreaseAlot.setIy(START_CONFIG_Y+25+SLOT_HEIGHT*slotId);
+    
+    increase.reScale();
+    increaseMore.reScale();
+    increaseAlot.reScale();
+    decrease.reScale();
+    decreaseMore.reScale();
+    decreaseAlot.reScale();
+    
     increase.draw();
     increaseMore.draw();
     increaseAlot.draw();

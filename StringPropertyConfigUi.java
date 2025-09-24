@@ -2,7 +2,7 @@ import processing.core.*;
 /**The UI definitions for editing string compoent properties in the toolbox.<br>
 NOTE: This is a singleton class. use getInstace to obtain an insatce
 */
-public class StringPropertyConfigUi extends PropertyConfigUi<StringProperty>{
+public class StringPropertyConfigUi extends PropertyConfigUi<String,StringProperty>{
   
   /**The singleton instace of this class
   */
@@ -23,6 +23,10 @@ public class StringPropertyConfigUi extends PropertyConfigUi<StringProperty>{
   /**The index of the slot that is currently being typed in
   */
   private int activeSlot = -1;
+  
+  /**The index of the cursor in the selected box
+  */
+  private int cursorPos = 0;
   
   /**Create a new string property config ui
   @param render The surface to render to
@@ -47,7 +51,7 @@ public class StringPropertyConfigUi extends PropertyConfigUi<StringProperty>{
     
     text.setY(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
     text.setTyping(activeSlot == slotId);
-    text.setContence(property.get());
+    text.setContence(property.get(),cursorPos);
     text.draw();
   }
   
@@ -58,13 +62,20 @@ public class StringPropertyConfigUi extends PropertyConfigUi<StringProperty>{
   public void mouseClicked(int slotId, StringProperty property){
     text.setY(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
     text.setTyping(activeSlot == slotId);
-    text.setContence(property.get());
+    if(activeSlot == slotId){
+      text.setContence(property.get(),cursorPos);
+    } else {
+      text.setContence(property.get());
+    }
     text.mouseClicked();
     
     if(activeSlot == slotId && !text.isTyping()){
       activeSlot = -1;
     }else if(activeSlot != slotId && text.isTyping()){
       activeSlot = slotId;
+    }
+    if(activeSlot == slotId){
+      cursorPos = text.getCursorPos();
     }
   }
   
@@ -73,11 +84,14 @@ public class StringPropertyConfigUi extends PropertyConfigUi<StringProperty>{
   @parma property The specific property that is being procesed
   */
   public void keyPressed(int slotId, StringProperty property){
-    //text.setY(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
+    System.out.println("Key pressed: "+ui.getSource().key+" "+ui.getSource().keyCode);
     text.setTyping(activeSlot == slotId);
-    text.setContence(property.get());
-    text.keyPressed();
-    property.set(text.getContence());
+    if(activeSlot == slotId){
+      text.setContence(property.get(),cursorPos);
+      text.keyPressed();
+      property.set(text.getContence());
+      cursorPos = text.getCursorPos();
+    }
   }
   
   /**Process key released that happen while a property is being configured.
@@ -85,11 +99,13 @@ public class StringPropertyConfigUi extends PropertyConfigUi<StringProperty>{
   @parma property The specific property that is being procesed
   */
   public void keyReleased(int slotId, StringProperty property){
-    //text.setY(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
     text.setTyping(activeSlot == slotId);
-    text.setContence(property.get());
-    text.keyReleased();
-    property.set(text.getContence());
+    if(activeSlot == slotId){
+      text.setContence(property.get(),cursorPos);
+      text.keyReleased();
+      property.set(text.getContence());
+      cursorPos = text.getCursorPos();
+    }
   }
   
   /**Process key typed events that happen while a property is being configured.
@@ -97,11 +113,13 @@ public class StringPropertyConfigUi extends PropertyConfigUi<StringProperty>{
   @parma property The specific property that is being procesed
   */
   public void keyTyped(int slotId, StringProperty property){
-    //text.setY(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
     text.setTyping(activeSlot == slotId);
-    text.setContence(property.get());
-    text.keyTyped();
-    property.set(text.getContence());
+    if(activeSlot == slotId){
+      text.setContence(property.get(),cursorPos);
+      text.keyTyped();
+      property.set(text.getContence());
+      cursorPos = text.getCursorPos();
+    }
   }
   
   

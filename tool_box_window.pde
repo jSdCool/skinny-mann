@@ -19,7 +19,7 @@ class ToolBox extends PApplet {
   public int redVal=0, greenVal=0, blueVal=0, CC=0;
   int rsp=0, gsp=0, bsp=0, selectedColor=0, millisOffset, variableScroll=0, groupScroll=0;
   String page="colors", newGroopName="";
-  Button colorPage, toolsPage,  toggle3DMode, saveLevel, exitStageEdit, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, nextSound, prevSound,  playPauseButton,  deleteButton, movePlayerButton, gridModeButton, connectLogicButton, moveComponentsButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, runLoad, logicHelpButton, move3DButton, size3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton, rotateButton;
+  Button colorPage, toolsPage,  toggle3DMode, saveLevel, exitStageEdit, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, nextSound, prevSound,  playPauseButton,  deleteButton, movePlayerButton, gridModeButton, connectLogicButton, moveComponentsButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, runLoad, logicHelpButton, move3DButton, size3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton, rotateButton, nextPropertyPageButton, prevPropertyPageButton;
   //thank goodness we do not need theese anymore
   //Button draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, switch3D1, switch3D2, sign, checkpointButton, groundButton, goalButton, holoButton, logicButtonButton, playSound;
   //Button andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, delayButton, zOffsetButton, set3DButton, read3DButton, playLogicSoundButton, pulseButton, randomButton;
@@ -29,6 +29,10 @@ class ToolBox extends PApplet {
   EntityRegistry.EntityButtonIconDraw entityIcons[];
   Boolean[][] componentAllowedDimentions;
   boolean typingSign=false, settingSkyColor=false, typingGroopName=false;
+  UiFrame toolBoxUi;
+  
+  int selectionPropertiesPage = 0;
+  int PROPERTIES_PER_PAGE = 4;
 
   /**Processing's settings method.
   sets the size of the new window
@@ -41,6 +45,7 @@ class ToolBox extends PApplet {
   /**Processing's setup function
   */
   void setup() {
+    toolBoxUi = new UiFrame(this,1280,720);
     textSize(50);//set the inital text size
     //all page buttons
     colorPage=new Button(this, 50, 50, 100, 50, "colors/depth");
@@ -162,6 +167,16 @@ class ToolBox extends PApplet {
     skyColorB1=new Button(this, 150, 165, 40, 40, 255, 203).setStrokeWeight(0);
     setSkyColor=new Button(this, 300, 580, 100, 30, "set sky color").setStrokeWeight(2);
     resetSkyColor=new Button(this, 200, 165, 40, 40, "reset", 255, 203).setStrokeWeight(0);
+    
+    
+    //create all the property Uis
+    for(PropertyConfigUi.PropConfigUiFactory propUi:propertyConfigRegistry){
+      propUi.create(g, this, toolBoxUi);
+    }
+    
+    hint(ENABLE_KEY_REPEAT);//allow keys to be held down to repeat that letter while typing
+    nextPropertyPageButton = new Button(this,977, 548, 200,50,"Next Page");
+    prevPropertyPageButton = new Button(this,102, 548, 200, 50,"Prev Page");
   }
 
   /**Calculate the XY positions of a given tool button
@@ -784,16 +799,43 @@ class ToolBox extends PApplet {
           String type="";
           //theese are assigned to things so that I do not get pesterd about them having the potential to be null
           //this stuf has to so with thigns being selected
+          Configurable configComponent = null;
+          
           StageComponent thing= new GenericStageComponent();
           LogicComponent logicThing=new GenericLogicComponent(new LogicCompoentnPlacementContext(-10000,-10000,null));
           if (editingStage) {
             thing= level.stages.get(currentStageIndex).parts.get(selectedIndex);
             type=thing.type;
+            if(thing instanceof Configurable){
+              configComponent = (Configurable)thing;
+            }
           }
           if (editinglogicBoard) {
             logicThing=level.logicBoards.get(logicBoardIndex).components.get(selectedIndex);
             type=logicThing.type;
+            if(logicThing instanceof Configurable){
+              configComponent = (Configurable)logicThing;
+            }
           }
+          
+          
+          
+          if(configComponent != null){
+            Property<?,?> properties[] = configComponent.getProperties();
+            if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
+              selectionPropertiesPage = 0;
+            }
+            for(int i=PROPERTIES_PER_PAGE*selectionPropertiesPage;i<properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage +PROPERTIES_PER_PAGE;i++){
+              properties[i].draw(i%PROPERTIES_PER_PAGE);
+            }
+            if(selectionPropertiesPage < (properties.length-1)/PROPERTIES_PER_PAGE){
+              nextPropertyPageButton.draw();
+            }
+            if(selectionPropertiesPage > 0){
+              prevPropertyPageButton.draw();
+            }
+          }
+          
           if (type.equals("WritableSign")) {//if the current selected object is a sign
             fill(0);
             textSize(25);
@@ -1581,19 +1623,53 @@ class ToolBox extends PApplet {
       }//end of tools
 
       if (page.equals("selection")) {//if the page is the selection page
-        if (selectedIndex!=-1) {//if something is elected
+        if (selectedIndex!=-1) {//if something is selected
+          
+          
           String type="";
+          Configurable configComponent = null;
+          
           StageComponent thing= new GenericStageComponent();
           LogicComponent logicThing=new GenericLogicComponent(new LogicCompoentnPlacementContext(-10000,-10000,null));
-          //get the thing that is being editied
           if (editingStage) {
             thing= level.stages.get(currentStageIndex).parts.get(selectedIndex);
             type=thing.type;
+            if(thing instanceof Configurable){
+              configComponent = (Configurable)thing;
+            }
           }
           if (editinglogicBoard) {
             logicThing=level.logicBoards.get(logicBoardIndex).components.get(selectedIndex);
             type=logicThing.type;
+            if(logicThing instanceof Configurable){
+              configComponent = (Configurable)logicThing;
+            }
           }
+          
+          if(configComponent != null){
+            Property<?,?> properties[] = configComponent.getProperties();
+            if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
+              selectionPropertiesPage = 0;
+            }
+           
+            for(int i = PROPERTIES_PER_PAGE * selectionPropertiesPage; i < properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage + PROPERTIES_PER_PAGE;i++){
+              properties[i].mouseClicked(i%PROPERTIES_PER_PAGE);
+            }
+            
+            if(selectionPropertiesPage < (properties.length-1)/PROPERTIES_PER_PAGE){
+              if(nextPropertyPageButton.isMouseOver()){
+                selectionPropertiesPage++;
+              }
+            }
+            if(selectionPropertiesPage > 0){
+              if(prevPropertyPageButton.isMouseOver()){
+                selectionPropertiesPage--;
+              }
+            }
+          }
+          
+          
+          
           //component specific hard coded actions
           //not going to document this shit as this will be replaced with a better system in the near future
           if (type.equals("WritableSign")) {//if the current selected object is a sign
@@ -1927,8 +2003,39 @@ class ToolBox extends PApplet {
         //sign selection text entering
         //this will be modularized in the near future
         if (selectedIndex!=-1&&editingStage) {
-          StageComponent thing = level.stages.get(currentStageIndex).parts.get(selectedIndex);//get the component
-          String type=thing.type;
+          
+          Configurable configComponent = null;
+          String type="";
+          StageComponent thing= new GenericStageComponent();
+          LogicComponent logicThing=new GenericLogicComponent(new LogicCompoentnPlacementContext(-10000,-10000,null));
+          if (editingStage) {
+            thing= level.stages.get(currentStageIndex).parts.get(selectedIndex);
+            type=thing.type;
+            if(thing instanceof Configurable){
+              configComponent = (Configurable)thing;
+            }
+          }
+          if (editinglogicBoard) {
+            logicThing=level.logicBoards.get(logicBoardIndex).components.get(selectedIndex);
+            type=logicThing.type;
+            if(logicThing instanceof Configurable){
+              configComponent = (Configurable)logicThing;
+            }
+          }
+          
+          if(configComponent != null){
+            Property<?,?> properties[] = configComponent.getProperties();
+            if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
+              selectionPropertiesPage = 0;
+            }
+           
+            for(int i=PROPERTIES_PER_PAGE*selectionPropertiesPage;i<properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage +PROPERTIES_PER_PAGE;i++){
+              properties[i].keyPressed(i%PROPERTIES_PER_PAGE);
+            }
+          }
+          
+          //StageComponent thing = level.stages.get(currentStageIndex).parts.get(selectedIndex);//get the component
+          //String type=thing.type;
           if (type.equals("WritableSign")) {//if the current selected object is a sign
             if (typingSign) {
               thing.setData(getInput(thing.getData(), 3, keyCode, key));
@@ -1947,6 +2054,76 @@ class ToolBox extends PApplet {
       }//end of page is variables and groops
     }
   }//end of keypressed
+  
+  void keyReleased(){
+    if (levelCreator) {
+      if (page.equals("selection")) {
+        //sign selection text entering
+        //this will be modularized in the near future
+        if (selectedIndex!=-1) {
+          Configurable configComponent = null;
+          if (editingStage) {
+            StageComponent thing= level.stages.get(currentStageIndex).parts.get(selectedIndex);
+            if(thing instanceof Configurable){
+              configComponent = (Configurable)thing;
+            }
+          }
+          if (editinglogicBoard) {
+            LogicComponent logicThing=level.logicBoards.get(logicBoardIndex).components.get(selectedIndex);
+            if(logicThing instanceof Configurable){
+              configComponent = (Configurable)logicThing;
+            }
+          }
+          
+          if(configComponent != null){
+            Property<?,?> properties[] = configComponent.getProperties();
+            if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
+              selectionPropertiesPage = 0;
+            }
+           
+            for(int i = PROPERTIES_PER_PAGE * selectionPropertiesPage; i < properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage + PROPERTIES_PER_PAGE;i++){
+              properties[i].keyReleased(i%PROPERTIES_PER_PAGE);
+            }
+          }
+        }
+      }
+    }
+  }//end of key released
+  
+  void keyTyped(){
+    if (levelCreator) {
+      if (page.equals("selection")) {
+        //sign selection text entering
+        //this will be modularized in the near future
+        if (selectedIndex!=-1) {
+          Configurable configComponent = null;
+          if (editingStage) {
+            StageComponent thing= level.stages.get(currentStageIndex).parts.get(selectedIndex);
+            if(thing instanceof Configurable){
+              configComponent = (Configurable)thing;
+            }
+          }
+          if (editinglogicBoard) {
+            LogicComponent logicThing=level.logicBoards.get(logicBoardIndex).components.get(selectedIndex);
+            if(logicThing instanceof Configurable){
+              configComponent = (Configurable)logicThing;
+            }
+          }
+          
+          if(configComponent != null){
+            Property<?,?> properties[] = configComponent.getProperties();
+            if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
+              selectionPropertiesPage = 0;
+            }
+           
+            for(int i = PROPERTIES_PER_PAGE * selectionPropertiesPage; i < properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage + PROPERTIES_PER_PAGE; i++){
+              properties[i].keyTyped(i%PROPERTIES_PER_PAGE);
+            }
+          }
+        }
+      }
+    }
+  }//end of key typed
 }//end of ToolBox class
 
 //end of tool_box_window.pde

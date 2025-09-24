@@ -1,6 +1,6 @@
 /**Represents a configruable String property of a component
 */
-public class StringProperty extends Property<String>{
+public class StringProperty extends Property<String,StringProperty>{
   
   private final Getter<String> getter;
   private final Setter<String> setter;
@@ -30,7 +30,10 @@ public class StringProperty extends Property<String>{
     return getter.get();
   }
   
-  public PropertyConfigUi<StringProperty> getConfigUi(){
+  /**Get the config UI for this type of property
+  @return The single instace of the config ui for this property
+  */
+  public PropertyConfigUi<String,StringProperty> getConfigUi(){
     return StringPropertyConfigUi.getInstace();
   }
 }

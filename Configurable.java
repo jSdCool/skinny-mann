@@ -4,5 +4,5 @@ public interface Configurable{
   /**Get the properties that can be configured on this component
   @return An array of the properties that can be configured
   */
-  Property<?>[] getProperties();
+  Property<?,?>[] getProperties();
 }

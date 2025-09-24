@@ -395,5 +395,9 @@ void registerThings(){
   SerialRegistry.register(SelectedLevelInfo.ID,SelectedLevelInfo::new);
   SerialRegistry.register(Stage.ID,Stage::new);
   SerialRegistry.register(StageSound.ID,StageSound::new);
+  
+  //register the property config UIs
+  propertyConfigRegistry.add(StringPropertyConfigUi::new);
+  propertyConfigRegistry.add(IntPropertyConfigUi::new);
 }
 //end of register.pde

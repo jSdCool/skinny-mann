@@ -1,11 +1,12 @@
 import processing.core.*;
 /**The UI definitions for editing compoent properties in the toolbox.<br>
 NOTE: all sub classes are expected to effectivly be singltons where their only instance is created by the tool box when it opens
+@param <R> The return type of the property this config ui is for
 @param <T> The property that this ui is designed to configure
 */
-public abstract class PropertyConfigUi<T extends Property<?>>{
+public abstract class PropertyConfigUi<R,T extends Property<R,T>>{
   
-  public static final int START_CONFIG_Y = 256;
+  public static final int START_CONFIG_Y = 130;
   public static final int SLOT_HEIGHT = 100;
   public static final int TEXT_SIZE = 25;
   
@@ -77,6 +78,6 @@ public abstract class PropertyConfigUi<T extends Property<?>>{
     @param render The surface to render to
     @param toolbox the tool box window
     */
-    PropertyConfigUi<?> create(PGraphics render, skiny_mann.ToolBox toolbox,UiFrame toolBoxUi);
+    PropertyConfigUi<?,?> create(PGraphics render, skiny_mann.ToolBox toolbox,UiFrame toolBoxUi);
   }
 }

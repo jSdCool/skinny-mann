@@ -1,6 +1,6 @@
 /**Represents a configruable integer property of a component
 */
-public class IntegerProperty extends Property<Integer>{
+public class IntegerProperty extends Property<Integer,IntegerProperty>{
   private final Getter<Integer> getter;
   private final Setter<Integer> setter;
   
@@ -29,7 +29,10 @@ public class IntegerProperty extends Property<Integer>{
     return getter.get();
   }
   
-  public PropertyConfigUi<IntegerProperty> getConfigUi(){
+  /**Get the config UI for this type of property
+  @return The single instace of the config ui for this property
+  */
+  public PropertyConfigUi<Integer,IntegerProperty> getConfigUi(){
     return IntPropertyConfigUi.getInstace();
   }
 }
