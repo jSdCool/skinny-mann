@@ -836,20 +836,8 @@ class ToolBox extends PApplet {
               prevPropertyPageButton.draw();
             }
           }
-          
-          if (type.equals("WritableSign")) {//if the current selected object is a sign
-            fill(0);
-            textSize(25);
-            textAlign(CENTER, CENTER);
-            text("sign contents", width/2, height*0.2);
-            textAlign(CENTER, TOP);
-            String contents=thing.getData();
-            if (typingSign) {
-              contents+=coursorr;
-            }
-            text(contents, width/2, height*0.25);
-            rect(width*0.05, height*0.29, width*0.9, 2);
-          } else if (type.equals("sound box")) {
+        
+          if (type.equals("sound box")) {
             if (level.sounds.size()==0) {
               fill(0);
               textSize(20);
@@ -1673,13 +1661,7 @@ class ToolBox extends PApplet {
           
           //component specific hard coded actions
           //not going to document this shit as this will be replaced with a better system in the near future
-          if (type.equals("WritableSign")) {//if the current selected object is a sign
-            if (mouseX>=width*0.05&&mouseX<=width*0.9&&mouseY>=height*0.21&&mouseY<=height*0.29) {//place to click to start typing
-              typingSign=true;
-            } else {
-              typingSign=false;
-            }
-          } else if (type.equals("sound box")) {
+          if (type.equals("sound box")) {
             if (level.sounds.size()==0) {
             } else {
               int fileind=0;
@@ -2003,22 +1985,17 @@ class ToolBox extends PApplet {
       if (page.equals("selection")) {
         //sign selection text entering
         //this will be modularized in the near future
-        if (selectedIndex!=-1&&editingStage) {
+        if (selectedIndex!=-1) {
           
           Configurable configComponent = null;
-          String type="";
-          StageComponent thing= new GenericStageComponent();
-          LogicComponent logicThing=new GenericLogicComponent(new LogicCompoentnPlacementContext(-10000,-10000,null));
           if (editingStage) {
-            thing= level.stages.get(currentStageIndex).parts.get(selectedIndex);
-            type=thing.type;
+            StageComponent thing = level.stages.get(currentStageIndex).parts.get(selectedIndex);
             if(thing instanceof Configurable){
               configComponent = (Configurable)thing;
             }
           }
           if (editinglogicBoard) {
-            logicThing=level.logicBoards.get(logicBoardIndex).components.get(selectedIndex);
-            type=logicThing.type;
+            LogicComponent logicThing = level.logicBoards.get(logicBoardIndex).components.get(selectedIndex);
             if(logicThing instanceof Configurable){
               configComponent = (Configurable)logicThing;
             }
@@ -2034,22 +2011,14 @@ class ToolBox extends PApplet {
               properties[i].keyPressed(i%PROPERTIES_PER_PAGE, context);
             }
           }
-          
-          //StageComponent thing = level.stages.get(currentStageIndex).parts.get(selectedIndex);//get the component
-          //String type=thing.type;
-          if (type.equals("WritableSign")) {//if the current selected object is a sign
-            if (typingSign) {
-              thing.setData(getInput(thing.getData(), 3, keyCode, key));
-            }
-          }
-        }
+        }//end of something is selected
       }//end of page is selection
       
       if (page.equals("variables and groups")) {
         //new group name typing
         if (level!=null) {
           if (typingGroopName) {
-            newGroopName=getInput(newGroopName, 0, keyCode, key);
+            newGroopName = getInput(newGroopName, 0, keyCode, key);
           }
         }
       }//end of page is variables and groops

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**Sign stage component
 */
-public class WritableSign extends StageComponent {
+public class WritableSign extends StageComponent implements Configurable {
   
   public static final Identifier ID = new Identifier("WritableSign");
   
@@ -194,5 +194,50 @@ public class WritableSign extends StageComponent {
   @Override
   public Identifier id() {
     return ID;
+  }
+  
+  /**Get the properties that can be configured on this component
+  @return An array of the properties that can be configured
+  */
+  public Property[] getProperties(){
+    String[] lines = contents.split("\n",-1);
+    final int numLines = lines.length;
+    Property[] props = new Property[numLines+1];
+    props[0] = new IntegerProperty( ()-> numLines, (value) -> setNumLines(value), "Number of Lines");
+    for(int i=0;i<lines.length;i++){
+      final int i2 = i;
+      props[i+1] = new StringProperty( ()->lines[i2], (value) -> updateLine(i2,value,lines), "Line "+(i2+1));
+    }
+    return props;
+  }
+  
+  /**Set the number of lines on the sign
+  @param num The new number of lines
+  */
+  private void setNumLines(int num){
+    if( num > 0 && num <= 8){
+      String[] lines = contents.split("\n");
+      final int numLines = lines.length;
+      if(num > numLines){//grow
+        contents += "\n";//just add a new line to the end
+      } else if (num < numLines){//shrink
+        String[] newLines = new String[numLines-1];
+        for(int i=0;i<newLines.length;i++){
+          newLines[i] = lines[i];
+        }
+        contents = String.join("\n",newLines);
+      }
+    }
+  }
+  
+  /**update a specific line on the sign
+  @param lineNum The index of the line
+  @param content The new content of the line
+  @param lines The current lines of the sign
+  */
+  private void updateLine(int lineNum,String content, String[] lines){
+    content = content.replaceAll("\n","");//filter out any line breaks
+    lines[lineNum] = content;
+    contents = String.join("\n",lines);
   }
 }
