@@ -57,36 +57,6 @@ public abstract class StageComponent implements Serialization {//the base class 
   @return JSONObject representation of this object
   */
   public abstract JSONObject save(boolean stage_3D);
-
-  /**Set a string data property
-  @param data The data to set
-  */
-  @Deprecated
-  public void setData(String data) {
-  }
-  
-  /**Set an integer data property
-  @param data The data to set
-  */
-  @Deprecated
-  public void setData(int data) {
-  }
-
-  /**Get the value of a string data proerty
-  @return The value of the string data
-  */
-  @Deprecated
-  public String getData() {
-    return null;
-  }
-  
-  /**Get the value of an integer data proerty
-  @return The value of the int data
-  */
-  @Deprecated
-  public int getDataI() {
-    return -1;
-  }
   
   /**Get the current group this component is accosicated with
   @return The group this object is accocitated with

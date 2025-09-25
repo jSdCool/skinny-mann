@@ -49,19 +49,6 @@ public class SetVisibility extends LogicOutputComponent implements Configurable{
     component.setInt("group number", groupNumber);
     return component;
   }
-  /**set an integer data field
-  @param data The data to set
-  */
-  public void setData(int data) {
-    groupNumber=data;
-    button.setText("  visibility of "+source.level.groupNames.get(groupNumber));
-  }
-  /**Get an integer data field
-  @return the value of that data
-  */
-  public int getData() {
-    return groupNumber;
-  }
 
   /**renders the logic component a long with its I/O terminals
   */

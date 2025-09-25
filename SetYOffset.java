@@ -53,19 +53,6 @@ public class SetYOffset extends LogicOutputComponent implements Configurable{
     component.setFloat("offset", offset);
     return component;
   }
-  /**set an integer data field
-  @param data The data to set
-  */
-  public void setData(int data) {
-    groupNumber=data;
-    button.setText("y-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
-  }
-  /**Get an integer data field
-  @return the value of that data
-  */
-  public int getData() {
-    return groupNumber;
-  }
   /**renders the logic component a long with its I/O terminals
   */
   public void draw() {
@@ -76,7 +63,7 @@ public class SetYOffset extends LogicOutputComponent implements Configurable{
     super.draw();
     source.fill(0);
     source.textSize(15*source.Scale);
-    source.textAlign(source.LEFT, source.CENTER);
+    source.textAlign(PConstants.LEFT, PConstants.CENTER);
     source.text("set", (x+5-source.camPos)*source.Scale, (y+16-source.camPosY)*source.Scale);
     source.text("reset", (x+5-source.camPos)*source.Scale, (y+56-source.camPosY)*source.Scale);
   }

@@ -43,19 +43,6 @@ public class ReadVariable extends LogicInputComponent implements Configurable{
     component.setInt("variable number", variableNumber);
     return component;
   }
-  /**set an integer data field
-  @param data The data to set
-  */
-  public void setData(int data) {
-    variableNumber=data;
-    button.setText("Read var b"+variableNumber+"  ");
-  }
-  /**Get an integer data field
-  @return the value of that data
-  */
-  public int getData() {
-    return variableNumber;
-  }
   /**Convert this component to a byte representation that can be sent over the network or saved to a file.<br>
   @return This component as a binarry representation
   */

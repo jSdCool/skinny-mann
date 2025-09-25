@@ -208,7 +208,8 @@ void stageLevelDraw() {
     engageHUDPosition();//engage the HUD position in case of 3D mode to make shure it renders on top
     StageComponent item = level.stages.get(currentStageIndex).parts.get(viewingItemIndex);//get the thing that is being viewed
     //TODO make this modular
-    if (item.type.equals("WritableSign")) {//if your are reeding a sign then show the contents of the sign
+    if (item instanceof WritableSign) {//if your are reeding a sign then show the contents of the sign
+      WritableSign sign = (WritableSign)item;
       fill(#A54A00);
       rect(width*0.05, height*0.05, width*0.9, height*0.9);//background of the sign
       fill(#C4C4C4);
@@ -216,7 +217,7 @@ void stageLevelDraw() {
       textAlign(CENTER, CENTER);
       textSize(50*Scale);
       fill(0);
-      text(item.getData(), width/2, height/2);//the text of the sign
+      text(sign.getContent(), width/2, height/2);//the text of the sign
       textSize(20*Scale);
       text("press E to continue", width/2, height*0.85);//closing instructions
       displayTextUntill=millis()-1;//make shure that "Press E" is not displayed on the screen while in the sign

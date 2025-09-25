@@ -58,7 +58,7 @@ public class WritableSign extends StageComponent implements Configurable {
     source.drawSign(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale,render);
 
     Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);
-    if (source.collisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x-35,y-40,70,40))) {//display the press e message to the player
+    if (CollisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x-35,y-40,70,40))) {//display the press e message to the player
       source.displayText="Press E";
       source.displayTextUntill=source.millis()+100;
 
@@ -83,7 +83,7 @@ public class WritableSign extends StageComponent implements Configurable {
     source.drawSign((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), source.Scale,render);
 
      Collider3D playerHitBox = source.players[source.currentPlayer].getHitBox3D(0,0,0);
-    if (source.collisionDetection.collide3D(playerHitBox,Collider3D.createBoxHitBox(x-35,y-40,z-20,70,40,40))) {
+    if (CollisionDetection.collide3D(playerHitBox,Collider3D.createBoxHitBox(x-35,y-40,z-20,70,40,40))) {
       source.displayText="Press E";
       source.displayTextUntill=source.millis()+100;
       if (source.E_pressed) {
@@ -148,20 +148,6 @@ public class WritableSign extends StageComponent implements Configurable {
     part.setString("contents", contents);
     part.setInt("group", group);
     return part;
-  }
-
-  /**Set a string data property
-  @param data The data to set
-  */
-  public void setData(String data) {
-    contents=data;
-  }
-
-  /**Get the value of a string data proerty
-  @return The value of the string data
-  */
-  public String getData() {
-    return contents;
   }
   
   /**Get the 2D collision box for entitiy collisions
@@ -239,5 +225,11 @@ public class WritableSign extends StageComponent implements Configurable {
     content = content.replaceAll("\n","");//filter out any line breaks
     lines[lineNum] = content;
     contents = String.join("\n",lines);
+  }
+  
+  /**Get the text that is on the sign
+  */
+  public String getContent(){
+    return contents;
   }
 }

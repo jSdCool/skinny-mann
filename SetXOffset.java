@@ -53,19 +53,6 @@ public class SetXOffset extends LogicOutputComponent implements Configurable{
     component.setFloat("offset", offset);
     return component;
   }
-  /**set an integer data field
-  @param data The data to set
-  */
-  public void setData(int data) {
-    groupNumber=data;
-    button.setText("x-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
-  }
-  /**Get an integer data field
-  @return the value of that data
-  */
-  public int getData() {
-    return groupNumber;
-  }
   /**renders the logic component a long with its I/O terminals
   */
   public void draw() {

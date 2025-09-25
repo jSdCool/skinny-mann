@@ -78,30 +78,6 @@ public class LogicPlaySound extends LogicComponent implements Configurable{
     component.setString("sound key", soundKey);
     return component;
   }
-  /**set an integer data field<br>
-  In this case the id of the sound
-  @param data The data to set
-  */
-  public void setData(int data) {
-    String[] keys=new String[0];
-    keys=source.level.sounds.keySet().toArray(keys);
-    soundKey=keys[data];
-    button.setText("  play sound: "+soundKey+" ");
-  }
-  /**Get an integer data field<br>
-  in this case the id of the sound
-  @return the value of that data
-  */
-  public int getData() {
-    String[] keys=new String[0];
-    keys=source.level.sounds.keySet().toArray(keys);
-    for (int i=0; i<keys.length; i++) {
-      if (keys[i].equals(soundKey)) {
-        return i;
-      }
-    }
-    return -1;
-  }
   /**renders the logic component a long with its I/O terminals
   */
   public void draw() {

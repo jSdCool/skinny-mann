@@ -112,18 +112,6 @@ public class SoundBox extends StageComponent implements Configurable{
     return part;
   }
 
-  /**Set a string data property
-  @param data The data to set
-  */
-  public void setData(String data) {
-    soundKey=data;
-  }
-  /**Get the value of a string data proerty
-  @return The value of the string data
-  */
-  public String getData() {
-    return soundKey;
-  }
   /**Get the 2D collision box for entitiy collisions
   @return 2D hitbox for this component or null for none
   */

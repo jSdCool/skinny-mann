@@ -166,22 +166,6 @@ public class LogicButton extends StageComponent implements Interactable, Configu
     return false;
   }
 
-  /**set the value of an in data proerty<br>
-  In this case the variable index
-  @param data The new data value
-  */
-  public void setData(int data) {
-    variable=data;
-  }
-
-  /**Get the value of an integer data proerty<br>
-  In this case the variable index
-  @return The value of the int data
-  */
-  public int getDataI() {
-    return variable;
-  }
-
   /**this instance of this function allows the portal to test if a player is standing on it
    @param data the index of the stage the button is in
    */
