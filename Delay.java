@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**A signal delay logic component
 */
-public class Delay extends LogicComponent {
+public class Delay extends LogicComponent implements Configurable{
   
   public static final Identifier ID = new Identifier("delay");
   
@@ -67,7 +67,7 @@ public class Delay extends LogicComponent {
   */
   public void setData(int data) {
     time=data;
-    button.setText("delay "+time+" ticks  ");
+    button.setText("Delay "+time+" ticks  ");
     mem=new ArrayList<>();
     for (int i=0; i<time; i++) {
       mem.add(false);
@@ -104,5 +104,15 @@ public class Delay extends LogicComponent {
   @Override
   public Identifier id() {
     return ID;
+  }
+  
+  /**Get the properties that can be configured on this component
+  @return An array of the properties that can be configured
+  */
+  @Override
+  public Property[] getProperties(){
+    return new Property[]{
+      new IntegerProperty(() -> time, (value) -> {time = value; button.setText("delay "+time+" ticks  ");}, "Delay in Ticks (50tps)")
+    };
   }
 }

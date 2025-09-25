@@ -3,7 +3,7 @@ import processing.data.*;
 import java.util.ArrayList;
 /**A logic coponent to set the value of a level variable
 */
-public class SetVariable extends LogicOutputComponent {
+public class SetVariable extends LogicOutputComponent implements Configurable{
   
   public static final Identifier ID = new Identifier("set_var");
   
@@ -13,7 +13,7 @@ public class SetVariable extends LogicOutputComponent {
   */
   public SetVariable(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "set var", context.getLogicBoard());
-    button.setText("  set var b"+variableNumber);
+    button.setText("  Set var b"+variableNumber);
   }
   /**Create a new set variable from saved json data
   @param data The saved json data
@@ -21,7 +21,7 @@ public class SetVariable extends LogicOutputComponent {
   public SetVariable(JSONObject data) {
     super(data.getFloat("x"), data.getFloat("y"), "set var", data.getJSONArray("connections"));
     variableNumber=data.getInt("variable number");
-    button.setText("  set var b"+variableNumber);
+    button.setText("  Set var b"+variableNumber);
   }
   /**Create a set variable from serialized binarry data
   @param iterator The source of the data
@@ -59,7 +59,7 @@ public class SetVariable extends LogicOutputComponent {
   */
   public void setData(int data) {
     variableNumber=data;
-    button.setText("  set var b"+variableNumber);
+    button.setText("  Set var b"+variableNumber);
   }
   /**Get an integer data field
   @return the value of that data
@@ -83,5 +83,13 @@ public class SetVariable extends LogicOutputComponent {
   @Override
   public Identifier id() {
     return ID;
+  }
+  
+  /**Get the properties that can be configured on this component
+  @return An array of the properties that can be configured
+  */
+  @Override
+  public Property[] getProperties(){
+    return new Property[]{new BooleanVariableProperty(() -> variableNumber, (value) -> {variableNumber=value;button.setText("  Set var b"+variableNumber);;},"Current Variable")};
   }
 }

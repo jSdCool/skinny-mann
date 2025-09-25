@@ -3,7 +3,7 @@ import processing.data.*;
 import java.util.ArrayList;
 /**A logic component to set the visability of a group
 */
-public class SetVisibility extends LogicOutputComponent {
+public class SetVisibility extends LogicOutputComponent implements Configurable{
   
   public static final Identifier ID = new Identifier("set_visable");
   
@@ -94,5 +94,13 @@ public class SetVisibility extends LogicOutputComponent {
   @Override
   public Identifier id() {
     return ID;
+  }
+  
+  /**Get the properties that can be configured on this component
+  @return An array of the properties that can be configured
+  */
+  @Override
+  public Property[] getProperties(){
+    return new Property[]{new GroupProperty(() -> groupNumber, (value) -> {groupNumber=value;reText = true;},"Current Group")};
   }
 }

@@ -3,7 +3,7 @@ import processing.data.*;
 import java.util.ArrayList;
 /**A logic component to set the x offset of a group
   */
-public class SetXOffset extends LogicOutputComponent {
+public class SetXOffset extends LogicOutputComponent implements Configurable{
   
   public static final Identifier ID = new Identifier("x-offset");
   
@@ -110,5 +110,16 @@ public class SetXOffset extends LogicOutputComponent {
   @Override
   public Identifier id() {
     return ID;
+  }
+  
+  /**Get the properties that can be configured on this component
+  @return An array of the properties that can be configured
+  */
+  @Override
+  public Property[] getProperties(){
+    return new Property[]{
+      new GroupProperty(() -> groupNumber, (value) -> {groupNumber=value;reText = true;},"Current Group"),
+      new IntegerProperty(() -> (int)offset, (value) -> {offset = value; reText=true;}, "Offset")
+    };
   }
 }

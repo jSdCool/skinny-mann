@@ -3,7 +3,7 @@ import processing.data.*;
 import java.util.ArrayList;
 /**The stage component for the in level button that can interact with logic
 */
-public class LogicButton extends StageComponent implements Interactable {
+public class LogicButton extends StageComponent implements Interactable, Configurable {
   
   public static final Identifier ID = new Identifier("logic_button");
 
@@ -240,6 +240,16 @@ public class LogicButton extends StageComponent implements Interactable {
   @Override
   public Identifier id() {
     return ID;
+  }
+  
+  /**Get the properties that can be configured on this component
+  @return An array of the properties that can be configured
+  */
+  @Override
+  public Property[] getProperties(){
+    return new Property[]{
+      new BooleanVariableProperty(() -> variable, (value) -> {variable = value;}, "Current Variable")
+    };
   }
   
 }

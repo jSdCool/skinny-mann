@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import processing.sound.*;
 /**Stage component that allow the player to trigger a sound while standing inside of it
 */
-public class SoundBox extends StageComponent {
+public class SoundBox extends StageComponent implements Configurable{
   
   public static final Identifier ID = new Identifier("sound_box");
   
@@ -152,5 +152,13 @@ public class SoundBox extends StageComponent {
   @Override
   public Identifier id() {
     return ID;
+  }
+  
+  /**Get the properties that can be configured on this component
+  @return An array of the properties that can be configured
+  */
+  @Override
+  public Property[] getProperties(){
+    return new Property[]{new SoundProperty( ()->soundKey, (value) -> soundKey = value, "Current Sound")};
   }
 }
