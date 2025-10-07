@@ -3758,7 +3758,8 @@ void openUGCFolder() {
   File dirToOpen = null;
   try {
     dirToOpen = new File(appdata+"/CBi-games/skinny mann/UGC/levels");
-    desktop.open(dirToOpen);
+    Util.desktopOpen(desktop,dirToOpen);
+    //desktop.open(dirToOpen);
   }
   catch (Throwable iae) {
     System.out.println("folder Not Found, creating folder");
@@ -3774,7 +3775,8 @@ void openLevelCreatorLevelsFolder() {
   File dirToOpen = null;
   try {
     dirToOpen = new File(appdata+"/CBi-games/skinny mann level creator/levels");
-    desktop.open(dirToOpen);
+    Util.desktopOpen(desktop,dirToOpen);
+    //desktop.open(dirToOpen);
   }
   catch (Throwable iae) {
     System.out.println("folder Not Found, creating folder");
