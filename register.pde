@@ -365,7 +365,9 @@ void registerThings(){
     render.rect((localX+5*Scale),(loaclY+5*Scale),5*Scale,10*Scale);
   },"Goon Enemy");
   EntityRegistry.register(SimpleEntity.ID,SimpleEntity::new,SimpleEntity::new,SimpleEntity::new,(render, x, y)->{},"test entity");
-  EntityRegistry.register(AlienEntity.ID,AlienEntity::new,AlienEntity::new,AlienEntity::new,(render,x,y)->{},"Alien Entity");
+  EntityRegistry.register(AlienEntity.ID,AlienEntity::new,AlienEntity::new,AlienEntity::new,(render,x,y)->{
+    AlienEntity.renderAlien2D(render,x+25,y+20,0.7,1);
+  },"Alien Entity");
   
   //other
   SerialRegistry.register(BackToMenuRequest.ID,BackToMenuRequest::new);
