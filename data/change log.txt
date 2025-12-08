@@ -4,7 +4,9 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 0.10.1_Early_Access
 -changed: made multiplayer networking faster
 -changed: component property configuration is now modular, the select tab in the tool box will look slightly different
--changed: editing a signs text now lets you set the number of lines as well as individually edit the content on each line. additionally editing the signs text is now done in the modern text box system
+-changed: editing a signs text now lets you set the number of lines as well as individually edit the content on each line. Additionally editing the signs text is now done in the modern text box system
+-added: Alien entity. Moves over a limited distance. Will "see" a player that is within a certain distance and attempt to reach them. Will only attack the player in the direction it is facing.
+-added: Alien entity to levels 15 and 16
 
 
 0.10.0_Early_Access
