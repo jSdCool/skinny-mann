@@ -177,10 +177,9 @@ public class SimpleEntity extends StageEntity{
     return null;
   }
   /**Process an entity AI update
-  @param dt The number of milliseconds Since the last update
-  @param stageHitBoxes The hitboxes of the stage this entity is in
+  @param context context
   */
-  public void update(float dt, ArrayList<Collider2D> stageHitBoxes){
+  public void update(EntityAgentContext context){
     
   }
   /**Convert this entity to a byte representation that can be sent over the network or saved to a file.<br>

@@ -97,10 +97,10 @@ public class AlienEntity extends StageEntity implements Configurable{
     
   }
   
-  public void update(float mspc, ArrayList<Collider2D> stageCollisions){
+  public void update(EntityAgentContext context){
     
     if(pause > 0){//if pausing then decrease the pause timer and do thing else
-      pause -= mspc;
+      pause -= context.getMspc();
       return;
     }
     
@@ -109,9 +109,9 @@ public class AlienEntity extends StageEntity implements Configurable{
       changeDirection = false;
     }
     
-    float eadjust = mspc * 0.4f;
+    float eadjust = context.getMspc() * 0.4f;
     if(!facingRight){
-      eadjust *= -2;
+      eadjust *= -3;
     }
     
     //if in 3D do 3D testing thigns here
@@ -119,7 +119,7 @@ public class AlienEntity extends StageEntity implements Configurable{
     //check collide with wall
     Collider2D groudLevelBox = getHitBox2D(eadjust, -10);
     boolean collided = false;
-    for(Collider2D box: stageCollisions){
+    for(Collider2D box: context.get2DCollisions()){
       if(CollisionDetection.collide2D(groudLevelBox,box)){
         collided = true;
         break;
@@ -135,7 +135,7 @@ public class AlienEntity extends StageEntity implements Configurable{
     //check stand on ground
     Collider2D underGroundBox = getHitBox2D(eadjust, 15);
     collided = false;
-    for(Collider2D box: stageCollisions){
+    for(Collider2D box: context.get2DCollisions()){
       if(CollisionDetection.collide2D(underGroundBox,box)){
         collided = true;
         break;

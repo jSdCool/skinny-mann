@@ -178,11 +178,10 @@ public class Goon extends StageEntity{
   }
   
   /**Process an entity AI update
-  @param dt The number of milliseconds Since the last update
-  @param stageHitBoxes The hitboxes of the stage this entity is in
+  @param context Context used to do AI things
   */
-  public void update(float dt, ArrayList<Collider2D> stageHitBoxes){
-    mm.recalculateMovements(stageHitBoxes);
+  public void update(EntityAgentContext context){
+    mm.recalculateMovements(context.get2DCollisions());
   }
   
   /**Convert this entity to a byte representation that can be sent over the network or saved to a file.<br>

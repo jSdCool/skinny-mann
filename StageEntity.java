@@ -70,10 +70,9 @@ public abstract class StageEntity extends Entity implements Killable,Serializati
   */
   public abstract PlayerIniteractionResult playerInteraction(Collider3D playerHitBox);
   /**Process an entity AI update
-  @param dt The number of milliseconds Since the last update
-  @param stageHitBoxes The hitboxes of the stage this entity is in
+  @param context Relivant context the AI of this entitiy can use to make decisions
   */
-  public abstract void update(float dt,ArrayList<Collider2D> stageHitBoxes);
+  public abstract void update(EntityAgentContext context);
   
   //the x position of this entity
   float x;

@@ -823,14 +823,32 @@ void playerPhysics() {
         entityStageBoxes = generateLevel2DComboBox(stage);
         entityStageBoxes3D = generateLevel3DComboBox(stage);
       }
+      int stageIndex;
+      //figure out the index of this stage
+      for(stageIndex = 0;stageIndex < level.stages.size();stageIndex++){
+        if(level.stages.get(stageIndex) == stage){
+          break;
+        }
+      }
+      ArrayList<Player> playerOnStage = new ArrayList<>();
+      //collect all the players on the current stage
+      for(int i=0;i<players.length;i++){
+        if(players[i].stage == stageIndex){
+          playerOnStage.add(players[i]);
+        }
+      }
+      EntityAgentContext agentContext = new EntityAgentContext(mspc,entityStageBoxes,entityStageBoxes3D,playerOnStage.toArray(Player[]::new),stage.entities);
       //calculate the physics for each entity in this stage
       for (int i=0; i<stage.entities.size(); i++) {
+        stage.entities.get(i).update(agentContext);
         entityPhysics(stage.entities.get(i), stage, entityStageBoxes,entityStageBoxes3D);
       }
     }
   } else if (level.multyplayerMode!=2) {//if the level is not in co-op mode
     //calculate the physics for only the entites on this stage
+    EntityAgentContext agentContext = new EntityAgentContext(mspc,stageBoxes,stageBoxes3D,new Player[]{players[currentPlayer]},level.stages.get(currentStageIndex).entities);
     for (int i=0; i<level.stages.get(currentStageIndex).entities.size(); i++) {
+      level.stages.get(currentStageIndex).entities.get(i).update(agentContext);
       entityPhysics(level.stages.get(currentStageIndex).entities.get(i), level.stages.get(currentStageIndex),stageBoxes,stageBoxes3D);
     }
   }
@@ -869,12 +887,6 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
     if (k.isDead()) {
       return;
     }
-  }
-  
-  //if this entity is a stage entity (not a player)
-  if(entity instanceof StageEntity){
-    StageEntity stageEnt = (StageEntity)entity;
-    stageEnt.update(mspc, stageHitBoxs2D);//run and AI update on the entity
   }
 
   if (viewingItemContents && movement instanceof PlayerMovementManager) {//if this entity is a player then stop movment while intertacting with an object, but still process gravity
