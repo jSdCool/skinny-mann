@@ -31,7 +31,7 @@ boolean menue = true;
 boolean inGame = false;
 boolean player1_moving_right = false;
 boolean player1_moving_left = false;
-boolean dev_mode = true;
+boolean dev_mode = false;
 boolean player1_jumping = false;
 boolean dead = false;
 boolean level_complete = false;
@@ -113,7 +113,7 @@ PVector currentComponentRotation = new PVector();
 
 String Menue = "creds";
 String version = "0.10.1_Early_Access";
-String EDITOR_version = "0.3.0_EAc";
+String EDITOR_version = "0.3.1_EAc";
 String ip = "localhost";
 String name = "can't_be_botherd_to_chane_it";
 String rootPath;
