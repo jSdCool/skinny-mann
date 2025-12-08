@@ -780,7 +780,7 @@ void playerPhysics() {
         }
       }
       
-      if (level.multyplayerMode==2 && !isHost) {//if in co op mode or not hosting
+      if (level.multyplayerMode==2 && !isHost && clients.size() > 0 /*dont try to do this if in the level creator*/) {//if in co op mode or not hosting
         //if the entitie was killed
         if (level.stages.get(currentStageIndex).entities.get(i).isDead()) {
           //inform the server of the death

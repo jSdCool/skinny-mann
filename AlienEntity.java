@@ -35,9 +35,11 @@ public class AlienEntity extends StageEntity implements Configurable{
   boolean changeDirection = false;
   boolean newDirection = true;
   boolean dead = false;
+  boolean chasingPlayer = false;
+  boolean stopped = false;
   
   int maxWanderDistance = 300;
-  
+  int chasingPlayerIndex = 0;
   int pause = 0;
   
   public static final Identifier ID = new Identifier("alien");
@@ -114,6 +116,63 @@ public class AlienEntity extends StageEntity implements Configurable{
       eadjust *= -3;
     }
     
+    if(!chasingPlayer){
+      //check for player in "view" area to chase
+      for(int i = 0; i<context.getPlayers().length;i++){
+        Player p = context.getPlayers()[i];
+        float vertRange = Math.abs(p.getY()-getY());
+        if(vertRange > 250){//check if this player is whithin vertical tracking range
+          continue;
+        }
+        float horRange = p.getX() - getX();
+        if(Math.abs(horRange) > maxWanderDistance*1.7){//check if this player is within horozontal tracking range
+          continue;
+        }
+        //check if the player is in the direction the alien is looking
+        if(facingRight == horRange > 0){
+          chasingPlayerIndex = i;
+          chasingPlayer = true;
+          pause = 500;
+          break;
+        }
+      }
+    } else {
+      //check if we should continue chasing this player
+      if(chasingPlayerIndex < context.getPlayers().length){
+        Player p = context.getPlayers()[chasingPlayerIndex];
+        float vertRange = Math.abs(p.getY()-getY());
+        if(vertRange > 250){//check if this player is whithin vertical tracking range
+          chasingPlayer = false;
+          stopped = false;
+        } else {
+          float horRange = p.getX() - getX();
+          if(Math.abs(horRange) > maxWanderDistance*1.7){//check if this player is within horozontal tracking range
+            chasingPlayer = false;
+            stopped = false;
+          } else {
+            //the player is sill wihtin tracking range
+            //if the alien is very close to the player posision then stop moving
+            if(Math.abs(horRange) < 20){
+              stopped = true;
+            } else {
+              stopped = false;
+              //face in the direction of the player
+              changeDirection = true;
+              newDirection = horRange > 0;
+            }
+            
+          }
+        }
+      }else{
+        chasingPlayer = false;
+        stopped = false;
+        pause = 500;
+      }
+    }
+    
+    
+    
+    
     //if in 3D do 3D testing thigns here
     
     //check collide with wall
@@ -126,9 +185,13 @@ public class AlienEntity extends StageEntity implements Configurable{
       }
     }
     if(collided){
-      changeDirection = true;
-      newDirection = !facingRight;
-      pause = 1000;//pause for 1 second when chaning direcion
+      if(chasingPlayer){
+        stopped = true;
+      }else{
+        changeDirection = true;
+        newDirection = !facingRight;
+        pause = 1000;//pause for 1 second when chaning direcion
+      }
       return;
     }
     
@@ -142,9 +205,13 @@ public class AlienEntity extends StageEntity implements Configurable{
       }
     }
     if(!collided){
-      changeDirection = true;
-      newDirection = !facingRight;
-      pause = 1000;//pause for 1 second when chaning direcion
+      if(chasingPlayer){
+        stopped = true;
+      } else {
+        changeDirection = true;
+        newDirection = !facingRight;
+        pause = 1000;//pause for 1 second when chaning direcion
+      }
       return;
     }
     
@@ -152,15 +219,23 @@ public class AlienEntity extends StageEntity implements Configurable{
     
     if(facingRight){
       if(wanderDist >= maxWanderDistance){
-        changeDirection = true;
-        newDirection = false;
-        pause = 1000;//pause for 1 second when chaning direcion
+        if(chasingPlayer){
+          stopped = true;
+        }else{
+          changeDirection = true;
+          newDirection = false;
+          pause = 1000;//pause for 1 second when chaning direcion
+        }
       }
     } else {
       if(wanderDist <= -maxWanderDistance){
-        changeDirection = true;
-        newDirection = true;
-        pause = 1000;//pause for 1 second when chaning direcion
+        if(chasingPlayer){
+          stopped = true;
+        } else{
+          changeDirection = true;
+          newDirection = true;
+          pause = 1000;//pause for 1 second when chaning direcion
+        }
       }
     }
     
@@ -169,11 +244,11 @@ public class AlienEntity extends StageEntity implements Configurable{
   public MovementManager getMovementmanager(){
    return new MovementManager(){
      public boolean left(){
-       return !facingRight && pause <= 0;
+       return !facingRight && pause <= 0 && !stopped;
      }
      
      public boolean right(){
-       return facingRight && pause <= 0;
+       return facingRight && pause <= 0 && !stopped;
      }
      
      public boolean jump(){
@@ -260,6 +335,19 @@ public class AlienEntity extends StageEntity implements Configurable{
   @return The result of the player interaction or null if there is no result
   */
   public PlayerIniteractionResult playerInteraction(Collider2D playerHitBox){
+    
+    
+    
+    //if not kill this entity
+    float hbx = x- 24 *(facingRight? -1:1);//if facing right then add 24, if facing left then subtact 24. its not perfect positioning but it is good enough
+    float hby = y-29;
+    Collider2D killBox = Collider2D.createRectHitbox(hbx,hby,4,64);
+    //check if the player is contecting the "hands" area in front of the entity
+    if(CollisionDetection.collide2D(killBox, playerHitBox)){
+      return new PlayerIniteractionResult().setKill();//if so kill the player
+    }
+    //if not kill this entity
+    kill();
     return null;
   }
   /**Get the result of the player interacting with this entity in 3D
