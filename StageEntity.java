@@ -18,7 +18,7 @@ public abstract class StageEntity extends Entity implements Killable,Serializati
   }
   
   /**Load an entity from saved json data
-  @param data The saved JSON data
+  @param json The saved JSON data
   */
   public StageEntity(JSONObject json){
     x = json.getFloat("x");

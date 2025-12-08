@@ -20,7 +20,7 @@ public abstract class PropertyConfigUi<R,T extends Property<R,T>>{
   
   /**Create a new property config ui
   @param render The surface to render to
-  @param toolboxUi the tool box window
+  @param toolBoxUi the tool box window
   */
   public PropertyConfigUi(PGraphics render, UiFrame toolBoxUi){
     this.render = render;
@@ -82,7 +82,7 @@ public abstract class PropertyConfigUi<R,T extends Property<R,T>>{
   public interface PropConfigUiFactory{
     /**Create a new property config ui
     @param render The surface to render to
-    @param toolboxUi the tool box window
+    @param toolBoxUi the tool box window
     */
     PropertyConfigUi<?,?> create(PGraphics render, UiFrame toolBoxUi);
   }
