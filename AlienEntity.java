@@ -32,10 +32,13 @@ public class AlienEntity extends StageEntity implements Configurable{
   
   //if this entity is facing / moving to the right
   boolean facingRight = true;
-  
+  boolean changeDirection = false;
+  boolean newDirection = true;
   boolean dead = false;
   
   int maxWanderDistance = 300;
+  
+  int pause = 0;
   
   public static final Identifier ID = new Identifier("alien");
   
@@ -95,9 +98,20 @@ public class AlienEntity extends StageEntity implements Configurable{
   }
   
   public void update(float mspc, ArrayList<Collider2D> stageCollisions){
+    
+    if(pause > 0){//if pausing then decrease the pause timer and do thing else
+      pause -= mspc;
+      return;
+    }
+    
+    if(changeDirection){
+      facingRight = newDirection;
+      changeDirection = false;
+    }
+    
     float eadjust = mspc * 0.4f;
     if(!facingRight){
-      eadjust *= -1;
+      eadjust *= -2;
     }
     
     //if in 3D do 3D testing thigns here
@@ -112,11 +126,13 @@ public class AlienEntity extends StageEntity implements Configurable{
       }
     }
     if(collided){
-      facingRight = !facingRight;
+      changeDirection = true;
+      newDirection = !facingRight;
+      pause = 1000;//pause for 1 second when chaning direcion
       return;
     }
     
-    //check collide with ground
+    //check stand on ground
     Collider2D underGroundBox = getHitBox2D(eadjust, 15);
     collided = false;
     for(Collider2D box: stageCollisions){
@@ -126,7 +142,9 @@ public class AlienEntity extends StageEntity implements Configurable{
       }
     }
     if(!collided){
-      facingRight = !facingRight;
+      changeDirection = true;
+      newDirection = !facingRight;
+      pause = 1000;//pause for 1 second when chaning direcion
       return;
     }
     
@@ -134,11 +152,15 @@ public class AlienEntity extends StageEntity implements Configurable{
     
     if(facingRight){
       if(wanderDist >= maxWanderDistance){
-        facingRight = false;
+        changeDirection = true;
+        newDirection = false;
+        pause = 1000;//pause for 1 second when chaning direcion
       }
     } else {
       if(wanderDist <= -maxWanderDistance){
-        facingRight = true;
+        changeDirection = true;
+        newDirection = true;
+        pause = 1000;//pause for 1 second when chaning direcion
       }
     }
     
@@ -147,11 +169,11 @@ public class AlienEntity extends StageEntity implements Configurable{
   public MovementManager getMovementmanager(){
    return new MovementManager(){
      public boolean left(){
-       return !facingRight;
+       return !facingRight && pause <= 0;
      }
      
      public boolean right(){
-       return facingRight;
+       return facingRight && pause <= 0;
      }
      
      public boolean jump(){
