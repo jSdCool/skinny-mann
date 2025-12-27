@@ -1,6 +1,9 @@
 if you get a trojan waring from windows defender check this link
 https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-trojans
 
+0.10.2_Early_Access
+-added: crash report system
+
 0.10.1_Early_Access
 -changed: made multiplayer networking faster
 -changed: component property configuration is now modular, the select tab in the tool box will look slightly different

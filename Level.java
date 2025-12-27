@@ -85,7 +85,7 @@ public class Level implements Serialization {//this is a big and important one
     System.out.println("checking game version compatablility");
     if (!source.gameVersionCompatibilityCheck(createdVersion)) {//check is this level is compatable with this game version
       System.out.println("game version not compatable with the verion of this level");//if not, throw an error
-      throw new RuntimeException("this level is not compatable with this version of the game");
+      throw new RuntimeException("this level is not compatible with this version of the game");
     }
     System.out.println("game version is compatable with this level");
     System.out.println("loading level components");

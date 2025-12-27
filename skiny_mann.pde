@@ -3845,14 +3845,60 @@ Displays a window containing error information including the stack trace, then c
 @param e the unhandled error
 */
 void handleError(Throwable e) {
+  ArrayList<String> crashReport = new ArrayList<>();//crash report content
+  crashReport.add("Oh shit it crashed!");
+  crashReport.add("");
+  crashReport.add("Heres where it failed:");
+  crashReport.add(e.toString());
   System.err.println("an error occored but was intercepted");
   e.printStackTrace();
   StackTraceElement[] elements = e.getStackTrace();
   String stack="";
-  for (int ele=0; ele<elements.length; ele++) {//convert the stace trace elements inton a single string
-    stack+=elements[ele].toString()+"\n";
+  for (int ele=0; ele<elements.length; ele++) {//convert the stace trace elements in to a single string
+    stack+="    "+elements[ele].toString()+"\n";
   }
-  stack+="\nyou may wish to take a screenshot of this window and resport this as an issue on github";
+  crashReport.add(stack);//add the stack trace to the crash report
+  crashReport.add("");
+  crashReport.add("");
+  crashReport.add("Operating system:");
+  if(platform == WINDOWS){
+    crashReport.add("WINDOWS");
+  } else if (platform == MACOS){
+    crashReport.add("MACOS");
+  } else if (platform == LINUX){
+    crashReport.add("LINUX");
+  } else {
+    crashReport.add("OTHER");
+  }
+  crashReport.add("OpenGL vendor:");
+  crashReport.add(PGraphicsOpenGL.OPENGL_VENDOR);
+  crashReport.add("OpenGL renderer:");
+  crashReport.add(PGraphicsOpenGL.OPENGL_RENDERER);
+  crashReport.add("OpenGL version:");
+  crashReport.add(PGraphicsOpenGL.OPENGL_VERSION);
+  crashReport.add("GLSL version:");
+  crashReport.add(PGraphicsOpenGL.GLSL_VERSION);
+  crashReport.add("OpenGL extensions:");
+  crashReport.add(PGraphicsOpenGL.OPENGL_EXTENSIONS);
+  crashReport.add("");
+  crashReport.add("");
+  crashReport.add("Java version:");
+  crashReport.add(System.getProperty("java.version"));
+  boolean saveSuccess = false;
+  String crashReportName = "Crash_Report_"+year()+"_"+month()+"_"+day()+"_"+hour()+minute()+second()+".txt";
+  try{//attempt to save the crash report
+    String reportPath = sketchPath()+"/crash_reports/";
+    new File(reportPath).mkdirs();//create the crashReport directoy
+    saveStrings(reportPath+crashReportName,crashReport.toArray(String[]::new));
+    saveSuccess=true;
+  } catch (Throwable t){}
+  
+  stack+="\nyou may wish to take a screenshot of this window and resport this as an issue on github\n";
+  if(saveSuccess){
+    stack += "Crash report saved as: "+crashReportName;
+  } else {
+    stack += "failed to save crash report";
+  }
   JFrame jf=new JFrame();
   jf.setAlwaysOnTop(true);//make sure the error ends up on top of the game
   JOptionPane.showMessageDialog(jf, stack, e.toString(), JOptionPane.ERROR_MESSAGE);//show the error to the user
