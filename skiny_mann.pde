@@ -3244,6 +3244,7 @@ void drawSettings() {
     fill(0);
     st_display.draw();
     st_dsp_fpsNum.draw();
+    st_dsp_fps.draw();
   }//end of display settings
   
   if(settingsMenue.equals("sound")){//if on the sound tab
@@ -4798,7 +4799,8 @@ void initText() {
   st_dsp_720 = new UiText(ui, "720", 920, 45, 20, LEFT, BOTTOM);
   st_dsp_fsYes = new UiText(ui, "yes", 1190, 115, 20, LEFT, BOTTOM);
   st_dsp_fsNo = new UiText(ui, "no", 1120, 115, 20, LEFT, BOTTOM);
-  st_dsp_fpsNum = new UiText(ui, "IDK",700,190,40,LEFT,BOTTOM);
+  st_dsp_fpsNum = new UiText(ui, "IDK",700,230,40,LEFT,BOTTOM);
+  st_dsp_fps = new UiText(ui, "Frame Rate", 40, 230, 40, LEFT, BOTTOM);
   st_display = new UiText(ui, "Display", 640, 0, 50, CENTER, TOP);
   st_sound = new UiText(ui, "Sound",640,0,50,CENTER,TOP);
   st_snd_narrationVol = new UiText(ui, "narration volume", 40, 250, 40, LEFT, BOTTOM);

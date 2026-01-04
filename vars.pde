@@ -369,6 +369,7 @@ UiText st_dsp_720;
 UiText st_dsp_fsYes;
 UiText st_dsp_fsNo;
 UiText st_dsp_fpsNum;
+UiText st_dsp_fps;
 UiText st_display;
 UiText st_o_displayFPS;
 UiText st_o_debugINFO;
