@@ -56,7 +56,7 @@ Used as the primary place to load and initilize things and spawn threads to load
 */
 void setup() {//seccond function called
   try {
-    frameRate(60);//set the FPS limit, note set this to a lerger number to get higher frame rates
+    frameRate(settings.getTargetFPS());//set the game's frame rate
     background(0);
     if (settings.getFullScreen()) {
       Scale=height/720.0;//if in fullscreen calculate the scale
@@ -161,6 +161,14 @@ void draw() {// the function that is called every frame
     if (saveColors) {//if saved colors should be saved
       saveJSONArray(colors, appdata+"/CBi-games/skinny mann level creator/colors.json");//save the saved colors
       saveColors=false;
+    }
+    
+    //if a frame rate request has been requested, check if it has been half a second since the last FPS update
+    if (updateFPS && lastFPSUpdate + 500 < millis()){
+      updateFPS = false;
+      lastFPSUpdate = millis();
+      frameRate(settings.getTargetFPS());//set the new frame rate
+      //this is nessarry because if we update the frame rate too fast then a crash could happen
     }
 
     if (!levelCreator) {//if not in the level creator
@@ -1497,6 +1505,13 @@ void mouseClicked() {// when you click the mouse
               settings.setFullScreen(false);
               settings.save();
             }
+            
+            fpsSlider.mouseClicked();
+            if(fpsSlider.button.isMouseOver()){
+              settings.setTargetFrameRate((int)fpsSlider.getValue(),true);
+              settings.save();
+              updateFPS = true;//set the game's frame rate
+            }
           }//end of display settings menue
 
           if (settingsMenue.equals("sound")) {//if on the sound tab
@@ -2754,6 +2769,15 @@ void mouseDragged() {
             settings.save();
           }
         }
+        
+        if (settingsMenue.equals("display")) {
+          fpsSlider.mouseDragged();
+          if(fpsSlider.button.isMouseOver()){
+            settings.setTargetFrameRate((int)fpsSlider.getValue(),false);
+            settings.save();
+            updateFPS = true;//set the game's frame rate
+          }
+        }
       }
     }
   }catch(Throwable e) {//if an error occors
@@ -3213,9 +3237,13 @@ void drawSettings() {
     rez4k.draw();
     fullScreenOn.draw();
     fullScreenOff.draw();
+    fpsSlider.draw();
+    
+    st_dsp_fpsNum.setText((int)settings.getTargetFPS()+"");
 
     fill(0);
     st_display.draw();
+    st_dsp_fpsNum.draw();
   }//end of display settings
   
   if(settingsMenue.equals("sound")){//if on the sound tab
@@ -4369,6 +4397,7 @@ void programLoad() {
     verticleEdgeScrollSlider.setValue(settings.getSrollVertical());
     horozontalEdgeScrollSlider.setValue(settings.getScrollHorozontal());
     fovSlider.setValue(degrees(settings.getFOV()));
+    fpsSlider.setValue(settings.getTargetFPS());
     
     //load the boxes for the glitch effect
     String[] rawGlitchBoxes = loadStrings("data/glitch.txt");
@@ -4495,6 +4524,7 @@ void  initButtons() {
   rez4k = new UiButton(ui, (1200), (50), (40), (40), 255, 0).setStrokeWeight(5);
   fullScreenOn = new UiButton(ui, (1200), (120), (40), (40), 255, 0).setStrokeWeight(5);
   fullScreenOff = new UiButton(ui, (1130), (120), (40), (40), 255, 0).setStrokeWeight(5);
+  fpsSlider = new UiSlider(ui, 800, 190, 440,30).setStrokeWeight(5).setColors(255, 0).showValue(false).setRounding(1).setMax(1000).setMin(10);
   vsdSlider =new UiButton(ui, (800), (120), (440), (30), 255, 0).setStrokeWeight( (5));
   MusicSlider=new UiButton(ui, (800), (190), (440), (30), 255, 0).setStrokeWeight( (5));
   SFXSlider=new UiButton(ui, (800), (260), (440), (30), 255, 0).setStrokeWeight( (5));
@@ -4768,6 +4798,7 @@ void initText() {
   st_dsp_720 = new UiText(ui, "720", 920, 45, 20, LEFT, BOTTOM);
   st_dsp_fsYes = new UiText(ui, "yes", 1190, 115, 20, LEFT, BOTTOM);
   st_dsp_fsNo = new UiText(ui, "no", 1120, 115, 20, LEFT, BOTTOM);
+  st_dsp_fpsNum = new UiText(ui, "IDK",700,190,40,LEFT,BOTTOM);
   st_display = new UiText(ui, "Display", 640, 0, 50, CENTER, TOP);
   st_sound = new UiText(ui, "Sound",640,0,50,CENTER,TOP);
   st_snd_narrationVol = new UiText(ui, "narration volume", 40, 250, 40, LEFT, BOTTOM);

@@ -8,7 +8,7 @@ import java.io.File;
 */
 public class Settings {
   //all theese are the default value for theese settings
-  private static final int version = 5;
+  private static final int version = 6;
 
   private int scrollHorozontal = 360;
   private int scrollVertical = 250;
@@ -19,6 +19,7 @@ public class Settings {
   private boolean fullScreen = false;
   private int fullScreenScreen = 1;
   private float scale = 1;
+  private int frameRate = 60;
 
   private boolean debugFPS = false;
   private boolean debugInfo = false;
@@ -88,6 +89,7 @@ public class Settings {
     fullScreen = data.getBoolean("full_Screen");
     fullScreenScreen = data.getInt("full_Screen_diplay");
     scale = data.getFloat("scale");
+    frameRate = data.getInt("fps");
   }
   /**Load the debug settings block from the settings file
   @param data The object with the settings data
@@ -151,6 +153,7 @@ public class Settings {
     data.setBoolean("full_Screen", fullScreen);
     data.setInt("full_Screen_diplay", fullScreenScreen);
     data.setFloat("scale", scale);
+    data.setInt("fps", frameRate);
     data.setString("label", "resolution stuff");
     return data;
   }
@@ -292,6 +295,13 @@ public class Settings {
   public String getDefaultAuthor() {
     return defaultAuthor;
   }
+  /**Get the target frame rate for the game
+  @return The frame rate set by the player
+  */
+  public int getTargetFPS(){
+    return frameRate;
+  }
+  
   //setters
   
   /**Set the horozontal scrolling value
@@ -439,6 +449,27 @@ public class Settings {
     this.defaultAuthor=defaultAuthor;
     adjustStats();
   }
+  /**Set the game's target frame rate
+  @param newFPS The new frame rate for the game
+  */
+  public void setTargetFrameRate(int newFPS){
+    frameRate = newFPS;
+    adjustStats();
+  }
+  
+  /**Set the game's target frame rate
+  @param newFPS The new frame rate for the game
+  @param stats Wether to increment statistics after chaning the setting
+  */
+  public void setTargetFrameRate(int newFPS,boolean stats){
+    frameRate = newFPS;
+    if (stats) {
+      adjustStats();
+    }
+  }
+  
+  //other functions
+  
   /**Get wether settings should be diaplayed after start
   @return true if the startup menu transition should go to settings instead of the main menu
   */

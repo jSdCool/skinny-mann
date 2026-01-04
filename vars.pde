@@ -105,6 +105,7 @@ boolean newSoundAsNarration = false;
 boolean newBlueprintIs3D = false;
 boolean placingGoon = false;
 boolean rotating = false;
+boolean updateFPS = false;
 ArrayList<Boolean> compatibles;
 ArrayList<Boolean> coins;
 
@@ -213,6 +214,7 @@ int totalLoad = 55;
 int curMills = 0;
 int lasMills = 0;
 int mspc = 0;
+int lastFPSUpdate = 0;
 int[][] tutorialNarration=new int[2][17];
 
 JSONArray colors;
@@ -366,6 +368,7 @@ UiText st_dsp_900;
 UiText st_dsp_720;
 UiText st_dsp_fsYes;
 UiText st_dsp_fsNo;
+UiText st_dsp_fpsNum;
 UiText st_display;
 UiText st_o_displayFPS;
 UiText st_o_debugINFO;
@@ -444,6 +447,7 @@ UiSlider verticleEdgeScrollSlider;
 UiSlider horozontalEdgeScrollSlider;
 UiSlider narrationVolumeSlider;
 UiSlider fovSlider;
+UiSlider fpsSlider;
 
 UiTextBox defaultAuthorNameTextBox;
 UiTextBox multyPlayerNameTextBox;
