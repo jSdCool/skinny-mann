@@ -5,6 +5,8 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 -added: crash report system
 -added: frame rate setting
 -changed: settings version is now 6 
+-changed: decoupled various animations from the frame rate(unless FPS too high)
+-changed: increased 2D camera speed in level creator
 
 0.10.1_Early_Access
 -changed: made multiplayer networking faster

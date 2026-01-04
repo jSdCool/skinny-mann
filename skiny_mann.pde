@@ -651,17 +651,18 @@ void draw() {// the function that is called every frame
       if (editingStage) {//if edditing the stage
         hint(DISABLE_KEY_REPEAT);//again disable the key repeat for input reasons
         if (!simulating) {//if not simulating allow the camera to be moved by the arrow keys
+          int frameDT = millis()-lastFrameTime;
           if (cam_left&&camPos>0) {
-            camPos-=4;
+            camPos-=(int)(0.4375*frameDT);
           }
           if (cam_right) {
-            camPos+=4;
+            camPos+=(int)(0.4375*frameDT);
           }
           if (cam_down&&camPosY>0) {
-            camPosY-=4;
+            camPosY-=(int)(0.4375*frameDT);
           }
           if (cam_up) {
-            camPosY+=4;
+            camPosY+=(int)(0.4375*frameDT);
           }
         }
 
@@ -1182,7 +1183,7 @@ void draw() {// the function that is called every frame
     catch(Exception e) {
     }
   }
-  
+  lastFrameTime = millis();
 }
 
 

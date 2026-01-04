@@ -5,6 +5,7 @@ float DY=sin(radians(yangle))*dist, hd=cos(radians(yangle))*dist, DX=sin(radians
 /**Draws all the elements of a stage
  */
 void stageLevelDraw() {
+  int frameDT = millis()-lastFrameTime;
   Stage stage=level.stages.get(currentStageIndex);//get the current stage
   background(stage.skyColor);//sky color
   int selectIndex=-1;//reset the selcting obejct
@@ -71,9 +72,9 @@ void stageLevelDraw() {
       ArrayList<Collider3D> stageCollisions = generateLevel3DComboBox(stage);//generate the hitboxes for this stage
 
       if ((simulating && levelCreator) || !levelCreator){//if not in the level creator or not paused while in the level cretor
-        camera3DpositionSimulating(stageCollisions);//calculate the position of the 3D camera
+        camera3DpositionSimulating(stageCollisions,frameDT);//calculate the position of the 3D camera
       } else {//if paused and in the level creator
-        camera3DpositionNotSimulating();//calculate the manually controlled poisiton of the camera
+        camera3DpositionNotSimulating(frameDT);//calculate the manually controlled poisiton of the camera
       }
 
       camera(cam3Dx+DX, cam3Dy-DY, cam3Dz-DZ, cam3Dx, cam3Dy, cam3Dz, 0, 1, 0);//set the camera
@@ -83,7 +84,7 @@ void stageLevelDraw() {
       perspective(settings.getFOV(),width*1.0/height,0.5,1048576);//set the FOV and min/max draw distance for 3D
       
       //TODO decouple this from frame rate
-      coinRotation+=3;//rotate the coins
+      coinRotation += (int)(0.1875*frameDT);//rotate the coins
       
       if (coinRotation>360) {//reset the coin totation if  it is over 360 degrees
         coinRotation-=360;
@@ -448,6 +449,7 @@ void perepLightingPass() {
 /**draws all the elements of a blueprint
  */
 void blueprintEditDraw() {
+  int frameDT = millis()-lastFrameTime;
   int selectIndex=-1;
   if (selecting) {//if you are currently using the selection tool
     selectIndex=colid_index(mouseX+camPos, mouseY-camPosY, workingBlueprint);//figure out what eleiment you are hovering over
@@ -480,14 +482,14 @@ void blueprintEditDraw() {
       cam3Dx=0;//force the camera to 0 0 0
       cam3Dy=0;
       cam3Dz=0;
-      camera3DpositionNotSimulating();//camera rotating 
+      camera3DpositionNotSimulating(frameDT);//camera rotating 
       cam3Dx=0;//reset the camera again for some reason
       cam3Dy=0;
       cam3Dz=0;
       camera(cam3Dx+DX, cam3Dy-DY, cam3Dz-DZ, cam3Dx, cam3Dy, cam3Dz, 0, 1, 0);//set the camera
       directionalLight(255, 255, 255, 0.8, 1, -0.35);//set up the lighting ofr old/off shadow modes
       ambientLight(102, 102, 102);
-      coinRotation+=3;//rotate the coins
+      coinRotation += (int)(0.1875*frameDT);//rotate the coins
       if (coinRotation>360){//reset the coin totation if  it is over 360 degrees
         coinRotation-=360;
       }
@@ -543,7 +545,7 @@ void blueprintEditDraw() {
 /**Calculate the camera position for nomral 3D gameplay, including the cmera colliding with the stage between the normal position and the player
 @param stageCollision The hitboxes of the stage
 */
-void camera3DpositionSimulating(ArrayList<Collider3D> stageCollision) {
+void camera3DpositionSimulating(ArrayList<Collider3D> stageCollision,int dt) {
   //set the center position of the camera to be in the player
   cam3Dx=players[currentPlayer].getX();
   cam3Dy=players[currentPlayer].getY()-37;//camera Y pos in the middle of the body instead of the bottom
@@ -551,25 +553,25 @@ void camera3DpositionSimulating(ArrayList<Collider3D> stageCollision) {
   //handle roatation
   //TODO: decouple this from FPS
   if (cam_left) {//if the user is trying to rotate the camera left
-    xangle+=2;//increase the angle by a bit
+    xangle+=(int)(0.125*dt);//increase the angle by a bit
     if (xangle>240){//if the angle exceeds the limit
       xangle=240;//force it back to the limit
     }
   }
   if (cam_right) {//if the user is truong to rotate the camera right
-    xangle-=2;//decrese the angle by a bit
+    xangle-=(int)(0.125*dt);//decrese the angle by a bit
     if (xangle<190){//if hte angle exceeds the limit
       xangle=190;//force it back to the limit
     }
   }
   if (cam_up) {//if the user is trying  to rotate the camera up
-    yangle+=1;//increse the angle by a bit
+    yangle+=(int)(0.08*dt);//increse the angle by a bit
     if (yangle>=30){//if the angle exceeds the limit
       yangle=30;//force it back to the limit
     }
   }
   if (cam_down) {//if the user is trying  to rotate the camera down
-    yangle-=1;//decrease the angle by a bit
+    yangle-=(int)(0.08*dt);//decrease the angle by a bit
     if (yangle<10){//if the angle exceeds the limit
       yangle=10;//force it back to the limit
     }
@@ -672,45 +674,45 @@ Collider3D calcCameraHitBox(PVector near,PVector far){
 
 /**Calculate the position of the camera for 3D level creation. manual camera controll with almost no angle limits
 */
-void camera3DpositionNotSimulating() {
+void camera3DpositionNotSimulating(int dt) {
   //TODO decouple this from FPs
   if (space3D) {//if the user is attempting to go up
-    cam3Dy-=20;//move the camera postion up
+    cam3Dy-=(int)(1.25*dt);//move the camera postion up
   }
   if (shift3D) {//if the user is attempting to go down
-    cam3Dy+=20;//move the camrea position down
+    cam3Dy+=(int)(1.25*dt);//move the camrea position down
   }
   if (w3D) {//if the user is trying to move forwards
-    cam3Dx+=20*sin(radians(-xangle));//calulcate a new position forwards of the current position
-    cam3Dz+=20*cos(radians(-xangle));
+    cam3Dx+=(int)(1.25*dt)*sin(radians(-xangle));//calulcate a new position forwards of the current position
+    cam3Dz+=(int)(1.25*dt)*cos(radians(-xangle));
   }
   if (s3D) {//if the user is trying to move backwards
-    cam3Dx-=20*sin(radians(-xangle));//calculate a new position beckwards of the current position
-    cam3Dz-=20*cos(radians(-xangle));
+    cam3Dx-=(int)(1.25*dt)*sin(radians(-xangle));//calculate a new position beckwards of the current position
+    cam3Dz-=(int)(1.25*dt)*cos(radians(-xangle));
   }
   if (a3D) {//if the user is trying to move left
-    cam3Dx+=20*cos(radians(xangle));//calculate a new position left of the current position
-    cam3Dz+=20*sin(radians(xangle));
+    cam3Dx+=(int)(1.25*dt)*cos(radians(xangle));//calculate a new position left of the current position
+    cam3Dz+=(int)(1.25*dt)*sin(radians(xangle));
   }
   if (d3D) {//if the user is trying to move right
-    cam3Dx-=20*cos(radians(xangle));//calcukate a new position right of the player
-    cam3Dz-=20*sin(radians(xangle));
+    cam3Dx-=(int)(1.25*dt)*cos(radians(xangle));//calcukate a new position right of the player
+    cam3Dz-=(int)(1.25*dt)*sin(radians(xangle));
   }
 
   //bla bla bla camera rotations. if you can not figure this out look at the simulation position function
   if (cam_left) {
-    xangle+=2;
+    xangle+=max(1,(int)(0.125*dt));
   }
   if (cam_right) {
-    xangle-=2;
+    xangle-=max(1,(int)(0.125*dt));
   }
   if (cam_up) {
-    yangle+=1;
+    yangle+=max(1,(int)(0.08*dt));
     if (yangle>=90)
       yangle=89;
   }
   if (cam_down) {
-    yangle-=1;
+    yangle-=max(1,(int)(0.08*dt));
     if (yangle<0)
       yangle=0;
   }

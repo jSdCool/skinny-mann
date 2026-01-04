@@ -90,6 +90,7 @@ void initMenuTransition(Transitions transition) {
 }
 
 ArrayList<Star> startupStars = new ArrayList<Star>();
+int lastStarAddTime = 0;
 /**Render the logo to main transition
 */
 void transition_logoToMain() {
@@ -397,8 +398,14 @@ class Star {
 /**Create new start and add them to the startup stars list
 */
 void addStars() {
-  for (int i=0; i<10; i++) {
+  if (startupStars.isEmpty()){
     startupStars.add(new Star());
+  } else {
+    int numStarsToAdd = (int)((millis() - lastStarAddTime) * 0.6); 
+    for (int i=0; i<10; i++) {
+      startupStars.add(new Star());
+    }
   }
+  lastStarAddTime = millis();
 }
 //end of menu_transitions.pde
