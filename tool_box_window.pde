@@ -1726,6 +1726,8 @@ class ToolBox extends PApplet {
     }
   }//end of keypressed
   
+  /**Processing's key released function
+  */
   void keyReleased(){
     if (levelCreator) {
       if (page.equals("selection")) {
@@ -1762,6 +1764,8 @@ class ToolBox extends PApplet {
     }
   }//end of key released
   
+  /**Processing's key typed funtion
+  */
   void keyTyped(){
     if (levelCreator) {
       if (page.equals("selection")) {

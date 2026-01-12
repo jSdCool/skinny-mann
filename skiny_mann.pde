@@ -96,11 +96,6 @@ void setup() {//seccond function called
   
 }//after this normal program execution begins with draw being called for every frame
 
-
-PApplet primaryWindow=this;
-Player players[] =new Player[10];
-ArrayList<Client> clients= new ArrayList<>();
-
 //int
 
 //button

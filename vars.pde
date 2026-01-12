@@ -1,112 +1,324 @@
 //start of vars.pde
 //this file is just a mass of global vars
+/**The shader that handles the "realistic" shadow generation
+*/
 PShader shadowShader;
+/**The depth buffer shader used for shadow generation
+*/
 PShader depthBufferShader;
-
-PGraphics shadowMap, cameraMatrixMap;
+/**The output depth buffer used for generating shadows
+*/
+PGraphics shadowMap;
+/**Used to get correct sub camera matix without rendering anything
+*/
+PGraphics cameraMatrixMap;
+/**Sub sections of the regular depth buffer shadow map
+*/
 PGraphics[] subShadowMaps = new PGraphics[4];
 
+/**A uv test image
+*/
 PImage uvTester;
+/**The startup logo
+*/
 PImage CBi;
 
+/**The coin model
+*/
 PShape coin3D;
+/**The red movement arrow from the level creator
+*/
 PShape redArrow;
+/**The green movemnt arrow from the level creaor
+*/
 PShape greenArrow;
+/**The blue movement arrow from the level creator
+*/
 PShape blueArrow;
+/**The selected movevemnt arrow from the level creator
+*/
 PShape yellowArrow;
+/**The red scaler from the level creator
+*/
 PShape redScaler;
+/**The green scaler from the level creator
+*/
 PShape greenScaler;
+/**The blue scaler from the level creator
+*/
 PShape blueScaler;
+/**The selected scaler from the level creator
+*/
 PShape yellowScaler;
+/**The level creator logo from the level creators main menu
+*/
 PShape LevelCreatorLogo;
+/**The red circle from the roatoation gismo
+*/
 PShape rotateCircleX;
+/**The Green circle from the rotation gismo
+*/
 PShape rotateCircleY;
+/**The blue curcle from the rotation gismo
+*/
 PShape rotateCircleZ;
+/**The yellow selected curcle from the roation gismo
+*/
 PShape rotateCircleHilight;
 
+/**Used to request the render thread preform an initialization of the depth buffer
+*/
 boolean requestDepthBufferInit = false ;
+/**If the raw depth buffer should be renderd to the screen
+*/
 boolean showDepthBuffer = false;
+/**If the shadow shader should render the extracted depth values instead of the regular colors
+*/
 boolean shadowShaderOutputSampledDepthInfo = false;
+/**If the game is currently in a menu
+*/
 boolean menue = true;
+/**If the game is currently in a level
+*/
 boolean inGame = false;
+/**If the player is holding the D key down
+*/
 boolean player1_moving_right = false;
+/**If the player is holding the A key down
+*/
 boolean player1_moving_left = false;
+//=================== DEV MODE HERE =================
+/**If developer debugging and shortcuts should be enabled (false in release builds)
+*/
 boolean dev_mode = true;
+/**If the player is holding down the SPACE bar
+*/
 boolean player1_jumping = false;
+/**If the player is currently dead
+*/
 boolean dead = false;
+/**If the player has completed the current level
+*/
 boolean level_complete = false;
+/**Used to request the players spawn point be reset to the current location
+*/
 boolean reset_spawn = false;
+/**If the player has recently pressed the E key
+*/
 boolean E_pressed = false;
+/**If the physics thread should continue to run
+*/
 boolean loopThread2 = true;
+/**Used to determine wether the setting menu should go back to the game or main menu on exit
+*/
 boolean prevousInGame = false;
+/**Used to request the player be moved to the location specified by the setPlayerPos{X Y Z} variables 
+*/
 boolean setPlayerPosTo = false;
+/**If the current level should render in 3D mode
+*/
 boolean e3DMode = false;
+/**Set but never tested
+*/
 boolean checkpointIn3DStage = false;
+/**If the player is pressing the W key
+*/
 boolean WPressed = false;
+/**If the player is pressing the S key
+*/
 boolean SPressed = false;
+/**If the level completed sound has been played yet at the end of the level
+*/
 boolean levelCompleteSoundPlayed = false;
+/**If currently in the tutorial
+*/
 boolean tutorialMode = false;
+/**If the current level is a UGC level
+*/
 boolean UGC_lvl = false;
+/**If the current level has been completed
+*/
 boolean levelCompatible = false;
+/**If currently editing a blueprint
+*/
 boolean editingBlueprint = false;
+/**If currently viewing a compoenent's content
+*/
 boolean viewingItemContents = false;
+/**If the selection tool is currently in use
+*/
 boolean selecting = false;
+/**If the S key is currently pressed for the 3D camera
+*/
 boolean s3D = false;
+/**If the W key is currently pressed for the 3D camera
+*/
 boolean w3D = false;
+/**If the shift key is currenly pressed for the 3D cmaera
+*/
 boolean shift3D = false;
+/**If the SPACE bar is currenly pressed for the 3D camera
+*/
 boolean space3D = false;
+/**If the D key is currenly pressed for the 3D camera
+*/
 boolean d3D = false;
+/**If the A key is currenly pressed for the 3D camera
+*/
 boolean a3D = false;
+/**If the pan camera down key is pressed
+*/
 boolean cam_down = false;
+/**If the pan camera up key is pressed
+*/
 boolean cam_up = false;
+/**If the pan camera right key is pressed
+*/
 boolean cam_right = false;
+/**If the pan camera left key is pressed
+*/
 boolean cam_left = false;
+/**If the current player is hosting the multyplayer session
+*/
 boolean isHost = false;
+/**If currenly in multyplayer
+*/
 boolean multiplayer = false;
+/**If the client is quitting the multyplayer game
+*/
 boolean clientQuitting = false;
+/**If the currently waiting for the clients in multyplayer
+*/
 boolean waitingForReady = false;
+/**If the current level has finished loading
+*/
 boolean loaded = false;
+/**If the client has reached the end of a CO OP level
+*/
 boolean reachedEnd = false;
+/**If currently editing a stage
+*/
 boolean editingStage = false;
+/**If the game should fully process physics in the level creator
+*/
 boolean simulating = false;
+/**If using the deleteing tool
+*/
 boolean deleteing = false;
+/**If using the moving player tool
+*/
 boolean moving_player = false;
+/**If grid mode is is use
+*/
 boolean grid_mode = false;
+/**If using the portal tool
+*/
 boolean drawingPortal = false;
+/**If using the blueprint tool
+*/
 boolean selectingBlueprint = false;
+/**If editing a logic board
+*/
 boolean editinglogicBoard = false;
+/**If using the connection tool
+*/
 boolean connectingLogic = false;
+/**If using the move logic tool
+*/
 boolean moveLogicComponents = false;
+/**If the current saved colors are requesting saving
+*/
 boolean saveColors = false;
+/**If currenly on the level overview page
+*/
 boolean levelOverview = false;
+/**If in the second half of the potal placement process
+*/
 boolean drawingPortal3 = false;
+/**If setting the inital level spawn
+*/
 boolean settingPlayerSpawn = false;
+/**If the level creator is currenly active
+*/
 boolean levelCreator = false;
+/**If the current draggable component is being dragged
+*/
 boolean drawing = false;
+/**Place the component that us currely active
+*/
 boolean draw = false;
+/**Delet the thing the mouse is over
+*/
 boolean delete = false;
+/**If the axis of translation is the x asis 
+*/
 boolean translateXaxis = false;
+/**If the axis of translation is the y asis 
+*/
 boolean translateYaxis = false;
+/**If the axis of translation is the z asis 
+*/
 boolean translateZaxis = false;
+/**The stage selection part of the portal placement process
+*/
 boolean drawingPortal2 = false;
+/**If on the inital logo
+*/
 boolean startup = false;
+/**If on the load level levelcreator screen
+*/
 boolean loading = false;
+/**If on the new level screen
+*/
 boolean newLevel = false;
+/**If on the new level fine screen
+*/
 boolean newFile = false;
+/**If on the create new blueprint screen
+*/
 boolean creatingNewBlueprint = false;
+/**If on the load blueprint screen
+*/
 boolean loadingBlueprint = false;
+/**If the typing cursor is curretly visable
+*/
 boolean coursor = false;
+/*If connecting logic components
+*/
 boolean connecting = false;
+/**If movinf a logic component
+*/
 boolean movingLogicComponent = false;
+/**If on the exti level creator confirm screen
+*/
 boolean exitLevelCreator = false;
+/**If the level to load was not found
+*/
 boolean levelNotFound = false;
+/**If currently animating a menu transiton 
+*/
 boolean transitioningMenu = false;
+/**If the new sound being added should be a narration
+*/
 boolean newSoundAsNarration = false;
+/**If the new blueprint to be created should be a 3D blueprint
+*/
 boolean newBlueprintIs3D = false;
+/**Unused
+*/
 boolean placingGoon = false;
+/**If the rotation tool is currenly in use
+*/
 boolean rotating = false;
+/**Used to request the set FPS be updated by the render thread
+*/
 boolean updateFPS = false;
+/**A list that gets populated with wther each UGC level is comptable with the current game version
+*/
 ArrayList<Boolean> compatibles;
+/**The current state of all coins in the current level.
+Strange this is not contined in the level, oh well
+*/
 ArrayList<Boolean> coins;
 
 PVector lightDir = new PVector();
@@ -491,6 +703,14 @@ ToolBox scr2;
 Identifier currentlyPlaceing = null;
 
 ArrayList<PropertyConfigUi.PropConfigUiFactory> propertyConfigRegistry = new ArrayList<>();
+
+
+ArrayList<Client> clients= new ArrayList<>();
+
+PApplet primaryWindow=this;
+
+Player players[] =new Player[10];
+
 
 //DO NOT EDIT BELOW THIS LINE ON THE MAIN PROJECT!
 //===================================================
