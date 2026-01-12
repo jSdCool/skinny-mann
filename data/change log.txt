@@ -2,18 +2,19 @@ if you get a trojan waring from windows defender check this link
 https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-trojans
 
 0.10.2_Early_Access
--added: crash report system
--added: frame rate setting
++added: crash report system
++added: frame rate setting
 -changed: settings version is now 6 
 -changed: decoupled various animations from the frame rate(unless FPS too high)
 -changed: increased 2D camera speed in level creator
+-fixed: new blueprints would be saved in the incorrect folder on non windows platforms
 
 0.10.1_Early_Access
 -changed: made multiplayer networking faster
 -changed: component property configuration is now modular, the select tab in the tool box will look slightly different
 -changed: editing a signs text now lets you set the number of lines as well as individually edit the content on each line. Additionally editing the signs text is now done in the modern text box system
--added: Alien entity. Moves over a limited distance. Will "see" a player that is within a certain distance and attempt to reach them. Will only attack the player in the direction it is facing.
--added: Alien entity to levels 15 and 16
++added: Alien entity. Moves over a limited distance. Will "see" a player that is within a certain distance and attempt to reach them. Will only attack the player in the direction it is facing.
++added: Alien entity to levels 15 and 16
 
 
 0.10.0_Early_Access

@@ -2212,7 +2212,7 @@ void mouseClicked() {// when you click the mouse
               editingBlueprint=true;
               camPos=-640;
               camPosY=360;
-              rootPath=System.getenv("appdata")+"/CBi-games/skinny mann level creator/blueprints";
+              rootPath= appdata + "/CBi-games/skinny mann level creator/blueprints";
               
             }//end of name was enterd
           }//end of create button
