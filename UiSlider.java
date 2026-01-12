@@ -54,11 +54,11 @@ public class UiSlider {
       button.setText("");
     }
     button.draw();//draw the underlying button
-    ui.getSource().noStroke();
-    ui.getSource().fill(strokeColor);
-    ui.getSource().rect(sliderPosX-slierWidth/2-stroke, y-sliderHeightOffset-stroke, slierWidth+stroke*2, 2*sliderHeightOffset+height+stroke*2);//draw the knob
-    ui.getSource().fill(fillColor);
-    ui.getSource().rect(sliderPosX-slierWidth/2, y-sliderHeightOffset, slierWidth, 2*sliderHeightOffset+height);
+    ui.getRender().noStroke();
+    ui.getRender().fill(strokeColor);
+    ui.getRender().rect(sliderPosX-slierWidth/2-stroke, y-sliderHeightOffset-stroke, slierWidth+stroke*2, 2*sliderHeightOffset+height+stroke*2);//draw the knob
+    ui.getRender().fill(fillColor);
+    ui.getRender().rect(sliderPosX-slierWidth/2, y-sliderHeightOffset, slierWidth, 2*sliderHeightOffset+height);
   }
   
   /**Calculate the total percent of the slider
@@ -80,6 +80,8 @@ public class UiSlider {
   }
 
   /**Process mouse clicks that may happen on this slider
+  @param mouseX The x position of the mosue
+  @param mouseY The y position of the mouse
   */
   public void mouseClicked(int mouseX, int mouseY) {
     if (button.isMouseOver(mouseX,mouseY)) {
@@ -95,6 +97,8 @@ public class UiSlider {
   }
   
   /**Process mouse draggs that may happen on this slider
+  @param mouseX The x position of the mosue
+  @param mouseY The y position of the mouse
   */
   public void mouseDragged(int mouseX, int mouseY) {
     if (button.isMouseOver(mouseX,mouseY)) {

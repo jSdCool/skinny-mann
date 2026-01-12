@@ -60,7 +60,10 @@ public class StringPropertyConfigUi extends PropertyConfigUi<String,StringProper
   @param slotId The index of the slot to display this property
   @param property The specific property that is being procesed
   @param context The context for the property configuration
+  @param mouseX The x position of the mosue
+  @param mouseY The y position of the mouse
   */
+  @Override
   public void mouseClicked(int slotId, StringProperty property, PropertyConfigEnviormentContext context, int mouseX, int mouseY){
     text.setY(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
     text.setTyping(activeSlot == slotId);
@@ -85,13 +88,16 @@ public class StringPropertyConfigUi extends PropertyConfigUi<String,StringProper
   @param slotId The index of the slot to display this property
   @param property The specific property that is being procesed
   @param context The context for the property configuration
+  @param keyCode The key that was pressed
+  @param key The char represented by the key that was pressed
   */
-  public void keyPressed(int slotId, StringProperty property, PropertyConfigEnviormentContext context){
-    System.out.println("Key pressed: "+ui.getSource().key+" "+ui.getSource().keyCode);
+  @Override
+  public void keyPressed(int slotId, StringProperty property, PropertyConfigEnviormentContext context,int keyCode,char key){
+    //System.out.println("Key pressed: "+ui.getSource().key+" "+ui.getSource().keyCode);
     text.setTyping(activeSlot == slotId);
     if(activeSlot == slotId){
       text.setContence(property.get(),cursorPos);
-      text.keyPressed();
+      text.keyPressed(keyCode,key);
       property.set(text.getContence());
       cursorPos = text.getCursorPos();
     }
@@ -101,12 +107,14 @@ public class StringPropertyConfigUi extends PropertyConfigUi<String,StringProper
   @param slotId The index of the slot to display this property
   @param property The specific property that is being procesed
   @param context The context for the property configuration
+  @param keyCode The key that was pressed
   */
-  public void keyReleased(int slotId, StringProperty property, PropertyConfigEnviormentContext context){
+  @Override
+  public void keyReleased(int slotId, StringProperty property, PropertyConfigEnviormentContext context, int keyCode){
     text.setTyping(activeSlot == slotId);
     if(activeSlot == slotId){
       text.setContence(property.get(),cursorPos);
-      text.keyReleased();
+      text.keyReleased(keyCode);
       property.set(text.getContence());
       cursorPos = text.getCursorPos();
     }
@@ -116,12 +124,14 @@ public class StringPropertyConfigUi extends PropertyConfigUi<String,StringProper
   @param slotId The index of the slot to display this property
   @param property The specific property that is being procesed
   @param context The context for the property configuration
+  @param key The char typed
   */
-  public void keyTyped(int slotId, StringProperty property, PropertyConfigEnviormentContext context){
+  @Override
+  public void keyTyped(int slotId, StringProperty property, PropertyConfigEnviormentContext context, char key){
     text.setTyping(activeSlot == slotId);
     if(activeSlot == slotId){
       text.setContence(property.get(),cursorPos);
-      text.keyTyped();
+      text.keyTyped(key);
       property.set(text.getContence());
       cursorPos = text.getCursorPos();
     }

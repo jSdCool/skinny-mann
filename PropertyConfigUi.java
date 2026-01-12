@@ -59,22 +59,26 @@ public abstract class PropertyConfigUi<R,T extends Property<R,T>>{
   @param slotId The index of the slot to display this property
   @param property The specific property that is being procesed
   @param context The context for the property configuration
+  @param keyCode The key that was pressed
+  @param key The char represented by the key pressed
   */
-  public void keyPressed(int slotId, T property, PropertyConfigEnviormentContext context){}
+  public void keyPressed(int slotId, T property, PropertyConfigEnviormentContext context,int keyCode,char key){}
   
   /**Process key released that happen while a property is being configured.
   @param slotId The index of the slot to display this property
   @param property The specific property that is being procesed
   @param context The context for the property configuration
+  @param keyCode The key that was released
   */
-  public void keyReleased(int slotId, T property, PropertyConfigEnviormentContext context){}
+  public void keyReleased(int slotId, T property, PropertyConfigEnviormentContext context, int keyCode){}
   
   /**Process key typed events that happen while a property is being configured.
   @param slotId The index of the slot to display this property
   @param property The specific property that is being procesed
   @param context The context for the property configuration
+  @param key The char that was typed
   */
-  public void keyTyped(int slotId, T property, PropertyConfigEnviormentContext context){}
+  public void keyTyped(int slotId, T property, PropertyConfigEnviormentContext context, char key){}
   
   /**A functional interface that represents the constructor for a Property config ui.<br>
   used for where the constructor is needed to be passed in for registratcion

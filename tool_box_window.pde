@@ -45,7 +45,7 @@ class ToolBox extends PApplet {
   /**Processing's setup function
   */
   void setup() {
-    toolBoxUi = new UiFrame(this,1280,720);
+    toolBoxUi = new UiFrame(g,1280,720);
     textSize(50);//set the inital text size
     //all page buttons
     colorPage=new Button(g, 50, 50, 100, 50, "colors/depth");
@@ -1709,7 +1709,7 @@ class ToolBox extends PApplet {
             }
             PropertyConfigEnviormentContext context = createPropertyConfigContext();
             for(int i=PROPERTIES_PER_PAGE*selectionPropertiesPage;i<properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage +PROPERTIES_PER_PAGE;i++){
-              properties[i].keyPressed(i%PROPERTIES_PER_PAGE, context);
+              properties[i].keyPressed(i%PROPERTIES_PER_PAGE, context, keyCode, key);
             }
           }
         }//end of something is selected
@@ -1754,7 +1754,7 @@ class ToolBox extends PApplet {
            
             PropertyConfigEnviormentContext context = createPropertyConfigContext();
             for(int i = PROPERTIES_PER_PAGE * selectionPropertiesPage; i < properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage + PROPERTIES_PER_PAGE;i++){
-              properties[i].keyReleased(i%PROPERTIES_PER_PAGE, context);
+              properties[i].keyReleased(i%PROPERTIES_PER_PAGE, context, keyCode);
             }
           }
         }
@@ -1789,7 +1789,7 @@ class ToolBox extends PApplet {
             }
             PropertyConfigEnviormentContext context = createPropertyConfigContext();
             for(int i = PROPERTIES_PER_PAGE * selectionPropertiesPage; i < properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage + PROPERTIES_PER_PAGE; i++){
-              properties[i].keyTyped(i%PROPERTIES_PER_PAGE, context);
+              properties[i].keyTyped(i%PROPERTIES_PER_PAGE, context, key);
             }
           }
         }

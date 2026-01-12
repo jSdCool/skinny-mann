@@ -2,7 +2,7 @@ import processing.core.*;
 /**A positional frame to manage positioning and scaling of user interfaces so they are allways centerd with an unchanging aspsct ration that will allways fit to the window
 */
 public class UiFrame {
-  private PApplet source;
+  private PGraphics render;
   private int baseWidth, baseHeight;
   private float topX, topY, centerX, centerY, scale;
   
@@ -11,13 +11,13 @@ public class UiFrame {
   @param baseWidth The base pixel width to scale widths from
   @param baseHeight The base pixel height to scale heights from
   */
-  public UiFrame(PApplet s, int baseWidth, int baseHeight) {
-    source=s;
+  public UiFrame(PGraphics render, int baseWidth, int baseHeight) {
+    this.render=render;
     this.baseWidth=baseWidth;
     this.baseHeight=baseHeight;
-    centerX=source.width/2;
-    centerY=source.height/2;
-    scale=PApplet.min((float)source.width/baseWidth, (float)source.height/baseHeight);//calculate the UI scale
+    centerX=render.width/2;
+    centerY=render.height/2;
+    scale=PApplet.min((float)render.width/baseWidth, (float)render.height/baseHeight);//calculate the UI scale
     topX=centerX-baseWidth*scale/2;
     topY=centerY-baseHeight*scale/2;
   }
@@ -25,9 +25,9 @@ public class UiFrame {
   /**Recalculate the scale after a change in the parent window size
   */
   public void reScale() {
-    centerX=source.width/2;
-    centerY=source.height/2;
-    scale=PApplet.min((float)source.width/baseWidth, (float)source.height/baseHeight);
+    centerX=render.width/2;
+    centerY=render.height/2;
+    scale=PApplet.min((float)render.width/baseWidth, (float)render.height/baseHeight);
     topX=centerX-baseWidth*scale/2;
     topY=centerY-baseHeight*scale/2;
   }
@@ -64,7 +64,7 @@ public class UiFrame {
   /**Get the surface to render to
   @return the surface to rener to
   */
-  public PApplet getSource() {
-    return source;
+  public PGraphics getRender() {
+    return render;
   }
 }

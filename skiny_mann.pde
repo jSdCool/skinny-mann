@@ -64,7 +64,7 @@ void setup() {//seccond function called
       Scale = settings.getScale();//if not in fullscreen then load the scale from settings
     }
     //cretae the Ui frame
-    ui=new UiFrame(this, 1280, 720);
+    ui=new UiFrame(g, 1280, 720);
     
     println(height+" "+Scale);//debung info
     println("loading texture for start screen");
@@ -2416,7 +2416,7 @@ void keyPressed() {// when a key is pressed
         }
         
         if (settingsMenue.equals("outher")) {//if the setting tab is other
-          defaultAuthorNameTextBox.keyPressed();//process the text box
+          defaultAuthorNameTextBox.keyPressed(keyCode,key);//process the text box
           if(!defaultAuthorNameTextBox.getContence().equals(defaultAuthor)){//change the default author if it has changed
             String newName =  defaultAuthorNameTextBox.getContence();
             
@@ -2450,8 +2450,8 @@ void keyPressed() {// when a key is pressed
           Menue="main";
         }
         //handle typing in the text boxes
-        multyPlayerNameTextBox.keyPressed();
-        multyPlayerPortTextBox.keyPressed();
+        multyPlayerNameTextBox.keyPressed(keyCode,key);
+        multyPlayerPortTextBox.keyPressed(keyCode,key);
       }
       
       if (Menue.equals("start join")) {//if on the setting up joining menu
@@ -2460,9 +2460,9 @@ void keyPressed() {// when a key is pressed
           Menue="main";
         }
         //hanlde typing in the text boxes
-        multyPlayerNameTextBox.keyPressed();
-        multyPlayerPortTextBox.keyPressed();
-        multyPlayerIpTextBox.keyPressed();
+        multyPlayerNameTextBox.keyPressed(keyCode,key);
+        multyPlayerPortTextBox.keyPressed(keyCode,key);
+        multyPlayerIpTextBox.keyPressed(keyCode,key);
       }
     }
     
@@ -2481,12 +2481,12 @@ void keyPressed() {// when a key is pressed
       }
       
       if(loading || newLevel || creatingNewBlueprint || loadingBlueprint){//if on any of the loading / new setup screens
-        lcEnterLevelTextBox.keyPressed();//handle typing in that text box
+        lcEnterLevelTextBox.keyPressed(keyCode,key);//handle typing in that text box
       }
 
       
       if (newFile) {//if new file
-        lcNewFileTextBox.keyPressed();//hanle typing in that text box
+        lcNewFileTextBox.keyPressed(keyCode,key);//hanle typing in that text box
       }
 
       if (startup) {//if on the main menue
@@ -2611,11 +2611,11 @@ void keyReleased() {//when you release a key
 
     if (levelCreator) {//when in the level creator
       if(loading || newLevel || creatingNewBlueprint || loadingBlueprint){//when on one of the new / loading screens
-        lcEnterLevelTextBox.keyReleased();//process key releases for that text box
+        lcEnterLevelTextBox.keyReleased(keyCode);//process key releases for that text box
       }
       
       if(newFile){//if adding something new to the stage
-        lcNewFileTextBox.keyReleased();//process key release for that text box
+        lcNewFileTextBox.keyReleased(keyCode);//process key release for that text box
       }
       if (!simulating || editinglogicBoard || e3DMode) {//this seems to be for the logic boards as the pervous section hanldes all insatces of being in the stage editor
         if (keyCode==37) {//if LEFT ARROW released
@@ -2657,19 +2657,19 @@ void keyReleased() {//when you release a key
     if(menue){//if in a menu
       if (Menue.equals("settings")) {//if that menu is settings
         if (settingsMenue.equals("outher")) {//if the setting tab is other
-          defaultAuthorNameTextBox.keyReleased();//process key releases for the default author text box
+          defaultAuthorNameTextBox.keyReleased(keyCode);//process key releases for the default author text box
         }
       }
       //process key releases on the text boxes for the start multyplayer screeness
       if (Menue.equals("start host")) {
-        multyPlayerNameTextBox.keyReleased();
-        multyPlayerPortTextBox.keyReleased();
+        multyPlayerNameTextBox.keyReleased(keyCode);
+        multyPlayerPortTextBox.keyReleased(keyCode);
       }
       
       if (Menue.equals("start join")) {
-        multyPlayerNameTextBox.keyReleased();
-        multyPlayerPortTextBox.keyReleased();
-        multyPlayerIpTextBox.keyReleased();
+        multyPlayerNameTextBox.keyReleased(keyCode);
+        multyPlayerPortTextBox.keyReleased(keyCode);
+        multyPlayerIpTextBox.keyReleased(keyCode);
       }
     }
   } catch(Throwable e) {//if an error occors
@@ -2684,7 +2684,7 @@ void keyTyped(){
   if(menue){//if in a menu
     if (Menue.equals("settings")) {//if that menu is settings
       if (settingsMenue.equals("outher")) {//if the setting tab is other
-        defaultAuthorNameTextBox.keyTyped();//process key typing for the default euthor text box
+        defaultAuthorNameTextBox.keyTyped(key);//process key typing for the default euthor text box
         if(!defaultAuthorNameTextBox.getContence().equals(defaultAuthor)){//save the new name if a change was made
           String newName =  defaultAuthorNameTextBox.getContence();
           
@@ -2700,23 +2700,23 @@ void keyTyped(){
     }
     //process typing on the text boxes for the start multyplayer screens
     if (Menue.equals("start host")) {
-      multyPlayerNameTextBox.keyTyped();
-      multyPlayerPortTextBox.keyTyped();
+      multyPlayerNameTextBox.keyTyped(key);
+      multyPlayerPortTextBox.keyTyped(key);
     }
     if (Menue.equals("start join")) {
-      multyPlayerNameTextBox.keyTyped();
-      multyPlayerPortTextBox.keyTyped();
-      multyPlayerIpTextBox.keyTyped();
+      multyPlayerNameTextBox.keyTyped(key);
+      multyPlayerPortTextBox.keyTyped(key);
+      multyPlayerIpTextBox.keyTyped(key);
     }
   }
   
   if(levelCreator){//if in the level creator
     if(loading || newLevel || creatingNewBlueprint || loadingBlueprint){//if on the new / load screens
-      lcEnterLevelTextBox.keyTyped();//hanld typing for that text box
+      lcEnterLevelTextBox.keyTyped(key);//hanld typing for that text box
     }
     
     if(newFile){//if adding a new file to a level
-      lcNewFileTextBox.keyTyped();//hanle typing for that text box
+      lcNewFileTextBox.keyTyped(key);//hanle typing for that text box
     }
   }
 }

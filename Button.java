@@ -1,4 +1,4 @@
-//button class V1.2.0
+//button class V1.3t.0
 
 import processing.core.*;
 import processing.data.*;
@@ -139,6 +139,8 @@ public class Button implements Serialization {
   }
 
   /**Render the hover text if the mouse is over the button and hover text is configured
+  @param mouseX The x position of the mosue
+  @param mouseY The y position of the mouse
   @return this
   */
   public Button drawHoverText(int mouseX, int mouseY) {
@@ -174,6 +176,8 @@ public class Button implements Serialization {
     return text;
   }
   /**Test if the mouse is over the button
+  @param mouseX The x position of the mosue
+  @param mouseY The y position of the mouse
   @return true if the mouse is over the button
   */
   public boolean isMouseOver(int mouseX, int mouseY) {

@@ -97,27 +97,31 @@ public abstract class Property<T, P extends Property<T,P>>{
   Called by the tool box window, do not call
   @param slotId The index of the slot to display this property
   @param context The context for the property configuration
+  @param keyCode The key that was pressed
+  @param key The char represented by the key that was pressed
   */
-  public final void keyPressed(int slotId, PropertyConfigEnviormentContext context){
-    getConfigUi().keyPressed(slotId,self(), context);
+  public final void keyPressed(int slotId, PropertyConfigEnviormentContext context, int keyCode, char key){
+    getConfigUi().keyPressed(slotId,self(), context, keyCode, key);
   }
   
   /**Process key released that happen while a property is being configured..<br>
   Called by the tool box window, do not call
   @param slotId The index of the slot to display this property
   @param context The context for the property configuration
+  @param keyCode The key that was released
   */
-  public final void keyReleased(int slotId, PropertyConfigEnviormentContext context){
-    getConfigUi().keyReleased(slotId,self(), context);
+  public final void keyReleased(int slotId, PropertyConfigEnviormentContext context, int keyCode){
+    getConfigUi().keyReleased(slotId,self(), context, keyCode);
   }
   
   /**Process key typed events that happen while a property is being configured..<br>
   Called by the tool box window, do not call
   @param slotId The index of the slot to display this property
   @param context The context for the property configuration
+  @param key The char that was typed
   */
-  public final void keyTyped(int slotId, PropertyConfigEnviormentContext context){
-    getConfigUi().keyTyped(slotId,self(), context);
+  public final void keyTyped(int slotId, PropertyConfigEnviormentContext context, char key){
+    getConfigUi().keyTyped(slotId,self(), context, key);
   }
   
   /**Return this but cast to whatever type P is because generics can be a bit of a bith

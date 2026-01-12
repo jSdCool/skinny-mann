@@ -60,99 +60,100 @@ public class UiTextBox{
     //ui.getSource().clip(x,y,width,height);//this breaks the text apperently
     //if there is no text
     if(contence.isEmpty() && ! typing){
-      ui.getSource().fill(placeHolderColor);
-      ui.getSource().textAlign(PApplet.LEFT,PApplet.CENTER);
-      ui.getSource().textSize(textSize);
-      ui.getSource().text(placeHolder,x,y+height/2);
+      ui.getRender().fill(placeHolderColor);
+      ui.getRender().textAlign(PApplet.LEFT,PApplet.CENTER);
+      ui.getRender().textSize(textSize);
+      ui.getRender().text(placeHolder,x,y+height/2);
     }else{
       //if there is entered text
-      ui.getSource().fill(textColor);
-      ui.getSource().textAlign(PApplet.LEFT,PApplet.CENTER);
-      ui.getSource().textSize(textSize);
+      ui.getRender().fill(textColor);
+      ui.getRender().textAlign(PApplet.LEFT,PApplet.CENTER);
+      ui.getRender().textSize(textSize);
       
-      float maxTextWidth = width - ui.getSource().textWidth("|");//l;ave space for the cursor on the end
+      float maxTextWidth = width - ui.getRender().textWidth("|");//l;ave space for the cursor on the end
       if(typing){
-        boolean showCursor = ui.getSource().millis() % 1000 > 500;//should the cursor be shown
-        float cursorOffset = ui.getSource().textWidth(contence.substring(0,cursorPos));//figure out where the cursor should be
+        int time = (int)(System.nanoTime() / 1000000);//get the accurate time from the system becasue we can not reasonably get it from the sketch
+        boolean showCursor = time % 1000 > 500;//should the cursor be shown
+        float cursorOffset = ui.getRender().textWidth(contence.substring(0,cursorPos));//figure out where the cursor should be
         if(cursorOffset>maxTextWidth){//if the width of the text extends outside of the box, then move the text so you can see what your typing
         
           for(int i=0;i<cursorPos;i++){
-            float tw = ui.getSource().textWidth(contence.substring(i,cursorPos));
+            float tw = ui.getRender().textWidth(contence.substring(i,cursorPos));
             if( tw < maxTextWidth){//
-               ui.getSource().text(contence.substring(i,Math.min(cursorPos+1,contence.length())),x+(maxTextWidth-tw),y+height/2);
+               ui.getRender().text(contence.substring(i,Math.min(cursorPos+1,contence.length())),x+(maxTextWidth-tw),y+height/2);
                break;
             }
           }
           
           if(showCursor){
-            ui.getSource().rect(x+maxTextWidth,y+height*0.1f,2*ui.scale(),height*0.8f);//draw the cursor
+            ui.getRender().rect(x+maxTextWidth,y+height*0.1f,2*ui.scale(),height*0.8f);//draw the cursor
           }
             
           if(highLighting){//if text is being hilighted
-            ui.getSource().fill(highLightColor);//redner the visable section of the hilight
-            float highX = x + ui.getSource().textWidth(contence.substring(0,highLightStart))-cursorOffset+maxTextWidth;
+            ui.getRender().fill(highLightColor);//redner the visable section of the hilight
+            float highX = x + ui.getRender().textWidth(contence.substring(0,highLightStart))-cursorOffset+maxTextWidth;
             highX = Math.max(x,highX);
-            float highWidth = ui.getSource().textWidth(contence.substring(highLightStart,highLightEnd));
+            float highWidth = ui.getRender().textWidth(contence.substring(highLightStart,highLightEnd));
             if( (highX - x +  highWidth) > width){
               highWidth = width - (highX - x);
             }
-            ui.getSource().rect(highX, y+height*0.1f, highWidth,height*0.8f);
+            ui.getRender().rect(highX, y+height*0.1f, highWidth,height*0.8f);
           }
         }else{//if the width of the text with the cursor does not extend outside of the text box
           
-          if(ui.getSource().textWidth(contence)> maxTextWidth){
+          if(ui.getRender().textWidth(contence)> maxTextWidth){
             //if the text is longer then the width of the box figure out how much can be rednerd
             //verry ineffshent
             boolean rednerd = false;
             for(int i=0;i<contence.length();i++){
-              if(ui.getSource().textWidth(contence.substring(0,i)) > maxTextWidth){
-                ui.getSource().text(contence.substring(0,i-1),x,y+height/2);
+              if(ui.getRender().textWidth(contence.substring(0,i)) > maxTextWidth){
+                ui.getRender().text(contence.substring(0,i-1),x,y+height/2);
                 rednerd = true;
                 break;
               }
             }
             //if the edge case of the loop not rendering it happens, then just render the whole thing
             if(!rednerd){
-              ui.getSource().text(contence,x,y+height/2);
+              ui.getRender().text(contence,x,y+height/2);
             }
           }else{
-            ui.getSource().text(contence,x,y+height/2);
+            ui.getRender().text(contence,x,y+height/2);
           }
           
           
           if(showCursor){
-            ui.getSource().rect(x+cursorOffset,y+height*0.1f,2*ui.scale(),height*0.8f);//cursor
+            ui.getRender().rect(x+cursorOffset,y+height*0.1f,2*ui.scale(),height*0.8f);//cursor
           }
           if(highLighting){
-            ui.getSource().fill(highLightColor);
-            float highX = x + ui.getSource().textWidth(contence.substring(0,highLightStart));
-            float highWidth = ui.getSource().textWidth(contence.substring(highLightStart,highLightEnd));
+            ui.getRender().fill(highLightColor);
+            float highX = x + ui.getRender().textWidth(contence.substring(0,highLightStart));
+            float highWidth = ui.getRender().textWidth(contence.substring(highLightStart,highLightEnd));
             if( (highX - x +  highWidth) > width){
               highWidth = width - (highX - x);
             }
-            ui.getSource().rect(highX, y+height*0.1f, highWidth,height*0.8f);
+            ui.getRender().rect(highX, y+height*0.1f, highWidth,height*0.8f);
           }
         }
       }else{
         //only reder text inside of the box
-        if(ui.getSource().textWidth(contence)> maxTextWidth){
+        if(ui.getRender().textWidth(contence)> maxTextWidth){
           //if the text is longer then the width of the box figure out how much can be rednerd
           //verry ineffshent
           boolean rednerd = false;
           for(int i=0;i<contence.length();i++){
-            if(ui.getSource().textWidth(contence.substring(0,i)) > maxTextWidth){
-              ui.getSource().text(contence.substring(0,i-1),x,y+height/2);
+            if(ui.getRender().textWidth(contence.substring(0,i)) > maxTextWidth){
+              ui.getRender().text(contence.substring(0,i-1),x,y+height/2);
               rednerd = true;
               break;
             }
           }
           //if the edge case of the loop not rendering it happens, then just render the whole thing
           if(!rednerd){
-            ui.getSource().text(contence,x,y+height/2);
+            ui.getRender().text(contence,x,y+height/2);
           }
         }else{
           //if the text is shorter then the width of the box just render the next
-          ui.getSource().text(contence,x,y+height/2);
+          ui.getRender().text(contence,x,y+height/2);
         }
       }
     }
@@ -160,17 +161,19 @@ public class UiTextBox{
     //ui.getSource().noClip();
   }
   /**Process mouse clicks that may or may not happen on this text box
+  @param mouseX The x position of the mosue
+  @param mouseY The y position of the mouse
   */
   public void mouseClicked(int mouseX, int mouseY){
     if(button.isMouseOver(mouseX,mouseY)){
       
       float relMousePos = mouseX - x;
-      ui.getSource().textSize(textSize);
-      float maxTextWidth = width - ui.getSource().textWidth("|");
-      float cursorOffset = ui.getSource().textWidth(contence.substring(0,cursorPos));
+      ui.getRender().textSize(textSize);
+      float maxTextWidth = width - ui.getRender().textWidth("|");
+      float cursorOffset = ui.getRender().textWidth(contence.substring(0,cursorPos));
       if(typing && cursorOffset>maxTextWidth){
         for(int i=0;i<contence.length();i++){
-          if(ui.getSource().textWidth(contence.substring(0,i))-cursorOffset+maxTextWidth>=relMousePos){
+          if(ui.getRender().textWidth(contence.substring(0,i))-cursorOffset+maxTextWidth>=relMousePos){
             cursorPos = i -1;
             break;
           }
@@ -178,7 +181,7 @@ public class UiTextBox{
       }else{
         cursorPos = contence.length();
         for(int i=0;i<contence.length();i++){
-          if(ui.getSource().textWidth(contence.substring(0,i))>=relMousePos){
+          if(ui.getRender().textWidth(contence.substring(0,i))>=relMousePos){
             cursorPos = i -1;
             break;
           }
@@ -195,11 +198,11 @@ public class UiTextBox{
   }
   
   /**Process key pressing input
+  @param keyCode The code for the key pressed
+  @param key The char represented by the key pressed
   */
-  public void keyPressed(){
+  public void keyPressed(int keyCode, char key){
     if(typing){
-      int keyCode = ui.getSource().keyCode;
-      char key =  ui.getSource().key;
       if(keyCode == PApplet.LEFT && cursorPos > 0){//if the left arrow button is pressed and the cursor can be moved left
         cursorPos--;
         //hilight stuff
@@ -323,10 +326,10 @@ public class UiTextBox{
   }
   
   /**Process key releasing input
+  @param keyCode The key that was released
   */
-  public void keyReleased(){
+  public void keyReleased(int keyCode){
     if(typing){
-      int keyCode = ui.getSource().keyCode;
       if(keyCode == PApplet.SHIFT){// if shift
         shiftPressed = false;
       }
@@ -337,10 +340,10 @@ public class UiTextBox{
   }
   
   /**When a visable character (and space) are pressed
+  @param key The char typed
   */
-  public void keyTyped(){
+  public void keyTyped(char key){
     if(typing){//if the text box is active
-      char key =  ui.getSource().key;
       //System.out.println(key +" "+ (int)key);
       if(controlPressed){//if ctrl is pressed then 
         return;//no typing

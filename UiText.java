@@ -36,9 +36,9 @@ public class UiText {
       pScale=ui.scale();
       reScale();
     }
-    ui.getSource().textSize(size);
-    ui.getSource().textAlign(alignX, alignY);
-    ui.getSource().text(text, x, y);
+    ui.getRender().textSize(size);
+    ui.getRender().textAlign(alignX, alignY);
+    ui.getRender().text(text, x, y);
   }
 
   /**Set the text of this text
