@@ -61,7 +61,7 @@ public class StringPropertyConfigUi extends PropertyConfigUi<String,StringProper
   @param property The specific property that is being procesed
   @param context The context for the property configuration
   */
-  public void mouseClicked(int slotId, StringProperty property, PropertyConfigEnviormentContext context){
+  public void mouseClicked(int slotId, StringProperty property, PropertyConfigEnviormentContext context, int mouseX, int mouseY){
     text.setY(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
     text.setTyping(activeSlot == slotId);
     if(activeSlot == slotId){
@@ -69,7 +69,7 @@ public class StringPropertyConfigUi extends PropertyConfigUi<String,StringProper
     } else {
       text.setContence(property.get());
     }
-    text.mouseClicked();
+    text.mouseClicked(mouseX,mouseY);
     
     if(activeSlot == slotId && !text.isTyping()){
       activeSlot = -1;

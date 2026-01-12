@@ -82,12 +82,12 @@ public class GroupPropertyConfigUi extends PropertyConfigUi<Integer, IntegerProp
   @param property The specific property that is being procesed
   @param context The context for the property configuration
   */
-  public void mouseClicked(int slotId, IntegerProperty property, PropertyConfigEnviormentContext context){
+  public void mouseClicked(int slotId, IntegerProperty property, PropertyConfigEnviormentContext context, int mouseX, int mouseY){
     int value = property.get();
     if(value > 0){
       prevVar.setIy(START_CONFIG_Y+25+SLOT_HEIGHT*slotId);
       prevVar.reScale();
-      if(prevVar.isMouseOver()){
+      if(prevVar.isMouseOver(mouseX,mouseY)){
         property.set(value-1);
       }
     }
@@ -95,7 +95,7 @@ public class GroupPropertyConfigUi extends PropertyConfigUi<Integer, IntegerProp
     if(value < context.getGroupNames().length-1){
       nextvar.setIy(START_CONFIG_Y+25+SLOT_HEIGHT*slotId);
       nextvar.reScale();
-      if(nextvar.isMouseOver()){
+      if(nextvar.isMouseOver(mouseX,mouseY)){
         property.set(value+1);
       }
     }

@@ -161,10 +161,10 @@ public class UiTextBox{
   }
   /**Process mouse clicks that may or may not happen on this text box
   */
-  public void mouseClicked(){
-    if(button.isMouseOver()){
+  public void mouseClicked(int mouseX, int mouseY){
+    if(button.isMouseOver(mouseX,mouseY)){
       
-      float relMousePos = ui.getSource().mouseX - x;
+      float relMousePos = mouseX - x;
       ui.getSource().textSize(textSize);
       float maxTextWidth = width - ui.getSource().textWidth("|");
       float cursorOffset = ui.getSource().textWidth(contence.substring(0,cursorPos));

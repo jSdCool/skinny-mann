@@ -75,7 +75,7 @@ public class Interdimentional_Portal extends StageComponent {
     Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0, 0);
     source.drawPortal(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*1,render);
     //if the player is colliding with the portal
-    if (source.collisionDetection.collide2D(playerHitBox, Collider2D.createRectHitbox(x-25, y-50, 50, 100))) {
+    if (CollisionDetection.collide2D(playerHitBox, Collider2D.createRectHitbox(x-25, y-50, 50, 100))) {
       //display the "Press E" text
       render.fill(255);
       render.textSize(source.Scale*20);
@@ -123,7 +123,7 @@ public class Interdimentional_Portal extends StageComponent {
     render.translate(0, 0, z);
     source.drawPortal((x+group.xOffset), (y+group.yOffset), 1,render);
     render.translate(0, 0, -z);
-    if (source.collisionDetection.collide3D(playerHitbox, Collider3D.createBoxHitBox(x-25, y-50, z-20, 50, 100, 20))) {
+    if (CollisionDetection.collide3D(playerHitbox, Collider3D.createBoxHitBox(x-25, y-50, z-20, 50, 100, 20))) {
       render.fill(255);
       render.textSize(20);
       source.displayText="Press E";

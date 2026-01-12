@@ -39,21 +39,21 @@ public abstract class PropertyConfigUi<R,T extends Property<R,T>>{
   @param property The specific property that is being procesed
   @param context The context for the property configuration
   */
-  public abstract void mouseClicked(int slotId, T property, PropertyConfigEnviormentContext context);
+  public abstract void mouseClicked(int slotId, T property, PropertyConfigEnviormentContext context, int mouseX, int mouseY);
   
   /**Process mouse pressed events that happen while a property is being configured.
   @param slotId The index of the slot to display this property
   @param property The specific property that is being procesed
   @param context The context for the property configuration
   */
-  public void mousePressed(int slotId, T property, PropertyConfigEnviormentContext context){}
+  public void mousePressed(int slotId, T property, PropertyConfigEnviormentContext context, int mouseX, int mouseY){}
   
   /**Process mouse released that happen while a property is being configured.
   @param slotId The index of the slot to display this property
   @param property The specific property that is being procesed
   @param context The context for the property configuration
   */
-  public void mouseReleased(int slotId, T property, PropertyConfigEnviormentContext context){}
+  public void mouseReleased(int slotId, T property, PropertyConfigEnviormentContext context, int mouseX,int mouseY){}
   
   /**Process key pressed events that happen while a property is being configured.
   @param slotId The index of the slot to display this property

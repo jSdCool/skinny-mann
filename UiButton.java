@@ -12,7 +12,7 @@ public class UiButton extends Button {
   @param DY The base height of the button
   */
   UiButton(UiFrame ui, float X, float Y, float DX, float DY) {
-    super(ui.getSource(), ui.topX()+X*ui.scale(), ui.topY()+Y*ui.scale(), DX*ui.scale(), DY*ui.scale());
+    super(ui.getSource().g, ui.topX()+X*ui.scale(), ui.topY()+Y*ui.scale(), DX*ui.scale(), DY*ui.scale());
     this.ui=ui;
     pScale=ui.scale();
     iX=X;
@@ -29,7 +29,7 @@ public class UiButton extends Button {
   @param Text the text on the button
   */
   UiButton(UiFrame ui, float X, float Y, float DX, float DY, String Text) {
-    super(ui.getSource(), ui.topX()+X*ui.scale(), ui.topY()+Y*ui.scale(), DX*ui.scale(), DY*ui.scale(), Text);
+    super(ui.getSource().g, ui.topX()+X*ui.scale(), ui.topY()+Y*ui.scale(), DX*ui.scale(), DY*ui.scale(), Text);
     this.ui=ui;
     pScale=ui.scale();
     iX=X;
@@ -47,7 +47,7 @@ public class UiButton extends Button {
   @param c2 The outline color of the button
   */
   UiButton(UiFrame ui, float X, float Y, float DX, float DY, int c1, int c2) {
-    super(ui.getSource(), ui.topX()+X*ui.scale(), ui.topY()+Y*ui.scale(), DX*ui.scale(), DY*ui.scale(), c1, c2);
+    super(ui.getSource().g, ui.topX()+X*ui.scale(), ui.topY()+Y*ui.scale(), DX*ui.scale(), DY*ui.scale(), c1, c2);
     this.ui=ui;
     pScale=ui.scale();
     iX=X;
@@ -66,7 +66,7 @@ public class UiButton extends Button {
   @param c2 The outline color of the button
   */
   UiButton(UiFrame ui, float X, float Y, float DX, float DY, String Text, int c1, int c2) {
-    super(ui.getSource(), ui.topX()+X*ui.scale(), ui.topY()+Y*ui.scale(), DX*ui.scale(), DY*ui.scale(), Text, c1, c2);
+    super(ui.getSource().g, ui.topX()+X*ui.scale(), ui.topY()+Y*ui.scale(), DX*ui.scale(), DY*ui.scale(), Text, c1, c2);
     this.ui=ui;
     pScale=ui.scale();
     iX=X;
@@ -108,12 +108,13 @@ public class UiButton extends Button {
   /**Test if the mouse is over the button
   @return true if the mouse is over the button
   */
-  public boolean isMouseOver() {
+  @Override
+  public boolean isMouseOver(int mouseX, int mouseY) {
     if (ui.scale()!=pScale) {//if the scale has changed then recalculate the positions for everything
       pScale=ui.scale();
       reScale();
     }
-    return super.isMouseOver();
+    return super.isMouseOver(mouseX,mouseY);
   }
   
   /**Set the inital unscaled Y posion of this butotn. Does not rescale the acutal y value

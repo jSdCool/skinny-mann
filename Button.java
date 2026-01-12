@@ -10,7 +10,7 @@ public class Button implements Serialization {
   private int fColor=255, sColor=-5592405, textcolor=0, htFill=200, htStroke=0, htColor=0;
   private String text="", hoverText="";
   private float textScaleFactor=2.903f, strokeWeight=3;
-  private transient PApplet window;
+  private transient PGraphics render;
   /**Create a button at the given position with the given size
   @param window The window this button will be renderd on
   @param X The upper left x position of the button
@@ -18,8 +18,8 @@ public class Button implements Serialization {
   @param DX The width of the button
   @param DY The height of the button
   */
-  public Button(PApplet window, float X, float Y, float DX, float DY) {
-    this.window=window;
+  public Button(PGraphics render, float X, float Y, float DX, float DY) {
+    this.render = render;
     x=X;
     y=Y;
     lengthX=DX;
@@ -35,8 +35,8 @@ public class Button implements Serialization {
   @param DY The height of the button
   @param Text the text on the button
   */
-  public Button(PApplet window, float X, float Y, float DX, float DY, String Text) {
-    this.window=window;
+  public Button(PGraphics render, float X, float Y, float DX, float DY, String Text) {
+    this.render = render;
     x=X;
     y=Y;
     lengthX=DX;
@@ -54,8 +54,8 @@ public class Button implements Serialization {
   @param c1 The fill color of the button
   @param c2 The outline color of the button
   */
-  public Button(PApplet window, float X, float Y, float DX, float DY, int c1, int c2) {
-    this.window=window;
+  public Button(PGraphics render, float X, float Y, float DX, float DY, int c1, int c2) {
+    this.render = render;
     x=X;
     y=Y;
     lengthX=DX;
@@ -75,8 +75,8 @@ public class Button implements Serialization {
   @param c1 The fill color of the button
   @param c2 The outline color of the button
   */
-  public Button(PApplet window, float X, float Y, float DX, float DY, String Text, int c1, int c2) {
-    this.window=window;
+  public Button(PGraphics render, float X, float Y, float DX, float DY, String Text, int c1, int c2) {
+    this.render = render;
     x=X;
     y=Y;
     lengthX=DX;
@@ -112,8 +112,8 @@ public class Button implements Serialization {
   */
   void findTextScale() {
     for (int i=1; i<300; i++) {
-      window.textSize(i);
-      if (window.textWidth(text)>lengthX||window.textAscent()+window.textDescent()>lengthY) {
+      render.textSize(i);
+      if (render.textWidth(text)>lengthX||render.textAscent()+render.textDescent()>lengthY) {
         textScaleFactor=i-1;
         break;
       }
@@ -124,16 +124,16 @@ public class Button implements Serialization {
   @return this
   */
   public Button draw() {
-    window.strokeWeight(0);
-    window.fill(sColor);
-    window.rect(x-strokeWeight, y-strokeWeight, lengthX+strokeWeight*2, lengthY+strokeWeight*2);
-    window.fill(fColor);
-    window.rect(x, y, lengthX, lengthY);
-    window.fill(textcolor);
-    window.textAlign(window.CENTER, window.CENTER);
+    render.strokeWeight(0);
+    render.fill(sColor);
+    render.rect(x-strokeWeight, y-strokeWeight, lengthX+strokeWeight*2, lengthY+strokeWeight*2);
+    render.fill(fColor);
+    render.rect(x, y, lengthX, lengthY);
+    render.fill(textcolor);
+    render.textAlign(PConstants.CENTER, PConstants.CENTER);
     if (!text.equals("")) {
-      window.textSize(textScaleFactor);
-      window.text(text, lengthX/2+x, lengthY/2+y);
+      render.textSize(textScaleFactor);
+      render.text(text, lengthX/2+x, lengthY/2+y);
     }
     return this;
   }
@@ -141,19 +141,19 @@ public class Button implements Serialization {
   /**Render the hover text if the mouse is over the button and hover text is configured
   @return this
   */
-  public Button drawHoverText() {
-    if (isMouseOver()) {
-      window.textAlign(window.LEFT, window.BOTTOM);
-      window.strokeWeight(0);
-      window.fill(htStroke);
-      window.textSize(15);
+  public Button drawHoverText(int mouseX, int mouseY) {
+    if (isMouseOver(mouseX,mouseY)) {
+      render.textAlign(PConstants.LEFT, PConstants.BOTTOM);
+      render.strokeWeight(0);
+      render.fill(htStroke);
+      render.textSize(15);
       //the box behind the text
-      window.rect(window.mouseX-6, window.mouseY-15, window.textWidth(hoverText)+12, 20);
-      window.fill(htFill);
-      window.rect(window.mouseX-4, window.mouseY-13, window.textWidth(hoverText)+8, 16);
-      window.fill(htColor);
+      render.rect(mouseX-6, mouseY-15, render.textWidth(hoverText)+12, 20);
+      render.fill(htFill);
+      render.rect(mouseX-4, mouseY-13, render.textWidth(hoverText)+8, 16);
+      render.fill(htColor);
       //the text
-      window.text(hoverText, window.mouseX, window.mouseY+5);
+      render.text(hoverText, mouseX, mouseY+5);
     }
     return this;
   }
@@ -176,8 +176,8 @@ public class Button implements Serialization {
   /**Test if the mouse is over the button
   @return true if the mouse is over the button
   */
-  public boolean isMouseOver() {
-    return window.mouseX>=x&&window.mouseX<=x+lengthX&&window.mouseY>=y&&window.mouseY<=y+lengthY;
+  public boolean isMouseOver(int mouseX, int mouseY) {
+    return mouseX >= x && mouseX <= x + lengthX && mouseY >= y && mouseY <= y + lengthY;
   }
   /**Set the colors of this button
   @param c1 The new fill color

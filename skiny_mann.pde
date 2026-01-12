@@ -710,7 +710,7 @@ void draw() {// the function that is called every frame
               setMainStage.draw();//draw set main stage button
               fill(255, 0, 0);
               quad(1030*Scale, 16*Scale, 1010*Scale, 40*Scale, 1030*Scale, 66*Scale, 1050*Scale, 40*Scale);//draw the main stage diamond
-              setMainStage.drawHoverText();
+              setMainStage.drawHoverText(mouseX,mouseY);
             }
             if (level.stages.get(overviewSelection).type.equals("3Dstage")) {//if the selected thing is a 3D stage
               edditStage.draw();//draw edit stage button
@@ -1198,25 +1198,25 @@ void mouseClicked() {// when you click the mouse
 
       if (menue) {//if your in a menu
         if (Menue.equals("main")) {//if that menu is the main menu
-          if (playButton.isMouseOver()) {//level select button
+          if (playButton.isMouseOver(mouseX,mouseY)) {//level select button
             Menue = "level select";
             menue=false;
             initMenuTransition(Transitions.MAIN_TO_LEVEL_SELECT);
             return;
           }
-          if (exitButton.isMouseOver()) {//exit button
+          if (exitButton.isMouseOver(mouseX,mouseY)) {//exit button
             exit(1);
           }
-          if (joinButton.isMouseOver()) {//join game button
+          if (joinButton.isMouseOver(mouseX,mouseY)) {//join game button
             Menue="multiplayer strart";
           }
-          if (settingsButton.isMouseOver()) {//settings button
+          if (settingsButton.isMouseOver(mouseX,mouseY)) {//settings button
             Menue="settings";
             menue=false;
             initMenuTransition(Transitions.MAIN_TO_SETTINGS);
             return;
           }
-          if (howToPlayButton.isMouseOver()) {//tutorial button
+          if (howToPlayButton.isMouseOver(mouseX,mouseY)) {//tutorial button
             //how to play
             menue=false;
             tutorialMode=true;
@@ -1227,64 +1227,64 @@ void mouseClicked() {// when you click the mouse
           //get the current level progress
           int progress=levelProgress.getJSONObject(0).getInt("progress")+1;
           // if the mouse clicks on a level and the progress has unlocked that level then load that level
-          if (select_lvl_1.isMouseOver()) {
+          if (select_lvl_1.isMouseOver(mouseX,mouseY)) {
             loadLevel("data/levels/level-1");
             menue=false;
             inGame=true;
           }
-          if (select_lvl_2.isMouseOver()&&progress>=2) {
+          if (select_lvl_2.isMouseOver(mouseX,mouseY)&&progress>=2) {
             loadLevel("data/levels/level-2");
             menue=false;
             inGame=true;
           }
-          if (select_lvl_3.isMouseOver()&&progress>=3) {
+          if (select_lvl_3.isMouseOver(mouseX,mouseY)&&progress>=3) {
             loadLevel("data/levels/level-3");
             menue=false;
             inGame=true;
           }
-          if (select_lvl_4.isMouseOver()&&progress>=4) {
+          if (select_lvl_4.isMouseOver(mouseX,mouseY)&&progress>=4) {
             loadLevel("data/levels/level-4");
             menue=false;
             inGame=true;
           }
-          if (select_lvl_5.isMouseOver()&&progress>=5) {
+          if (select_lvl_5.isMouseOver(mouseX,mouseY)&&progress>=5) {
             loadLevel("data/levels/level-5");
             menue=false;
             inGame=true;
           }
-          if (select_lvl_6.isMouseOver()&&progress>=6) {
+          if (select_lvl_6.isMouseOver(mouseX,mouseY)&&progress>=6) {
             loadLevel("data/levels/level-6");
             menue=false;
             inGame=true;
           }
-          if (select_lvl_7.isMouseOver()&&progress>=7) {
+          if (select_lvl_7.isMouseOver(mouseX,mouseY)&&progress>=7) {
             loadLevel("data/levels/level-7");
             menue=false;
             inGame=true;
           }
-          if (select_lvl_8.isMouseOver()&&progress>=8) {
+          if (select_lvl_8.isMouseOver(mouseX,mouseY)&&progress>=8) {
             loadLevel("data/levels/level-8");
             menue=false;
             inGame=true;
           }
-          if (select_lvl_9.isMouseOver()&&progress>=9) {
+          if (select_lvl_9.isMouseOver(mouseX,mouseY)&&progress>=9) {
             loadLevel("data/levels/level-9");
             menue=false;
             inGame=true;
           }
-          if (select_lvl_10.isMouseOver()&&progress>=10) {
+          if (select_lvl_10.isMouseOver(mouseX,mouseY)&&progress>=10) {
             loadLevel("data/levels/level-10");
             menue=false;
             inGame=true;
           }
           
-          if(select_lvl_11.isMouseOver()&&progress>=11){
+          if(select_lvl_11.isMouseOver(mouseX,mouseY)&&progress>=11){
             loadLevel("data/levels/level-11");
             menue=false;
             inGame=true;
           }
           
-          if(select_lvl_12.isMouseOver()&&progress>=12){
+          if(select_lvl_12.isMouseOver(mouseX,mouseY)&&progress>=12){
             loadLevel("data/levels/level-12");
             menue=false;
             inGame=true;
@@ -1292,17 +1292,17 @@ void mouseClicked() {// when you click the mouse
           
           
 
-          if (select_lvl_back.isMouseOver()) {//back button
+          if (select_lvl_back.isMouseOver(mouseX,mouseY)) {//back button
             Menue="main";
             menue=false;
             initMenuTransition(Transitions.LEVEL_SELECT_TO_MAIN);
           }
-          if (select_lvl_next.isMouseOver()) {//next page button
+          if (select_lvl_next.isMouseOver(mouseX,mouseY)) {//next page button
             Menue="level select 2";
             menue=false;
             initMenuTransition(Transitions.LEVEL_SELECT_TO_LEVEL_SELECT_2);
           }
-          if (select_lvl_UGC.isMouseOver()) {//UGC level select button
+          if (select_lvl_UGC.isMouseOver(mouseX,mouseY)) {//UGC level select button
             Menue="level select UGC";
             menue=false;
             loadUGCList();
@@ -1318,28 +1318,28 @@ void mouseClicked() {// when you click the mouse
           //get the current level progress
           int progress=levelProgress.getJSONObject(0).getInt("progress")+1;
           // if the mouse clicks on a level and the progress has unlocked that level then load that level
-          if (select_lvl_13.isMouseOver()&&progress>=13) {
+          if (select_lvl_13.isMouseOver(mouseX,mouseY)&&progress>=13) {
             loadLevel("data/levels/level-13");
             menue=false;
             inGame=true;
           }
-          if (select_lvl_14.isMouseOver()&&progress>=14) {
+          if (select_lvl_14.isMouseOver(mouseX,mouseY)&&progress>=14) {
             loadLevel("data/levels/level-14");
             menue=false;
             inGame=true;
           }
-          if (select_lvl_15.isMouseOver()&&progress>=15) {
+          if (select_lvl_15.isMouseOver(mouseX,mouseY)&&progress>=15) {
             loadLevel("data/levels/level-15");
             menue=false;
             inGame=true;
           }
-          if (select_lvl_16.isMouseOver()&&progress>=16) {
+          if (select_lvl_16.isMouseOver(mouseX,mouseY)&&progress>=16) {
             loadLevel("data/levels/level-16");
             menue=false;
             inGame=true;
           }
           
-          if (select_lvl_back.isMouseOver()) {// back button
+          if (select_lvl_back.isMouseOver(mouseX,mouseY)) {// back button
             Menue="level select";
             menue=false;
             initMenuTransition(Transitions.LEVEL_SELECT_2_TO_LEVEL_SELECT);
@@ -1347,28 +1347,28 @@ void mouseClicked() {// when you click the mouse
         }
         
         if (Menue.equals("level select UGC")) {//if that menu is the UGC level select screne
-          if (select_lvl_back.isMouseOver()) {//back button
+          if (select_lvl_back.isMouseOver(mouseX,mouseY)) {//back button
             Menue="level select";
             menue=false;
             initMenuTransition(Transitions.UGC_TO_LEVEL_SELECT);
           }
-          if (UGC_open_folder.isMouseOver()) {//open folder button
+          if (UGC_open_folder.isMouseOver(mouseX,mouseY)) {//open folder button
             openUGCFolder();
           }
 
           if (UGCNames.size()==0) {//if there are no UGC levels do nothing
           } else {//if there are UGC levels then
             if (UGC_lvl_indx<UGCNames.size()-1) {//if there is another level
-              if (UGC_lvls_next.isMouseOver()) {//next button
+              if (UGC_lvls_next.isMouseOver(mouseX,mouseY)) {//next button
                 UGC_lvl_indx++;
               }
             }
             if (UGC_lvl_indx>0) {//if not on the first level
-              if (UGC_lvls_prev.isMouseOver()) {//prevous level button
+              if (UGC_lvls_prev.isMouseOver(mouseX,mouseY)) {//prevous level button
                 UGC_lvl_indx--;
               }
             }
-            if (UGC_lvl_play.isMouseOver()) {//play level button
+            if (UGC_lvl_play.isMouseOver(mouseX,mouseY)) {//play level button
               loadLevel(appdata+"/CBi-games/skinny mann/UGC/levels/"+UGCNames.get(UGC_lvl_indx));
               if (!levelCompatible) {//if the level version is not compatable with this version of the game
                 Menue="level select";
@@ -1379,7 +1379,7 @@ void mouseClicked() {// when you click the mouse
               menue=false;
             }
           }
-          if (levelcreatorLink.isMouseOver()) {//this now opens the level creator
+          if (levelcreatorLink.isMouseOver(mouseX,mouseY)) {//this now opens the level creator
             //link("https://cbi-games.glitch.me/level%20creator.html");//old level creator webpage
             if (scr2==null){//create the 2nd screen if it does not exsist
               scr2 =new ToolBox(millis());
@@ -1398,15 +1398,15 @@ void mouseClicked() {// when you click the mouse
         }//end of UGC menu
 
         if (Menue.equals("pause")) {//if that menu is pause
-          if (pauseResumeButton.isMouseOver()) {//resume game button
+          if (pauseResumeButton.isMouseOver(mouseX,mouseY)) {//resume game button
             menue=false;
           }
-          if (pauseOptionsButton.isMouseOver()) {//options button
+          if (pauseOptionsButton.isMouseOver(mouseX,mouseY)) {//options button
             Menue="settings";
             prevousInGame=true;
             inGame=false;
           }
-          if (pauseQuitButton.isMouseOver()) {//quit button
+          if (pauseQuitButton.isMouseOver(mouseX,mouseY)) {//quit button
             menue=true;
             inGame=false;
             tutorialMode=false;
@@ -1433,7 +1433,7 @@ void mouseClicked() {// when you click the mouse
           }
           if (multiplayer) {//mulyplayer restart level button
             if (level.multyplayerMode==1) {
-              if (pauseRestart.isMouseOver()) {
+              if (pauseRestart.isMouseOver(mouseX,mouseY)) {
                 level.psudoLoad();
                 startTime=millis();
                 menue=false;
@@ -1447,20 +1447,20 @@ void mouseClicked() {// when you click the mouse
           
           if (settingsMenue.equals("game play")) {//if on the gamplay tab
             //process clicks for the sliders
-            verticleEdgeScrollSlider.mouseClicked();
-            horozontalEdgeScrollSlider.mouseClicked();
-            fovSlider.mouseClicked();
+            verticleEdgeScrollSlider.mouseClicked(mouseX,mouseY);
+            horozontalEdgeScrollSlider.mouseClicked(mouseX,mouseY);
+            fovSlider.mouseClicked(mouseX,mouseY);
             //update the settings if any of the sliders have been clicked on
-            if (horozontalEdgeScrollSlider.button.isMouseOver()) {
+            if (horozontalEdgeScrollSlider.button.isMouseOver(mouseX,mouseY)) {
               settings.setScrollHorozontal((int)horozontalEdgeScrollSlider.getValue(),true);
               settings.save();
             }
 
-            if (verticleEdgeScrollSlider.button.isMouseOver()) {
+            if (verticleEdgeScrollSlider.button.isMouseOver(mouseX,mouseY)) {
               settings.setScrollVertical((int)verticleEdgeScrollSlider.getValue(),true);
               settings.save();
             }
-            if(fovSlider.button.isMouseOver()){
+            if(fovSlider.button.isMouseOver(mouseX,mouseY)){
               settings.setFOV(fovSlider.getValue(),true);
               settings.save();
             }
@@ -1471,44 +1471,44 @@ void mouseClicked() {// when you click the mouse
           if (settingsMenue.equals("display")) {//if on the display tab
             String arat = "16:9";//default aspect ratio
             //when clicking on buttons update the approprate settings
-            if (rez4k.isMouseOver()) {//2160 (4K) resolution button
+            if (rez4k.isMouseOver(mouseX,mouseY)) {//2160 (4K) resolution button
               settings.setResolution((int)(2160*16.0/9),2160);
               settings.save();
             }
 
-            if (rez1440.isMouseOver()) {// 1440 resolition button
+            if (rez1440.isMouseOver(mouseX,mouseY)) {// 1440 resolition button
               settings.setResolution((int)(1440*16.0/9),1440);
               settings.save();
             }
 
-            if (rez1080.isMouseOver()) {// 1080 resolution button
+            if (rez1080.isMouseOver(mouseX,mouseY)) {// 1080 resolution button
               settings.setResolution((int)(1080*16.0/9),1080);
               settings.save();
             }
 
-            if (rez900.isMouseOver()) {////900 resolution button
+            if (rez900.isMouseOver(mouseX,mouseY)) {////900 resolution button
               settings.setResolution((int)(900*16.0/9),900);
               settings.save();
             }
 
-            if (rez720.isMouseOver()) {// 720 resolution button
+            if (rez720.isMouseOver(mouseX,mouseY)) {// 720 resolution button
               settings.setResolution((int)(720*16.0/9),720);
               settings.save();
             }
 
 
-            if (fullScreenOn.isMouseOver()) {//turn full screen on button
+            if (fullScreenOn.isMouseOver(mouseX,mouseY)) {//turn full screen on button
               settings.setFullScreen(true);
               settings.save();
             }
 
-            if (fullScreenOff.isMouseOver()) {//turn fullscreen off button
+            if (fullScreenOff.isMouseOver(mouseX,mouseY)) {//turn fullscreen off button
               settings.setFullScreen(false);
               settings.save();
             }
             
-            fpsSlider.mouseClicked();
-            if(fpsSlider.button.isMouseOver()){
+            fpsSlider.mouseClicked(mouseX,mouseY);
+            if(fpsSlider.button.isMouseOver(mouseX,mouseY)){
               settings.setTargetFrameRate((int)fpsSlider.getValue(),true);
               settings.save();
               updateFPS = true;//set the game's frame rate
@@ -1518,33 +1518,33 @@ void mouseClicked() {// when you click the mouse
           if (settingsMenue.equals("sound")) {//if on the sound tab
             
             //process clicks for the sliders
-            musicVolumeSlider.mouseClicked();
-            SFXVolumeSlider.mouseClicked();
-            narrationVolumeSlider.mouseClicked();
+            musicVolumeSlider.mouseClicked(mouseX,mouseY);
+            SFXVolumeSlider.mouseClicked(mouseX,mouseY);
+            narrationVolumeSlider.mouseClicked(mouseX,mouseY);
             //if the sliders have been clicked on then update settings
-            if (musicVolumeSlider.button.isMouseOver()) {
+            if (musicVolumeSlider.button.isMouseOver(mouseX,mouseY)) {
               settings.setSoundMusicVolume(musicVolumeSlider.getValue()/100.0,true);
               soundHandler.setMusicVolume(settings.getSoundMusicVolume());
               settings.save();
             }
-            if (SFXVolumeSlider.button.isMouseOver()) {
+            if (SFXVolumeSlider.button.isMouseOver(mouseX,mouseY)) {
               settings.setSoundSoundVolume(SFXVolumeSlider.getValue()/100.0,true);
               soundHandler.setSoundsVolume(settings.getSoundSoundVolume());
               settings.save();
               
             }
-            if (narrationVolumeSlider.button.isMouseOver()) {
+            if (narrationVolumeSlider.button.isMouseOver(mouseX,mouseY)) {
               settings.setSoundNarrationVolume(narrationVolumeSlider.getValue()/100.0,true);
               soundHandler.setNarrationVolume(settings.getSoundNarrationVolume());
               settings.save();
 
             }
             //narration mode buttons
-            if (narrationMode0.isMouseOver()) {
+            if (narrationMode0.isMouseOver(mouseX,mouseY)) {
               settings.setSoundNarrationMode(0);
               settings.save();
             }
-            if (narrationMode1.isMouseOver()) {
+            if (narrationMode1.isMouseOver(mouseX,mouseY)) {
               settings.setSoundNarrationMode(1);
               settings.save();
             }
@@ -1553,78 +1553,78 @@ void mouseClicked() {// when you click the mouse
           
           if (settingsMenue.equals("outher")) {//if on the other tab
             //when clicking on buttons update the approprate settings
-            if (enableFPS.isMouseOver()) {
+            if (enableFPS.isMouseOver(mouseX,mouseY)) {
               settings.setDebugFPS(true);
               settings.save();
             }
-            if (disableFPS.isMouseOver()) {
+            if (disableFPS.isMouseOver(mouseX,mouseY)) {
               settings.setDebugFPS(false);
               settings.save();
             }
-            if (enableDebug.isMouseOver()) {
+            if (enableDebug.isMouseOver(mouseX,mouseY)) {
               settings.setDebugInfo(true);
               settings.save();
             }
-            if (disableDebug.isMouseOver()) {
+            if (disableDebug.isMouseOver(mouseX,mouseY)) {
               settings.setDebugInfo(false);
               settings.save();
             }
-            if (shadows4.isMouseOver()) {
+            if (shadows4.isMouseOver(mouseX,mouseY)) {
               settings.setShadows(4);
               settings.save();
               requestDepthBufferInit = true;
             }
-            if (shadows3.isMouseOver()) {
+            if (shadows3.isMouseOver(mouseX,mouseY)) {
               settings.setShadows(3);
               settings.save();
               requestDepthBufferInit = true;
             }
-            if (shadows2.isMouseOver()) {
+            if (shadows2.isMouseOver(mouseX,mouseY)) {
               settings.setShadows(2);
               settings.save();
               requestDepthBufferInit = true;
             }
-            if (shadows1.isMouseOver()) {
+            if (shadows1.isMouseOver(mouseX,mouseY)) {
               settings.setShadows(1);
               settings.save();
             }
-            if (shadows0.isMouseOver()) {
+            if (shadows0.isMouseOver(mouseX,mouseY)) {
               settings.setShadows(0);
               settings.save();
             }
             
-            if(enableMenuTransitionButton.isMouseOver()){
+            if(enableMenuTransitionButton.isMouseOver(mouseX,mouseY)){
               settings.setDisableMenuTransitions(false);
               settings.save();
             }
             
-            if(disableMenuTransistionsButton.isMouseOver()){
+            if(disableMenuTransistionsButton.isMouseOver(mouseX,mouseY)){
               settings.setDisableMenuTransitions(true);
               settings.save();
             }
 
             //process clicks on the default author text box
-            defaultAuthorNameTextBox.mouseClicked();
+            defaultAuthorNameTextBox.mouseClicked(mouseX,mouseY);
             
           }//end of outher settings menue
 
-          if (sttingsGPL.isMouseOver()){//gameplay button
+          if (sttingsGPL.isMouseOver(mouseX,mouseY)){//gameplay button
             settingsMenue="game play";
             defaultAuthorNameTextBox.resetState();
           }
-          if (settingsDSP.isMouseOver()){//dsiplay button
+          if (settingsDSP.isMouseOver(mouseX,mouseY)){//dsiplay button
             settingsMenue="display";
             defaultAuthorNameTextBox.resetState();
           }
-          if (settingsSND.isMouseOver()){//sound button
+          if (settingsSND.isMouseOver(mouseX,mouseY)){//sound button
             settingsMenue="sound";
             defaultAuthorNameTextBox.resetState();
           }
-          if (settingsOUT.isMouseOver()){//other button
+          if (settingsOUT.isMouseOver(mouseX,mouseY)){//other button
             settingsMenue="outher";
           }
 
-          if (settingsBackButton.isMouseOver()) {//back button
+          if (settingsBackButton.isMouseOver(mouseX,mouseY)) {//back button
             defaultAuthorNameTextBox.resetState();
             if (prevousInGame) {//hanlde going back to the game if opened from inside a level
               Menue="pause";
@@ -1651,28 +1651,28 @@ void mouseClicked() {// when you click the mouse
         }
         
         if (Menue.equals("multiplayer strart")) {//if the menu is multyplayer start
-          if (multyplayerExit.isMouseOver()) {//exit button
+          if (multyplayerExit.isMouseOver(mouseX,mouseY)) {//exit button
             Menue="main";
           }
-          if (multyplayerJoin.isMouseOver()) {//join button
+          if (multyplayerJoin.isMouseOver(mouseX,mouseY)) {//join button
             Menue="start join";
           }
-          if (multyplayerHost.isMouseOver()) {//host button
+          if (multyplayerHost.isMouseOver(mouseX,mouseY)) {//host button
             Menue="start host";
           }
         }
         
         if (Menue.equals("start host")) {//if the menu is setting up hosting
-          if (multyplayerExit.isMouseOver()) {//bakc button
+          if (multyplayerExit.isMouseOver(mouseX,mouseY)) {//bakc button
             Menue="main";
             multyPlayerNameTextBox.resetState();
             multyPlayerPortTextBox.resetState();
           }
           //hanlde text box mouse clicks
-          multyPlayerNameTextBox.mouseClicked();
-          multyPlayerPortTextBox.mouseClicked();
+          multyPlayerNameTextBox.mouseClicked(mouseX,mouseY);
+          multyPlayerPortTextBox.mouseClicked(mouseX,mouseY);
           
-          if (multyplayerGo.isMouseOver()) {//go button
+          if (multyplayerGo.isMouseOver(mouseX,mouseY)) {//go button
             name = multyPlayerNameTextBox.getContence();
             port = Integer.parseInt(multyPlayerPortTextBox.getContence());
             multyPlayerNameTextBox.resetState();//make sure the text boxes are not slected
@@ -1688,7 +1688,7 @@ void mouseClicked() {// when you click the mouse
         }//end f setting up hosting
         
         if (Menue.equals("start join")) {//if setting up joining
-          if (multyplayerExit.isMouseOver()) {//back button
+          if (multyplayerExit.isMouseOver(mouseX,mouseY)) {//back button
             Menue="main";
             multyPlayerNameTextBox.resetState();
             multyPlayerPortTextBox.resetState();
@@ -1696,11 +1696,11 @@ void mouseClicked() {// when you click the mouse
           }
           
           //handle text box clicks
-          multyPlayerNameTextBox.mouseClicked();
-          multyPlayerPortTextBox.mouseClicked();
-          multyPlayerIpTextBox.mouseClicked();
+          multyPlayerNameTextBox.mouseClicked(mouseX,mouseY);
+          multyPlayerPortTextBox.mouseClicked(mouseX,mouseY);
+          multyPlayerIpTextBox.mouseClicked(mouseX,mouseY);
           
-          if (multyplayerGo.isMouseOver()) {//go button
+          if (multyplayerGo.isMouseOver(mouseX,mouseY)) {//go button
             name = multyPlayerNameTextBox.getContence();
             port = Integer.parseInt(multyPlayerPortTextBox.getContence());
             ip = multyPlayerIpTextBox.getContence();
@@ -1724,7 +1724,7 @@ void mouseClicked() {// when you click the mouse
         
         
         if (Menue.equals("disconnected")) {//if that menu is the disconnedted menu
-          if (multyplayerExit.isMouseOver()) {//back button
+          if (multyplayerExit.isMouseOver(mouseX,mouseY)) {//back button
             Menue="start join";
             multiplayer=false;
             currentPlayer=0;
@@ -1738,7 +1738,7 @@ void mouseClicked() {// when you click the mouse
         
         if (Menue.equals("multiplayer selection")) {//if that menu is multyplayer selection  
           if (isHost) {//if you are the host
-            if (multyplayerLeave.isMouseOver()) {//leave button
+            if (multyplayerLeave.isMouseOver(mouseX,mouseY)) {//leave button
               println("quitting multyplayer host");
               server.end();//stop the server
               println("returning to main menu");
@@ -1773,7 +1773,7 @@ void mouseClicked() {// when you click the mouse
             }//end of mouse clicked in the levels area
             
             if (multyplayerSelectedLevel.gameVersion!=null && gameVersionCompatibilityCheck(multyplayerSelectedLevel.gameVersion)) {//if the selected level is compatbale with this version of the game
-              if (multyplayerPlay.isMouseOver()) {//if the play button is clicked
+              if (multyplayerPlay.isMouseOver(mouseX,mouseY)) {//if the play button is clicked
                 if (!multyplayerSelectedLevel.isUGC) {//if the level is not UGC
                   if (multyplayerSelectedLevel.multyplayerMode==1) {//if in speedrun mode
                     LoadLevelRequest req =new LoadLevelRequest(multyplayerSelectedLevelPath);//make a level load request
@@ -1824,28 +1824,28 @@ void mouseClicked() {// when you click the mouse
             }//end of level compable with this version
             
             if (multyplayerSelectedLevel.multyplayerMode==1) {//if the selected level is speed run
-              if (increaseTime.isMouseOver()) {//increase time button
+              if (increaseTime.isMouseOver(mouseX,mouseY)) {//increase time button
                 sessionTime+=30000;
               }
-              if (decreaseTime.isMouseOver()) {//decrease time button
+              if (decreaseTime.isMouseOver(mouseX,mouseY)) {//decrease time button
                 if (sessionTime>30000)
                   sessionTime-=30000;
               }
             }
             
-            if (multyplayerCoop.isMouseOver()) {//coop button
+            if (multyplayerCoop.isMouseOver(mouseX,mouseY)) {//coop button
               multyplayerSelectionLevels="coop";
             }
-            if (multyplayerSpeedrun.isMouseOver()) {//speed run button
+            if (multyplayerSpeedrun.isMouseOver(mouseX,mouseY)) {//speed run button
               multyplayerSelectionLevels="speed";
             }
-            if (multyplayerUGC.isMouseOver()) {//UGC button
+            if (multyplayerUGC.isMouseOver(mouseX,mouseY)) {//UGC button
               multyplayerSelectionLevels="UGC";
               //load a list of all the UGC levels
               loadUGCList();
             }
           } else {//if joined
-            if (multyplayerLeave.isMouseOver()) {//leave button
+            if (multyplayerLeave.isMouseOver(mouseX,mouseY)) {//leave button
               println("quitting multyplayer joined");
               clientQuitting=true;
               clients.get(0).disconnect();
@@ -1862,7 +1862,7 @@ void mouseClicked() {// when you click the mouse
       
       
       if (level_complete&&(level.multyplayerMode!=2||isHost)) {//if you completed a level and have not joined
-        if (endOfLevelButton.isMouseOver()) {//continue button
+        if (endOfLevelButton.isMouseOver(mouseX,mouseY)) {//continue button
           if (multiplayer) {//multyplayer version of the button
             menue=true;
             inGame=false;
@@ -1895,7 +1895,7 @@ void mouseClicked() {// when you click the mouse
       if (mouseButton==LEFT) {//if the button pressed was the left button
         //System.out.println(mouseX+" "+mouseY);//print the location the mouse clicked to the console
         if (startup) {//if on the startup screen
-          if (newLevelButton.isMouseOver()) {//new level button
+          if (newLevelButton.isMouseOver(mouseX,mouseY)) {//new level button
             startup=false;
             newLevel=true;
             rootPath="";
@@ -1903,7 +1903,7 @@ void mouseClicked() {// when you click the mouse
             lcEnterLevelTextBox.activate();
             return;
           }
-          if (loadLevelButton.isMouseOver()) {//load level button
+          if (loadLevelButton.isMouseOver(mouseX,mouseY)) {//load level button
             startup=false;
             loading=true;
             rootPath="";
@@ -1911,7 +1911,7 @@ void mouseClicked() {// when you click the mouse
             lcEnterLevelTextBox.activate();
             return;
           }
-          if (newBlueprint.isMouseOver()) {//new blurprint button
+          if (newBlueprint.isMouseOver(mouseX,mouseY)) {//new blurprint button
             startup=false;
             creatingNewBlueprint=true;
             new_name="my blueprint";
@@ -1919,7 +1919,7 @@ void mouseClicked() {// when you click the mouse
             lcEnterLevelTextBox.activate();
             return;
           }
-          if (loadBlueprint.isMouseOver()) {//load blueprint button
+          if (loadBlueprint.isMouseOver(mouseX,mouseY)) {//load blueprint button
             startup=false;
             loadingBlueprint=true;
             new_name="";
@@ -1927,13 +1927,13 @@ void mouseClicked() {// when you click the mouse
             lcEnterLevelTextBox.activate();
             return;
           }
-          if (lc_backButton.isMouseOver()) {//exit level creator button
+          if (lc_backButton.isMouseOver(mouseX,mouseY)) {//exit level creator button
             levelCreator=false;
           }
         }
         if (loading) {//if loading level
-          lcEnterLevelTextBox.mouseClicked();
-          if (lcLoadLevelButton.isMouseOver()) {//load button
+          lcEnterLevelTextBox.mouseClicked(mouseX,mouseY);
+          if (lcLoadLevelButton.isMouseOver(mouseX,mouseY)) {//load button
           JSONArray mainIndex = null;
           rootPath = lcEnterLevelTextBox.getContence();
             try {//attempt to load the level
@@ -1962,20 +1962,20 @@ void mouseClicked() {// when you click the mouse
             return;
           }
           
-          if (lc_backButton.isMouseOver()) {//back button
+          if (lc_backButton.isMouseOver(mouseX,mouseY)) {//back button
             startup=true;
             loading=false;
             lcEnterLevelTextBox.resetState();
           }
           
-          if (lc_openLevelsFolder.isMouseOver()) {//open folder button
+          if (lc_openLevelsFolder.isMouseOver(mouseX,mouseY)) {//open folder button
             openLevelCreatorLevelsFolder();
           }
         }
         
         if (newLevel) {//if creating a new level
-          lcEnterLevelTextBox.mouseClicked();
-          if (lcNewLevelButton.isMouseOver()) {//create button
+          lcEnterLevelTextBox.mouseClicked(mouseX,mouseY);
+          if (lcNewLevelButton.isMouseOver(mouseX,mouseY)) {//create button
             new_name = lcEnterLevelTextBox.getContence();
             newLevel=false;
             rootPath=appdata+"/CBi-games/skinny mann level creator/levels/"+new_name;
@@ -1999,13 +1999,13 @@ void mouseClicked() {// when you click the mouse
             return;
           }
           
-          if (lc_backButton.isMouseOver()) {//back button
+          if (lc_backButton.isMouseOver(mouseX,mouseY)) {//back button
             startup=true;
             newLevel=false;
             lcEnterLevelTextBox.resetState();
           }
           
-          if (lc_openLevelsFolder.isMouseOver()) {//open folder button
+          if (lc_openLevelsFolder.isMouseOver(mouseX,mouseY)) {//open folder button
             openLevelCreatorLevelsFolder();
           }
         }
@@ -2019,7 +2019,7 @@ void mouseClicked() {// when you click the mouse
 
 
         if (levelOverview) {//if on level overview
-          if (newStage.isMouseOver()) {//if the new file button is clicked
+          if (newStage.isMouseOver(mouseX,mouseY)) {//if the new file button is clicked
             levelOverview=false;
             newFile=true;
             lcNewFileTextBox.setContence("");
@@ -2033,28 +2033,28 @@ void mouseClicked() {// when you click the mouse
             }
           }
 
-          if (overview_saveLevel.isMouseOver()) {//save button in the level overview
+          if (overview_saveLevel.isMouseOver(mouseX,mouseY)) {//save button in the level overview
             System.out.println("saving level");
             level.save(true);
             gmillis=millis()+400;//glitch effect
             System.out.println("save complete");
           }
           
-          if (help.isMouseOver()) {//help button in the level overview
+          if (help.isMouseOver(mouseX,mouseY)) {//help button in the level overview
             link("https://youtu.be/Ufn94mrjz8s");//tutorial video
           }
           
           if (overviewSelection!=-1) {//if something is selected
             if (overviewSelection<level.stages.size()) {//if the selection is in rage of the stages
               if (level.stages.get(overviewSelection).type.equals("stage")) {//if the selected thing is a stage
-                if (edditStage.isMouseOver()) {//eddit stage button
+                if (edditStage.isMouseOver(mouseX,mouseY)) {//eddit stage button
                   editingStage=true;
                   levelOverview=false;
                   currentStageIndex=overviewSelection;
                   respawnStage=currentStageIndex;
                 }
 
-                if (setMainStage.isMouseOver()) {//set main stage button
+                if (setMainStage.isMouseOver(mouseX,mouseY)) {//set main stage button
                   level.mainStage=overviewSelection;
                   background(0);
                   settingPlayerSpawn=true;
@@ -2067,7 +2067,7 @@ void mouseClicked() {// when you click the mouse
               }
               
               if (level.stages.get(overviewSelection).type.equals("3Dstage")) {//if the selected thing is a 3D stage
-                if (edditStage.isMouseOver()) {//eddit button
+                if (edditStage.isMouseOver(mouseX,mouseY)) {//eddit button
                   editingStage=true;
                   levelOverview=false;
                   currentStageIndex=overviewSelection;
@@ -2077,7 +2077,7 @@ void mouseClicked() {// when you click the mouse
             }//end if if selection is in range of the stages
             
             if (overviewSelection>=level.stages.size()+level.sounds.size()) {//if the selecion is in the logic board range
-              if (edditStage.isMouseOver()) {//eddit button
+              if (edditStage.isMouseOver(mouseX,mouseY)) {//eddit button
                 levelOverview=false;
                 editinglogicBoard=true;
                 logicBoardIndex=overviewSelection-(level.stages.size()+level.sounds.size());
@@ -2087,28 +2087,28 @@ void mouseClicked() {// when you click the mouse
             }
           }//end of if something is selected
 
-          if (filesScrole>0&&overviewUp.isMouseOver()){//scroll up button
+          if (filesScrole>0&&overviewUp.isMouseOver(mouseX,mouseY)){//scroll up button
             filesScrole--;
           }
-          if (filesScrole+11<level.stages.size()+level.sounds.size()+level.logicBoards.size()&&overviewDown.isMouseOver()){//scroll down button
+          if (filesScrole + 11 < level.stages.size() + level.sounds.size() + level.logicBoards.size() && overviewDown.isMouseOver(mouseX,mouseY)){//scroll down button
             filesScrole++;
           }
 
-          if (lcOverviewExitButton.isMouseOver()) {//exit level creator button
+          if (lcOverviewExitButton.isMouseOver(mouseX,mouseY)) {//exit level creator button
             levelOverview=false;
             exitLevelCreator=true;
           }
         }//end of level overview
 
         if (newFile) {//if on the new file page
-          lcNewFileTextBox.mouseClicked();//process clicks on the text box
-          if (newFileBack.isMouseOver()) {//back button
+          lcNewFileTextBox.mouseClicked(mouseX,mouseY);//process clicks on the text box
+          if (newFileBack.isMouseOver(mouseX,mouseY)) {//back button
             levelOverview=true;
             newFile=false;
             lcNewFileTextBox.resetState();
           }
 
-          if (newFileCreate.isMouseOver()) {//create button
+          if (newFileCreate.isMouseOver(mouseX,mouseY)) {//create button
             if (lcNewFileTextBox.getContence().isEmpty()) {//if no name has been entered
               return;
             }
@@ -2152,24 +2152,24 @@ void mouseClicked() {// when you click the mouse
           }
           
           if (newFileType.equals("sound")) {
-            if (chooseFileButton.isMouseOver()) {//choose file button for when the type is sound
+            if (chooseFileButton.isMouseOver(mouseX,mouseY)) {//choose file button for when the type is sound
               selectInput("select audio file: .WAV .AIF .MP3:", "fileSelected");//open file selection diaglog
             }
-            if(lc_newSoundAsSoundButton.isMouseOver()){//sound button
+            if(lc_newSoundAsSoundButton.isMouseOver(mouseX,mouseY)){//sound button
               newSoundAsNarration=false;
             }
-            if(lc_newSoundAsNarrationButton.isMouseOver()){//narration button
+            if(lc_newSoundAsNarrationButton.isMouseOver(mouseX,mouseY)){//narration button
               newSoundAsNarration=true;
             }
           }
 
-          if (new3DStage.isMouseOver()) {//3D stage button
+          if (new3DStage.isMouseOver(mouseX,mouseY)) {//3D stage button
             newFileType="3D";
           }
-          if (new2DStage.isMouseOver()) {//2D stage Button
+          if (new2DStage.isMouseOver(mouseX,mouseY)) {//2D stage Button
             newFileType="2D";
           }
-          if (addSound.isMouseOver()) {//sound type buttpn
+          if (addSound.isMouseOver(mouseX,mouseY)) {//sound type buttpn
             newFileType="sound";
           }
         }
@@ -2185,7 +2185,7 @@ void mouseClicked() {// when you click the mouse
           if (overviewSelection!=-1) {//if something is selected
             if (overviewSelection<level.stages.size()) {//if the selection is in rage of the stages
               if (level.stages.get(overviewSelection).type.equals("stage")||level.stages.get(overviewSelection).type.equals("3Dstage")) {//if the selected thing is a valid destination stage
-                if (selectStage.isMouseOver()) {//if the select stagge button is clicked
+                if (selectStage.isMouseOver(mouseX,mouseY)) {//if the select stagge button is clicked
                   editingStage=true;//go to that stage
                   levelOverview=false;
                   drawingPortal2=false;
@@ -2196,15 +2196,15 @@ void mouseClicked() {// when you click the mouse
               }
             }//end of if in stage range
           }
-          if (filesScrole>0&&overviewUp.isMouseOver())//scroll up button
+          if (filesScrole>0&&overviewUp.isMouseOver(mouseX,mouseY))//scroll up button
             filesScrole--;
-          if (filesScrole+11<level.stages.size()+level.sounds.size()&&overviewDown.isMouseOver())//scroll down button
+          if (filesScrole + 11 < level.stages.size() + level.sounds.size() && overviewDown.isMouseOver(mouseX,mouseY))//scroll down button
             filesScrole++;
         }//end of drawing portal 2
 
         if (creatingNewBlueprint) {//if creating a new blueprint
-          lcEnterLevelTextBox.mouseClicked();//handle text box clicks
-          if (createBlueprintGo.isMouseOver()) {//create button
+          lcEnterLevelTextBox.mouseClicked(mouseX,mouseY);//handle text box clicks
+          if (createBlueprintGo.isMouseOver(mouseX,mouseY)) {//create button
             new_name = lcEnterLevelTextBox.getContence();
             if (new_name!=null&&!new_name.equals("")) {//if something was entered
               if(newBlueprintIs3D){
@@ -2221,22 +2221,22 @@ void mouseClicked() {// when you click the mouse
               
             }//end of name was enterd
           }//end of create button
-          if (lc_backButton.isMouseOver()) {
+          if (lc_backButton.isMouseOver(mouseX,mouseY)) {
             startup=true;
             creatingNewBlueprint=false;
             lcEnterLevelTextBox.resetState();
           }
-          if (new3DStage.isMouseOver()) {//buttons to set type
+          if (new3DStage.isMouseOver(mouseX,mouseY)) {//buttons to set type
             newBlueprintIs3D=true;
           }
-          if (new2DStage.isMouseOver()) {
+          if (new2DStage.isMouseOver(mouseX,mouseY)) {
             newBlueprintIs3D=false;
           }
         }//end of creating new bluepint
 
         if (loadingBlueprint) {//if loading blueprint
-        lcEnterLevelTextBox.mouseClicked();
-          if (createBlueprintGo.isMouseOver()) {//load button
+        lcEnterLevelTextBox.mouseClicked(mouseX,mouseY);
+          if (createBlueprintGo.isMouseOver(mouseX,mouseY)) {//load button
           new_name = lcEnterLevelTextBox.getContence();
             if (new_name!=null&&!new_name.equals("")) {//if something was entered
               rootPath = appdata + "/CBi-games/skinny mann level creator/blueprints";
@@ -2248,7 +2248,7 @@ void mouseClicked() {// when you click the mouse
               camPosY = 360;
             }//end of thing were entered
           }//end of load button
-          if (lc_backButton.isMouseOver()) {//back button
+          if (lc_backButton.isMouseOver(mouseX,mouseY)) {//back button
             startup=true;
             loadingBlueprint=false;
             lcEnterLevelTextBox.resetState();
@@ -2267,7 +2267,7 @@ void mouseClicked() {// when you click the mouse
           
           if (deleteing) {//if deleteing componetns
             for (int i=0; i< level.logicBoards.get(logicBoardIndex).components.size(); i++) {//loop through all the components on this board
-              if (level.logicBoards.get(logicBoardIndex).components.get(i).button.isMouseOver()) {//if the mouse was over this one
+              if (level.logicBoards.get(logicBoardIndex).components.get(i).button.isMouseOver(mouseX,mouseY)) {//if the mouse was over this one
                 level.logicBoards.get(logicBoardIndex).remove(i);//delete it
                 return;
               }
@@ -2276,7 +2276,7 @@ void mouseClicked() {// when you click the mouse
           
           if (selecting) {//if selecting componentss
             for (int i=0; i< level.logicBoards.get(logicBoardIndex).components.size(); i++) {//loop through all the components on this board
-              if (level.logicBoards.get(logicBoardIndex).components.get(i).button.isMouseOver()) {//if the mouse was over this one
+              if (level.logicBoards.get(logicBoardIndex).components.get(i).button.isMouseOver(mouseX,mouseY)) {//if the mouse was over this one
                 selectedIndex=i;//set this one as selected
               }
             }
@@ -2292,14 +2292,14 @@ void mouseClicked() {// when you click the mouse
         }
         
         if (exitLevelCreator) {//if on the exiting level creator 
-          if (lc_exitConfirm.isMouseOver()) {//exit button
+          if (lc_exitConfirm.isMouseOver(mouseX,mouseY)) {//exit button
             exitLevelCreator=false;
             levelCreator=false;
             inGame=false;
             menue=true;
           }
 
-          if (lc_exitCancle.isMouseOver()) {//cancle exit button
+          if (lc_exitCancle.isMouseOver(mouseX,mouseY)) {//cancle exit button
             exitLevelCreator=false;
             levelOverview=true;
           }
@@ -2730,19 +2730,19 @@ void mouseDragged() {
       if (Menue.equals("settings")) {     //if that menue is settings
         //hanle dragging arround all the sliders in the settings menu
         if (settingsMenue.equals("game play")) {
-          verticleEdgeScrollSlider.mouseDragged();
-          horozontalEdgeScrollSlider.mouseDragged();
-          fovSlider.mouseDragged();
-          if (horozontalEdgeScrollSlider.button.isMouseOver()) {
+          verticleEdgeScrollSlider.mouseDragged(mouseX,mouseY);
+          horozontalEdgeScrollSlider.mouseDragged(mouseX,mouseY);
+          fovSlider.mouseDragged(mouseX,mouseY);
+          if (horozontalEdgeScrollSlider.button.isMouseOver(mouseX,mouseY)) {
             settings.setScrollHorozontal((int)horozontalEdgeScrollSlider.getValue(),false);
             settings.save();
           }
 
-          if (verticleEdgeScrollSlider.button.isMouseOver()) {
+          if (verticleEdgeScrollSlider.button.isMouseOver(mouseX,mouseY)) {
               settings.setScrollVertical((int)verticleEdgeScrollSlider.getValue(),false);
               settings.save();
           }
-          if(fovSlider.button.isMouseOver()){
+          if(fovSlider.button.isMouseOver(mouseX,mouseY)){
             settings.setFOV(fovSlider.getValue(),false);
             settings.save();
           }
@@ -2750,21 +2750,21 @@ void mouseDragged() {
         
         if (settingsMenue.equals("sound")) {
             
-          musicVolumeSlider.mouseDragged();
-          SFXVolumeSlider.mouseDragged();
-          narrationVolumeSlider.mouseDragged();
+          musicVolumeSlider.mouseDragged(mouseX,mouseY);
+          SFXVolumeSlider.mouseDragged(mouseX,mouseY);
+          narrationVolumeSlider.mouseDragged(mouseX,mouseY);
           
-          if (musicVolumeSlider.button.isMouseOver()) {
+          if (musicVolumeSlider.button.isMouseOver(mouseX,mouseY)) {
             settings.setSoundMusicVolume(musicVolumeSlider.getValue()/100.0,false);
             soundHandler.setMusicVolume(settings.getSoundMusicVolume());
             settings.save();
           }
-          if (SFXVolumeSlider.button.isMouseOver()) {
+          if (SFXVolumeSlider.button.isMouseOver(mouseX,mouseY)) {
             settings.setSoundSoundVolume(SFXVolumeSlider.getValue()/100.0,false);
             soundHandler.setSoundsVolume(settings.getSoundSoundVolume());
             settings.save();
           }
-          if (narrationVolumeSlider.button.isMouseOver()) {
+          if (narrationVolumeSlider.button.isMouseOver(mouseX,mouseY)) {
             settings.setSoundNarrationVolume(narrationVolumeSlider.getValue()/100.0,false);
             soundHandler.setNarrationVolume(settings.getSoundNarrationVolume());
             settings.save();
@@ -2772,8 +2772,8 @@ void mouseDragged() {
         }
         
         if (settingsMenue.equals("display")) {
-          fpsSlider.mouseDragged();
-          if(fpsSlider.button.isMouseOver()){
+          fpsSlider.mouseDragged(mouseX,mouseY);
+          if(fpsSlider.button.isMouseOver(mouseX,mouseY)){
             settings.setTargetFrameRate((int)fpsSlider.getValue(),false);
             settings.save();
             updateFPS = true;//set the game's frame rate
@@ -2868,7 +2868,7 @@ void mousePressed() {
         if (moveLogicComponents) {//if moving logic components
           LogicBoard board=level.logicBoards.get(logicBoardIndex);//get the logic board
           for (int i=0; i<board.components.size(); i++) {//check if the mouse of over a component
-            if (board.components.get(i).button.isMouseOver()) {
+            if (board.components.get(i).button.isMouseOver(mouseX,mouseY)) {
               movingLogicIndex=i;//if so then set this one as the one that is being moved
               movingLogicComponent=true;
               return;
@@ -4040,34 +4040,34 @@ void drawDevMenue() {
 /**Handles mouse clicks for the developer menu
 */
 void clickDevMenue() {
-  if (dev_main.isMouseOver()) {
+  if (dev_main.isMouseOver(mouseX,mouseY)) {
     Menue="main";
   }
-  if (dev_quit.isMouseOver()) {
+  if (dev_quit.isMouseOver(mouseX,mouseY)) {
     exit(1);
   }
-  if (dev_levels.isMouseOver()) {
+  if (dev_levels.isMouseOver(mouseX,mouseY)) {
     Menue="level select";
   }
-  if (dev_tutorial.isMouseOver()) {
+  if (dev_tutorial.isMouseOver(mouseX,mouseY)) {
     menue=false;
     tutorialMode=true;
     tutorialPos=0;
   }
-  if (dev_settings.isMouseOver()) {
+  if (dev_settings.isMouseOver(mouseX,mouseY)) {
     Menue="settings";
   }
-  if (dev_UGC.isMouseOver()) {
+  if (dev_UGC.isMouseOver(mouseX,mouseY)) {
     Menue="level select UGC";
     loadUGCList();
     UGC_lvl_indx=0;
     return;
   }
-  if (dev_multiplayer.isMouseOver()) {
+  if (dev_multiplayer.isMouseOver(mouseX,mouseY)) {
     Menue="multiplayer strart";
     return;
   }
-  if (dev_levelCreator.isMouseOver()) {
+  if (dev_levelCreator.isMouseOver(mouseX,mouseY)) {
     Menue="level select UGC";
     loadUGCList();
     UGC_lvl_indx=0;
@@ -4082,7 +4082,7 @@ void clickDevMenue() {
     levelCreator=true;
     return;
   }
-  if(dev_testLevel.isMouseOver()){//go to the test level by simulating human input very quickly to painlessly open the level
+  if(dev_testLevel.isMouseOver(mouseX,mouseY)){//go to the test level by simulating human input very quickly to painlessly open the level
     mouseButton = LEFT;
     mouseX = (int)(dev_levelCreator.x + dev_levelCreator.lengthX/2);
     mouseY = (int)(dev_levelCreator.y + dev_levelCreator.lengthY/2);
@@ -4594,12 +4594,12 @@ void  initButtons() {
   multyplayerGo = new UiButton(ui, 640-100, 600, 200, 50, "GO", -59135, -1791).setStrokeWeight(10);
   multyplayerLeave = new UiButton(ui, 10, 660, 200, 50, "Leave", -59135, -1791).setStrokeWeight(10);
 
-  multyplayerSpeedrun = new Button(this, width*0.18125, height*0.916666, width*0.19296875, height*0.0694444444, "Speed Run", -59135, -1791).setStrokeWeight(10*Scale);
-  multyplayerCoop = new Button(this, width*0.38984375, height*0.916666, width*0.19375, height*0.0694444444, "co-op", -59135, -1791).setStrokeWeight(10*Scale);
-  multyplayerUGC = new Button(this, width*0.59921875, height*0.916666, width*0.19296875, height*0.0694444444, "UGC", -59135, -1791).setStrokeWeight(10*Scale);
-  multyplayerPlay = new Button(this, width*0.809375, height*0.916666, width*0.1828125, height*0.0694444444, "Play", -59135, -1791).setStrokeWeight(10*Scale);
-  increaseTime = new Button(this, width*0.80546875, height*0.7, width*0.03, width*0.03, "^", -59135, -1791).setStrokeWeight(5*Scale);
-  decreaseTime = new Button(this, width*0.96609375, height*0.7, width*0.03, width*0.03, "v", -59135, -1791).setStrokeWeight(5*Scale);
+  multyplayerSpeedrun = new Button(g, width*0.18125, height*0.916666, width*0.19296875, height*0.0694444444, "Speed Run", -59135, -1791).setStrokeWeight(10*Scale);
+  multyplayerCoop = new Button(g, width*0.38984375, height*0.916666, width*0.19375, height*0.0694444444, "co-op", -59135, -1791).setStrokeWeight(10*Scale);
+  multyplayerUGC = new Button(g, width*0.59921875, height*0.916666, width*0.19296875, height*0.0694444444, "UGC", -59135, -1791).setStrokeWeight(10*Scale);
+  multyplayerPlay = new Button(g, width*0.809375, height*0.916666, width*0.1828125, height*0.0694444444, "Play", -59135, -1791).setStrokeWeight(10*Scale);
+  increaseTime = new Button(g, width*0.80546875, height*0.7, width*0.03, width*0.03, "^", -59135, -1791).setStrokeWeight(5*Scale);
+  decreaseTime = new Button(g, width*0.96609375, height*0.7, width*0.03, width*0.03, "v", -59135, -1791).setStrokeWeight(5*Scale);
 
   newBlueprint=new UiButton(ui, 200, 500, 200, 80, "New Blueprint", #BB48ED, #4857ED).setStrokeWeight(10);
   loadBlueprint=new UiButton(ui, 800, 500, 200, 80, "Load Blueprint", #BB48ED, #4857ED).setStrokeWeight(10);

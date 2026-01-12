@@ -71,8 +71,8 @@ public abstract class Property<T, P extends Property<T,P>>{
   @param slotId The index of the slot to display this property
   @param context The context for the property configuration
   */
-  public final void mouseClicked(int slotId, PropertyConfigEnviormentContext context){
-    getConfigUi().mouseClicked(slotId,self(), context);
+  public final void mouseClicked(int slotId, PropertyConfigEnviormentContext context, int mouseX, int mouseY){
+    getConfigUi().mouseClicked(slotId,self(), context, mouseX,mouseY);
   }
   
   /**Process mouse pressed events that happen while a property is being configured..<br>
@@ -80,8 +80,8 @@ public abstract class Property<T, P extends Property<T,P>>{
   @param slotId The index of the slot to display this property
   @param context The context for the property configuration
   */
-  public final void mousePressed(int slotId, PropertyConfigEnviormentContext context){
-    getConfigUi().mousePressed(slotId,self(), context);
+  public final void mousePressed(int slotId, PropertyConfigEnviormentContext context, int mouseX, int mouseY){
+    getConfigUi().mousePressed(slotId,self(), context, mouseX,mouseY);
   }
   
   /**Process mouse released that happen while a property is being configured..<br>
@@ -89,8 +89,8 @@ public abstract class Property<T, P extends Property<T,P>>{
   @param slotId The index of the slot to display this property
   @param context The context for the property configuration
   */
-  public final void mouseReleased(int slotId, PropertyConfigEnviormentContext context){
-    getConfigUi().mouseReleased(slotId,self(), context);
+  public final void mouseReleased(int slotId, PropertyConfigEnviormentContext context, int mouseX, int mouseY){
+    getConfigUi().mouseReleased(slotId,self(), context, mouseX,mouseY);
   }
   
   /**Process key pressed events that happen while a property is being configured..<br>

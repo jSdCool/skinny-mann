@@ -85,7 +85,7 @@ public class Coin extends StageComponent {//ground component
     if (!collected) {//if it has not been collected then 
       source.drawCoin(source.Scale*x2, source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*3,render);//draw the coin
       Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);//check if the player is colliding with the coin
-      if (!source.selectingBlueprint && source.collisionDetection.collide2D(playerHitBox,new CircleCollider(new PVector(x,y),14))) {
+      if (!source.selectingBlueprint && CollisionDetection.collide2D(playerHitBox,new CircleCollider(new PVector(x,y),14))) {
         source.coins.set(coinId, true);//set the coin to collected
         source.coinCount++;
         if(!source.levelCreator){//if not in the level creator then increasse the coins collected stats
@@ -122,7 +122,7 @@ public class Coin extends StageComponent {//ground component
       render.translate(-(x+group.xOffset), -(y+group.yOffset), -(z+group.zOffset));
       //ckeck if the player is colliding with the coin
       Collider3D playerHitBox = source.players[source.currentPlayer].getHitBox3D(0,0,0);
-      if (!source.selectingBlueprint && source.collisionDetection.collide3D(playerHitBox, new SphereCollider(new PVector(x,y,z),14))) {
+      if (!source.selectingBlueprint && CollisionDetection.collide3D(playerHitBox, new SphereCollider(new PVector(x,y,z),14))) {
         source.coins.set(coinId, true);//set the coin to selected
         source.coinCount++;
         if(!source.levelCreator){//if not in the level crator, increase the coins collected stat

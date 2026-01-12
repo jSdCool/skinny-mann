@@ -92,7 +92,7 @@ public class SoundPropertyConfigUi extends PropertyConfigUi<String, StringProper
   @param property The specific property that is being procesed
   @param context The context for the property configuration
   */
-  public void mouseClicked(int slotId, StringProperty property, PropertyConfigEnviormentContext context){
+  public void mouseClicked(int slotId, StringProperty property, PropertyConfigEnviormentContext context, int mouseX, int mouseY){
     String current = property.get();
     int currentIndex = -1;
     String[] keys = context.soundKeys();
@@ -105,7 +105,7 @@ public class SoundPropertyConfigUi extends PropertyConfigUi<String, StringProper
     if(currentIndex > 0){
       prevVar.setIy(START_CONFIG_Y+25+SLOT_HEIGHT*slotId);
       prevVar.reScale();
-      if(prevVar.isMouseOver()){
+      if(prevVar.isMouseOver(mouseX,mouseY)){
         property.set(keys[currentIndex-1]);
       }
     }
@@ -113,7 +113,7 @@ public class SoundPropertyConfigUi extends PropertyConfigUi<String, StringProper
     if(currentIndex < keys.length-1){
       nextvar.setIy(START_CONFIG_Y+25+SLOT_HEIGHT*slotId);
       nextvar.reScale();
-      if(nextvar.isMouseOver()){
+      if(nextvar.isMouseOver(mouseX,mouseY)){
         property.set(keys[currentIndex+1]);
       }
     }

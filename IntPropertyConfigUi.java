@@ -84,29 +84,29 @@ public class IntPropertyConfigUi extends PropertyConfigUi<Integer,IntegerPropert
   @param property The specific property that is being procesed
   @param context The context for the property configuration
   */
-  public void mouseClicked(int slotId, IntegerProperty property, PropertyConfigEnviormentContext context){
+  public void mouseClicked(int slotId, IntegerProperty property, PropertyConfigEnviormentContext context, int mouseX, int mouseY){
     increase.setIy(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
     increaseMore.setIy(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
     increaseAlot.setIy(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
     decrease.setIy(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
     decreaseMore.setIy(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
     decreaseAlot.setIy(START_CONFIG_Y+50+SLOT_HEIGHT*slotId);
-    if(increase.isMouseOver()){
+    if(increase.isMouseOver(mouseX,mouseY)){
       property.set(property.get()+1);
     }
-    if(increaseMore.isMouseOver()){
+    if(increaseMore.isMouseOver(mouseX,mouseY)){
       property.set(property.get()+10);
     }
-    if(increaseAlot.isMouseOver()){
+    if(increaseAlot.isMouseOver(mouseX,mouseY)){
       property.set(property.get()+100);
     }
-    if(decrease.isMouseOver()){
+    if(decrease.isMouseOver(mouseX,mouseY)){
       property.set(property.get()-1);
     }
-    if(decreaseMore.isMouseOver()){
+    if(decreaseMore.isMouseOver(mouseX,mouseY)){
       property.set(property.get()-10);
     }
-    if(decreaseAlot.isMouseOver()){
+    if(decreaseAlot.isMouseOver(mouseX,mouseY)){
       property.set(property.get()-100);
     }
   }

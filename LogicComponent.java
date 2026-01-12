@@ -22,7 +22,7 @@ public abstract class LogicComponent implements Serialization {//the base of all
     this.x=x;
     this.y=y;
     this.type=type;
-    button=new Button(source, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
+    button=new Button(source.g, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
     lb=board;
   }
   
@@ -36,7 +36,7 @@ public abstract class LogicComponent implements Serialization {//the base of all
     this.x=x;
     this.y=y;
     this.type=type;
-    button=new Button(source, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
+    button=new Button(source.g, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
     for (int i=0; i<cnects.size(); i++) {
       JSONObject data= cnects.getJSONObject(i);
       connections.add(new Integer[]{data.getInt("index"), data.getInt("terminal")});
@@ -50,7 +50,7 @@ public abstract class LogicComponent implements Serialization {//the base of all
     y = iterator.getFloat();
     type = iterator.getString();
     
-    button=new Button(source, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
+    button=new Button(source.g, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
     //connections
     int numConnections = iterator.getInt();
     for(int i=0;i<numConnections;i++){

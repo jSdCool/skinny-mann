@@ -48,14 +48,14 @@ ArrayList<String> fileIndex=new ArrayList<>();
 /**Process clicks on the update screen
 */
 void updae_screen_click() {//the buttons on the update screen
-  if (updateGetButton.isMouseOver()) {//get button sends you to the website
+  if (updateGetButton.isMouseOver(mouseX,mouseY)) {//get button sends you to the website
     link("http://cbi-games.org");//open CBi games in a web browser
   }
-  if (updateOkButton.isMouseOver()) {//ok button sends you to the main menu
+  if (updateOkButton.isMouseOver(mouseX,mouseY)) {//ok button sends you to the main menu
     Menue="main";//go to the main menue
   }
   
-  if (downloadUpdateButton.isMouseOver()) {//download button, trigger the updater download
+  if (downloadUpdateButton.isMouseOver(mouseX,mouseY)) {//download button, trigger the updater download
     Menue="downloading update";
     thread("downloadUpdateFunction");//spawn a thread to download the updater
   }
@@ -64,7 +64,7 @@ void updae_screen_click() {//the buttons on the update screen
 /**Process clicks on the updater download screen
 */
 void updateDownloadingScreenClick(){
-  if(exeNameError && exeErrorCloseButton.isMouseOver()){
+  if(exeNameError && exeErrorCloseButton.isMouseOver(mouseX,mouseY)){
     exit(0);
   }
 }

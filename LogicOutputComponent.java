@@ -13,7 +13,7 @@ public abstract class LogicOutputComponent extends LogicComponent {
   */
   public LogicOutputComponent(float x, float y, String type, LogicBoard board) {
     super(x, y, type, board);
-    button=new Button(source, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
+    button=new Button(source.g, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
   }
   /**Creates a logic compoennet at the proviede position with the provided connections
   @param x the visual x position
@@ -23,7 +23,7 @@ public abstract class LogicOutputComponent extends LogicComponent {
   */
   public LogicOutputComponent(float x, float y, String type, JSONArray cnects) {
     super(x, y, type, cnects);
-    button=new Button(source, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
+    button=new Button(source.g, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
   }
   /**Creates a logic component from serialized data
   */

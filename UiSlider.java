@@ -81,9 +81,9 @@ public class UiSlider {
 
   /**Process mouse clicks that may happen on this slider
   */
-  public void mouseClicked() {
-    if (button.isMouseOver()) {
-      float relpos = ui.getSource().mouseX-x;
+  public void mouseClicked(int mouseX, int mouseY) {
+    if (button.isMouseOver(mouseX,mouseY)) {
+      float relpos = mouseX-x;
       float percentVal=relpos/width;
       float value=(percentVal*(maxVal-minVal))+minVal;
       if (round>0) {
@@ -96,9 +96,9 @@ public class UiSlider {
   
   /**Process mouse draggs that may happen on this slider
   */
-  public void mouseDragged() {
-    if (button.isMouseOver()) {
-      float relpos = ui.getSource().mouseX-x;
+  public void mouseDragged(int mouseX, int mouseY) {
+    if (button.isMouseOver(mouseX,mouseY)) {
+      float relpos = mouseX-x;
       float percentVal=relpos/width;
       float value=(percentVal*(maxVal-minVal))+minVal;
       if (round>0) {
