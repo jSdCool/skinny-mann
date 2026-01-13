@@ -629,223 +629,642 @@ int lastFPSUpdate = 0;
 /**The number of milliseconds the last frame took to render
 */
 int lastFrameTime = 0;
-/**The sound index map for all of the tutorial sounds
+/**The sound index map for all of the tutorial narrations
 */
 int[][] tutorialNarration=new int[2][17];
 
+/**The saved level creator colors
+*/
 JSONArray colors;
+/**Completed level progress
+*/
 JSONArray levelProgress;
+/**Unused
+*/
 JSONArray scolors;
 
+/**Portal creation infomarion for portal 1
+*/
 JSONObject portalStage1;
+/**Portal creation information for portal 2
+*/
 JSONObject portalStage2;
 
+/**All game settings
+*/
 Settings settings;
 
+/**Turn shadows off button
+*/
 Button shadows0;
+/**Old shadows button
+*/
 Button shadows1;
+/**Low shadows button
+*/
 Button shadows2;
+/**Medium shadows button
+*/
 Button shadows3;
+/**High shadowns button
+*/
 Button shadows4;
+/**Level 1 button
+*/
 Button select_lvl_1;
+/**Level selection screen back button
+*/
 Button select_lvl_back;
+/**Level 2 button
+*/
 Button select_lvl_2;
+/**Level 3 button
+*/
 Button select_lvl_3;
+/**Level 4 button
+*/
 Button select_lvl_4;
+/**Level 5 button
+*/
 Button select_lvl_5;
+/**Level 6 button
+*/
 Button select_lvl_6;
+/**unused
+*/
 Button sdSlider;
+/**Show FPS button
+*/
 Button enableFPS;
+/**Don't show FPS button
+*/
 Button disableFPS;
+/**Show debug information button
+*/
 Button enableDebug;
+/**Don't show deug information button
+*/
 Button disableDebug;
+/**Gameplay settings screen button
+*/
 Button sttingsGPL;
+/**Display settings screen button
+*/
 Button settingsDSP;
+/**Other settings screen button
+*/
 Button settingsOUT;
+/**720 resolution button
+*/
 Button rez720;
+/**900 resolution button
+*/
 Button rez900;
+/**1080 resolution button
+*/
 Button rez1080;
+/**1440 resolution button
+*/
 Button rez1440;
+/**4K resolution button
+*/
 Button rez4k;
+/**Fullscreen on button
+*/
 Button fullScreenOn;
+/**Fullscreen off button
+*/
 Button fullScreenOff;
+/**unused
+*/
 Button vsdSlider;
+/**unused
+*/
 Button MusicSlider;
+/**unused
+*/
 Button SFXSlider;
+/**Fun narration mode button
+*/
 Button narrationMode1;
+/**Safe narration mode button
+*/
 Button narrationMode0;
+/**Go to UGC menu button
+*/
 Button select_lvl_UGC;
+/**Open UGC folder button
+*/
 Button UGC_open_folder;
+/**Next UGC level button
+*/
 Button UGC_lvls_next;
+/**prevous UGC level button
+*/
 Button UGC_lvls_prev;
+/**Play UGC level button
+*/
 Button UGC_lvl_play;
+/**Open level creator button.
+Origonaly this button justed opened the level creatoe web page in a browser but now it open the full level creator
+*/
 Button levelcreatorLink;
+/**Level 7 button
+*/
 Button select_lvl_7;
+/**Level 8 button
+*/
 Button select_lvl_8;
+/**Level 9 button
+*/
 Button select_lvl_9;
+/**Level 10 button
+*/
 Button select_lvl_10;
+/**Main menu play button
+*/
 Button playButton;
+/**Main menu multyplayer button
+*/
 Button joinButton;
+/**Main menu settings button
+*/
 Button settingsButton;
+/**Main menu tutorial button
+*/
 Button howToPlayButton;
+/**Exit game button
+*/
 Button exitButton;
+/**Dowload updater button
+*/
 Button downloadUpdateButton;
+/**Open cbi-games.org website
+*/
 Button updateGetButton;
+/**Close update screen button
+*/
 Button updateOkButton;
+/**Dev menu go to main menu
+*/
 Button dev_main;
+/**Dev menu quit the game
+*/
 Button dev_quit;
+/**Dev menu go to level select screen
+*/
 Button dev_levels;
+/**Dev menu go to turorial
+*/
 Button dev_tutorial;
+/**Dev menu go to settings
+*/
 Button dev_settings;
+/**Dev menu go to UGC levels
+*/
 Button dev_UGC;
+/**Dev menu go to multyplayer
+*/
 Button dev_multiplayer;
+/**Dev menu go to level creator
+*/
 Button dev_levelCreator;
+/**Dev menu go to test level in the level creator
+*/
 Button dev_testLevel;
+/**Go to multyplayer join screen
+*/
 Button multyplayerJoin;
+/**Go to multyplayer host screen
+*/
 Button multyplayerHost;
+/**Exit multyplayer
+*/
 Button multyplayerExit;
+/**Start multyplayer session / connect button
+*/
 Button multyplayerGo;
+/**Leave multyplayer button
+*/
 Button multyplayerLeave;
+/**Multyplayer speedrun levels
+*/
 Button multyplayerSpeedrun;
+/**multyplayer co op levels
+*/
 Button multyplayerCoop;
+/**multyplayer UGC levels
+*/
 Button multyplayerUGC;
+/**Start multyplayer game button
+*/
 Button multyplayerPlay;
+/**Increase speedrun time button
+*/
 Button increaseTime;
+/**Decrease speed run time button
+*/
 Button decreaseTime;
+/**Restart speed run from pause menu button
+*/
 Button pauseRestart;
+/**New level screen button
+*/
 Button newLevelButton;
+/**Load level screen button
+*/
 Button loadLevelButton;
+/**New stage screen button
+*/
 Button newStage;
+/**Create new level file button
+*/
 Button newFileCreate;
+/**Back to overview from new file screen
+*/
 Button newFileBack;
+/**edit sellected stage button
+*/
 Button edditStage;
+/**Set selected stage as main stage button
+*/
 Button setMainStage;
+/**Create portal select destination stage button
+*/
 Button selectStage;
+/**New file will be 2D stage button
+*/
 Button new2DStage;
+/**New file will be 3D stage button
+*/
 Button new3DStage;
+/**Save level in overview button
+*/
 Button overview_saveLevel;
+/**Level creator help button
+*/
 Button help;
+/**New blueprint screen button
+*/
 Button newBlueprint;
+/**Load blueprint screen button
+*/
 Button loadBlueprint;
+/**Create/load the blueprint button
+*/
 Button createBlueprintGo;
+/**New file will be sound button
+*/
 Button addSound;
+/**Scroll up in the overview
+*/
 Button overviewUp;
+/**Scroll down in the overview
+*/
 Button overviewDown;
+/**Select file to copy in add file button
+*/
 Button chooseFileButton;
+/**Load level button
+*/
 Button lcLoadLevelButton;
+/**Create new level button
+*/
 Button lcNewLevelButton;
+/**Go back to UGC from level creator main menu
+*/
 Button lc_backButton;
+/**Exit level creator button
+*/
 Button lcOverviewExitButton;
+/**Confirm exiting the level creator
+*/
 Button lc_exitConfirm;
+/**Cancle exiting the level creator
+*/
 Button lc_exitCancle;
+/**Open the Levels folder for the level creator
+*/
 Button lc_openLevelsFolder;
+/**Back button in the settings menu
+*/
 Button settingsBackButton;
+/**Resume game button from the pause menu
+*/
 Button pauseResumeButton;
+/**Settings button from the pause menu
+*/
 Button pauseOptionsButton;
+/**Quit level button
+*/
 Button pauseQuitButton;
+/**Continue button once the level has been completed
+*/
 Button endOfLevelButton;
+/**Level 11 button
+*/
 Button select_lvl_11;
+/**Level 12 button
+*/
 Button select_lvl_12;
+/**Sound settings screen button
+*/
 Button settingsSND;
+/**Set this new sound to be played as a sound button
+*/
 Button lc_newSoundAsSoundButton;
+/**Set this new sound to be played as a narration button
+*/
 Button lc_newSoundAsNarrationButton;
+/**Diables menu transition animations button
+*/
 Button disableMenuTransistionsButton;
+/**Enable menu transition animarions button
+*/
 Button enableMenuTransitionButton;
+/**Level 13 button
+*/
 Button select_lvl_13;
+/**Level 14 button
+*/
 Button select_lvl_14;
+/**Level 15 button
+*/
 Button select_lvl_15;
+/**Level 16 button
+*/
 Button select_lvl_16;
+/**Level select screen next screen button
+*/
 Button select_lvl_next;
 
+/**User interface scaling and positioning manager
+*/
 UiFrame ui;
 
+/**Main menu title
+*/
 UiText mm_title;
+/**Main menu early access text
+*/
 UiText mm_EarlyAccess;
+/**Main menu version text
+*/
 UiText mm_version;
+/**Level select screen title text
+*/
 UiText ls_levelSelect;
+/**UGC menu title text
+*/
 UiText lsUGC_title;
+/**UGC menu no levels found text
+*/
 UiText lsUGC_noLevelFound;
+/**UGC level not comptable text
+*/
 UiText lsUGC_levelNotCompatible;
+/**UGC level name text
+*/
 UiText lsUGC_levelName;
+/**Settings title text
+*/
 UiText st_title;
+/**horozontal scroll resolution text
+*/
 UiText st_Hssr;
+/**vertical scroll resolution text
+*/
 UiText st_Vssr;
+/**Settings gameplay title text
+*/
 UiText st_gameplay;
+/**Verticale scrolling value text
+*/
 UiText st_vsrp;
+/**Horozontal scrolling value text
+*/
 UiText st_hsrp;
+/**Fov setting text
+*/
 UiText st_gmp_fovdesc;
+/**FOV value text
+*/
 UiText st_gmp_fovdisp;
+/**Screen resolution text
+*/
 UiText st_dsp_vsr;
+/**Fullscreen text
+*/
 UiText st_dsp_fs;
+/**4K text
+*/
 UiText st_dsp_4k;
+/**1440 text
+*/
 UiText st_dsp_1440;
+/**1080 text
+*/
 UiText st_dsp_1080;
+/**900 text
+*/
 UiText st_dsp_900;
+/**720 text
+*/
 UiText st_dsp_720;
+/**yes fullscreen text
+*/
 UiText st_dsp_fsYes;
+/**no fullscreen text
+*/
 UiText st_dsp_fsNo;
+/**set FPS value
+*/
 UiText st_dsp_fpsNum;
+/**Frame rate text
+*/
 UiText st_dsp_fps;
+/**Display settings title
+*/
 UiText st_display;
+/**Show FPS text
+*/
 UiText st_o_displayFPS;
+/**Show debug info text
+*/
 UiText st_o_debugINFO;
+/**Music volume text
+*/
 UiText st_snd_musicVol;
+/**Sound volume text
+*/
 UiText st_snd_SFXvol;
+/**Shadow Text
+*/
 UiText st_o_3DShadow;
+/**Narration volume text
+*/
 UiText st_snd_narration;
+/**No column
+*/
 UiText st_o_yes;
+/**Yes colunm
+*/
 UiText st_o_no;
+/**Shadows off
+*/
 UiText st_o_shadowsOff;
+/**Old style shadows
+*/
 UiText st_o_shadowsOld;
+/**Low shaodws
+*/
 UiText st_o_shadowsLow;
+/**Medium shadows
+*/
 UiText st_o_shadowsMedium;
+/**High shadows
+*/
 UiText st_o_shadowsHigh;
+/**Better narrations
+*/
 UiText st_snd_better;
+/**save narrations
+*/
 UiText st_snd_demonitized;
+/**Music volume value display
+*/
 UiText st_snd_currentMusicVolume;
+/**Sound volume value display
+*/
 UiText st_snd_currentSoundsVolume;
+/**Other settings title
+*/
 UiText st_other;
+/**Multyplayer title
+*/
 UiText initMultyplayerScreenTitle;
+/**Host session title
+*/
 UiText mp_hostSeccion;
+/**Host enter name
+*/
 UiText mp_host_Name;
+/**Host enter port
+*/
 UiText mp_host_port;
+/**Join session title
+*/
 UiText mp_joinSession;
+/**Join enter name
+*/
 UiText mp_join_name;
+/**Join enter port
+*/
 UiText mp_join_port;
+/**join enter ip
+*/
 UiText mp_join_ip;
+/**Disconnect screen title
+*/
 UiText mp_disconnected;
+/**Disconnect screen reason
+*/
 UiText mp_dc_reason;
+/**Dev manu title
+*/
 UiText dev_title;
+/**Dev menu info text
+*/
 UiText dev_info;
+/**Tutorial feature disabled text
+*/
 UiText tut_notToday;
+/**Tutorail start disclainer
+*/
 UiText tut_disclaimer;
+/**Tutorial esc to close message
+*/
 UiText tut_toClose;
+/**Number of collected coins display
+*/
 UiText coinCountText;
+/**Paused screen title
+*/
 UiText pa_title;
+/**Startup logo games text
+*/
 UiText logoText;
+/**Update screen title
+*/
 UiText up_title;
+/**Update screen info text
+*/
 UiText up_info;
+/**Update screen wait for download
+*/
 UiText up_wait;
+/**Level creator version display
+*/
 UiText lc_start_version;
+/**Level creator author display
+*/
 UiText lc_start_author;
+/**Enter level name iunstruction
+*/
 UiText lc_load_new_describe;
+/**Level not found text
+*/
 UiText lc_load_notFound;
+/**Show the name of the selected file for copying files into a level
+*/
 UiText lc_newf_fileName;
+/**Portal creation Select destiantion stage text
+*/
 UiText lc_dp2_info;
+/**Enter blueprint name instruction
+*/
 UiText lc_newbp_describe;
+/**Are you sure you want to exit text
+*/
 UiText lc_exit_question;
+/**Any unsaved data Text
+*/
 UiText lc_exit_disclaimer;
+/**You died text
+*/
 UiText deadText;
+/**FPS display
+*/
 UiText fpsText;
+/**mspc display
+*/
 UiText dbg_mspc;
+/**Player x position display
+*/
 UiText dbg_playerX;
+/**Player y position display
+*/
 UiText dbg_playerY;
+/**Player verticale velocity display
+*/
 UiText dbg_vertvel;
+/**Player walking animation cool down
+*/
 UiText dbg_animationCD;
+/**Current Player walking animation pose
+*/
 UiText dbg_pose;
+/**cam x pos display
+*/
 UiText dbg_camX;
+/**cam y pos display
+*/
 UiText dbg_camY;
+/**tutorial position display
+*/
 UiText dbg_tutorialPos;
+/**General display text (Press E)
+*/
 UiText game_displayText;
 UiText lebelCompleteText;
 UiText lc_fullScreenWarning;
