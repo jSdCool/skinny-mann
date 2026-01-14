@@ -12,7 +12,7 @@ public class Button implements Serialization {
   private float textScaleFactor=2.903f, strokeWeight=3;
   private transient PGraphics render;
   /**Create a button at the given position with the given size
-  @param window The window this button will be renderd on
+  @param render The window this button will be renderd on
   @param X The upper left x position of the button
   @param Y The upper left y position of the button
   @param DX The width of the button
@@ -28,7 +28,7 @@ public class Button implements Serialization {
     strokeWeight=3;
   }
   /**Create a button at the given position with the given size with the given text on it
-  @param window The window this button will be renderd on
+  @param render The window this button will be renderd on
   @param X The upper left x position of the button
   @param Y The upper left y position of the button
   @param DX The width of the button
@@ -46,7 +46,7 @@ public class Button implements Serialization {
     strokeWeight=3;
   }
   /**Create a button at the given position with the given size renderded with the given color
-  @param window The window this button will be renderd on
+  @param render The window this button will be renderd on
   @param X The upper left x position of the button
   @param Y The upper left y position of the button
   @param DX The width of the button
@@ -66,7 +66,7 @@ public class Button implements Serialization {
     strokeWeight=3;
   }
   /**Create a button at the given position with the given size with the given text on it renderded with the given color
-  @param window The window this button will be renderd on
+  @param render The window this button will be renderd on
   @param X The upper left x position of the button
   @param Y The upper left y position of the button
   @param DX The width of the button

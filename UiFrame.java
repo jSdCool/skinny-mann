@@ -7,7 +7,7 @@ public class UiFrame {
   private float topX, topY, centerX, centerY, scale;
   
   /**Create a new ui frame with a base screen size
-  @param s The surface to scale to
+  @param render The surface to scale to
   @param baseWidth The base pixel width to scale widths from
   @param baseHeight The base pixel height to scale heights from
   */

@@ -16,9 +16,20 @@ void draw_updae_screen() {//the update screen
   textAlign(LEFT);
 }
 //various update screen related vars
+/**Output parmaters to check on the progress of downloading the updater
+*/
 long [] updateDownloadProgress = {1,0};
+/**If the executable name was not correctly found
+*/
 boolean exeNameError = false;
-UiText exeNameErrorText,exeErrorExplainText;
+/**Display error about the execuatble name
+*/
+UiText exeNameErrorText;
+/**Infomration about the execuablte error
+*/
+UiText exeErrorExplainText;
+/**Close the game on executable error button
+*/
 Button exeErrorCloseButton;
 
 /**Draw the update downloading screen
@@ -43,6 +54,8 @@ void drawUpdateDownloadingScreen() {
   }
 }
 
+/**Index of files for copying the game's java installation for the updater
+*/
 ArrayList<String> fileIndex=new ArrayList<>();
 
 /**Process clicks on the update screen

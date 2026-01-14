@@ -629,9 +629,43 @@ int lastFPSUpdate = 0;
 /**The number of milliseconds the last frame took to render
 */
 int lastFrameTime = 0;
+/**3D camera x roataion angle
+*/
+int xangle=25+180;
+/**3D cameran y rotatopm angle
+*/
+int yangle=15;
+/**The 3D cmarea distance from the focal point
+*/
+int dist=700;//camera presets
 /**The sound index map for all of the tutorial narrations
 */
 int[][] tutorialNarration=new int[2][17];
+
+
+//a few more flotas that need to be after some of the ints
+/**The 3D camera Y diffrence
+*/
+float DY=sin(radians(yangle))*dist;
+/**Tmp var for computering 3D camera positioing
+*/
+float hd=cos(radians(yangle))*dist;
+/**3D cmarea X diffrence
+*/
+float DX=sin(radians(xangle))*hd;
+/**3D camerea Z diffrence
+*/
+float DZ=cos(radians(xangle))*hd;
+/**3D camrea x position
+*/
+float cam3Dx;
+/**3D camera y position
+*/
+float cam3Dy;
+/**3D camera z position
+*/
+float cam3Dz;//camera rotation
+
 
 /**The saved level creator colors
 */
@@ -1266,71 +1300,161 @@ UiText dbg_tutorialPos;
 /**General display text (Press E)
 */
 UiText game_displayText;
+/**Level complete text
+*/
 UiText lebelCompleteText;
+/**Level crator main menu fullscreen warning
+*/
 UiText lc_fullScreenWarning;
+/**Level creator text informing the user they are currenly setting the inital player spawn point
+*/
 UiText settingPlayerSpawnText;
+/**Sound setting page title
+*/
 UiText st_sound;
+/**Narration volume descripton
+*/
 UiText st_snd_narrationVol;
+/**Narration volume display
+*/
 UiText st_snd_currentNarrationVolume;
+/**Low narration volume infomration text
+*/
 UiText narrationCaptionText;
+/**Settings disabled menu transitions label
+*/
 UiText st_o_diableTransitions;
+/**Settings default author descripton
+*/
 UiText st_o_defaultAuthor;
+/**Multyplayer ping display
+*/
 UiText dbg_ping;
 
+/**Music volume slider
+*/
 UiSlider musicVolumeSlider;
+/**Sounds volume slider
+*/
 UiSlider SFXVolumeSlider;
+/**Verticale edge scrolling sitance slider
+*/
 UiSlider verticleEdgeScrollSlider;
+/**Horozontal edge scrolling distance slider
+*/
 UiSlider horozontalEdgeScrollSlider;
+/**Narration volume slider
+*/
 UiSlider narrationVolumeSlider;
+/**FOV Slider
+*/
 UiSlider fovSlider;
+/**Target FPS slider
+*/
 UiSlider fpsSlider;
 
+/**Default level creator author name setting text box
+*/
 UiTextBox defaultAuthorNameTextBox;
+/**Multyplayer Name text box
+*/
 UiTextBox multyPlayerNameTextBox;
+/**Multyplayer port text box
+*/
 UiTextBox multyPlayerPortTextBox;
+/**Muktyplayer ip text box
+*/
 UiTextBox multyPlayerIpTextBox;
+/**Levle creator enter level name text box
+*/
 UiTextBox lcEnterLevelTextBox;
+/**Level creator new file name text box
+*/
 UiTextBox lcNewFileTextBox;
 
+/**Server for multyplayer hosting
+*/
 Server server;
 
+
+/**Infomration about the currently slected multyyplayer level
+*/
 SelectedLevelInfo multyplayerSelectedLevel = new SelectedLevelInfo();
 
+/**Leaderboard for multy[player speedrun levels
+*/
 LeaderBoard leaderBoard = new LeaderBoard(new String[]{"", "", "", "", "", "", "", "", "", ""});
 
+/**The 3D point in front of the camerea that the mouse is over
+*/
 Point3D initalMousePoint = new Point3D(0, 0, 0);
+/**The inital poition of the movemnt object
+*/
 Point3D initalObjectPos = new Point3D(0, 0, 0);
+/**The inital size of the movemnet object
+*/
 Point3D initialObjectDim = new Point3D(0, 0, 0);
 
+/**A list of the boxes that make up the glitch effect
+*/
 ArrayList<GlitchBox> glitchBoxes = new ArrayList<>();
 
+/**The players movemnt input manager
+*/
 PlayerMovementManager playerMovementManager = new PlayerMovementManager();
 
+/**Should be unused
+*/
 CollisionDetection collisionDetection = new CollisionDetection();
 
+/**Player statistics
+*/
 StatisticManager stats;
 
+/**The sound handler
+*/
 SoundHandler soundHandler;
 
+/**The currently open level
+*/
 Level level;
 
+/**The blurprint that is currently being worked on
+*/
 Stage workingBlueprint;
+/**All the loaded blueprints
+*/
 Stage blueprints[];
+/**The blueprint that is curretnly being previewd on the screen
+*/
 Stage displayBlueprint;
 
+/**The thread responcable for handling in game logig processing
+*/
 LogicThread logicTickingThread = new LogicThread();
 
+/**The tool box window
+*/
 ToolBox scr2;
 
+/**The identifier of the component that is currently being placed
+*/
 Identifier currentlyPlaceing = null;
 
+/**The all registerd proerty config uis
+*/
 ArrayList<PropertyConfigUi.PropConfigUiFactory> propertyConfigRegistry = new ArrayList<>();
 
-
+/**Connected multyplayer clients
+*/
 ArrayList<Client> clients= new ArrayList<>();
 
+/**A proper non this refrence to the main Papplet (for refrence from the tool box window)
+*/
 PApplet primaryWindow=this;
 
+/**The current state of all players
+*/
 Player players[] =new Player[10];
 
 

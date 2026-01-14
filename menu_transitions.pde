@@ -75,8 +75,14 @@ enum Transitions {
 };
 
 //some global vars
+/**The currently in progress menu transition
+*/
 Transitions currentTransition;
+/**The current progress in the current menu transition
+*/
 float transitionProgress;
+/**The start time of the current transition
+*/
 int transitionStartMillis;
 /**Start a new menu transition
 @param transition The transition to start
@@ -89,7 +95,11 @@ void initMenuTransition(Transitions transition) {
   transitioningMenu=true;
 }
 
+/**The stars from the startup logo
+*/
 ArrayList<Star> startupStars = new ArrayList<Star>();
+/**The time the last star from the startup animation was added
+*/
 int lastStarAddTime = 0;
 /**Render the logo to main transition
 */

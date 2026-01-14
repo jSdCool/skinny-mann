@@ -1,23 +1,66 @@
 //start of startup_logo.pde
 
 //various global vars related to the startup logo
-int ptsW, ptsH;
+/**Startup logo variable
+*/
+int ptsW;
+/**Startup logo variable
+*/
+int ptsH;
 
+
+/**Startup logo variable
+*/
 PImage img;//!!!!!!! prbly should not have this here, or named that
 
+/**Startup logo variable
+*/
 int numPointsW;
+/**Startup logo variable
+*/
 int numPointsH_2pi;
+/**Startup logo variable
+*/
 int numPointsH;
 
+/**Startup logo variable
+*/
 float[] coorX;
+/**Startup logo variable
+*/
 float[] coorY;
+/**Startup logo variable
+*/
 float[] coorZ;
+/**Startup logo variable
+*/
 float[] multXZ;
-float logorx=-75, logory=-180, logorz=0, start_wate=0;//logo rotation info
+/**Startup logo variable
+*/
+float logorx=-75;
+/**Startup logo variable
+*/
+float logory=-180;
+/**Startup logo variable
+*/
+float logorz=0;
+/**Startup logo variable
+*/
+float start_wate=0;//logo rotation info
 
-boolean skipFrameInumeration = true;//used to not consiter a frame as time passed if that frame prbly took too long
-int startupMillisTimer =0,prevstartupMillis=0;
+/**Startup logo variable. Used to not consiter a frame as time passed if that frame prbly took too long
+*/
+boolean skipFrameInumeration = true;
+/**Startup logo variable
+*/
+int startupMillisTimer =0;
+/**Startup logo variable
+*/
+int prevstartupMillis=0;
 
+
+/**Startup logo variable
+*/
 PShape CBiSphere;
 /**Render the statrup logo
 @param controllCamera If this function should controll the position of the camera
