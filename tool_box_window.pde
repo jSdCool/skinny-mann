@@ -16,23 +16,258 @@ class ToolBox extends PApplet {
   }
 
   //oh fuck all the variables
-  public int redVal=0, greenVal=0, blueVal=0, CC=0;
-  int rsp=0, gsp=0, bsp=0, selectedColor=0, millisOffset, variableScroll=0, groupScroll=0;
-  String page="colors", newGroopName="";
-  Button colorPage, toolsPage,  toggle3DMode, saveLevel, exitStageEdit, select, selectionPage, stageSettings, skyColorB1, setSkyColor, resetSkyColor, placeBlueprint, nexBlueprint, prevBlueprint, nextSound, prevSound,  playPauseButton,  deleteButton, movePlayerButton, gridModeButton, connectLogicButton, moveComponentsButton, increase, increaseMore, increaseAlot, decrease, decreaseMore, decreaseAlot, nextGroup, prevGroup, variablesAndGroups, variablesUP, variablesDOWN, groupsUP, groupsDOWN, addVariable, addGroup, typeGroopName, runLoad, logicHelpButton, move3DButton, size3DButton, levelSettingsPage, multyplayerModeSpeedrunButton, multyplayerModeCoOpButton, minplayersIncrease, minPlayersDecrease, maxplayersIncrease, maxplayersDecrease, prevousPlayerButton, nextPlayerButton, tickLogicButton,placeBlueprint3DButton,respawnEntitiesButton, rotateButton, nextPropertyPageButton, prevPropertyPageButton;
-  //thank goodness we do not need theese anymore
-  //Button draw_coin, draw_portal, draw_sloap, draw_holoTriangle, draw_dethPlane, switch3D1, switch3D2, sign, checkpointButton, groundButton, goalButton, holoButton, logicButtonButton, playSound;
-  //Button andGateButton, orGateButton, xorGateButton, nandGateButton, norGateButton, xnorGateButton, testLogicPlaceButton, constantOnButton, setVariableButton, readVariableButton, setVisabilityButton, xOffsetButton, yOffsetButton, delayButton, zOffsetButton, set3DButton, read3DButton, playLogicSoundButton, pulseButton, randomButton;
-  Button[] stageComponetButtons, logicComponentButtons, entityButtons;
+  /**Red value from the color selector
+  */
+  public int redVal=0;
+  /**Green value from the color selector
+  */
+  public int greenVal=0;
+  /**Blue value from the color selector
+  */
+  public int blueVal=0;
+  /**The final color value output from the color selector
+  */
+  public int CC=0;
+  /**The Red color slider value
+  */
+  int rsp=0;
+  /**The Green color slider value
+  */
+  int gsp=0;
+  /**The Blue color slider value
+  */
+  int bsp=0;
+  /**The index of the saved color that is selected
+  */
+  int selectedColor=0;
+  /**The number of milliseconds after the main sketch was started that the tool box was opened
+  */
+  int millisOffset;
+  /**The scroll position of the variable display
+  */
+  int variableScroll=0;
+  /**The scroll position of the group display
+  */
+  int groupScroll=0;
+  /**The page the tool box window is currently on
+  */
+  String page="colors";
+  /**The name of a new group being created
+  */
+  String newGroopName="";
+  /**Color selector page button
+  */
+  Button colorPage;
+  /**Tools page button
+  */
+  Button toolsPage;
+  /**Toggle 3D mode button
+  */
+  Button toggle3DMode;
+  /**Save Level button
+  */
+  Button saveLevel;
+  /**Exit stage editor button
+  */
+  Button exitStageEdit;
+  /**Select tool button
+  */
+  Button select;
+  /**Selection page button
+  */
+  Button selectionPage;
+  /**Stage settings page button
+  */
+  Button stageSettings;
+  /**Start chaning sky color button
+  */
+  Button skyColorB1;
+  /**Set new sky color button
+  */
+  Button setSkyColor;
+  /**Reset sky color button
+  */
+  Button resetSkyColor;
+  /**Place blueprint button
+  */
+  Button placeBlueprint;
+  /**Next blueprint button
+  */
+  Button nexBlueprint;
+  /**Prevous blueprint button
+  */
+  Button prevBlueprint;
+  /**Next sound button
+  */
+  Button nextSound;
+  /**Prevous sound button
+  */
+  Button prevSound;
+  /**Play / Pause simulation button
+  */
+  Button playPauseButton;
+  /**Delete tool button
+  */
+  Button deleteButton;
+  /**Move player tool button
+  */
+  Button movePlayerButton;
+  /**Grid mode button
+  */
+  Button gridModeButton;
+  /**Logic connection tool button
+  */
+  Button connectLogicButton;
+  /**Move logic components tool button
+  */
+  Button moveComponentsButton;
+  /**Increase
+  */
+  Button increase;
+  /**unused
+  */
+  Button increaseMore;
+  /**unusued
+  */
+  Button increaseAlot;
+  /**unused
+  */
+  Button decrease;
+  /**unused
+  */
+  Button decreaseMore;
+  /**unused
+  */
+  Button decreaseAlot;
+  /**Next group button
+  */
+  Button nextGroup;
+  /**Prevous group button
+  */
+  Button prevGroup;
+  /**Variables and groups page button
+  */
+  Button variablesAndGroups;
+  /**Scroll varaibles up button
+  */
+  Button variablesUP;
+  /**Scroll variables down button
+  */
+  Button variablesDOWN;
+  /**Scroll groups up button
+  */
+  Button groupsUP;
+  /**Scroll groups down button
+  */
+  Button groupsDOWN;
+  /**Add new variable button
+  */
+  Button addVariable;
+  /**Add new group button
+  */
+  Button addGroup;
+  /**Start tryping group name button
+  */
+  Button typeGroopName;
+  /**Run the load logic board manually button
+  */
+  Button runLoad;
+  /**Logic editor help button
+  */
+  Button logicHelpButton;
+  /**3D mode move tool
+  */
+  Button move3DButton;
+  /**3D mode change size button
+  */
+  Button size3DButton;
+  /**Level settings page
+  */
+  Button levelSettingsPage;
+  /**Multyplayer mode setting speedrun button
+  */
+  Button multyplayerModeSpeedrunButton;
+  /**Multyplayer mode setting co op button
+  */
+  Button multyplayerModeCoOpButton;
+  /**Minimum Number of players for Co op level increase button
+  */
+  Button minplayersIncrease;
+  /**Minimum Number of players for Co op level decrease button
+  */
+  Button minPlayersDecrease;
+  /**Maximum Number of players for Co op level increase button
+  */
+  Button maxplayersIncrease;
+  /**Maximum Number of players for Co op level decrease button
+  */
+  Button maxplayersDecrease;
+  /**Switch to prevous player button
+  */
+  Button prevousPlayerButton;
+  /**Switch to next player button
+  */
+  Button nextPlayerButton;
+  /**Manually tick current logic board button
+  */
+  Button tickLogicButton;
+  /**Place 3D blueprint button
+  */
+  Button placeBlueprint3DButton;
+  /**Respawn all entities button
+  */
+  Button respawnEntitiesButton;
+  /**Rotate  tool button
+  */
+  Button rotateButton;
+  /**Next property page button
+  */
+  Button nextPropertyPageButton;
+  /**Prevous property page button
+  */
+  Button prevPropertyPageButton;
+
+  /**The buttons for each stage component
+  */
+  Button[] stageComponetButtons;
+  /**The buttons for each logic component
+  */
+  Button[] logicComponentButtons;
+  /**The buttons for each enttity
+  */
+  Button[] entityButtons;
+  
+  /**Stage component button icons
+  */
   StageComponentRegistry.ComponentButtonIconDraw componentIcons[];
+  /**Logic component button icons
+  */
   LogicComponentRegistry.ComponentButtonIconDraw logicComponentIcons[];
+  /**Entity button icons
+  */
   EntityRegistry.EntityButtonIconDraw entityIcons[];
+  /**Information about when components are allowed to be placed
+  */
   Boolean[][] componentAllowedDimentions;
-  boolean typingSign=false, settingSkyColor=false, typingGroopName=false;
+  /**unused
+  */
+  boolean typingSign=false;
+  /**If currently setting a new sky color
+  */
+  boolean settingSkyColor=false;
+  /**If currently typing a new group name
+  */
+  boolean typingGroopName=false;
+  /**The Ui scaling frame for the tool box
+  */
   UiFrame toolBoxUi;
   
+  /**The page of proerties
+  */
   int selectionPropertiesPage = 0;
-  int PROPERTIES_PER_PAGE = 4;
+  /**The max number of prroperties to display per page
+  */
+  final int PROPERTIES_PER_PAGE = 4;
 
   /**Processing's settings method.
   sets the size of the new window

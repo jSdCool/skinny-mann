@@ -283,7 +283,7 @@ boolean loadingBlueprint = false;
 /**If the typing cursor is curretly visable
 */
 boolean coursor = false;
-/*If connecting logic components
+/**If connecting logic components
 */
 boolean connecting = false;
 /**If movinf a logic component
@@ -1394,6 +1394,9 @@ Point3D initalObjectPos = new Point3D(0, 0, 0);
 /**The inital size of the movemnet object
 */
 Point3D initialObjectDim = new Point3D(0, 0, 0);
+/**Point in 3D space representing the location of the mouse pointer
+*/
+Point3D mousePoint = new Point3D(0, 0, 0);
 
 /**A list of the boxes that make up the glitch effect
 */

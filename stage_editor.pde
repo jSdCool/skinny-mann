@@ -1649,7 +1649,7 @@ final float dfa=1280.0/720;
 /**Current screen aspect ratio
 */
 float car=1.0*width/height;
-Point3D mousePoint=new Point3D(0, 0, 0);
+
 /**Calculate a 3D point that is at the same postition as the mouse curser in real 3D space
 */
 void calcMousePoint() {
