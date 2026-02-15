@@ -2028,7 +2028,7 @@ class ToolBox extends PApplet {
             }
             PropertyConfigEnviormentContext context = createPropertyConfigContext();
             for(int i = PROPERTIES_PER_PAGE * selectionPropertiesPage; i < properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage + PROPERTIES_PER_PAGE; i++){
-              properties[i].keyTyped(i%PROPERTIES_PER_PAGE, context, key);
+              properties[i].keyTyped(i % PROPERTIES_PER_PAGE, context, key);
             }
           }
         }

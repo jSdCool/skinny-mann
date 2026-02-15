@@ -8,7 +8,6 @@ public class Player extends Entity implements Serialization {
   public float x, y, z=0, scale, animationCooldown, verticalVelocity=0;
   private final float arbitrayNumber=0.0023f;//slight adjustemnt to the hitboxes just to make shure all collisions are as accurate as posible
   public int pose=1, stage=0;
-  public transient static skiny_mann source;
   int shirt;
   boolean jumping=false, in3D;
   String name="";
@@ -153,9 +152,10 @@ public class Player extends Entity implements Serialization {
   /**Get this player's specific movemnt manger.<br>
   Responcable for storing movement commands.
   */
-  public MovementManager getMovementmanager(){
-    if(source.players[source.currentPlayer] == this){//if this player is the one controlled by this client
-      return source.playerMovementManager;//return the player movmenet manager
+  @Override
+  public MovementManager getMovementmanager(EntityGetMovementManagerContext context){
+    if(context.getCurrentPlayer() == this){//if this player is the one controlled by this client
+      return context.getCurrentPlayerMovementManager();//return the player movmenet manager
     }
     return new NoMovementManager();//else return the no movement manager so that player's client can calculate the player's movement
   }

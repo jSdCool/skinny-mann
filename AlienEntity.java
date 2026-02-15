@@ -241,7 +241,8 @@ public class AlienEntity extends StageEntity implements Configurable{
     
   }
   
-  public MovementManager getMovementmanager(){
+  @Override
+  public MovementManager getMovementmanager(EntityGetMovementManagerContext context){
    return new MovementManager(){
      public boolean left(){
        return !facingRight && pause <= 0 && !stopped;

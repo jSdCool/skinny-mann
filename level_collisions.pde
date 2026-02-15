@@ -875,7 +875,18 @@ void playerPhysics() {
 @param stageHitBoxs3D The 3D hitboxs for the stage(if it has them)
 */
 void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBoxs2D, ArrayList<Collider3D> stageHitBoxs3D) {
-  MovementManager movement = entity.getMovementmanager();//get the movement manager for this entity
+  //create the context for getting a movement manager
+  EntityGetMovementManagerContext eMMContext = new EntityGetMovementManagerContext(){
+    public Player getCurrentPlayer(){
+      return players[currentPlayer];
+    }
+    
+    public MovementManager getCurrentPlayerMovementManager(){
+      return playerMovementManager;
+    }
+  };
+  
+  MovementManager movement = entity.getMovementmanager(eMMContext);//get the movement manager for this entity
   //if the movement manager is no movement manager then stop becasue it does not move on its own
   if (movement instanceof NoMovementManager) {
     return;

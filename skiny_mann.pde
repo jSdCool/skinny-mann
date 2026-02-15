@@ -3994,7 +3994,6 @@ void sourceInitilize() {
   LogicComponent.source=this;
   Client.source=this;
   Server.source=this;
-  Player.source=this;
 }
 
 /**Hanlde any errors that pop up in multyplayer netwiorking.<br>

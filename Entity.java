@@ -7,7 +7,7 @@ abstract public class Entity{
   Responcable for storing movement commands.
   @return The movement manager for this entity
   */
-  public abstract MovementManager getMovementmanager();
+  public abstract MovementManager getMovementmanager(EntityGetMovementManagerContext context);
   
   /**Get this entities' 2D hitbox
   @param offsetX How far to offset the returned box from the entities current position in the x axis

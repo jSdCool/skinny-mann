@@ -36,7 +36,8 @@ public class Goon extends StageEntity{
   /**Get this entities' specific movemnt manger.<br>
   Responcable for storing movement commands.
   */
-  public MovementManager getMovementmanager(){
+  @Override
+  public MovementManager getMovementmanager(EntityGetMovementManagerContext context){
     return mm;
   }
   

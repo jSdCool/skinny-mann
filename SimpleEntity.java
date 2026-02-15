@@ -65,7 +65,8 @@ public class SimpleEntity extends StageEntity{
   Responcable for storing movement commands.
   @return The movement manager for this entity
   */
-  public MovementManager getMovementmanager(){
+  @Override
+  public MovementManager getMovementmanager(EntityGetMovementManagerContext context){
     return m;
   }
   
