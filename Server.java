@@ -1,15 +1,19 @@
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.*;
+import java.util.ArrayList;
 /**Multyplayer Server conncetion handler
 */
 public class Server extends Thread {
-  static transient skiny_mann source;
+  
+  ArrayList<Client> clients;
+  
   ServerSocket serverSocket;
   /**Create a server on the given port
   @param port The port to host the server on
   */
-  Server(int port) {
+  Server(int port,  ArrayList<Client> clients) {
+    this.clients = clients;    
     System.out.println("starting server");
     try {
       serverSocket = new ServerSocket(port);//create the server socket
@@ -30,8 +34,8 @@ public class Server extends Thread {
           int clientNumber=1;
           //find the next client number to set this one as
           for (int i=0; i<9; i++) {
-            for (int j =0; j<source.clients.size(); j++) {
-              if (source.clients.get(j).playernumber == clientNumber) {
+            for (int j =0; j<clients.size(); j++) {
+              if (clients.get(j).playernumber == clientNumber) {
                 clientNumber++;
                 break;
               }
@@ -45,7 +49,7 @@ public class Server extends Thread {
           }
           Client newConnection = new Client(clientSocket, clientNumber);//create the client for this connection
           //System.out.println(newConnection);
-          source.clients.add(newConnection);
+          clients.add(newConnection);
           //System.out.println(source.clients);
         }catch(java.net.SocketTimeoutException s) {
         }catch(IOException i) {
@@ -61,8 +65,8 @@ public class Server extends Thread {
   */
   public void end() {
     System.out.println("disconnecting clients");
-    while (source.clients.size()>0) {//disconnect all clients
-      source.clients.get(0).disconnect();
+    while (clients.size()>0) {//disconnect all clients
+      clients.get(0).disconnect();
     }
     System.out.println("stopping server");
     try {

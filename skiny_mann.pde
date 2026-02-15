@@ -1676,7 +1676,7 @@ void mouseClicked() {// when you click the mouse
             isHost=true;
             Menue = "multiplayer selection";
             multiplayer = true;
-            server = new Server(port);//start the multyplayer session
+            server = new Server(port,clients);//start the multyplayer session
             players[0].name = name;
           }
           return;
@@ -3993,7 +3993,6 @@ void sourceInitilize() {
   StageSound.source=this;
   LogicComponent.source=this;
   Client.source=this;
-  Server.source=this;
 }
 
 /**Hanlde any errors that pop up in multyplayer netwiorking.<br>
