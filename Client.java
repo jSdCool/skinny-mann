@@ -5,7 +5,9 @@ import java.net.StandardSocketOptions;
 /**Multyplayer client connection and handler
 */
 public class Client extends Thread {
-  static transient skiny_mann source;
+  
+  ClientContext context;
+  
   int playernumber, blockSize=10240, currentDownloadIndex, currentDownloadblock;
   Socket socket;
   ObjectSerializingOutputStream output;
@@ -24,17 +26,21 @@ public class Client extends Thread {
 
   /**Create a new client. This is used when you are the client
   @param s The socket communicate over
+  @param context The nessarry external context
   */
-  public Client(Socket s) {
+  public Client(Socket s, ClientContext context) {
     super("Client thread");
+    this.context = context;
     init(s);
   }
   /**Create a new client. This is used by the server to communicate with a client
   @param s The socket to communicate over
   @param num the client player number
+  @param context The nessarry external context
   */
-  public Client(Socket s, int num) {
+  public Client(Socket s, int num,ClientContext context) {
     super("Client thread number: "+num);
+    this.context = context;
     playernumber=num;
     init(s);
   }
@@ -55,7 +61,7 @@ public class Client extends Thread {
       socket.setSoTimeout(5000);
     } catch(Exception i) {//if an error occors
       disconnect();//disconect the client and display the error
-      source.networkError(i);
+      context.networkError(i);
       return;
     }
     ip=socket.getInetAddress().toString();//save the other sides ip address
@@ -66,7 +72,7 @@ public class Client extends Thread {
   /**Thread run method. The root function on this thread's stack
   */
   public void run() {
-    if (source.isHost) {
+    if (context.isHost()) {
       //if this instance is the host of a multyplayer sesscion
       System.out.println("starting client host loop");
       host();
@@ -115,7 +121,7 @@ public class Client extends Thread {
           }
           if (di instanceof PlayerPositionInfo) {//if the packet is player position info
             PlayerPositionInfo ppi = (PlayerPositionInfo)di;
-            source.players[playernumber]=ppi.player;//replce that player with the version sent over by the client
+            context.getPlayers()[playernumber]=ppi.player;//replce that player with the version sent over by the client
           }
           if (di instanceof BestScore) {//if the packet is a best score, store that locally
             bestScore=(BestScore)di;
@@ -124,19 +130,19 @@ public class Client extends Thread {
             System.out.println(ip+" requested to download the level");
             downloadingLevel=true;
             //collect data about the level files
-            String fileNames[] = source.level.getOutherFileNames();
+            String fileNames[] = context.getLevel().getOutherFileNames();
             int fileSizes[]=new int[fileNames.length];
             int realSizes[]=new int[fileNames.length];
             outherFiles=new byte[fileNames.length][];
             //for each file
             for (int j=0; j<fileNames.length; j++) {
-              outherFiles[j]=source.loadBytes(source.rootPath+fileNames[j]);//save the contence of the files for later
+              outherFiles[j]=context.loadBytes(context.getRootPath()+fileNames[j]);//save the contence of the files for later
               fileSizes[j]=outherFiles[j].length/blockSize;//get the file size in hole blocks
               fileSizes[j]+=((outherFiles[j].length%blockSize==0) ? 0 : 1);//if some bites are clipped off by the number of blocks then add 1 more
               realSizes[j]=outherFiles[j].length;
             }
             //create a level download info packet and send it
-            ldi=new LevelDownloadInfo(source.level, fileNames, fileSizes, blockSize, realSizes);
+            ldi=new LevelDownloadInfo(context.getLevel(), fileNames, fileSizes, blockSize, realSizes);
             dataToSend.add(ldi);
           }
           
@@ -154,7 +160,7 @@ public class Client extends Thread {
           
           if(di instanceof KillEntityDataPacket){//if the packet is a kill entity packet
             KillEntityDataPacket ke = (KillEntityDataPacket)di;//kill the entity in question
-            source.level.stages.get(ke.getStage()).entities.get(ke.getIndex()).kill();
+            context.getLevel().stages.get(ke.getStage()).entities.get(ke.getIndex()).kill();
           }
         }
         
@@ -162,44 +168,44 @@ public class Client extends Thread {
         
         //create a name list of the players in the session
         ArrayList<String> names=new ArrayList<>();
-        names.add(source.name);
-        for (int j=0; j<source.clients.size(); j++) {
-          names.add(source.clients.get(j).name);
+        names.add(context.getName());
+        for (int j=0; j<context.getClients().size(); j++) {
+          names.add(context.getClients().get(j).name);
         }
         //send that along with other basic session info to the client
-        dataToSend.add(new InfoForClient(playernumber, names, source.version, source.inGame||(source.prevousInGame&&source.Menue.equals("settings")), source.sessionTime));
+        dataToSend.add(new InfoForClient(playernumber, names, context.getGameVersion(), context.inGame()||(context.prevousInGame()&&context.getMenu().equals("settings")), context.getSessionTime()));
         //if the host is in the menu
-        if (source.menue) {
+        if (context.inMenu()) {
           //if the menu is the level select screen
-          if (source.Menue.equals("multiplayer selection")) {
+          if (context.getMenu().equals("multiplayer selection")) {
             //send the information about the currently selected level to the client
-            dataToSend.add(source.multyplayerSelectedLevel);
+            dataToSend.add(context.getMultyplayerSelectedLevel());
           }
         }
         //if the host is currently in a game
-        if (source.inGame) {
+        if (context.inGame()) {
           //collect info about which shirt colors are currenly in use
           viablePlayers=new boolean[10];
           viablePlayers[0]=true;
-          for (int i=0; i<source.clients.size(); i++) {
-            viablePlayers[source.clients.get(i).playernumber]=true;
+          for (int i=0; i<context.getClients().size(); i++) {
+            viablePlayers[context.getClients().get(i).playernumber]=true;
           }
           //send the general info about all the players in the session
-          dataToSend.add(new PlayerInfo(source.players, viablePlayers));
+          dataToSend.add(new PlayerInfo(context.getPlayers(), viablePlayers));
           //if the level is in speedrun mode
-          if (source.level.multyplayerMode==1) {
+          if (context.getLevel().multyplayerMode==1) {
             //send the leaderboard to the clients
-            dataToSend.add(source.leaderBoard);
+            dataToSend.add(context.getLeaderBoard());
           }
           //if the level is in co op mode
-          if (source.level.multyplayerMode==2) {
+          if (context.getLevel().multyplayerMode==2) {
             //send co op information to the client
-            dataToSend.add(new CoOpStateInfo(source.level.variables, source.level.groups, source.level_complete));
+            dataToSend.add(new CoOpStateInfo(context.getLevel().variables, context.getLevel().groups, context.isLevelComplete()));
             
             //send the client info about all entities in the level                            
-            for(int i=0;i<source.level.stages.size();i++){
-              for(int j=0;j<source.level.stages.get(i).entities.size();j++){
-                dataToSend.add(new MultyPlayerEntityInfo(i,j,source.level.stages.get(i).entities.get(j)));
+            for(int i=0;i<context.getLevel().stages.size();i++){
+              for(int j=0;j<context.getLevel().stages.get(i).entities.size();j++){
+                dataToSend.add(new MultyPlayerEntityInfo(i,j,context.getLevel().stages.get(i).entities.get(j)));
               }
             }
           }
@@ -208,7 +214,7 @@ public class Client extends Thread {
         generateSendPacket();
       }
     } catch(java.net.SocketTimeoutException s) {//if a timeout occors then just do nothing and go on to the next network frame
-      if(source.dev_mode){
+      if(context.devModeActive()){
         s.printStackTrace();//for DEBUG ONLY diabled for final build
       }
     } catch(IOException i) {//if a random io excption occors then just do nothing and skip to the next network frame
@@ -239,50 +245,50 @@ public class Client extends Thread {
           DataPacket di = recieved.data.get(i);//get the data packet
           if (di instanceof InfoForClient) {//if the packet is info for the client
             InfoForClient ifc = (InfoForClient)di;//extract the fino
-            source.playerNames=ifc.playerNames;
+            context.setPlayerNames(ifc.playerNames);
             playernumber=ifc.playerNumber;
-            source.currentPlayer=playernumber;
+            context.setCurrentPlayer(playernumber);
             //if the version has not been checked then
             if (!versionChecked) {
               //check to make sure that the client and server on the same version of the game
-              if (source.version.equals(ifc.hostVersion)) {
+              if (context.getGameVersion().equals(ifc.hostVersion)) {
                 versionChecked=true;
               } else {//if they are not on the same version of the game
                 throw new IOException("host and client are not on the same version\nhost is on "+ifc.hostVersion);// throw an error because who knows what could go wrong
               }
             }
-            if (!source.prevousInGame){//if not in the settings menu
-              source.inGame=ifc.inGame;//set wether currently in the game
+            if (!context.prevousInGame()){//if not in the settings menu
+              context.setIngame(ifc.inGame);//set wether currently in the game
             }
-            source.sessionTime=ifc.sessionTime;//load the current ammount of time left
+            context.setSessionTime(ifc.sessionTime);//load the current ammount of time left
           }
           if (di instanceof SelectedLevelInfo) {//if the packet is selecetd level info
             SelectedLevelInfo sli = (SelectedLevelInfo)di;
-            source.multyplayerSelectedLevel=sli;
+            context.setSelectedLevelInfo(sli);
           }
           if (di instanceof LoadLevelRequest) {//if the packer is a request to load a level
             LoadLevelRequest llr = (LoadLevelRequest)di;
             if (llr.isBuiltIn) {//if the level to load is included with the game
-              source.loadLevel(llr.path);//load the level 
-              source.bestTime=0;
-              dataToSend.add(new BestScore(source.name, source.bestTime));//send the initial best score to the server
+              context.loadLevel(llr.path);//load the level 
+              context.setBestTime(0);
+              dataToSend.add(new BestScore(context.getName(), context.getBestTime()));//send the initial best score to the server
               readdy=true;
             } else {//if the level to load is UGC
-              source.loadUGCList();//load the list of UGC levels on this device
+              context.loadUGCList();//load the list of UGC levels on this device
               boolean foundlevel=false;
               String levelName="";
               ArrayList<String> matchIDs =new ArrayList<>();
-              for (int j=0; j<source.UGCNames.size(); j++) {//look through all the UGC levels to see if any levels match the ID of the level your trying to load
-                int thisLevelId = source.loadJSONArray(source.appdata+"/CBi-games/skinny mann/UGC/levels/"+source.UGCNames.get(j)+"/index.json").getJSONObject(0).getInt("level_id");
+              for (int j=0; j<context.getUGCLevelNames().size(); j++) {//look through all the UGC levels to see if any levels match the ID of the level your trying to load
+                int thisLevelId = context.loadJSONArray(context.getAppdata()+"/CBi-games/skinny mann/UGC/levels/"+context.getUGCLevelNames().get(j)+"/index.json").getJSONObject(0).getInt("level_id");
                 if (thisLevelId == llr.id) {
-                  matchIDs.add(source.UGCNames.get(j));
+                  matchIDs.add(context.getUGCLevelNames().get(j));
                 }
               }
               System.out.println(llr.hash+"\n===");
               //now we have a list of levels whos ids match the id of the level we want to load
               for (int j=0; j<matchIDs.size(); j++) {//chek all the ID matches to see if any of them have the same hash as the level requested to load
-                System.out.println(source.getLevelHash(source.appdata+"/CBi-games/skinny mann/UGC/levels/"+matchIDs.get(i))+"\n=");
-                if (source.getLevelHash(source.appdata+"/CBi-games/skinny mann/UGC/levels/"+matchIDs.get(i)).equals(llr.hash)) {//if the hashes match
+                System.out.println(context.getLevelHash(context.getAppdata()+"/CBi-games/skinny mann/UGC/levels/"+matchIDs.get(i))+"\n=");
+                if (context.getLevelHash(context.getAppdata()+"/CBi-games/skinny mann/UGC/levels/"+matchIDs.get(i)).equals(llr.hash)) {//if the hashes match
                   levelName=matchIDs.get(i);//set the level to found
                   foundlevel=true;
                   break;
@@ -290,9 +296,9 @@ public class Client extends Thread {
               }
               if (foundlevel) {//if an exact match was found then load that and be readdy
                 System.out.println("found requested level. loading...");
-                source.loadLevel(source.appdata+"/CBi-games/skinny mann/UGC/levels/"+levelName);//load the level
-                source.bestTime=0;
-                dataToSend.add(new BestScore(source.name, source.bestTime));//send the initial best score to the server
+                context.loadLevel(context.getAppdata()+"/CBi-games/skinny mann/UGC/levels/"+levelName);//load the level
+                context.setBestTime(0);
+                dataToSend.add(new BestScore(context.getName(), context.getBestTime()));//send the initial best score to the server
                 readdy=true;
               } else {//no match was found so get the level from the host
                 System.out.println("requested level not found. attempting to download from host");
@@ -302,45 +308,46 @@ public class Client extends Thread {
             }
           }
           if (di instanceof CloseMenuRequest) { //if the packet is a request to close the menu
-            source.menue=false;//turn menu mode off
-            source.bestTime=0;//reset the best time
-            source.startTime=source.millis();//reset the level start time
-            source.timerEndTime=source.sessionTime+source.millis();//set the level timer end time
+            context.setInMenu(false);//turn menu mode off
+            context.setBestTime(0);//reset the best time
+            context.setStartTime(context.millis());//reset the level start time
+            context.setTimerEndTime(context.getSessionTime()+context.millis());//set the level timer end time
           }
           if (di instanceof PlayerInfo) { // if the packet is player info
             PlayerInfo pi = (PlayerInfo)di;
             for (int j=0; j<10; j++) {//for each of the posible player slots
               if (j!=playernumber) {//if this player slot is the slot representing this player, then skip it
-                source.players[j]=pi.players[j];//assign the version of the player from the packet to what will be renderd
+                context.getPlayers()[j]=pi.players[j];//assign the version of the player from the packet to what will be renderd
               }
             }
             viablePlayers=pi.visable;//extract the visable players list
           }
           if (di instanceof BackToMenuRequest) {//if the packet is a request to go back to the menu
-            source.menue=true;//turn menu mode on
-            source.Menue="multiplayer selection";//set the menu to the multyplayer menue
-            source.prevousInGame=false;//take you out of the setting menu if you were in it
+            context.setInMenu(true);//turn menu mode on
+            context.setMenu("multiplayer selection");//set the menu to the multyplayer menue
+            context.setPrevousInGame(false);//take you out of the setting menu if you were in it
             readdy=false;//make sure to diable readdy
           }
           if (di instanceof LeaderBoard) {//if the packet is the leadrboard
             LeaderBoard lb = (LeaderBoard)di;
-            source.leaderBoard=lb;//extract the leaderboard
+            context.setLeaderBoard(lb);//extract the leaderboard
           }
           if (di instanceof CoOpStateInfo) {//if the packet is co op state information
             CoOpStateInfo cos = (CoOpStateInfo)di;//extract the info
-            source.level.variables=cos.vars;
-            source.level.groups=cos.groups;
-            source.level_complete=cos.levelCompleted;
+            context.getLevel().variables=cos.vars;
+            context.getLevel().groups=cos.groups;
+            context.setLevelComplete(cos.levelCompleted);
           }
           if (di instanceof LevelDownloadInfo) {//if the packet is level download info
             LevelDownloadInfo ldi = (LevelDownloadInfo)di;
             this.ldi=ldi;
             blockSize=ldi.blockSize;//get the block size this level is going to be downloaded with
 
-            source.rootPath=source.appdata+"/CBi-games/skinny mann/UGC/levels/"+ldi.level.name+generateRandomString(20);//create the folder to download the level to. The name being <level name>+<random string> this is to ensure it does not overrite an exsising level with that name
-            source.level = ldi.level;//extract the serialized level data
+            context.setRootPath(context.getAppdata()+"/CBi-games/skinny mann/UGC/levels/"+ldi.level.name+generateRandomString(20));//create the folder to download the level to. The name being <level name>+<random string> this is to ensure it does not overrite an exsising level with that name
+            context.setLevel(ldi.level);//extract the serialized level data
+            //this is nessarry as key parts if the level strutcure refrence the main level object for proper saving
             ldi.level.save(false);//save that level data to disk
-            source.level = null;//clear the content of the level so we dont acedentaly use a potentiallty borken level causeing other errors
+            context.setLevel(null);//clear the content of the level so we dont acedentaly use a potentiallty borken level causeing other errors
             currentDownloadIndex=-1;//set the index of the file component to download to -1
             currentDownloadblock=-1;
             getNextLevelComponent();//activate the logic to request the next file component or finish the process of downloading a level
@@ -354,18 +361,18 @@ public class Client extends Thread {
           }
           if(di instanceof MultyPlayerEntityInfo){ // if the packet is multyplayer entity info
             MultyPlayerEntityInfo mei = (MultyPlayerEntityInfo)di;//extract the data and send it to the correct place
-            mei.setPos(source.level.stages.get(mei.getStage()).entities.get(mei.getIndex()));//here we pass in the entity and the object will do all the setting up for us
-            mei.setDead(source.level.stages.get(mei.getStage()).entities.get(mei.getIndex()));
+            mei.setPos(context.getLevel().stages.get(mei.getStage()).entities.get(mei.getIndex()));//here we pass in the entity and the object will do all the setting up for us
+            mei.setDead(context.getLevel().stages.get(mei.getStage()).entities.get(mei.getIndex()));
           }
         }
 
         //prepair data to send to the server
-        dataToSend.add(new ClientInfo(source.name, readdy, source.reachedEnd));//send basic info about this client to the server
-        if (source.inGame) {//if in game
-          source.players[playernumber].name=source.name;//set your player's name to your name
-          dataToSend.add(new PlayerPositionInfo(source.players[playernumber]));//send your player data to the server
-          if (source.level.multyplayerMode==1) {//if in speedrun mode
-            dataToSend.add(new BestScore(source.name, source.bestTime));//send your best score to the server
+        dataToSend.add(new ClientInfo(context.getName(), readdy, context.getEndReached()));//send basic info about this client to the server
+        if (context.inGame()) {//if in game
+          context.getPlayers()[playernumber].name=context.getName();//set your player's name to your name
+          dataToSend.add(new PlayerPositionInfo(context.getPlayers()[playernumber]));//send your player data to the server
+          if (context.getLevel().multyplayerMode==1) {//if in speedrun mode
+            dataToSend.add(new BestScore(context.getName(), context.getBestTime()));//send your best score to the server
           }
         }
         //create the next packet to send
@@ -377,11 +384,11 @@ public class Client extends Thread {
 
       }
     } catch(java.net.SocketTimeoutException s) {//if a read times out
-      source.networkError(s);//show the error closeing the connetion
+      context.networkError(s);//show the error closeing the connetion
     } catch(IOException i) {//if an IO exception happens
-      source.networkError(i);//show the error and close the connection
+      context.networkError(i);//show the error and close the connection
     } catch(Exception e){//if any other exeception occors
-      source.networkError(e);//show the error and close the connection
+      context.networkError(e);//show the error and close the connection
     }
   }
 
@@ -390,7 +397,7 @@ public class Client extends Thread {
   public void disconnect() {
     System.out.println("disconnecting client "+ip);
     try {
-      source.clients.remove(this);//remove this client from the list of clients
+      context.getClients().remove(this);//remove this client from the list of clients
     } catch(Exception e) { }
     try {
       output.close();//close the output stream
@@ -434,7 +441,7 @@ public class Client extends Thread {
   public String generateRandomString(int size) {
     String out="";
     for (int i=0; i<size; i++) {
-      out+=letters.charAt((int)source.random(0, letters.length()-1));
+      out+=letters.charAt((int)context.random(0, letters.length()-1));
     }
     return out;
   }
@@ -449,9 +456,9 @@ public class Client extends Thread {
       currentDownloadblock=0;
       if (ldi.files.length==0) {//if there are no files to download
         //load the level that was downloaded and send the ready signal to the server
-        source.loadLevel(source.rootPath);
-        source.bestTime=0;
-        dataToSend.add(new BestScore(source.name, source.bestTime));
+        context.loadLevel(context.getRootPath());
+        context.setBestTime(0);
+        dataToSend.add(new BestScore(context.getName(), context.getBestTime()));
         readdy=true;
         downloadingLevel=false;
         return;
@@ -464,7 +471,7 @@ public class Client extends Thread {
       //if the next block is outside the number of blocks that file has
       if (currentDownloadblock==ldi.fileSizes[currentDownloadIndex]) {
         //save that file to the disc
-        source.saveBytes(source.rootPath+ldi.files[currentDownloadIndex], currentDownloadingFile);
+        context.saveBytes(context.getRootPath()+ldi.files[currentDownloadIndex], currentDownloadingFile);
 
         //reset the block index to 0 and increase the file index
         currentDownloadblock=0;
@@ -473,9 +480,9 @@ public class Client extends Thread {
         if (currentDownloadIndex==ldi.fileSizes.length) {
           //your done downloading
           //load the level and send the ready signal to the server
-          source.loadLevel(source.rootPath);
-          source.bestTime=0;
-          dataToSend.add(new BestScore(source.name, source.bestTime));
+          context.loadLevel(context.getRootPath());
+          context.setBestTime(0);
+          dataToSend.add(new BestScore(context.getName(), context.getBestTime()));
           readdy=true;
           downloadingLevel=false;
           currentDownloadingFile=null;

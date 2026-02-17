@@ -8,12 +8,15 @@ public class Server extends Thread {
   
   ArrayList<Client> clients;
   
+  ClientContext clientContext;
+  
   ServerSocket serverSocket;
   /**Create a server on the given port
   @param port The port to host the server on
   */
-  Server(int port,  ArrayList<Client> clients) {
+  Server(int port,  ArrayList<Client> clients, ClientContext clientContext) {
     this.clients = clients;    
+    this.clientContext = clientContext;
     System.out.println("starting server");
     try {
       serverSocket = new ServerSocket(port);//create the server socket
@@ -47,7 +50,7 @@ public class Server extends Thread {
             System.out.println("too many clients are connected disconnecting most recent client");//print an error to the console
             return;
           }
-          Client newConnection = new Client(clientSocket, clientNumber);//create the client for this connection
+          Client newConnection = new Client(clientSocket, clientNumber,clientContext);//create the client for this connection
           //System.out.println(newConnection);
           clients.add(newConnection);
           //System.out.println(source.clients);

@@ -1657,6 +1657,8 @@ void mouseClicked() {// when you click the mouse
           }
         }
         
+        ClientContext clientContext = createClientContext();
+        
         if (Menue.equals("start host")) {//if the menu is setting up hosting
           if (multyplayerExit.isMouseOver(mouseX,mouseY)) {//bakc button
             Menue="main";
@@ -1676,7 +1678,7 @@ void mouseClicked() {// when you click the mouse
             isHost=true;
             Menue = "multiplayer selection";
             multiplayer = true;
-            server = new Server(port,clients);//start the multyplayer session
+            server = new Server(port,clients,clientContext);//start the multyplayer session
             players[0].name = name;
           }
           return;
@@ -1706,7 +1708,7 @@ void mouseClicked() {// when you click the mouse
             Menue="multiplayer selection";
             multiplayer=true;
             try {
-              clients.add(new Client(new Socket(ip, port)));//try to connect to the server
+              clients.add(new Client(new Socket(ip, port),clientContext));//try to connect to the server
             } catch(Exception c) {//if the connection failed 
               c.printStackTrace();//go to the disconnedeted screen
               multiplayer=false;
@@ -3992,7 +3994,6 @@ void sourceInitilize() {
   CheckPoint.source=this;
   StageSound.source=this;
   LogicComponent.source=this;
-  Client.source=this;
 }
 
 /**Hanlde any errors that pop up in multyplayer netwiorking.<br>
@@ -4761,6 +4762,149 @@ void fileSelected(File selection) {
     System.out.println("invalid extenchen");
     return;
   }
+}
+
+/**Create a funcitonal client context object
+@return a new client context object
+*/
+ClientContext createClientContext(){
+  return new ClientContext(){
+    public void networkError(Throwable t){
+      ((skiny_mann)primaryWindow).networkError(t);
+    };
+    public boolean isHost(){
+      return isHost;
+    };
+    public Player[] getPlayers(){
+      return players;
+    };
+    public Level getLevel(){
+      return level;
+    };
+    public byte[] loadBytes(String file){
+      return primaryWindow.loadBytes(file);
+    };
+    public String getName(){
+      return name;
+    };
+    public void setName(String newName){
+      name = newName;
+    };
+    public ArrayList<Client> getClients(){
+      return clients;
+    };
+    public String getGameVersion(){
+      return version;
+    };
+    public boolean inGame(){
+      return inGame;
+    };
+    public void setIngame(boolean newInGame){
+      inGame = newInGame;
+    };
+    public boolean prevousInGame(){
+      return prevousInGame;
+    };
+    public String getMenu(){
+      return Menue;
+    };
+    public int getSessionTime(){
+      return sessionTime;
+    };
+    public boolean inMenu(){
+      return menue;
+    };
+    public LeaderBoard getLeaderBoard(){
+      return leaderBoard;
+    };
+    public boolean isLevelComplete(){
+      return level_complete;
+    };
+    public boolean devModeActive(){
+      return dev_mode;
+    };
+    public void setPlayerNames(ArrayList<String> names){
+      playerNames = names;
+    };
+    public void setCurrentPlayer(int playerIndex){
+      currentPlayer = playerIndex;
+    };
+    public void setSessionTime(int newTime){
+      sessionTime = newTime;
+    };
+    public void setSelectedLevelInfo(SelectedLevelInfo info){
+      multyplayerSelectedLevel = info;
+    };
+    public void loadLevel(String path){
+      ((skiny_mann)primaryWindow).loadLevel(path);
+    };
+    public void setBestTime(int time){
+      bestTime = time;
+    };
+    public int getBestTime(){
+      return bestTime;
+    };
+    public void loadUGCList(){
+      ((skiny_mann)primaryWindow).loadUGCList();
+    };
+    public ArrayList<String> getUGCLevelNames(){
+      return UGCNames;
+    };
+    public JSONArray loadJSONArray(String file){
+      return primaryWindow.loadJSONArray(file);
+    };
+    public String getAppdata(){
+      return appdata;
+    };
+    public String getLevelHash(String file){
+      return ((skiny_mann)primaryWindow).getLevelHash(file);
+    };
+    public void setInMenu(boolean state){
+      menue = true;
+    };
+    public void setMenu(String newMenu){
+      Menue = newMenu;
+    };
+    public void setTimerEndTime(int time){
+      timerEndTime = time;
+    };
+    public void setStartTime(int time){
+      startTime = time;
+    };
+    public void setPrevousInGame(boolean preIg){
+      prevousInGame = preIg;
+    };
+    public void setLeaderBoard(LeaderBoard newLeaderBoard){
+      leaderBoard = newLeaderBoard;
+    };
+    public void setRootPath(String path){
+      rootPath = path;
+    };
+    public void setLevelComplete(boolean complete){
+      level_complete = complete;
+    };
+    public void setLevel(Level l){
+      level = l;
+    };
+    public boolean getEndReached(){
+      return reachedEnd;
+    };
+    public float random(int start,int end){
+      return primaryWindow.random(start,end);
+    };
+    public String getRootPath(){
+      return rootPath;
+    };
+    public SelectedLevelInfo getMultyplayerSelectedLevel(){
+      return multyplayerSelectedLevel;
+    };
+    public int millis(){
+      return primaryWindow.millis();
+    };
+    public void saveBytes(String file, byte[] data){
+      primaryWindow.saveBytes(file,data);
+    };
+  };
 }
 
 /**Initilize all scale managed text.<br>
