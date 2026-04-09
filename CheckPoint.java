@@ -6,7 +6,6 @@ import processing.core.*;
 /**Checkpoint stage component
 */
 public class CheckPoint extends StageComponent {
-  static transient skiny_mann source;
   public static final Identifier ID = new Identifier("check_point");
   /**Load a checkpoint from saved JOSN data
   @param data The JSON Object containing the check point data
@@ -101,7 +100,7 @@ public class CheckPoint extends StageComponent {
     //check if the player is on top of the check point so we can turn the pole yellow and set their spawn point
     Collider3D playerBox = source.players[source.currentPlayer].getHitBox3D(0,0,0);
     boolean po=false;
-    if (source.collisionDetection.collide3D(playerBox,new Collider3D(new PVector[]{ new PVector(x-3,y-60,z-3),new PVector(x+3,y-60,z-3),new PVector(x+3,y,z-3),new PVector(x-3,y,z-3),new PVector(x-3,y-60,z+3),new PVector(x+3,y-60,z+3),new PVector(x+3,y,z+3),new PVector(x-3,y,z+3) } ))) {
+    if (CollisionDetection.collide3D(playerBox,new Collider3D(new PVector[]{ new PVector(x-3,y-60,z-3),new PVector(x+3,y-60,z-3),new PVector(x+3,y,z-3),new PVector(x-3,y,z-3),new PVector(x-3,y-60,z+3),new PVector(x+3,y-60,z+3),new PVector(x+3,y,z+3),new PVector(x-3,y,z+3) } ))) {
       source.respawnX=(int)x;
       source.respawnY=(int)y;
       source.respawnZ=(int)source.players[source.currentPlayer].z;

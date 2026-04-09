@@ -3991,7 +3991,6 @@ void sourceInitilize() {
   Stage.source=this;
   StageComponent.source=this;
   LogicBoard.source=this;
-  CheckPoint.source=this;
   StageSound.source=this;
   LogicComponent.source=this;
 }
