@@ -1,20 +1,45 @@
 import processing.core.PGraphics;
 import processing.core.PVector;
+import java.util.ArrayList;
 
-/**Context infomration used by srage compnents to render content to the screene
+/**Context infomration used by stage compnents to render content to the screene
 */
-public class StageComponentRenderContext{
+public class StageComponentRenderContext implements ContextBase{
   
   /**Create a new component render context
   @param render The buffer that components render to
   @param screenScale The render scale of the screen
   @param camX The 2D camera x position
   @param camY The 2D camera y position
+  @param multyplayerMode The current level's multyplayer mode
+  @param variables The current boolean variables for the current level
+  @param currentPlayer The current player of this client
+  @param displayTextSetter Function to set the current display test
+  @param displayTextTimeupdate Function to update the display text until varaible to millis() + inputTime
+  @param usePressed The state of the player's use action
+  @param resetUsePressedButton A function to set the value of use pressed (E Pressed)
+  @param stageIndex The index of the stage the player is currently on
+  @param setStageIndexFuncion A funcion to change the stage index
+  @param setPlayerPositionFunction A function to change the position of the current player
+  @param updateGlitchEffectTimeFunction A function to update the glitch effect milliscond variable to millis() + inputTime
   */
-  public StageComponentRenderContext(PGraphics render, float screenScale, int camX, int camY){
+  public StageComponentRenderContext(PGraphics render, float screenScale, int camX, int camY, int multyplayerMode, ArrayList<Boolean> variables, Player currentPlayer, DynamicModifier<String> displayTextSetter, DynamicModifier<Integer> displayTextTimeupdate,
+  boolean usePressed,DynamicModifier<Boolean> resetUsePressedButton, int stageIndex, DynamicModifier<Integer> setStageIndexFuncion,DynamicModifier<PVector> setPlayerPositionFunction,DynamicModifier<Integer> updateGlitchEffectTimeFunction){
     this.render = render;
     scale = screenScale;
     cameraOffset = new PVector(camX,camY);
+    this.multyplayerMode = multyplayerMode;
+    this.variables = variables;
+    player2DHitbox = currentPlayer.getHitBox2D(0,0);
+    player3DHitbox = currentPlayer.getHitBox3D(0,0,0);
+    this.displayTextSetter = displayTextSetter;
+    this.displayTextTimeupdate = displayTextTimeupdate;
+    this.usePressed = usePressed;
+    this.resetUsePressedButton = resetUsePressedButton;
+    this.stageIndex = stageIndex;
+    this.setStageIndexFuncion = setStageIndexFuncion;
+    this.setPlayerPositionFunction = setPlayerPositionFunction;
+    this.updateGlitchEffectTimeFunction = updateGlitchEffectTimeFunction;
   }
   
   /**The buffer that components render to
@@ -22,25 +47,50 @@ public class StageComponentRenderContext{
   public final PGraphics render;
   /**The scale objects should be scaled to
   */
-  float scale;
+  public final float scale;
   /**The position of the 2D camera. values have integer persision
   */
-  PVector cameraOffset;
-  
+  private PVector cameraOffset;
+  /**The multyplayer mode of the current level
+  */
+  private int multyplayerMode;
+  /**The level's boolean varibles
+  */
+  private ArrayList<Boolean> variables;
+  /**The current 2D hitbox of the plauer
+  */
+  private Collider2D player2DHitbox;
+  /**The current 3D hitbox of the player
+  */
+  private Collider3D player3DHitbox;
+  /**Function that sets the display text in the main class
+  */
+  private DynamicModifier<String> displayTextSetter;
+  /**Function that sets the main classes display untill varibale to <imput time> from now
+  */
+  private DynamicModifier<Integer> displayTextTimeupdate;
+  /**The value of the use input (E PRESSED)
+  */
+  private boolean usePressed;
+  /**Funciton to reset use pressed once it has been used up
+  */
+  private DynamicModifier<Boolean> resetUsePressedButton;
+  /**The index of the current stage
+  */
+  private int stageIndex;
+  /**Function to set the index of the current stage
+  */
+  private DynamicModifier<Integer> setStageIndexFuncion;
+  /**A fuction to reset the current level creator selction
+  */
+  private DynamicAction resetSelectionFuncion;
+  /**A funcion to set the position of the current player
+  */
+  private DynamicModifier<PVector> setPlayerPositionFunction;
+  /**A function that updates when the glitch effect should run to
+  */
+  private DynamicModifier<Integer> updateGlitchEffectTimeFunction;
   /*
-  multyplayer mode
-  varaibles
-  stats
-  current player hitbox
-  display text 
-  e pressed (and reset) (name it used pressed)
-  stage index (read wright)
-  current stage index (read wright)
-  reset selected index
-  set player position
-  glitch effect trigger
-  
-  
   make assets functions static
   */
   
@@ -83,7 +133,7 @@ public class StageComponentRenderContext{
   @param y The y coord to scale
   @return The input coordinates scaled to their screen position.
   */
-  PVector scaleCoord(float x, float y){
+  public PVector scaleCoord(float x, float y){
     return new PVector((x-cameraX())*scale(),(y-cameraY())*scale());
   }
   
@@ -93,8 +143,90 @@ public class StageComponentRenderContext{
   @param v the coordinate to scale;
   @return The input coordinates scaled to their screen position.
   */
-  PVector scaleCoord(PVector v){
+  public PVector scaleCoord(PVector v){
     return scaleCoord(v.x,v.y);
   }
+  /**Get the multyplayer mode of the current level. 1 = speed run(normal). 2 = co op
+  @return The current multyplayer mode
+  */
+  public int getMultyplayerMode(){
+    return multyplayerMode;
+  }
+  /**Get the logic boolean varibales for the current level.
+  @return The list of boolean varaibles associated with the current level
+  */
+  public ArrayList<Boolean> getVariables(){
+    return variables;
+  }
+  /**Get the current 2D hitbox of the current player
+  @return The current hitbox of the player
+  */
+  public Collider2D get2DPlayerHitbox(){
+    return player2DHitbox;
+  }
+  /**Get the current 3D hitbox of the current player
+  @return The current hitbox of the player
+  */
+  public Collider3D get3DPlayerHitbox(){
+    return player3DHitbox;
+  }
+  /**Set and display the display text
+  @param text The text to display
+  @param time how long to display it for
+  */
+  public void displayText(String text, int time){
+    displayTextSetter.set(text);
+    displayTextTimeupdate.set(time);
+  }
+  /**Get if the player is pressing the use button.<br>
+  (E pressed)
+  @return if used is pressed
+  */
+  public boolean usePressed(){
+    return usePressed;
+  }
+  /**Set used pressed to false
+  */
+  public void resetUsedPressed(){
+    usePressed = false;
+    resetUsePressedButton.set(false);
+  }
+  /**Get the index of the stage the player is currently in
+  @return the index of the current stage
+  */
+  public int getStageIndex(){
+    return stageIndex;
+  }
+  /**Set the stage the player is currently in
+  @param newIndex the new stage index
+  */
+  public void setStageIndex(int newIndex){
+    setStageIndexFuncion.set(newIndex);
+  }
+  /**Clear what is currently selected in the level creator
+  */
+  public void resetSelection(){
+    resetSelectionFuncion.go();
+  }
+  /**Set the position of the current player
+  @param x The new x position of the player
+  @param y The new y position of the player
+  @param z The new z position of the player
+  */
+  public void setPlayerPosition(float x,float y,float z){
+    setPlayerPositionFunction.set(new PVector(x,y,z));
+  }
   
+  /**Set the position of the current player
+  @param v The new position of the player
+  */
+  public void setPlayerPosition(PVector v){
+    setPlayerPositionFunction.set(v);
+  }
+  /**Display the glitch effect on the screen for a time
+  @param time How long to display the effect for
+  */
+  public void glitchEffect(int time){
+    updateGlitchEffectTimeFunction.set(time);
+  }
 }
