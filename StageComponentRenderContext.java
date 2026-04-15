@@ -22,9 +22,10 @@ public class StageComponentRenderContext implements ContextBase{
   @param setStageIndexFuncion A funcion to change the stage index
   @param setPlayerPositionFunction A function to change the position of the current player
   @param updateGlitchEffectTimeFunction A function to update the glitch effect milliscond variable to millis() + inputTime
+  @param resetSelectionFuncion A function to reset the level creator selection
   */
   public StageComponentRenderContext(PGraphics render, float screenScale, int camX, int camY, int multyplayerMode, ArrayList<Boolean> variables, Player currentPlayer, DynamicModifier<String> displayTextSetter, DynamicModifier<Integer> displayTextTimeupdate,
-  boolean usePressed,DynamicModifier<Boolean> resetUsePressedButton, int stageIndex, DynamicModifier<Integer> setStageIndexFuncion,DynamicModifier<PVector> setPlayerPositionFunction,DynamicModifier<Integer> updateGlitchEffectTimeFunction){
+  boolean usePressed,DynamicModifier<Boolean> resetUsePressedButton, int stageIndex, DynamicModifier<Integer> setStageIndexFuncion,DynamicModifier<PVector> setPlayerPositionFunction,DynamicModifier<Integer> updateGlitchEffectTimeFunction, DynamicAction resetSelectionFuncion){
     this.render = render;
     scale = screenScale;
     cameraOffset = new PVector(camX,camY);
@@ -40,6 +41,29 @@ public class StageComponentRenderContext implements ContextBase{
     this.setStageIndexFuncion = setStageIndexFuncion;
     this.setPlayerPositionFunction = setPlayerPositionFunction;
     this.updateGlitchEffectTimeFunction = updateGlitchEffectTimeFunction;
+    this.resetSelectionFuncion = resetSelectionFuncion;
+  }
+  /**Create a new stage component render context from another with a diffrent renderer
+  @param render The new renderer to use
+  @param source The source of all other required data
+  */
+  public StageComponentRenderContext(PGraphics render, StageComponentRenderContext source){
+    this.render = render;
+    scale = source.scale;
+    cameraOffset = source.cameraOffset;
+    this.multyplayerMode = source.multyplayerMode;
+    this.variables = source.variables;
+    player2DHitbox = source.player2DHitbox;
+    player3DHitbox = source.player3DHitbox;
+    this.displayTextSetter = source.displayTextSetter;
+    this.displayTextTimeupdate = source.displayTextTimeupdate;
+    this.usePressed = source.usePressed;
+    this.resetUsePressedButton = source.resetUsePressedButton;
+    this.stageIndex = source.stageIndex;
+    this.setStageIndexFuncion = source.setStageIndexFuncion;
+    this.setPlayerPositionFunction = source.setPlayerPositionFunction;
+    this.updateGlitchEffectTimeFunction = source.updateGlitchEffectTimeFunction;
+    this.resetSelectionFuncion = source.resetSelectionFuncion;
   }
   
   /**The buffer that components render to
