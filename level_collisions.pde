@@ -39,6 +39,10 @@ void stageLevelDraw() {
   (pos) -> {
     //set player poisition 
     players[currentPlayer].setX(pos.x).setY(pos.y).setZ(pos.z);
+    tpCords[0] = pos.x;
+    tpCords[1] = pos.y;
+    tpCords[2] = pos.x;
+    setPlayerPosTo = true;
   },
   (time) -> {
     gmillis = millis() + time;

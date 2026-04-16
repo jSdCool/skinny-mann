@@ -491,7 +491,7 @@ int setPlayerPosX;
 /**y position to move the player to
 */
 int setPlayerPosY;
-/**z position to move the player to
+/**z position to move the player to, never used
 */
 int setPlayerPosZ;
 /**when to show the glitch effect unitll

@@ -62,9 +62,9 @@ void drawPortal(float x, float y, float scale,PGraphics render) {
 */
 void draw3DSwitch1(float x, float y, float Scale,PGraphics render) {
   render.fill(196);
-  render.rect((x-20)*Scale, (y-5)*Scale, 40*Scale, 5*Scale);
+  render.rect((x-20*Scale), (y-5*Scale), 40*Scale, 5*Scale);
   render.fill(#FAB800);
-  render.rect((x-10)*Scale, (y-10)*Scale, 20*Scale, 5*Scale);
+  render.rect((x-10*Scale), (y-10*Scale), 20*Scale, 5*Scale);
 }
 
 /**Draw the 3D version of the 3D on switch on the given renderer
