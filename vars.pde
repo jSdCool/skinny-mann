@@ -1330,6 +1330,12 @@ UiText st_o_defaultAuthor;
 /**Multyplayer ping display
 */
 UiText dbg_ping;
+/**stage index display
+*/
+UiText dbg_stageIndex;
+/**current stage index display
+*/
+UiText dbg_currentStageIndex;
 
 /**Music volume slider
 */

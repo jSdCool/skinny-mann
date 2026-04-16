@@ -1022,6 +1022,8 @@ void draw() {// the function that is called every frame
         dbg_camX.setText("camera x: "+camPos);
         dbg_camY.setText("camera y: "+camPosY);
         dbg_tutorialPos.setText("tutorial position: "+tutorialPos);
+        dbg_stageIndex.setText("stage index: "+stageIndex);
+        dbg_currentStageIndex.setText("current stage index: "+currentStageIndex);
       }
       if(multiplayer){//if in multyplayer
         if(clients.size()==0){//if there are no conections
@@ -1050,6 +1052,8 @@ void draw() {// the function that is called every frame
       dbg_camY.draw();
       dbg_tutorialPos.draw();
       dbg_ping.draw();
+      dbg_stageIndex.draw();
+      dbg_currentStageIndex.draw();
     }
 
     if (millis()<gmillis) {//if the glish effect should be shown 
@@ -5010,6 +5014,8 @@ void initText() {
   settingPlayerSpawnText = new UiText(ui, "Select the spawn location of the player",640,72,35,CENTER,CENTER);
   narrationCaptionText = new UiText(ui,"*Narration in progress*",640,695,20,CENTER,BOTTOM);
   dbg_ping = new UiText(ui,"Ping: N/A",1275,100,10,RIGHT,TOP);
+  dbg_stageIndex = new UiText(ui, "stage index: V",1275,110,10,RIGHT,TOP);
+  dbg_currentStageIndex = new UiText(ui, "current stage index: V",1275,120,10,RIGHT,TOP);;
   
   //DO NOT EDIT BELOW THIS LINE ON THE MAIN PROJECT!
   //===================================================

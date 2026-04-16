@@ -8,6 +8,8 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 -changed: decoupled various animations from the frame rate(unless FPS too high)
 -changed: increased 2D camera speed in level creator
 -fixed: new blueprints would be saved in the incorrect folder on non windows platforms
++added: debug display: stage index
++added: debug display: current stage index
 
 0.10.1_Early_Access
 -changed: made multiplayer networking faster
