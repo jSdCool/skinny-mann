@@ -516,7 +516,7 @@ void blueprintEditDraw() {
   }
   
   StageComponentRenderContext renderContext = new StageComponentRenderContext(
-  g, Scale, camPos, camPosY, level.multyplayerMode, level.variables, players[currentPlayer],
+  g, Scale, camPos, camPosY, 0, new ArrayList<>(), players[currentPlayer],
   (text) -> { 
     //set display text
     displayText = text;
@@ -562,7 +562,7 @@ void blueprintEditDraw() {
     level_complete = complete;
   }, (end) -> {
     reachedEnd = end;
-  }, level.logicBoards.get(level.levelCompleteBoard), soundHandler, level.sounds, (n3D) -> {
+  }, null, soundHandler, new HashMap<>(), (n3D) -> {
     e3DMode = n3D;
   }, (viwing) -> {
     viewingItemContents = viwing;
