@@ -16,6 +16,63 @@ void stageLevelDraw() {
     viewingItemContents=false;//close the contence of the eleiment
     viewingItemIndex=-1;
   }
+  
+  StageComponentRenderContext renderContext = new StageComponentRenderContext(
+  g, Scale, camPos, camPosY, level.multyplayerMode, level.variables, players[currentPlayer],
+  (text) -> { 
+    //set display text
+    displayText = text;
+  },
+  (time) -> {
+    //set display text time
+    displayTextUntill = millis() + time;
+  },
+  E_pressed,
+  (rp) -> {
+    E_pressed = rp;  
+  },
+  stageIndex,
+  (newIndex) -> {
+    stageIndex = newIndex;
+    currentStageIndex = newIndex;
+  },
+  (pos) -> {
+    //set player poisition 
+    players[currentPlayer].setX(pos.x).setY(pos.y).setZ(pos.z);
+  },
+  (time) -> {
+    gmillis = millis() + time;
+  },
+  () -> {
+    selecting = false;
+    selectedIndex = -1;
+  },
+  (pos) -> {
+    respawnX = (int)pos.x;
+    respawnY = (int)pos.y;
+    respawnZ = (int)pos.z;
+  },
+  (setStageIndex) -> {
+    //this needs to use current stage index
+    respawnStage = setStageIndex;
+  },
+  (in3Dmode) -> {
+    checkpointIn3DStage = in3Dmode;
+  },
+  editingBlueprint, coins, selectingBlueprint, levelCreator,
+  () -> {
+    coinCount++;
+  }, level_complete, (complete) -> {
+    level_complete = complete;
+  }, (end) -> {
+    reachedEnd = end;
+  }, level.logicBoards.get(level.levelCompleteBoard), soundHandler, level.sounds, (n3D) -> {
+    e3DMode = n3D;
+  }, (viwing) -> {
+    viewingItemContents = viwing;
+  }, currentStageIndex
+  );//render context
+  
   if (stage.type.equals("stage")) {//if the cuurent thing that is being drawn is a 2D stage
     SPressed=false;//reset the state of the 3rd dimention movemnt
     WPressed=false;
@@ -34,7 +91,7 @@ void stageLevelDraw() {
         stroke(#0A03FF);//give that element a yellow border
         strokeWeight(2);
       }
-      stage.parts.get(i).draw(g);//draw the element
+      stage.parts.get(i).draw(renderContext);//draw the element
       if (viewingItemContents && viewingItemIndex == -1) {//if the current element has decided that you want to view it's contence but no element has been selected
         viewingItemIndex=i;//set the cuurent viewing item to this element
       }
@@ -102,11 +159,12 @@ void stageLevelDraw() {
 
       //if proper shadows are enabled
       if ( settings.getShadows() > 1) {
+        StageComponentRenderContext shadowRenderContext = new StageComponentRenderContext(shadowMap, renderContext);
         shadowMap.beginDraw();//start the process of rendering to the depth buffer
         shadowMap.camera(cam3Dx+lightDir.x, cam3Dy+lightDir.y, cam3Dz+lightDir.z, cam3Dx, cam3Dy, cam3Dz, 0, 1, 0);//pocition the depth buffer camera
         shadowMap.background(0xffffffff); // Will set the depth to 1.0 (maximum depth) by default
         //render to the depth buffer
-        render3DLevel(shadowMap, stage,ppx,ppy,ppz,ppp,pps,ppc);
+        render3DLevel(shadowMap, stage,ppx,ppy,ppz,ppp,pps,ppc,shadowRenderContext);
         shadowMap.endDraw();//finish provideing data to the depth buffer and trigger the GPU to render it
 
 
@@ -114,7 +172,7 @@ void stageLevelDraw() {
         perepLightingPass();//prepair adn apply the lighting uniforms
       }
       
-      render3DLevel(g, stage,ppx,ppy,ppz,ppp,pps,ppc);//redner the level to what will be shown on the screen
+      render3DLevel(g, stage,ppx,ppy,ppz,ppp,pps,ppc,renderContext);//redner the level to what will be shown on the screen
 
       if ( settings.getShadows() > 1) {//if proper shadows are enabled
         resetShader();//turn the shadow shader off so UI elemtns render correctly
@@ -158,7 +216,7 @@ void stageLevelDraw() {
           stroke(#0A03FF);//give that element a yellow border
           strokeWeight(2);
         }
-        stage.parts.get(i).draw(g);//draw the element
+        stage.parts.get(i).draw(renderContext);//draw the element
         if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
           viewingItemIndex=i;//set the cuurent viewing item to this element
         }
@@ -235,7 +293,7 @@ void stageLevelDraw() {
 @param playerScale The scale to draw the player at
 @param playerColor The shirt color index of the player
 */
-void render3DLevel(PGraphics render, Stage stage,float playerX,float playerY, float playerZ,int playerPose,float playerScale,int playerColor) {
+void render3DLevel(PGraphics render, Stage stage,float playerX,float playerY, float playerZ,int playerPose,float playerScale,int playerColor, StageComponentRenderContext renderContext) {
   for (int i=0; stageLoopCondishen(i, stage); i++) {//loop through all elements in the stage
     render.strokeWeight(0);
     render.noStroke();
@@ -452,6 +510,61 @@ void blueprintEditDraw() {
   if (selecting) {//if you are currently using the selection tool
     selectIndex=colid_index(mouseX+camPos, mouseY-camPosY, workingBlueprint);//figure out what eleiment you are hovering over
   }
+  
+  StageComponentRenderContext renderContext = new StageComponentRenderContext(
+  g, Scale, camPos, camPosY, level.multyplayerMode, level.variables, players[currentPlayer],
+  (text) -> { 
+    //set display text
+    displayText = text;
+  },
+  (time) -> {
+    //set display text time
+    displayTextUntill = millis() + time;
+  },
+  E_pressed,
+  (rp) -> {
+    E_pressed = rp;  
+  },
+  stageIndex,
+  (newIndex) -> {
+    stageIndex = newIndex;
+    currentStageIndex = newIndex;
+  },
+  (pos) -> {
+    players[currentPlayer].setX(pos.x).setY(pos.y).setZ(pos.z);
+  },
+  (time) -> {
+    gmillis = millis() + time;
+  },
+  () -> {
+    selecting = false;
+    selectedIndex = -1;
+  },
+  (pos) -> {
+    respawnX = (int)pos.x;
+    respawnY = (int)pos.y;
+    respawnZ = (int)pos.z;
+  },
+  (setStageIndex) -> {
+    respawnStage = setStageIndex;
+  },
+  (in3Dmode) -> {
+    checkpointIn3DStage = in3Dmode;
+  },
+  editingBlueprint, coins, selectingBlueprint, levelCreator,
+  () -> {
+    coinCount++;
+  }, level_complete, (complete) -> {
+    level_complete = complete;
+  }, (end) -> {
+    reachedEnd = end;
+  }, level.logicBoards.get(level.levelCompleteBoard), soundHandler, level.sounds, (n3D) -> {
+    e3DMode = n3D;
+  }, (viwing) -> {
+    viewingItemContents = viwing;
+  }, currentStageIndex
+  );//render context
+  
   if (workingBlueprint.type.equals("blueprint")) {//if the type is a normal blueprint
     e3DMode=false;//turn 3D mode off
     camera();//reset the camera
@@ -468,7 +581,7 @@ void blueprintEditDraw() {
         stroke(#0A03FF);
         strokeWeight(2);
       }
-      workingBlueprint.parts.get(i).draw(g);//draw this component
+      workingBlueprint.parts.get(i).draw(renderContext);//draw this component
       //why is this in the blurpeint drawerer?
       if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
         viewingItemIndex=i;//set the current viewing item to this element
@@ -531,7 +644,7 @@ void blueprintEditDraw() {
           stroke(#0A03FF);
           strokeWeight(2);
         }
-        workingBlueprint.parts.get(i).draw(g);//draw sll the elements in the blueprint
+        workingBlueprint.parts.get(i).draw(renderContext);//draw sll the elements in the blueprint
         if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
           viewingItemIndex=i;//set the cuurent viewing item to this element
         }

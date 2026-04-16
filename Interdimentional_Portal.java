@@ -68,42 +68,45 @@ public class Interdimentional_Portal extends StageComponent {
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw(PGraphics render) {
+  @Override
+  public void draw(StageComponentRenderContext context) {
     Group group=getGroup();
-    if (!group.visable)
+    if (!group.visable) {
       return;
-    Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0, 0);
-    source.drawPortal(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*1,render);
+    }
+    Collider2D playerHitBox = context.get2DPlayerHitbox();
+    PVector pos = context.scaleCoord(x+group.xOffset, y+group.yOffset);
+    source.drawPortal(pos.x, pos.y, context.scale(),context.render);
     //if the player is colliding with the portal
     if (CollisionDetection.collide2D(playerHitBox, Collider2D.createRectHitbox(x-25, y-50, 50, 100))) {
       //display the "Press E" text
-      render.fill(255);
-      render.textSize(source.Scale*20);
-      source.displayText="Press E";
-      source.displayTextUntill=source.millis()+100;
+      context.render.fill(255);
+      context.render.textSize(context.scale(20));
+      context.displayText("Press E",100);
 
       //if the E button is pressed
-      if (source.E_pressed) {
+      if (context.usePressed()) {
         //send the player to the portal's destination
-        source.E_pressed=false;
-        source.selectedIndex=-1;
-        source.stageIndex=linkIndex;
-        source.currentStageIndex=linkIndex;
+        context.resetUsedPressed();
+        context.resetSelection();
+        context.setStageIndex(linkIndex);
+        //source.currentStageIndex=linkIndex;
 
-        render.background(0);
-        if (linkZ!=-1) {
-          source.setPlayerPosZ=(int)linkZ;
-          source.players[source.currentPlayer].z=linkZ;
-          source.tpCords[2]=linkZ;
-        }
-        source.players[source.currentPlayer].setX(linkX).setY(linkY+48);
-        source.setPlayerPosTo=true;
-        source.tpCords[0]=(int)linkX;
-        source.tpCords[1]=(int)linkY+48;
-        source.gmillis=source.millis()+850;
+        context.render.background(0);
+        context.setPlayerPosition(linkX,linkY+48,linkZ);
+        //if (linkZ!=-1) {
+        //  source.setPlayerPosZ=(int)linkZ;
+        //  source.players[source.currentPlayer].z=linkZ;
+        //  source.tpCords[2]=linkZ;
+        //}
+        //source.players[source.currentPlayer].setX(linkX).setY(linkY+48);
+        //source.setPlayerPosTo=true;
+        //source.tpCords[0]=(int)linkX;
+        //source.tpCords[1]=(int)linkY+48;
+        context.glitchEffect(850);
         
-        if(!source.levelCreator){
-          source.stats.incrementPortalsUsed();
+        if(context.inLevelCreator()){
+          StatisticManager.getInstace().incrementPortalsUsed();
         }
       }
     }
@@ -113,6 +116,7 @@ public class Interdimentional_Portal extends StageComponent {
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
+  @Override
   public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)

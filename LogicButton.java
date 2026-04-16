@@ -65,40 +65,44 @@ public class LogicButton extends StageComponent implements Interactable, Configu
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw(PGraphics render) {
+  @Override
+  public void draw(StageComponentRenderContext context) {
     Group group=getGroup();
-    if (!group.visable)
+    if (!group.visable) {
       return;
+    }
     boolean state=false;
-    if (source.level.multyplayerMode!=2) {//if this level is not in co op mode
+    if (context.getMultyplayerMode()!=2) {//if this level is not in co op mode
 
       if (variable!=-1) {//if the variable is set
-        state=source.level.variables.get(variable);
-        Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);
+        state=context.getVariables().get(variable);
+        Collider2D playerHitBox = context.get2DPlayerHitbox();
         //check if the player is standing on the button
         if (CollisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x+group.xOffset-10,y+group.yOffset-10,20,10))) {
-          source.level.variables.set(variable, true);//set the variable to true
+          context.getVariables().set(variable, true);//set the variable to true
           if(!state){//if this button was just activated
-            if(!source.levelCreator){//and not in the level creator
-              source.stats.incrementButtonsActivated();//increment the stats
+            if(!context.inLevelCreator()){//and not in the level creator
+              StatisticManager.getInstace().incrementButtonsActivated();//increment the stats
             }
           }
         } else {//player is not staning on top of it
-          source.level.variables.set(variable, false);//set the varaible to false
+          context.getVariables().set(variable, false);//set the varaible to false
         }
       }
     }
     if (variable!=-1) {//if the variables is set
-      state=source.level.variables.get(variable);//get its current value
+      state=context.getVariables().get(variable);//get its current value
     }
     //draw the button
-    source.drawLogicButton(((x+group.xOffset)-source.drawCamPosX)*source.Scale, ((y+group.yOffset)+source.drawCamPosY)*source.Scale, source.Scale, state,render);
+    PVector pos = context.scaleCoord(x+group.xOffset, y+group.yOffset);
+    source.drawLogicButton(pos.x,pos.y, context.scale(), state,context.render);
   }
   
   /**Render the 3D representation of this component.<br>
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
+  @Override
   public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)

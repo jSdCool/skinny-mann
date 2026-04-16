@@ -104,7 +104,8 @@ public class HoloTriangle extends StageComponent implements Rotatable,Resizeable
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw(PGraphics render) {
+  @Override
+  public void draw(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -117,28 +118,31 @@ public class HoloTriangle extends StageComponent implements Rotatable,Resizeable
       prevoursGroupPos.z = group.zOffset;
     }
     
-    render.fill(ccolor);
+    context.render.fill(ccolor);
     if(!isRotated()){
+      PVector point1 = context.scaleCoord(x+group.xOffset,y+group.yOffset);
+      PVector point2 = context.scaleCoord(dx+group.xOffset,dy+group.yOffset);
       if (direction==0) {
-        render.triangle(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY));
+        context.render.triangle(point1.x, point1.y, point2.x, point2.y, point2.x, point1.y);
       }
       if (direction==1) {
-        render.triangle(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY));
+        context.render.triangle(point1.x, point1.y, point1.x, point2.y, point2.x, point1.y);
       }
       if (direction==2) {
-        render.triangle(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY));
+        context.render.triangle(point1.x, point1.y, point2.x, point2.y, point1.x, point2.y);
       }
       if (direction==3) {
-        render.triangle(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((dy+group.yOffset)+source.drawCamPosY), source.Scale*((dx+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY));
+        context.render.triangle(point1.x, point2.y, point2.x, point2.y, point2.x, point1.y);
       }
     }else{
-      verts2Tri(render,verticies2D,-source.drawCamPosX,source.drawCamPosY,source.Scale);
+      verts2Tri(context.render,verticies2D,-context.cameraX(),context.cameraY(),context.scale());
     }
   }
   /**Render the 3D representation of this component.<br>
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
+  @Override
   public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)

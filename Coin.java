@@ -67,29 +67,30 @@ public class Coin extends StageComponent {//ground component
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw(PGraphics render) {
+  public void draw(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
     boolean collected;
-    if (source.editingBlueprint) {//if in a blueprint it will not be collected
+    if (context.isEditingBlueprint()) {//if in a blueprint it will not be collected
       collected=false;
     } else {//get the collection status
-      if (source.coins.size()==0)
+      if (context.coins().size()==0)
         collected=false;
       else
-        collected=source.coins.get(coinId);
+        collected=context.coins().get(coinId);
     }
     //get the camera adjusted position
-    float x2=(x+group.xOffset)-source.drawCamPosX;
+    float x2=(x+group.xOffset)-context.cameraX();
+    float scale = context.scale();
     if (!collected) {//if it has not been collected then 
-      source.drawCoin(source.Scale*x2, source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale*3,render);//draw the coin
-      Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);//check if the player is colliding with the coin
-      if (!source.selectingBlueprint && CollisionDetection.collide2D(playerHitBox,new CircleCollider(new PVector(x,y),14))) {
-        source.coins.set(coinId, true);//set the coin to collected
-        source.coinCount++;
-        if(!source.levelCreator){//if not in the level creator then increasse the coins collected stats
-          source.stats.incrementCollectedCoins();
+      source.drawCoin(scale*x2, scale*((y+group.yOffset)+context.cameraY()), context.scale(3),context.getRender());//draw the coin
+      Collider2D playerHitBox = context.get2DPlayerHitbox();//check if the player is colliding with the coin
+      if (!context.isSelcetingBlueprint() && CollisionDetection.collide2D(playerHitBox,new CircleCollider(new PVector(x,y),14))) {
+        context.coins().set(coinId, true);//set the coin to collected
+        context.incrementCoins();
+        if(!context.inLevelCreator()){//if not in the level creator then increasse the coins collected stats
+          StatisticManager.getInstace().incrementCollectedCoins();
         }
       }
     }

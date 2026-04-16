@@ -51,22 +51,24 @@ public class WritableSign extends StageComponent implements Configurable {
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw(PGraphics render) {
+  @Override
+  public void draw(StageComponentRenderContext context) {
     Group group=getGroup();
-    if (!group.visable)
+    if (!group.visable) {
       return;
-    source.drawSign(source.Scale*((x+group.xOffset)-source.drawCamPosX), source.Scale*((y+group.yOffset)+source.drawCamPosY), source.Scale,render);
+    }
+    PVector pos = context.scaleCoord(x+group.xOffset, y+group.yOffset);
+    source.drawSign(pos.x, pos.y, context.scale(),context.render);
 
-    Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);
+    Collider2D playerHitBox = context.get2DPlayerHitbox();
     if (CollisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x-35,y-40,70,40))) {//display the press e message to the player
-      source.displayText="Press E";
-      source.displayTextUntill=source.millis()+100;
+      context.displayText("Press E",100);
 
-      if (source.E_pressed) {
-        source.E_pressed=false;
-        source.viewingItemContents=true;
-        if(!source.levelCreator){
-          source.stats.incrementSignsRead();
+      if (context.usePressed()) {
+        context.resetUsedPressed();
+        context.setViewingItemContent(true);
+        if(!context.inLevelCreator()){
+          StatisticManager.getInstace().incrementSignsRead();
         }
       }
     }
@@ -76,6 +78,7 @@ public class WritableSign extends StageComponent implements Configurable {
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
+  @Override
   public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)

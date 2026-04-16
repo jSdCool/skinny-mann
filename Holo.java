@@ -99,7 +99,8 @@ public class Holo extends StageComponent implements Rotatable,Resizeable{//groun
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw(PGraphics render) {
+  @Override
+  public void draw(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -110,27 +111,29 @@ public class Holo extends StageComponent implements Rotatable,Resizeable{//groun
       prevoursGroupPos.y = group.yOffset;
       prevoursGroupPos.z = group.zOffset;
     }
-    render.fill(ccolor);
+    context.render.fill(ccolor);
     if(!isRotated()){
       //draw a non rotated rect
-      render.rect(source.Scale*((x+group.xOffset)-source.drawCamPosX)-0.02f, source.Scale*((y+group.yOffset)+source.drawCamPosY)-0.02f, source.Scale*dx+0.04f, source.Scale*dy+0.04f);
+      PVector pos = context.scaleCoord(x+group.xOffset,y+group.yOffset);
+      context.render.rect(pos.x-0.02f, pos.y-0.02f, context.scale(dx)+0.04f, context.scale(dy)+0.04f);
     }else if(!isRotated3D()){
       //draw a 2D rotated rect
-      render.beginShape(PConstants.QUAD);
-      Util.shapeVertex(render,verticies2D[0],-source.drawCamPosX,source.drawCamPosY,source.Scale);
-      Util.shapeVertex(render,verticies2D[7],-source.drawCamPosX,source.drawCamPosY,source.Scale);
-      Util.shapeVertex(render,verticies2D[6],-source.drawCamPosX,source.drawCamPosY,source.Scale);
-      Util.shapeVertex(render,verticies2D[1],-source.drawCamPosX,source.drawCamPosY,source.Scale);
-      render.endShape();
+      context.render.beginShape(PConstants.QUAD);
+      Util.shapeVertex(context.render,verticies2D[0],-context.cameraX(),context.cameraY(),context.scale());
+      Util.shapeVertex(context.render,verticies2D[7],-context.cameraX(),context.cameraY(),context.scale());
+      Util.shapeVertex(context.render,verticies2D[6],-context.cameraX(),context.cameraY(),context.scale());
+      Util.shapeVertex(context.render,verticies2D[1],-context.cameraX(),context.cameraY(),context.scale());
+      context.render.endShape();
     }else{
       //draw the 2D version of the 2D roatated box
-      verts2Box(render,verticies2D,-source.drawCamPosX,source.drawCamPosY,source.Scale);
+      verts2Box(context.render,verticies2D,-context.cameraX(),context.cameraY(),context.scale());
     }
   }
   /**Render the 3D representation of this component.<br>
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
+  @Override
   public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)

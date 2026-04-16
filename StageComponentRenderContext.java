@@ -1,6 +1,7 @@
 import processing.core.PGraphics;
 import processing.core.PVector;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**Context infomration used by stage compnents to render content to the screene
 */
@@ -23,9 +24,29 @@ public class StageComponentRenderContext implements ContextBase{
   @param setPlayerPositionFunction A function to change the position of the current player
   @param updateGlitchEffectTimeFunction A function to update the glitch effect milliscond variable to millis() + inputTime
   @param resetSelectionFuncion A function to reset the level creator selection
+  @param setRespawnPosFuncion A function to set where the player respawns
+  @param setRespawnStageFunction A function to set what stage the player respawns in
+  @param setCheckpointIn3DstageFuncion A function to set if the player respawns in 3D mode
+  @param editingBlueprint If currently editing a blueprint
+  @param coins The coins in the current level
+  @param selectingBlueprint If currently selecting a blueprint for placement
+  @param inLevelCreator If currenly in the level creator
+  @param coinIncrementer A function to increase the number of collected coins
+  @param levelComplete The current state of the level complete varaible
+  @param setLevelCompleteFunction A function to set the level complete variable
+  @param setEndReached A funcion to set the end reached variable
+  @param levelCompleteLogicBoard The logic board in this level that is used for level complete functions
+  @param soundHandler The sound handler used to play sounds
+  @param levelSounds All the sounds loaded by the current level
+  @param set3DMode A function to set if the player is in 3D mode
+  @param setViewingItemContentFuncion A funcion to set if the player is viewing item content
+  @param currentStageIndex The value of current stage index
   */
   public StageComponentRenderContext(PGraphics render, float screenScale, int camX, int camY, int multyplayerMode, ArrayList<Boolean> variables, Player currentPlayer, DynamicModifier<String> displayTextSetter, DynamicModifier<Integer> displayTextTimeupdate,
-  boolean usePressed,DynamicModifier<Boolean> resetUsePressedButton, int stageIndex, DynamicModifier<Integer> setStageIndexFuncion,DynamicModifier<PVector> setPlayerPositionFunction,DynamicModifier<Integer> updateGlitchEffectTimeFunction, DynamicAction resetSelectionFuncion){
+  boolean usePressed,DynamicModifier<Boolean> resetUsePressedButton, int stageIndex, DynamicModifier<Integer> setStageIndexFuncion,DynamicModifier<PVector> setPlayerPositionFunction,DynamicModifier<Integer> updateGlitchEffectTimeFunction, DynamicAction resetSelectionFuncion,
+  DynamicModifier<PVector> setRespawnPosFuncion, DynamicModifier<Integer> setRespawnStageFunction, DynamicModifier<Boolean> setCheckpointIn3DstageFuncion, boolean editingBlueprint, ArrayList<Boolean> coins, boolean selectingBlueprint,boolean inLevelCreator, DynamicAction coinIncrementer,
+  boolean levelComplete, DynamicModifier<Boolean> setLevelCompleteFunction, DynamicModifier<Boolean> setEndReached, LogicBoard levelCompleteLogicBoard, SoundHandler soundHandler, HashMap<String, StageSound> levelSounds, DynamicModifier<Boolean> set3DMode,
+  DynamicModifier<Boolean> setViewingItemContentFuncion, int currentStageIndex){
     this.render = render;
     scale = screenScale;
     cameraOffset = new PVector(camX,camY);
@@ -33,6 +54,7 @@ public class StageComponentRenderContext implements ContextBase{
     this.variables = variables;
     player2DHitbox = currentPlayer.getHitBox2D(0,0);
     player3DHitbox = currentPlayer.getHitBox3D(0,0,0);
+    this.player = currentPlayer;
     this.displayTextSetter = displayTextSetter;
     this.displayTextTimeupdate = displayTextTimeupdate;
     this.usePressed = usePressed;
@@ -42,6 +64,23 @@ public class StageComponentRenderContext implements ContextBase{
     this.setPlayerPositionFunction = setPlayerPositionFunction;
     this.updateGlitchEffectTimeFunction = updateGlitchEffectTimeFunction;
     this.resetSelectionFuncion = resetSelectionFuncion;
+    this.setRespawnPosFuncion = setRespawnPosFuncion;
+    this.setRespawnStageFunction = setRespawnStageFunction;
+    this.setCheckpointIn3DstageFuncion = setCheckpointIn3DstageFuncion;
+    this.editingBlueprint = editingBlueprint;
+    this.coins = coins;
+    this.selectingBlueprint = selectingBlueprint;
+    this.inLevelCreator = inLevelCreator;
+    this.coinIncrementer = coinIncrementer;
+    this.levelComplete = levelComplete;
+    this.setLevelCompleteFunction = setLevelCompleteFunction;
+    this.setEndReached = setEndReached;
+    this.levelCompleteLogicBoard = levelCompleteLogicBoard;
+    this.soundHandler = soundHandler;
+    this.levelSounds = levelSounds;
+    this.set3DMode = set3DMode;
+    this.setViewingItemContentFuncion = setViewingItemContentFuncion;
+    this.currentStageIndex = currentStageIndex;
   }
   /**Create a new stage component render context from another with a diffrent renderer
   @param render The new renderer to use
@@ -49,6 +88,7 @@ public class StageComponentRenderContext implements ContextBase{
   */
   public StageComponentRenderContext(PGraphics render, StageComponentRenderContext source){
     this.render = render;
+    //copy every field from the passed in context to this context
     scale = source.scale;
     cameraOffset = source.cameraOffset;
     this.multyplayerMode = source.multyplayerMode;
@@ -64,6 +104,23 @@ public class StageComponentRenderContext implements ContextBase{
     this.setPlayerPositionFunction = source.setPlayerPositionFunction;
     this.updateGlitchEffectTimeFunction = source.updateGlitchEffectTimeFunction;
     this.resetSelectionFuncion = source.resetSelectionFuncion;
+    this.setRespawnPosFuncion = source.setRespawnPosFuncion;
+    this.setRespawnStageFunction = source.setRespawnStageFunction;
+    this.setCheckpointIn3DstageFuncion = source.setCheckpointIn3DstageFuncion;
+    this.editingBlueprint = source.editingBlueprint;
+    this.coins = source.coins;
+    this.selectingBlueprint = source.selectingBlueprint;
+    this.inLevelCreator = source.inLevelCreator;
+    this.coinIncrementer = source.coinIncrementer;
+    this.levelComplete = source.levelComplete;
+    this.setLevelCompleteFunction = source.setLevelCompleteFunction;
+    this.setEndReached = source.setEndReached;
+    this.levelCompleteLogicBoard = source.levelCompleteLogicBoard;
+    this.soundHandler = source.soundHandler;
+    this.levelSounds = source.levelSounds;
+    this.player = source.player;
+    this.set3DMode = source.set3DMode;
+    this.setViewingItemContentFuncion = source.setViewingItemContentFuncion;
   }
   
   /**The buffer that components render to
@@ -114,10 +171,61 @@ public class StageComponentRenderContext implements ContextBase{
   /**A function that updates when the glitch effect should run to
   */
   private DynamicModifier<Integer> updateGlitchEffectTimeFunction;
-  /*
-  make assets functions static
+  /**Funciton that sets the respawn position for the player
   */
-  
+  private DynamicModifier<PVector> setRespawnPosFuncion;
+  /**Funcion that sets the index of the stage the player will respawn in
+  */
+  private DynamicModifier<Integer> setRespawnStageFunction;
+  /**Function that sets if the player will respawn in 3D mode
+  */
+  private DynamicModifier<Boolean> setCheckpointIn3DstageFuncion;
+  /**if currently editing a blueprint not a stage
+  */
+  private boolean editingBlueprint;
+  /**The current level coin
+  */
+  private ArrayList<Boolean> coins;
+  /**If currently in the process of palceing a blueprint
+  */
+  private boolean selectingBlueprint;
+  /**If currently in the level creator
+  */
+  private boolean inLevelCreator;
+  /**Function that increase the number of coins the player has by 1
+  */
+  private DynamicAction coinIncrementer;
+  /**Wether the current level has been completed
+  */
+  private boolean levelComplete;
+  /**Set the level compelet status function
+  */
+  private DynamicModifier<Boolean> setLevelCompleteFunction;
+  /**Set end reached function
+  */
+  private DynamicModifier<Boolean> setEndReached;
+  /**The current level's logic complete board
+  */
+  private LogicBoard levelCompleteLogicBoard;
+  /**A refrence to the sound halder
+  */
+  private SoundHandler soundHandler;
+  /**Refrence to all the sounds held by the level
+  */
+  private HashMap<String, StageSound> levelSounds;
+  /**The current player
+  */
+  private Player player;
+  /**Function that sets if the player is in 3D mode
+  */
+  private DynamicModifier<Boolean> set3DMode;
+  /**Function to set if the player is currently viewing an item content
+  */
+  private DynamicModifier<Boolean> setViewingItemContentFuncion;
+  /**not sure what the diffrence between this and stage index is but they are siginificantly diffrent
+  */
+  private int currentStageIndex;
+
   /**Get the render buffer;
   @return the graphics instance to render to
   */
@@ -158,7 +266,7 @@ public class StageComponentRenderContext implements ContextBase{
   @return The input coordinates scaled to their screen position.
   */
   public PVector scaleCoord(float x, float y){
-    return new PVector((x-cameraX())*scale(),(y-cameraY())*scale());
+    return new PVector((x-cameraX())*scale(),(y+cameraY())*scale());
   }
   
   /**Scale a screen coordinate using both the camera offset and ui scale.
@@ -252,5 +360,117 @@ public class StageComponentRenderContext implements ContextBase{
   */
   public void glitchEffect(int time){
     updateGlitchEffectTimeFunction.set(time);
+  }
+  /**Set the position the player will respawn at
+  @param x The x position to respawn
+  @param y The y position to respawn
+  @param z The z position to respawn
+  */
+  public void setRespawnPosition(float x,float y,float z){
+    setRespawnPosFuncion.set(new PVector(x,y,z));
+  }
+  /**Set the stage the player will respawn in
+  @param stage The stage to respawn in
+  */
+  public void setRespawnStage(int stage){
+    setRespawnStageFunction.set(stage);
+  }
+  
+  /**Set if the checkpoint was activated in 3D mode
+  @param in3D if 3D mode is currenly active
+  */
+  public void setCheckpointIn3D(boolean in3D){
+    setCheckpointIn3DstageFuncion.set(in3D);
+  }
+  /**Get if the user is currenly editing a blueprint
+  @return true if editing a blueprint
+  */
+  public boolean isEditingBlueprint(){
+    return editingBlueprint;
+  }
+  /**Get the current level coins
+  @return the state of all the coins in the current level
+  */
+  public ArrayList<Boolean> coins(){
+    return coins;
+  }
+  /**Get if the user is currently in the process of placing a blueprint
+  @return true if the user is in the process of placing a blueprint
+  */
+  public boolean isSelcetingBlueprint(){
+    return selectingBlueprint;
+  }
+  /**Get if the user is in the level creator
+  @return true if the level creator is active
+  */
+  public boolean inLevelCreator(){
+    return inLevelCreator;
+  }
+  /**Increase the number of collected coins by 1
+  */
+  public void incrementCoins(){
+    coinIncrementer.go();
+  }
+  /**Get the current state of level complete
+  @return If the current level has been completetd
+  */
+  public boolean getLevelComplete(){
+    return levelComplete;
+  }
+  
+  /**Sets level complete to true imedialy ending the level and allowing the player to move on
+  */
+  public void completeLevel(){
+    setLevelCompleteFunction.set(true);
+  }
+  
+  /**Sets end reached to true. This is used in multyplayer to indicate that this player has reached the finish line and may be waiting for other players to also finish the level.<br>
+  Do not get this confused with level complete wich automaticaly ends the level when it is set.
+  */
+  public void setEndReached(){
+    setEndReached.set(true);
+  }
+  /**Get the level complete logic board associated with the current level
+  @return A logic board that is intened to be run on level completeion 
+  */
+  public LogicBoard getLevelCompleteLogicBoard(){
+    return levelCompleteLogicBoard;
+  }
+  /**Gets the sound handler
+  @return A refrence to the sound handler
+  */
+  public SoundHandler getSoundHandler(){
+    return soundHandler;
+  }
+  /**Get a sound from the level
+  @param key The sound key that identifies a sound
+  @return A refrence to a sound to play.
+  */
+  public StageSound getLevelSound(String key){
+    return levelSounds.get(key);
+  }
+  /**Set the player's z position
+  @param newz The new z position of the player
+  */
+  public void setPlayerZpos(float newz){
+    player.setZ(newz);
+  }
+  /**Set if the player is in 3D mode
+  @param in3D true if the player should see 3D mode
+  */
+  public void set3DMode(boolean in3D){
+    set3DMode.set(in3D);
+  }
+  /**Set if the player is viewing item content
+  @param viewing true if the player is viewing item content
+  */
+  public void setViewingItemContent(boolean viewing){
+    setViewingItemContentFuncion.set(viewing);
+  }
+  /**Get the value of current stage index
+  @return no idea what the diffrence between this and stage index is but there is a functional diffrence
+  */
+  public int getCurrentStageIndex(){
+    return currentStageIndex;
   }
 }

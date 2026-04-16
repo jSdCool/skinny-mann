@@ -62,7 +62,8 @@ public class CheckPoint extends StageComponent {
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw(PGraphics render) {
+  public void draw(StageComponentRenderContext context) {
+  PGraphics render = context.getRender();
     Group group=getGroup();
     //TODO: move this off the render thread
     if (!group.visable)
@@ -71,22 +72,23 @@ public class CheckPoint extends StageComponent {
     Collider2D playerBox=source.players[source.currentPlayer].getHitBox2D(0,0);
     boolean po=false;
     if (CollisionDetection.collide2D(playerBox,new Collider2D(new PVector[]{new PVector(x-3,y-60),new PVector(x+3,y-60),new PVector(x+3,y),new PVector(x-3,y)}))) {
-      source.respawnX=(int)x;
-      source.respawnY=(int)y;
-      source.respawnStage=source.currentStageIndex;
+      context.setRespawnPosition(x,y,0);
+      context.setRespawnStage(context.getCurrentStageIndex());
       po=true;
-      source.checkpointIn3DStage=false;
+      context.setCheckpointIn3D(false);
     }
 
-    float x2=(x+group.xOffset)-source.drawCamPosX;
-    float y2=(y+group.yOffset)+source.drawCamPosY;
-    if (po)
+    float x2=(x+group.xOffset)-context.cameraX();
+    float y2=(y+group.yOffset)+context.cameraY();
+    if (po) {
       render.fill(-1719293);
-    else
+    } else {
       render.fill(-4605510);
-    render.rect((x2-3)*source.Scale, (y2-60)*source.Scale, 5*source.Scale, 60*source.Scale);
+    }
+    float scale = context.scale();
+    render.rect((x2-3)*scale, (y2-60)*scale, 5*scale, 60*scale);
     render.fill(-1441277);
-    render.triangle(x2*source.Scale, (y2-60)*source.Scale, x2*source.Scale, (y2-40)*source.Scale, (x2+30)*source.Scale, (y2-50)*source.Scale);
+    render.triangle(x2*scale, (y2-60)*scale, x2*scale, (y2-40)*scale, (x2+30)*scale, (y2-50)*scale);
   }
 
   /**Render the 3D representation of this component.<br>

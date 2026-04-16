@@ -70,12 +70,14 @@ public class DethPlane extends StageComponent {//ground component
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw(PGraphics render) {
+  @Override
+  public void draw(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
-    render.fill(-114431);
-    render.rect(source.Scale*((x+group.xOffset)-source.drawCamPosX)-0.02f, source.Scale*((y+group.yOffset)+source.drawCamPosY)-0.02f, source.Scale*dx+0.04f, source.Scale*dy+0.04f);
+    context.render.fill(-114431);
+    PVector pos = context.scaleCoord(x+group.xOffset,y+group.yOffset);//camera adjust the position
+    context.render.rect(pos.x-0.02f,pos.y-0.02f, context.scale(dx)+0.04f, context.scale(dy)+0.04f);
   }
   /**Render the 3D representation of this component.<br>
   NOTE: this method may be called more then once per frame

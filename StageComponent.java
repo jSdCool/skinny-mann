@@ -14,7 +14,7 @@ public abstract class StageComponent implements Serialization {//the base class 
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public abstract void draw(PGraphics render);
+  public abstract void draw(StageComponentRenderContext context);
   
   /**Render the 3D representation of this component.<br>
   NOTE: this method may be called more then once per frame

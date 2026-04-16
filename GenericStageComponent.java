@@ -11,12 +11,14 @@ class GenericStageComponent extends StageComponent {
   /**Not much gogin on here
   @param render not particluarly useful
   */
-  public void draw(PGraphics render){
+  @Override
+  public void draw(StageComponentRenderContext context){
     
   }
   /**Not particularly useful here
   @param render Not rendering anything here
   */
+  @Override
   public void draw3D(PGraphics render){
     
   }
@@ -43,6 +45,7 @@ class GenericStageComponent extends StageComponent {
   @param e EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   @return null
   */
+  @Override
   public JSONObject save(boolean e) {
     return null;
   }

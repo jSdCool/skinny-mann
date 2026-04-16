@@ -58,18 +58,21 @@ public class SWon3D extends StageComponent {
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw(PGraphics render) {
+  @Override
+  public void draw(StageComponentRenderContext context) {
     Group group=getGroup();
-    if (!group.visable)
+    if (!group.visable) {
       return;
-    source.draw3DSwitch1(((x+group.xOffset)-source.drawCamPosX), ((y+group.yOffset)+source.drawCamPosY), source.Scale,render);
-    Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);
-    if (source.collisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x+group.xOffset-10,y+group.yOffset-10,20,10))) {
-      source.players[source.currentPlayer].z=z;
-      source.e3DMode=true;
-      source.gmillis=source.millis()+1200;
-      if(!source.levelCreator){
-        source.stats.incrementActivated3D();
+    }
+    PVector pos = context.scaleCoord(x+group.xOffset,y+group.yOffset);
+    source.draw3DSwitch1(pos.x, pos.y, context.scale,context.render);
+    Collider2D playerHitBox = context.get2DPlayerHitbox();
+    if (CollisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x+group.xOffset-10,y+group.yOffset-10,20,10))) {
+      context.setPlayerZpos(z);
+      context.set3DMode(true);
+      context.glitchEffect(1200);
+      if(!context.inLevelCreator()){
+        StatisticManager.getInstace().incrementActivated3D();
       }
     }
   }
@@ -77,6 +80,7 @@ public class SWon3D extends StageComponent {
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
+  @Override
   public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)

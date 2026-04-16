@@ -59,29 +59,36 @@ class Goal extends StageComponent {//ground component
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw(PGraphics render) {
+  @Override
+  public void draw(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
-    float x2 = (x+group.xOffset)-source.drawCamPosX, y2 = (y+group.yOffset);
-    render.fill(255);
-    render.rect(source.Scale*x2, source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
-    render.rect(source.Scale*(x2+100), source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
-    render.rect(source.Scale*(x2+200), source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
-    render.fill(0);
-    render.rect(source.Scale*(x2+50), source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
-    render.rect(source.Scale*(x2+150), source.Scale*(y2+source.drawCamPosY), source.Scale*50, source.Scale*50);
+    //float x2 = (x+group.xOffset)-source.drawCamPosX, y2 = (y+group.yOffset);
+    PVector s1Pos = context.scaleCoord(x,y);
+    PVector s2Pos = context.scaleCoord(x+100,y);
+    PVector s3Pos = context.scaleCoord(x+200,y);
+    PVector s4Pos = context.scaleCoord(x+50,y);
+    PVector s5Pos = context.scaleCoord(x+150,y);
+    float scaled50 = context.scale(50);
+    context.render.fill(255);
+    context.render.rect(s1Pos.x, s1Pos.y, scaled50, scaled50);
+    context.render.rect(s2Pos.x, s2Pos.y, scaled50, scaled50);
+    context.render.rect(s3Pos.x, s3Pos.y, scaled50, scaled50);
+    context.render.fill(0);
+    context.render.rect(s4Pos.x, s4Pos.y, scaled50, scaled50);
+    context.render.rect(s5Pos.x, s5Pos.y, scaled50, scaled50);
 
-    Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);
+    Collider2D playerHitBox = context.get2DPlayerHitbox();
 
-    if (source.collisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x+group.xOffset,y+group.yOffset-50,250,100))) {
-      if (!source.level_complete) {
-        source.level.logicBoards.get(source.level.levelCompleteBoard).superTick();
+    if (CollisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x+group.xOffset,y+group.yOffset-50,250,100))) {
+      if (!context.getLevelComplete()) {
+        context.getLevelCompleteLogicBoard().superTick();
       }
-      if (source.level.multyplayerMode!=2) {
-        source.level_complete=true;
+      if (context.getMultyplayerMode()!=2) {
+        context.completeLevel();
       } else {
-        source.reachedEnd=true;
+        context.setEndReached();
       }
     }
   }
@@ -89,6 +96,7 @@ class Goal extends StageComponent {//ground component
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
+  @Override
   public void draw3D(PGraphics render) {
   }
   /**used for mouse click detecteion

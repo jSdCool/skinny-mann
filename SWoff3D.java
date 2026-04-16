@@ -58,16 +58,20 @@ public class SWoff3D extends StageComponent {
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw(PGraphics render) {
+  @Override
+  public void draw(StageComponentRenderContext context) {
     Group group=getGroup();
-    if (!group.visable)
+    if (!group.visable) {
       return;
-    source.draw3DSwitch2(((x+group.xOffset)-source.drawCamPosX), ((y+group.yOffset)+source.drawCamPosY), source.Scale,render);
+    }
+    PVector pos = context.scaleCoord(x+group.xOffset, y+group.yOffset);
+    source.draw3DSwitch2(pos.x, pos.y, context.scale(),context.render);
   }
   /**Render the 3D representation of this component.<br>
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
+  @Override
   public void draw3D(PGraphics render) {
     Group group=getGroup();
     if (!group.visable)

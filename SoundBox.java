@@ -43,30 +43,32 @@ public class SoundBox extends StageComponent implements Configurable{
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw(PGraphics render) {
+  @Override
+  public void draw(StageComponentRenderContext context) {
     Group group=getGroup();
-    if (!group.visable)
+    if (!group.visable){
       return;
-    source.drawSoundBox((x+group.xOffset)*source.Scale-source.drawCamPosX*source.Scale, (y+group.yOffset)*source.Scale+source.drawCamPosY*source.Scale,source.Scale,render);
-    Collider2D playerHitBox = source.players[source.currentPlayer].getHitBox2D(0,0);
-    if (source.collisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x-30,y-30,60,60))) {
-      source.displayText="Press E";
-      source.displayTextUntill=source.millis()+100;
-      if (source.E_pressed) {
+    }
+    PVector pos = context.scaleCoord(x+group.xOffset, y+group.yOffset); 
+    source.drawSoundBox(pos.x, pos.y,context.scale(),context.render);
+    Collider2D playerHitBox = context.get2DPlayerHitbox();
+    if (CollisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x-30,y-30,60,60))) {
+      context.displayText("Press E",100);
+      if (context.usePressed()) {
         try {
-          StageSound sound = source.level.sounds.get(soundKey);
+          StageSound sound = context.getLevelSound(soundKey);
           if(sound.isNarration){
-            if (!(source.soundHandler.isNarrationPlaying(sound.sound))) {
-              source.soundHandler.playNarration(sound.sound);
-              if(!source.levelCreator){
-                source.stats.incrementSoundBoxesUsed();
+            if (!(context.getSoundHandler().isNarrationPlaying(sound.sound))) {
+              context.getSoundHandler().playNarration(sound.sound);
+              if(!context.inLevelCreator()){
+                StatisticManager.getInstace().incrementSoundBoxesUsed();
               }
             }
           }else{
-            if (!(source.soundHandler.isPlaying(sound.sound)||source.soundHandler.isInQueue(sound.sound))) {
-              source.soundHandler.addToQueue(sound.sound);
-              if(!source.levelCreator){
-                source.stats.incrementSoundBoxesUsed();
+            if (!(context.getSoundHandler().isPlaying(sound.sound)||context.getSoundHandler().isInQueue(sound.sound))) {
+              context.getSoundHandler().addToQueue(sound.sound);
+              if(!context.inLevelCreator()){
+                StatisticManager.getInstace().incrementSoundBoxesUsed();
               }
             }
           }
@@ -80,6 +82,7 @@ public class SoundBox extends StageComponent implements Configurable{
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
+  @Override
   public void draw3D(PGraphics render){}
   /**used for mouse click detecteion
   @param x The x position of the mouse
