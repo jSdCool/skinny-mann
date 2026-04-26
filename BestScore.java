@@ -1,10 +1,14 @@
 /**A network request to send a clients best score to the server
 */
 public class BestScore extends DataPacket {
-  
+  /**The id of the data packet
+  */
   public static final Identifier ID = new Identifier("BestScore");
-  
+  /**THe name of the player in question
+  */
   String name;
+  /**The score acheved by the player
+  */
   int score;
   /**Create a new score
   @param n The name of the player this score is from

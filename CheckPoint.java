@@ -6,6 +6,8 @@ import processing.core.*;
 /**Checkpoint stage component
 */
 public class CheckPoint extends StageComponent {
+  /**The checkpoint id
+  */
   public static final Identifier ID = new Identifier("check_point");
   /**Load a checkpoint from saved JOSN data
   @param data The JSON Object containing the check point data

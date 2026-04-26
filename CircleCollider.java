@@ -2,6 +2,8 @@ import processing.core.*;
 /**A Circular 2D hitbox 
 */
 public class CircleCollider extends Collider2D{
+  /**The radius of the collider
+  */
   float radius;
   /**Create a 2D Circle Collider
   @param center The center position of the circle

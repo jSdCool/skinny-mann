@@ -1,6 +1,8 @@
 /**A network request to request the client close the menu and start the level
 */
 public class CloseMenuRequest extends DataPacket {
+  /**The id of the data packet
+  */
   public static final Identifier ID = new Identifier("CloseMenuRequest");
   
   /**Create the request

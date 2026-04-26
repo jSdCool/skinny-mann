@@ -1,15 +1,57 @@
-//button class V1.3t.0
+//button class V1.3.1
 
 import processing.core.*;
 import processing.data.*;
 /**A button for a userinterface that contains utitlies for rendering and using a button
 */
 public class Button implements Serialization {
+  /**The id for the button
+  */
   public static final Identifier ID = new Identifier("Button");
-  protected float x, y, lengthX, lengthY;
-  private int fColor=255, sColor=-5592405, textcolor=0, htFill=200, htStroke=0, htColor=0;
-  private String text="", hoverText="";
-  private float textScaleFactor=2.903f, strokeWeight=3;
+  /**The X posiiton of the buttom
+  */
+  protected float x;
+  /**The y position of the button
+  */
+  protected float y;
+  /**The width of the buttom
+  */
+  protected float lengthX;
+  /**The height of the button
+  */
+  protected float lengthY;
+  /**The fill color of the button
+  */
+  private int fColor=255;
+  /**The stroke color of the button
+  */
+  private int sColor=-5592405;
+  /**The text color of the button
+  */
+  private int textcolor=0;
+  /**The hover text fill color
+  */
+  private int htFill=200;
+  /**The hover text stroke color
+  */
+  private int htStroke=0;
+  /**The hover text, text color
+  */
+  private int htColor=0;
+  /**The text on the button
+  */
+  private String text=""; 
+  /**The hover text o=of the button
+  */
+  private String hoverText="";
+  /**Text scale factor
+  */
+  private float textScaleFactor=2.903f;
+  /**Button stroke weight
+  */
+  private float strokeWeight=3;
+  /**The renderer to draw the button to
+  */
   private transient PGraphics render;
   /**Create a button at the given position with the given size
   @param render The window this button will be renderd on

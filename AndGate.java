@@ -6,6 +6,8 @@ import java.util.ArrayList;
 /**A logic gate for the AND opperation on logic boards
 */
 public class AndGate extends LogicComponent {
+  /**The id of this logic component
+  */
   public static final Identifier ID = new Identifier("AND");
   
   /**Place a new and gate 
@@ -30,6 +32,7 @@ public class AndGate extends LogicComponent {
 
   /**The function where the logic/functionality of this component is execuated
   */
+  @Override
   public void tick() {
     outputTerminal=inputTerminal1&&inputTerminal2;
   }

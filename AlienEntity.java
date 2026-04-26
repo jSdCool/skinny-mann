@@ -30,18 +30,36 @@ public class AlienEntity extends StageEntity implements Configurable{
     dead = iterator.getBoolean();
   }
   
-  //if this entity is facing / moving to the right
+  /**if this entity is facing / moving to the right
+  */
   boolean facingRight = true;
+  /**IF the direction of movemnt should be changed in the next physics frames
+  */
   boolean changeDirection = false;
+  /**The direction to swithc to (true = right)
+  */
   boolean newDirection = true;
+  /**If this entity is dead
+  */
   boolean dead = false;
+  /**If this eneity is currently chaing the player
+  */
   boolean chasingPlayer = false;
+  /**If the entity is currently nto moving
+  */
   boolean stopped = false;
   
+  /**The max distacne from the placemnt point the endity can roam
+  */
   int maxWanderDistance = 300;
+  /**The index of the player that is currently being targeted
+  */
   int chasingPlayerIndex = 0;
+  /**The ammount of time left to pause for 
+  */
   int pause = 0;
-  
+  /**The id of this entity
+  */
   public static final Identifier ID = new Identifier("alien");
   
   /**Render the 2D representation of this entity.<br>
@@ -56,7 +74,13 @@ public class AlienEntity extends StageEntity implements Configurable{
     int facing = facingRight? -1:1;
     renderAlien2D(render,drawX,drawY,scale,facing);
   }
-  
+  /**function that renders the 2D sprite of the entitity
+  @param render where to draw the sprite
+  @param drawX the x position to draw the sprite
+  @param drawY the y position to draw the sprite
+  @param scale the scle to draw the sprite at
+  @param facing the direction the sprite is facing 
+  */
   public static void renderAlien2D(PGraphics render, float drawX, float drawY, float scale, int facing){
     //NOTE: all value offsets will need to be multipled by scale. do not multiply the x or y variblles by scale, they allready are sclaed
     //body
@@ -95,10 +119,12 @@ public class AlienEntity extends StageEntity implements Configurable{
     render.quad(drawX-12*scale*facing,drawY+1*scale, drawX-16*scale*facing,drawY+1*scale, drawX-16*scale*facing,drawY-2*scale, drawX-12*scale*facing,drawY-2*scale);
   }
   
+  @Override
   public void draw3D(skiny_mann context,PGraphics render){
     
   }
   
+  @Override
   public void update(EntityAgentContext context){
     
     if(pause > 0){//if pausing then decrease the pause timer and do thing else
@@ -279,14 +305,17 @@ public class AlienEntity extends StageEntity implements Configurable{
    }; 
   }
   
+  @Override
   public boolean collidesWithEntites(){
     return false;
   }
   
+  @Override
   public Collider3D getHitBox3D(float offsetX, float offsetY, float offsetZ){
     return null;
   }
   
+  @Override
   public Collider2D getHitBox2D(float offsetX, float offsetY){
     float hbx = x-24 + offsetX;
     float hby=y-35 + offsetY;
@@ -294,18 +323,22 @@ public class AlienEntity extends StageEntity implements Configurable{
     
   }
   
+  @Override
   public boolean in3D(boolean playerIn3D){
     return false;
   }
   
+  @Override
   public Identifier id(){
     return ID;
   }
   
+  @Override
   public void kill(){
     dead = true;
   }
   
+  @Override
   public void respawn(){
     setX(respawnX);
     setY(respawnY);
@@ -313,10 +346,12 @@ public class AlienEntity extends StageEntity implements Configurable{
     dead = false;
   }
   
+  @Override
   public boolean isDead(){
     return dead;
   }
   
+  @Override
   public SerializedData serialize(){
     SerializedData data = serializeInternal();
     data.addInt(maxWanderDistance);
@@ -325,6 +360,7 @@ public class AlienEntity extends StageEntity implements Configurable{
     return data;
   }
   
+  @Override
   public JSONObject save(){
     JSONObject data = saveInternal();
     data.setInt("maxWanderDistance",maxWanderDistance);
@@ -335,10 +371,8 @@ public class AlienEntity extends StageEntity implements Configurable{
   @param playerHitBox The hitbox of the player
   @return The result of the player interaction or null if there is no result
   */
+  @Override
   public PlayerIniteractionResult playerInteraction(Collider2D playerHitBox){
-    
-    
-    
     //if not kill this entity
     float hbx = x- 24 *(facingRight? -1:1);//if facing right then add 24, if facing left then subtact 24. its not perfect positioning but it is good enough
     float hby = y-29;
@@ -355,6 +389,7 @@ public class AlienEntity extends StageEntity implements Configurable{
   @param playerHitBox The hitbox of the player
   @return The result of the player interaction or null if there is no result
   */
+  @Override
   public PlayerIniteractionResult playerInteraction(Collider3D playerHitBox){
     return null;
   }

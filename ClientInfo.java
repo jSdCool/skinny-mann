@@ -1,11 +1,18 @@
 /**This class is used to send general data between the client and the server
  */
 public class ClientInfo extends DataPacket {
-  
+  /**The id of the data packet
+  */
   public static final Identifier ID = new Identifier("ClientInfo");
-  
+  /**The name of the client
+  */
   public String name;
-  boolean readdy, atEnd;
+  /**If this client is readdy
+  */
+  boolean readdy;
+  /**if this client has reached the end
+  */
+  boolean atEnd;
   /**Create a basic client informatio packet
   @param name The multyplayer namme of this client
   @param ready Wether this client is ready to start the level

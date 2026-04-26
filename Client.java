@@ -5,24 +5,81 @@ import java.net.StandardSocketOptions;
 /**Multyplayer client connection and handler
 */
 public class Client extends Thread {
-  
+  /**the Refrnece context for the client
+  */
   ClientContext context;
-  
-  int playernumber, blockSize=10240, currentDownloadIndex, currentDownloadblock;
+  /**The number of this player
+  */
+  int playernumber;
+  /**THe size of a sinle data block
+  */
+  int blockSize=10240;
+  /**The current file index being downloaded
+  */
+  int currentDownloadIndex;
+  /**THe curertn data balock being downloaded
+  */
+  int currentDownloadblock;
+  /**The socket to communicate over
+  */
   Socket socket;
+  /**The stream to write packets to
+  */
   ObjectSerializingOutputStream output;
+  /**The stream to read oackets from
+  */
   ObjectDeserializingInputStream input;
-  String ip="uninitilized", name="uninitilized";
+  /** The ip address of the conntected client
+  */
+  String ip="uninitilized"; 
+  /**The name of the connected client
+  */
+  String name="uninitilized";
+  /**Buffer of packets to send
+  */
   ArrayList<DataPacket> dataToSend=new ArrayList<>();
-  NetworkDataPacket toSend=new NetworkDataPacket(), recieved;
-  boolean versionChecked=false, readdy=false, viablePlayers[]=new boolean[10];
+  /**Packet to send
+  */
+  NetworkDataPacket toSend=new NetworkDataPacket();
+  /**packet recieved from the other client
+  */
+  NetworkDataPacket recieved;
+  /**IF the cliets version has been checked
+  */
+  boolean versionChecked=false;
+  /**If the client is readdy
+  */
+  boolean readdy=false;
+  /**if each player is visable
+  */
+  boolean viablePlayers[]=new boolean[10];
+  /**The best score this clinet has 
+  */
   BestScore bestScore=new BestScore("", 0);
-  boolean reachedEnd, downloadingLevel=false;
+  /**If this client has reached the end
+  */
+  boolean reachedEnd;
+  /**If downloading a level
+  */
+  boolean downloadingLevel=false;
+  /**Infomration about the level being dowloaded 
+  */
   LevelDownloadInfo ldi;
-  String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&()-_=+`~[]{}";
+  /**all the valid latters to use for a random string
+  */
+  final String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&()-_=+`~[]{}";
+  /**The bytes of other downloaded level files
+  */
   byte outherFiles[][];
+  /**bytes of the current file being downlaoded
+  */
   byte currentDownloadingFile[];
-  long lastContactTime, ping;
+  /**THe last time this client was conteacted
+  */
+  long lastContactTime;
+  /**THe ping of the connection
+  */
+  long ping;
 
   /**Create a new client. This is used when you are the client
   @param s The socket communicate over
