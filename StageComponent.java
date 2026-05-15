@@ -20,7 +20,7 @@ public abstract class StageComponent implements Serialization {//the base class 
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public abstract void draw3D(PGraphics render);
+  public abstract void draw3D(StageComponentRenderContext context);
   
   /**used for mouse click detecteion
   @param x The x position of the mouse

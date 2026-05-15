@@ -103,34 +103,34 @@ public class LogicButton extends StageComponent implements Interactable, Configu
   @param render The surface to draw to
   */
   @Override
-  public void draw3D(PGraphics render) {
+  public void draw3D(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
     boolean state=false;
-    if (source.level.multyplayerMode!=2) {//if not in co op mode
+    if (context.getMultyplayerMode()!=2) {//if not in co op mode
 
       if (variable!=-1) {//if the variable is set
-        state=source.level.variables.get(variable);
-        Collider3D playerHitBox = source.players[source.currentPlayer].getHitBox3D(0,0,0);
+        state=context.getVariables().get(variable);
+        Collider3D playerHitBox = context.get3DPlayerHitbox();
         //check if the player is staning on top of the button
         if (CollisionDetection.collide3D(playerHitBox,Collider3D.createBoxHitBox(x+group.xOffset-10,y+group.yOffset-10,z+group.zOffset-10,20,10,20))) {
-          source.level.variables.set(variable, true);//set the variable to true
+          context.getVariables().set(variable, true);//set the variable to true
           if(!state){//if the button was just pressed
-            if(!source.levelCreator){//and not in the level creator 
-              source.stats.incrementButtonsActivated();//increment the stat
+            if(!context.inLevelCreator()){//and not in the level creator
+              StatisticManager.getInstace().incrementButtonsActivated();//increment the stats
             }
           }
         } else {//if not staning on the button
-          source.level.variables.set(variable, false);//set the bariable to false
+          context.getVariables().set(variable, false);//set the bariable to false
         }
       }
     }
     if (variable!=-1) {//if the variable is set
-      state=source.level.variables.get(variable);//get the current state of the varaible
+      state=context.getVariables().get(variable);//get the current state of the varaible
     }
     //render the button
-    source.drawLogicButton((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 1, state,render);
+    source.drawLogicButton((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 1, state,context.render);
   }
 
   /**used for mouse click detecteion

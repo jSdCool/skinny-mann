@@ -74,7 +74,10 @@ void stageLevelDraw() {
     e3DMode = n3D;
   }, (viwing) -> {
     viewingItemContents = viwing;
-  }, currentStageIndex
+  }, currentStageIndex, coinRotation, () ->{
+    WPressed = false;
+    SPressed = false;
+  }
   );//render context
   
   if (stage.type.equals("stage")) {//if the cuurent thing that is being drawn is a 2D stage
@@ -305,7 +308,7 @@ void render3DLevel(PGraphics render, Stage stage,float playerX,float playerY, fl
       render.stroke(#FFFF00);//give that element a yellow border
       render.strokeWeight(2);
     }
-    stage.parts.get(i).draw3D(render);//draw the element in 3D
+    stage.parts.get(i).draw3D(renderContext);//draw the element in 3D
     if (viewingItemContents && viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
       viewingItemIndex=i;//set the cuurent viewing item to this element
     }
@@ -566,7 +569,10 @@ void blueprintEditDraw() {
     e3DMode = n3D;
   }, (viwing) -> {
     viewingItemContents = viwing;
-  }, currentStageIndex
+  }, currentStageIndex, coinRotation, () ->{
+    WPressed = false;
+    SPressed = false;
+  }
   );//render context
   
   if (workingBlueprint.type.equals("blueprint")) {//if the type is a normal blueprint
@@ -627,7 +633,7 @@ void blueprintEditDraw() {
           stroke(#0A03FF);
           strokeWeight(2);
         }
-        workingBlueprint.parts.get(i).draw3D(g);//draw the blurprint component
+        workingBlueprint.parts.get(i).draw3D(renderContext);//draw the blurprint component
         //why is this nessarry for a blueprint
         if (viewingItemContents&&viewingItemIndex==-1) {//if the current element has decided that you want to view it's contence but no element has been selected
           viewingItemIndex=i;//set the cuurent viewing item to this element

@@ -142,7 +142,7 @@ public class Sloap extends StageComponent implements Rotatable,Resizeable{//sloa
   @param render The surface to draw to
   */
   @Override
-  public void draw3D(PGraphics render) {
+  public void draw3D(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -154,8 +154,8 @@ public class Sloap extends StageComponent implements Rotatable,Resizeable{//sloa
       prevoursGroupPos.y = group.yOffset;
       prevoursGroupPos.z = group.zOffset;
     }
-    render.fill(ccolor);
-    verts2Tri(render,verticies,0,0,1);
+    context.render.fill(ccolor);
+    verts2Tri(context.render,verticies,0,0,1);
   }
   /**used for mouse click detecteion
   @param x The x position of the mouse

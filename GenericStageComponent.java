@@ -19,7 +19,7 @@ class GenericStageComponent extends StageComponent {
   @param render Not rendering anything here
   */
   @Override
-  public void draw3D(PGraphics render){
+  public void draw3D(StageComponentRenderContext context){
     
   }
   

@@ -72,19 +72,18 @@ public class SWoff3D extends StageComponent {
   @param render The surface to draw to
   */
   @Override
-  public void draw3D(PGraphics render) {
+  public void draw3D(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
-    source.draw3DSwitch2((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), source.Scale,render);
-    Collider3D playerHitBox = source.players[source.currentPlayer].getHitBox3D(0,0,0);
-    if (source.collisionDetection.collide3D(playerHitBox,Collider3D.createBoxHitBox(x+group.xOffset-10,y+group.yOffset-10,z+group.zOffset-10,20,10,20))) {
-      source.e3DMode=false;
-      source.WPressed=false;
-      source.SPressed=false;
-      source.gmillis=source.millis()+1200;
-      if(!source.levelCreator){
-        source.stats.incrementDeactivated3D();
+    source.draw3DSwitch2((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 0,context.render);//scale is unused here
+    Collider3D playerHitBox = context.get3DPlayerHitbox();
+    if (CollisionDetection.collide3D(playerHitBox,Collider3D.createBoxHitBox(x+group.xOffset-10,y+group.yOffset-10,z+group.zOffset-10,20,10,20))) {
+      context.reset3DMovement();
+      context.set3DMode(false);
+      context.glitchEffect(1200);
+      if(!context.inLevelCreator()){
+        StatisticManager.getInstace().incrementDeactivated3D();
       }
     }
   }

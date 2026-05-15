@@ -81,11 +81,11 @@ public class SWon3D extends StageComponent {
   @param render The surface to draw to
   */
   @Override
-  public void draw3D(PGraphics render) {
+  public void draw3D(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
-    source.draw3DSwitch1((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), source.Scale,render);
+    source.draw3DSwitch1((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 0,context.render);
   }
   /**used for mouse click detecteion
   @param x The x position of the mouse

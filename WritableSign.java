@@ -79,21 +79,20 @@ public class WritableSign extends StageComponent implements Configurable {
   @param render The surface to draw to
   */
   @Override
-  public void draw3D(PGraphics render) {
+  public void draw3D(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
-    source.drawSign((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), source.Scale,render);
+    source.drawSign((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 0,context.render);
 
-     Collider3D playerHitBox = source.players[source.currentPlayer].getHitBox3D(0,0,0);
+     Collider3D playerHitBox = context.get3DPlayerHitbox();
     if (CollisionDetection.collide3D(playerHitBox,Collider3D.createBoxHitBox(x-35,y-40,z-20,70,40,40))) {
-      source.displayText="Press E";
-      source.displayTextUntill=source.millis()+100;
-      if (source.E_pressed) {
-        source.E_pressed=false;
-        source.viewingItemContents=true;
-        if(!source.levelCreator){
-          source.stats.incrementSignsRead();
+      context.displayText("Press E",100);
+      if (context.usePressed()) {
+        context.resetUsedPressed();
+        context.setViewingItemContent(true);
+        if(!context.inLevelCreator()){
+          StatisticManager.getInstace().incrementSignsRead();
         }
       }
     }

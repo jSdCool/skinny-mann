@@ -97,7 +97,7 @@ class Goal extends StageComponent {//ground component
   @param render The surface to draw to
   */
   @Override
-  public void draw3D(PGraphics render) {
+  public void draw3D(StageComponentRenderContext context) {
   }
   /**used for mouse click detecteion
   @param x The x position of the mouse

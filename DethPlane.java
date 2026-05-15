@@ -83,15 +83,15 @@ public class DethPlane extends StageComponent {//ground component
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw3D(PGraphics render) {
+  public void draw3D(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
-    render.fill(-114431);
-    render.strokeWeight(0);
-    render.translate((x+group.xOffset)+dx/2, (y+group.yOffset)+dy/2, (z+group.zOffset)+dz/2);
-    render.box(dx, dy, dz);
-    render.translate(-1*((x+group.xOffset)+dx/2), -1*((y+group.yOffset)+dy/2), -1*((z+group.zOffset)+dz/2));
+    context.render.fill(-114431);
+    context.render.strokeWeight(0);
+    context.render.translate((x+group.xOffset)+dx/2, (y+group.yOffset)+dy/2, (z+group.zOffset)+dz/2);
+    context.render.box(dx, dy, dz);
+    context.render.translate(-1*((x+group.xOffset)+dx/2), -1*((y+group.yOffset)+dy/2), -1*((z+group.zOffset)+dz/2));
   }
   /**used for mouse click detecteion
   @param x The x position of the mouse

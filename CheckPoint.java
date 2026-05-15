@@ -97,27 +97,27 @@ public class CheckPoint extends StageComponent {
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw3D(PGraphics render) {
+  public void draw3D(StageComponentRenderContext context) {
+    PGraphics render = context.getRender();
     Group group=getGroup();
     if (!group.visable)
       return;
     //check if the player is on top of the check point so we can turn the pole yellow and set their spawn point
-    Collider3D playerBox = source.players[source.currentPlayer].getHitBox3D(0,0,0);
+    Collider3D playerBox = context.get3DPlayerHitbox();
     boolean po=false;
     if (CollisionDetection.collide3D(playerBox,new Collider3D(new PVector[]{ new PVector(x-3,y-60,z-3),new PVector(x+3,y-60,z-3),new PVector(x+3,y,z-3),new PVector(x-3,y,z-3),new PVector(x-3,y-60,z+3),new PVector(x+3,y-60,z+3),new PVector(x+3,y,z+3),new PVector(x-3,y,z+3) } ))) {
-      source.respawnX=(int)x;
-      source.respawnY=(int)y;
-      source.respawnZ=(int)source.players[source.currentPlayer].z;
-      source.respawnStage=source.stageIndex;
-      source.checkpointIn3DStage=true;
+      context.setRespawnPosition(x,y,z);
+      context.setRespawnStage(context.getCurrentStageIndex());
+      context.setCheckpointIn3D(true);
       po=true;
     }
 
 
-    if (po)
+    if (po){
       render.fill(-1719293);
-    else
+    } else {
       render.fill(-4605510);
+    }
     //strokeWeight(0);
     render.translate((x+group.xOffset), (y+group.yOffset)-30, (z+group.zOffset));
     render.box(4, 60, 4);

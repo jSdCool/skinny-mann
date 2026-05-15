@@ -41,12 +41,14 @@ public class StageComponentRenderContext implements ContextBase{
   @param set3DMode A function to set if the player is in 3D mode
   @param setViewingItemContentFuncion A funcion to set if the player is viewing item content
   @param currentStageIndex The value of current stage index
+  @param coinRotation The rotation of the 3D coins
+  @param reset3DMovement A function to set WPressed and SPressed to false
   */
   public StageComponentRenderContext(PGraphics render, float screenScale, int camX, int camY, int multyplayerMode, ArrayList<Boolean> variables, Player currentPlayer, DynamicModifier<String> displayTextSetter, DynamicModifier<Integer> displayTextTimeupdate,
   boolean usePressed,DynamicModifier<Boolean> resetUsePressedButton, int stageIndex, DynamicModifier<Integer> setStageIndexFuncion,DynamicModifier<PVector> setPlayerPositionFunction,DynamicModifier<Integer> updateGlitchEffectTimeFunction, DynamicAction resetSelectionFuncion,
   DynamicModifier<PVector> setRespawnPosFuncion, DynamicModifier<Integer> setRespawnStageFunction, DynamicModifier<Boolean> setCheckpointIn3DstageFuncion, boolean editingBlueprint, ArrayList<Boolean> coins, boolean selectingBlueprint,boolean inLevelCreator, DynamicAction coinIncrementer,
   boolean levelComplete, DynamicModifier<Boolean> setLevelCompleteFunction, DynamicModifier<Boolean> setEndReached, LogicBoard levelCompleteLogicBoard, SoundHandler soundHandler, HashMap<String, StageSound> levelSounds, DynamicModifier<Boolean> set3DMode,
-  DynamicModifier<Boolean> setViewingItemContentFuncion, int currentStageIndex){
+  DynamicModifier<Boolean> setViewingItemContentFuncion, int currentStageIndex, int coinRotation, DynamicAction reset3DMovement){
     this.render = render;
     scale = screenScale;
     cameraOffset = new PVector(camX,camY);
@@ -81,6 +83,8 @@ public class StageComponentRenderContext implements ContextBase{
     this.set3DMode = set3DMode;
     this.setViewingItemContentFuncion = setViewingItemContentFuncion;
     this.currentStageIndex = currentStageIndex;
+    this.coinRotation = coinRotation;
+    this.reset3DMovement = reset3DMovement;
   }
   /**Create a new stage component render context from another with a diffrent renderer
   @param render The new renderer to use
@@ -121,6 +125,8 @@ public class StageComponentRenderContext implements ContextBase{
     this.player = source.player;
     this.set3DMode = source.set3DMode;
     this.setViewingItemContentFuncion = source.setViewingItemContentFuncion;
+    this.coinRotation = source.coinRotation;
+    this.reset3DMovement = source.reset3DMovement;
   }
   
   /**The buffer that components render to
@@ -225,6 +231,12 @@ public class StageComponentRenderContext implements ContextBase{
   /**not sure what the diffrence between this and stage index is but they are siginificantly diffrent
   */
   private int currentStageIndex;
+  /**The cunber of degress the 3D coins are rotated in the Y axis
+  */
+  private int coinRotation;
+  /**Resets the state of W and S pressed
+  */
+  private DynamicAction reset3DMovement;
 
   /**Get the render buffer;
   @return the graphics instance to render to
@@ -472,5 +484,16 @@ public class StageComponentRenderContext implements ContextBase{
   */
   public int getCurrentStageIndex(){
     return currentStageIndex;
+  }
+  /**Get the current roation of the 3D coins
+  @return the number of degrees the 3D coins are rotated in the y axis
+  */
+  public int getCoinRotation(){
+    return coinRotation;
+  }
+  /**Sets w pressed and s pressed to false
+  */
+  public void reset3DMovement(){
+    reset3DMovement.go();
   }
 }

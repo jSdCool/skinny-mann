@@ -83,7 +83,7 @@ public class SoundBox extends StageComponent implements Configurable{
   @param render The surface to draw to
   */
   @Override
-  public void draw3D(PGraphics render){}
+  public void draw3D(StageComponentRenderContext context){}
   /**used for mouse click detecteion
   @param x The x position of the mouse
   @param y The y position of the mouse

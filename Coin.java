@@ -100,12 +100,12 @@ public class Coin extends StageComponent {//ground component
   NOTE: this method may be called more then once per frame
   @param render The surface to draw to
   */
-  public void draw3D(PGraphics render) {
+  public void draw3D(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
     boolean collected;
-    if (source.editingBlueprint) {//if in a blueprint it will not be collected
+    if (context.isEditingBlueprint()) {//if in a blueprint it will not be collected
       collected=false;
     } else {//get the collected status
       if (source.coins.size()==0)
@@ -116,18 +116,18 @@ public class Coin extends StageComponent {//ground component
 
     if (!collected) {//if the coin has not been collected
       //rendder the coin
-      render.translate((x+group.xOffset), (y+group.yOffset), (z+group.zOffset));
-      render.rotateY(source.radians(source.coinRotation));
-      render.shape(source.coin3D);
-      render.rotateY(source.radians(-source.coinRotation));
-      render.translate(-(x+group.xOffset), -(y+group.yOffset), -(z+group.zOffset));
+      context.render.translate((x+group.xOffset), (y+group.yOffset), (z+group.zOffset));
+      context.render.rotateY(PApplet.radians(context.getCoinRotation()));
+      context.render.shape(source.coin3D);//TODO place 3d modle in a better location
+      context.render.rotateY(PApplet.radians(-context.getCoinRotation()));
+      context.render.translate(-(x+group.xOffset), -(y+group.yOffset), -(z+group.zOffset));
       //ckeck if the player is colliding with the coin
-      Collider3D playerHitBox = source.players[source.currentPlayer].getHitBox3D(0,0,0);
-      if (!source.selectingBlueprint && CollisionDetection.collide3D(playerHitBox, new SphereCollider(new PVector(x,y,z),14))) {
-        source.coins.set(coinId, true);//set the coin to selected
-        source.coinCount++;
-        if(!source.levelCreator){//if not in the level crator, increase the coins collected stat
-          source.stats.incrementCollectedCoins();
+      Collider3D playerHitBox = context.get3DPlayerHitbox();
+      if (!context.isSelcetingBlueprint() &&  CollisionDetection.collide3D(playerHitBox, new SphereCollider(new PVector(x,y,z),14))) {
+        context.coins().set(coinId, true);//set the coin to collected
+        context.incrementCoins();
+        if(!context.inLevelCreator()){//if not in the level creator then increasse the coins collected stats
+          StatisticManager.getInstace().incrementCollectedCoins();
         }
       }
     }

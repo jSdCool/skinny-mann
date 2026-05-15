@@ -1680,7 +1680,10 @@ void renderBlueprint() {
     e3DMode = n3D;
   }, (viwing) -> {
     viewingItemContents = viwing;
-  }, currentStageIndex
+  }, currentStageIndex, coinRotation, () ->{
+    WPressed = false;
+    SPressed = false;
+  }
   );//render context
   
   //the actual render part
@@ -1692,8 +1695,64 @@ void renderBlueprint() {
 /**render the currently selected blueprint in 3D
 */
 void renderBlueprint3D() {
+  //90% of this function is just inisializing the context wich is code coppied from else ware
+  StageComponentRenderContext renderContext = new StageComponentRenderContext(
+  g, Scale, camPos, camPosY, level.multyplayerMode, level.variables, players[currentPlayer],
+  (text) -> { 
+    //set display text
+    displayText = text;
+  },
+  (time) -> {
+    //set display text time
+    displayTextUntill = millis() + time;
+  },
+  E_pressed,
+  (rp) -> {
+    E_pressed = rp;  
+  },
+  stageIndex,
+  (newIndex) -> {
+    stageIndex = newIndex;
+  },
+  (pos) -> {
+    //set player poisition 
+  },
+  (time) -> {
+    gmillis = millis() + time;
+  },
+  () -> {
+    selecting = false;
+    selectedIndex = -1;
+  },
+  (pos) -> {
+    respawnX = (int)pos.x;
+    respawnY = (int)pos.y;
+    respawnZ = (int)pos.z;
+  },
+  (setStageIndex) -> {
+    respawnStage = setStageIndex;
+  },
+  (in3Dmode) -> {
+    checkpointIn3DStage = in3Dmode;
+  },
+  editingBlueprint, coins, selectingBlueprint, levelCreator,
+  () -> {
+    coinCount++;
+  }, level_complete, (complete) -> {
+    level_complete = complete;
+  }, (end) -> {
+    reachedEnd = end;
+  }, level.logicBoards.get(level.levelCompleteBoard), soundHandler, level.sounds, (n3D) -> {
+    e3DMode = n3D;
+  }, (viwing) -> {
+    viewingItemContents = viwing;
+  }, currentStageIndex, coinRotation, () ->{
+    WPressed = false;
+    SPressed = false;
+  }
+  );//render context
   for (int i=0; i<displayBlueprint.parts.size(); i++) {
-    displayBlueprint.parts.get(i).draw3D(g);
+    displayBlueprint.parts.get(i).draw3D(renderContext);
   }
 }
 

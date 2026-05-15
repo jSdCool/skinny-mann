@@ -134,7 +134,7 @@ public class Holo extends StageComponent implements Rotatable,Resizeable{//groun
   @param render The surface to draw to
   */
   @Override
-  public void draw3D(PGraphics render) {
+  public void draw3D(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
@@ -145,13 +145,13 @@ public class Holo extends StageComponent implements Rotatable,Resizeable{//groun
       prevoursGroupPos.y = group.yOffset;
       prevoursGroupPos.z = group.zOffset;
     }
-    render.fill(ccolor);
+    context.render.fill(ccolor);
     if(!isRotated()){
-      render.translate((x+group.xOffset)+dx/2, (y+group.yOffset)+dy/2, (z+group.zOffset)+dz/2);
-      render.box(dx, dy, dz);
-      render.translate(-1*((x+group.xOffset)+dx/2), -1*((y+group.yOffset)+dy/2), -1*((z+group.zOffset)+dz/2));
+      context.render.translate((x+group.xOffset)+dx/2, (y+group.yOffset)+dy/2, (z+group.zOffset)+dz/2);
+      context.render.box(dx, dy, dz);
+      context.render.translate(-1*((x+group.xOffset)+dx/2), -1*((y+group.yOffset)+dy/2), -1*((z+group.zOffset)+dz/2));
     }else{
-      verts2Box(render,verticies,0,0,1);
+      verts2Box(context.render,verticies,0,0,1);
     }
   }
   /**used for mouse click detecteion

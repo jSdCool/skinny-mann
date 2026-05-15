@@ -94,18 +94,9 @@ public class Interdimentional_Portal extends StageComponent {
 
         context.render.background(0);
         context.setPlayerPosition(linkX,linkY+48,linkZ);
-        //if (linkZ!=-1) {
-        //  source.setPlayerPosZ=(int)linkZ;
-        //  source.players[source.currentPlayer].z=linkZ;
-        //  source.tpCords[2]=linkZ;
-        //}
-        //source.players[source.currentPlayer].setX(linkX).setY(linkY+48);
-        //source.setPlayerPosTo=true;
-        //source.tpCords[0]=(int)linkX;
-        //source.tpCords[1]=(int)linkY+48;
         context.glitchEffect(850);
         
-        if(context.inLevelCreator()){
+        if(!context.inLevelCreator()){
           StatisticManager.getInstace().incrementPortalsUsed();
         }
       }
@@ -117,42 +108,38 @@ public class Interdimentional_Portal extends StageComponent {
   @param render The surface to draw to
   */
   @Override
-  public void draw3D(PGraphics render) {
+  public void draw3D(StageComponentRenderContext context) {
     Group group=getGroup();
     if (!group.visable)
       return;
 
-    Collider3D playerHitbox = source.players[source.currentPlayer].getHitBox3D(0, 0, 0);
+    Collider3D playerHitbox = context.get3DPlayerHitbox();
 
-    render.translate(0, 0, z);
-    source.drawPortal((x+group.xOffset), (y+group.yOffset), 1,render);
-    render.translate(0, 0, -z);
+    context.render.translate(0, 0, z);
+    source.drawPortal((x+group.xOffset), (y+group.yOffset), 1,context.render);
+    context.render.translate(0, 0, -z);
     if (CollisionDetection.collide3D(playerHitbox, Collider3D.createBoxHitBox(x-25, y-50, z-20, 50, 100, 20))) {
-      render.fill(255);
-      render.textSize(20);
-      source.displayText="Press E";
-      source.displayTextUntill=source.millis()+100;
+      context.render.fill(255);
+      context.render.textSize(20);
+      context.render.textSize(context.scale(20));
+      context.displayText("Press E",100);
 
 
       if (source.E_pressed) {
-        source.E_pressed=false;
-        source.selectedIndex=-1;
-        source.stageIndex=linkIndex;
-        source.currentStageIndex=linkIndex;
+        context.resetUsedPressed();
+        context.resetSelection();
+        context.setStageIndex(linkIndex);
 
-        render.background(0);
+        context.render.background(0);
         if (linkZ!=-1) {
           source.setPlayerPosZ=(int)linkZ;
           source.players[source.currentPlayer].z=linkZ;
           source.tpCords[2]=linkZ;
         }
-        source.players[source.currentPlayer].setX(linkX).setY(linkY);
-        source.setPlayerPosTo=true;
-        source.tpCords[0]=(int)linkX;
-        source.tpCords[1]=(int)linkY;
-        source.gmillis=source.millis()+850;
-        if(!source.levelCreator){
-          source.stats.incrementPortalsUsed();
+        context.setPlayerPosition(linkX,linkY+48,linkZ);
+        context.glitchEffect(850);
+        if(!context.inLevelCreator()){
+          StatisticManager.getInstace().incrementPortalsUsed();
         }
       }
     }
