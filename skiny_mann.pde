@@ -1016,6 +1016,7 @@ void draw() {// the function that is called every frame
         dbg_mspc.setText("mspc: "+ mspc);
         dbg_playerX.setText("player X: "+ players[currentPlayer].x);
         dbg_playerY.setText("player Y: "+ players[currentPlayer].y);
+        dbg_playerZ.setText("player Z: "+ players[currentPlayer].z);
         dbg_vertvel.setText("player vertical velocity: "+ players[currentPlayer].verticalVelocity);
         dbg_animationCD.setText("player animation Cooldown: "+ players[currentPlayer].animationCooldown);
         dbg_pose.setText("player pose: "+ players[currentPlayer].pose);
@@ -1045,6 +1046,7 @@ void draw() {// the function that is called every frame
       dbg_mspc.draw();
       dbg_playerX.draw();
       dbg_playerY.draw();
+      dbg_playerZ.draw();
       dbg_vertvel.draw();
       dbg_animationCD.draw();
       dbg_pose.draw();
@@ -5003,19 +5005,20 @@ void initText() {
   dbg_mspc = new UiText(ui, "mspc: V", 1275, 10, 10, RIGHT, TOP);
   dbg_playerX = new UiText(ui, "player X: V", 1275, 20, 10, RIGHT, TOP);
   dbg_playerY = new UiText(ui, "player Y: V", 1275, 30, 10, RIGHT, TOP);
-  dbg_vertvel = new UiText(ui, "player vertical velocity: V", 1275, 40, 10, RIGHT, TOP);
-  dbg_animationCD = new UiText(ui, "player animation Cooldown: V", 1275, 50, 10, RIGHT, TOP);
-  dbg_pose = new UiText(ui, "player pose: V", 1275, 60, 10, RIGHT, TOP);
-  dbg_camX = new UiText(ui, "camera x: V", 1275, 70, 10, RIGHT, TOP);
-  dbg_camY = new UiText(ui, "camera y: V", 1275, 80, 10, RIGHT, TOP);
-  dbg_tutorialPos = new UiText(ui, "tutorial position: V", 1275, 90, 10, RIGHT, TOP);
+  dbg_playerZ = new UiText(ui, "player Z: V", 1275, 40, 10, RIGHT, TOP);
+  dbg_vertvel = new UiText(ui, "player vertical velocity: V", 1275, 50, 10, RIGHT, TOP);
+  dbg_animationCD = new UiText(ui, "player animation Cooldown: V", 1275, 60, 10, RIGHT, TOP);
+  dbg_pose = new UiText(ui, "player pose: V", 1275, 70, 10, RIGHT, TOP);
+  dbg_camX = new UiText(ui, "camera x: V", 1275, 80, 10, RIGHT, TOP);
+  dbg_camY = new UiText(ui, "camera y: V", 1275, 90, 10, RIGHT, TOP);
+  dbg_tutorialPos = new UiText(ui, "tutorial position: V", 1275, 100, 10, RIGHT, TOP);
   game_displayText = new UiText(ui, "V", 640, 144, 200, CENTER, CENTER);
   lebelCompleteText = new UiText(ui, "LEVEL COMPLETE!!!", 200, 400, 100, LEFT, BOTTOM);
   settingPlayerSpawnText = new UiText(ui, "Select the spawn location of the player",640,72,35,CENTER,CENTER);
   narrationCaptionText = new UiText(ui,"*Narration in progress*",640,695,20,CENTER,BOTTOM);
-  dbg_ping = new UiText(ui,"Ping: N/A",1275,100,10,RIGHT,TOP);
-  dbg_stageIndex = new UiText(ui, "stage index: V",1275,110,10,RIGHT,TOP);
-  dbg_currentStageIndex = new UiText(ui, "current stage index: V",1275,120,10,RIGHT,TOP);;
+  dbg_ping = new UiText(ui,"Ping: N/A",1275,110,10,RIGHT,TOP);
+  dbg_stageIndex = new UiText(ui, "stage index: V",1275,120,10,RIGHT,TOP);
+  dbg_currentStageIndex = new UiText(ui, "current stage index: V",1275,130,10,RIGHT,TOP);;
   
   //DO NOT EDIT BELOW THIS LINE ON THE MAIN PROJECT!
   //===================================================

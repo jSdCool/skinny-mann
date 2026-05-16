@@ -41,7 +41,7 @@ void stageLevelDraw() {
     players[currentPlayer].setX(pos.x).setY(pos.y).setZ(pos.z);
     tpCords[0] = pos.x;
     tpCords[1] = pos.y;
-    tpCords[2] = pos.x;
+    tpCords[2] = pos.z;
     setPlayerPosTo = true;
   },
   (time) -> {
@@ -547,7 +547,7 @@ void blueprintEditDraw() {
     selecting = false;
     selectedIndex = -1;
   },
-  (pos) -> {
+  (pos) -> {//set respawn pos 
     respawnX = (int)pos.x;
     respawnY = (int)pos.y;
     respawnZ = (int)pos.z;

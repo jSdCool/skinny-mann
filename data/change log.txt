@@ -10,6 +10,7 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 -fixed: new blueprints would be saved in the incorrect folder on non windows platforms
 +added: debug display: stage index
 +added: debug display: current stage index
++added: debug display: player z position
 
 0.10.1_Early_Access
 -changed: made multiplayer networking faster

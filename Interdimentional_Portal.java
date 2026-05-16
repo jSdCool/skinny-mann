@@ -131,11 +131,11 @@ public class Interdimentional_Portal extends StageComponent {
         context.setStageIndex(linkIndex);
 
         context.render.background(0);
-        if (linkZ!=-1) {
-          source.setPlayerPosZ=(int)linkZ;
-          source.players[source.currentPlayer].z=linkZ;
-          source.tpCords[2]=linkZ;
-        }
+        //if (linkZ!=-1) {
+        //  source.setPlayerPosZ=(int)linkZ;
+        //  source.players[source.currentPlayer].z=linkZ;
+        //  source.tpCords[2]=linkZ;
+        //}
         context.setPlayerPosition(linkX,linkY+48,linkZ);
         context.glitchEffect(850);
         if(!context.inLevelCreator()){

@@ -1279,6 +1279,9 @@ UiText dbg_playerX;
 /**Player y position display
 */
 UiText dbg_playerY;
+/**Player z position display
+*/
+UiText dbg_playerZ;
 /**Player verticale velocity display
 */
 UiText dbg_vertvel;
