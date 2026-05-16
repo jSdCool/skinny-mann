@@ -50,7 +50,7 @@ public class SoundBox extends StageComponent implements Configurable{
       return;
     }
     PVector pos = context.scaleCoord(x+group.xOffset, y+group.yOffset); 
-    source.drawSoundBox(pos.x, pos.y,context.scale(),context.render);
+    Assets.drawSoundBox(pos.x, pos.y,context.scale(),context.render,context.inLevelCreator());
     Collider2D playerHitBox = context.get2DPlayerHitbox();
     if (CollisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x-30,y-30,60,60))) {
       context.displayText("Press E",100);

@@ -95,7 +95,7 @@ public class LogicButton extends StageComponent implements Interactable, Configu
     }
     //draw the button
     PVector pos = context.scaleCoord(x+group.xOffset, y+group.yOffset);
-    source.drawLogicButton(pos.x,pos.y, context.scale(), state,context.render);
+    Assets.drawLogicButton(pos.x,pos.y, context.scale(), state,context.render);
   }
   
   /**Render the 3D representation of this component.<br>
@@ -130,7 +130,7 @@ public class LogicButton extends StageComponent implements Interactable, Configu
       state=context.getVariables().get(variable);//get the current state of the varaible
     }
     //render the button
-    source.drawLogicButton((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 1, state,context.render);
+    Assets.drawLogicButton((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 1, state,context.render);
   }
 
   /**used for mouse click detecteion

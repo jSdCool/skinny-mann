@@ -65,7 +65,7 @@ public class SWon3D extends StageComponent {
       return;
     }
     PVector pos = context.scaleCoord(x+group.xOffset,y+group.yOffset);
-    source.draw3DSwitch1(pos.x, pos.y, context.scale,context.render);
+    Assets.draw3DSwitch1(pos.x, pos.y, context.scale,context.render);
     Collider2D playerHitBox = context.get2DPlayerHitbox();
     if (CollisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x+group.xOffset-10,y+group.yOffset-10,20,10))) {
       context.setPlayerZpos(z);
@@ -85,7 +85,7 @@ public class SWon3D extends StageComponent {
     Group group=getGroup();
     if (!group.visable)
       return;
-    source.draw3DSwitch1((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 0,context.render);
+    Assets.draw3DSwitch1((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 0,context.render);
   }
   /**used for mouse click detecteion
   @param x The x position of the mouse

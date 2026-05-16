@@ -76,12 +76,12 @@ void registerThings(){
     render.triangle(x+10, y+5, x+10, y+25, x+40,y+15);
     render.strokeWeight(0);
   }, "Check Point", new Boolean[]{true,true},(render, x, y, scale)->{
-    drawCheckPoint(x,y,scale,render);
+    Assets.drawCheckPoint(x,y,scale,render);
   });
   StageComponentRegistry.register(Coin.ID,Coin::new,Coin::new,Coin::new, (render, x, y) -> {
-    drawCoin(x+25, y+25, 4,render);
+    Assets.drawCoin(x+25, y+25, 4,render);
   }, "Coin", new Boolean[]{true,true},(render, x, y, scale)->{
-    drawCoin(x*scale,y*scale,3*scale,render);
+    Assets.drawCoin(x*scale,y*scale,3*scale,render);
   });
   StageComponentRegistry.register(Goal.ID,Goal::new,Goal::new,Goal::new, (render, x, y) -> {
     render.fill(0);
@@ -104,32 +104,32 @@ void registerThings(){
     render.rect((x+150), (y), 50, 50);
   });
   StageComponentRegistry.register(Interdimentional_Portal.ID,Interdimentional_Portal::new,Interdimentional_Portal::new,null, (render, x, y) -> {
-    drawPortal(x+25, y+25, 0.45,render);
+    Assets.drawPortal(x+25, y+25, 0.45,render);
   }, "Portal", new Boolean[]{true,true,false,false},(render, x, y, scale)->{});
   StageComponentRegistry.register(LogicButton.ID,LogicButton::new,LogicButton::new,LogicButton::new, (render, x, y) -> {
-    drawLogicButton(x+25, y+25, 1, false,render);
+    Assets.drawLogicButton(x+25, y+25, 1, false,render);
   }, "Button", new Boolean[]{true,true,true,false},(render, x, y, scale)->{
-    drawLogicButton(x*scale,y*scale,scale,false,render);
+    Assets.drawLogicButton(x*scale,y*scale,scale,false,render);
   });
   StageComponentRegistry.register(SoundBox.ID,SoundBox::new,SoundBox::new,SoundBox::new, (render, x, y) -> {
-    drawSpeakericon(x+25, y+25, 0.5,render);
+    Assets.drawSpeakericon(x+25, y+25, 0.5,render);
   }, "Sound Box", new Boolean[]{true,false,true,false},(render, x, y, scale)->{
-    drawSoundBox(x*scale,y*scale,scale,render);
+    Assets.drawSoundBox(x*scale,y*scale,scale,render,true);
   });
   StageComponentRegistry.register(WritableSign.ID,WritableSign::new,WritableSign::new,WritableSign::new, (render, x, y) -> {
-    drawSign(x+25, y+50, 0.6,render);
+    Assets.drawSign(x+25, y+50, 0.6,render);
   }, "Sign", new Boolean[]{true,true},(render, x, y, scale)->{
-    drawSign(x*scale,y*scale,scale,render);
+    Assets.drawSign(x*scale,y*scale,scale,render);
   });
   StageComponentRegistry.register(SWoff3D.ID,SWoff3D::new,SWoff3D::new,SWoff3D::new,(render, x, y) -> {
-    draw3DSwitch2(x+25, y+40, 1,render);
+    Assets.draw3DSwitch2(x+25, y+40, 1,render);
   }, "3D off switch", new Boolean[]{false,true},(render, x, y, scale)->{
-    draw3DSwitch2(x,y,scale,render);
+    Assets.draw3DSwitch2(x,y,scale,render);
   });
   StageComponentRegistry.register(SWon3D.ID,SWon3D::new,SWon3D::new,SWon3D::new,(render, x, y) -> {
-    draw3DSwitch1(x+25, y+40, 1,render);
+    Assets.draw3DSwitch1(x+25, y+40, 1,render);
   }, "3D on switch", new Boolean[]{false,true},(render, x, y, scale)->{
-    draw3DSwitch1(x,y,scale,render);
+    Assets.draw3DSwitch1(x,y,scale,render);
   });
   
   SerialRegistry.register(GenericStageComponent.ID,GenericStageComponent::new);//palce
@@ -259,7 +259,7 @@ void registerThings(){
   },"Constant On signal");
   LogicComponentRegistry.register(GenericLogicComponent.ID,GenericLogicComponent::new,GenericLogicComponent::new,GenericLogicComponent::new,(render,x,y)->{},"Generic");
   LogicComponentRegistry.register(LogicPlaySound.ID,LogicPlaySound::new,LogicPlaySound::new,LogicPlaySound::new,(render,x,y)->{
-    drawSpeakericon(x+25,y+25,0.5,render);
+    Assets.drawSpeakericon(x+25,y+25,0.5,render);
   },"Play Sound");
   LogicComponentRegistry.register(Read3DMode.ID,Read3DMode::new,Read3DMode::new,Read3DMode::new,(render,x,y)->{
     render.fill(255,0,0);

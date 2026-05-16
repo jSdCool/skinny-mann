@@ -65,7 +65,7 @@ public class SWoff3D extends StageComponent {
       return;
     }
     PVector pos = context.scaleCoord(x+group.xOffset, y+group.yOffset);
-    source.draw3DSwitch2(pos.x, pos.y, context.scale(),context.render);
+    Assets.draw3DSwitch2(pos.x, pos.y, context.scale(),context.render);
   }
   /**Render the 3D representation of this component.<br>
   NOTE: this method may be called more then once per frame
@@ -76,7 +76,7 @@ public class SWoff3D extends StageComponent {
     Group group=getGroup();
     if (!group.visable)
       return;
-    source.draw3DSwitch2((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 0,context.render);//scale is unused here
+    Assets.draw3DSwitch2((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 0,context.render);//scale is unused here
     Collider3D playerHitBox = context.get3DPlayerHitbox();
     if (CollisionDetection.collide3D(playerHitBox,Collider3D.createBoxHitBox(x+group.xOffset-10,y+group.yOffset-10,z+group.zOffset-10,20,10,20))) {
       context.reset3DMovement();

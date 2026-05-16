@@ -219,9 +219,9 @@ void stageEditGUI() {
     //portals are special
     if (drawingPortal || drawingPortal3) {//if adding portal part 1 reder a portal
       if (grid_mode) {//if gridmode is on
-        drawPortal((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, 1*Scale,g);//draw a grid aligned portal
+        Assets.drawPortal((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, 1*Scale,g);//draw a grid aligned portal
       } else {
-        drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, 1*Scale,g);//draw a portal
+        Assets.drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, 1*Scale,g);//draw a portal
       }
     }
     
@@ -468,9 +468,9 @@ void stageEditGUI() {
      
       if (drawingPortal || drawingPortal3) {//if placing a portal
         if (grid_mode) {//diaply the portal
-          drawPortal((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale,g);
+          Assets.drawPortal((Math.round(((int)(mouseX/Scale)+camPos)*1.0/grid_size)*grid_size-camPos)*Scale, (Math.round(((int)(mouseY/Scale)-camPosY)*1.0/grid_size)*grid_size+camPosY)*Scale, Scale,g);
         } else {
-          drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale,g);
+          Assets.drawPortal((int)(mouseX/Scale)*Scale, (int)(mouseY/Scale)*Scale, Scale,g);
         }
       }
       
@@ -1552,7 +1552,7 @@ void mouseClicked3D() {
       }else{//other wize, check if there is an entity that can be deleted
         Collider3D c3D = Collider3D.createBoxHitBox(testPoint.x-0.5, testPoint.y-0.5, testPoint.z-0.5,1,1,1);
         for(int j=0;j<current.entities.size();j++){
-          if(collisionDetection.collide3D(current.entities.get(j).getHitBox3D(0,0,0),c3D)){
+          if(CollisionDetection.collide3D(current.entities.get(j).getHitBox3D(0,0,0),c3D)){
             current.entities.remove(j);
             return;
           }

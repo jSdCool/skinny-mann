@@ -616,7 +616,7 @@ class ToolBox extends PApplet {
           }
           //save button
           saveLevel.draw();
-          saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
+          Assets.saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
           //toggle 3D button
           if(stageIs3D){
             if (e3DMode) {
@@ -790,7 +790,7 @@ class ToolBox extends PApplet {
             strokeWeight(0);
             //save button
             saveLevel.draw();
-            saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
+            Assets.saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
             exitStageEdit.draw();
             
             //Components
@@ -872,7 +872,7 @@ class ToolBox extends PApplet {
             strokeWeight(0);
             //save button
             saveLevel.draw();
-            saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
+            Assets.saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
             if(!e3DMode){
               exitStageEdit.draw();
             }
@@ -974,7 +974,7 @@ class ToolBox extends PApplet {
           rect(deleteButton.x+27, deleteButton.y+20, 5, 20);
           
           saveLevel.draw();
-          saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
+          Assets.saveIcon(saveLevel.x+saveLevel.lengthX/2,saveLevel.y+saveLevel.lengthY/2,1,g);
           exitStageEdit.draw();
           
           if (selecting) {

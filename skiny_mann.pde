@@ -741,23 +741,23 @@ void draw() {// the function that is called every frame
             String displayName=level.stages.get(i+ filesScrole).name, type=level.stages.get(i+ filesScrole).type;//get the name and type of the stages
             text(displayName, 80*Scale, (130+60*(i))*Scale);//display the name
             if (type.equals("stage")) {//if it is a stage then display the stage icon
-              drawWorldSymbol(20*Scale, (90+60*(i))*Scale,g);
+              Assets.drawWorldSymbol(20*Scale, (90+60*(i))*Scale,g);
             }
             if (type.equals("3Dstage")) {
-              draw3DStageIcon(43*Scale, (100+60*i)*Scale, 0.7*Scale,g);
+              Assets.draw3DStageIcon(43*Scale, (100+60*i)*Scale, 0.7*Scale,g);
             }
           } else if (i+ filesScrole<level.stages.size()+level.sounds.size()) {//if the thing is in the range of sounds
             fill(0);
             String displayName=level.sounds.get(keys[i+ filesScrole-level.stages.size()]).name, type=level.sounds.get(keys[i+ filesScrole-level.stages.size()]).type;//get the name and type of a sound in the level
             text(displayName, 80*Scale, (130+60*(i))*Scale);//display the name
             if (type.equals("sound")) {//if the thing is a sound then display the sound icon
-              drawSpeakericon(40*Scale, (110+60*(i))*Scale, 0.5*Scale,g);
+              Assets.drawSpeakericon(40*Scale, (110+60*(i))*Scale, 0.5*Scale,g);
             }
           } else {//at this point in the the only other type of thing is a logic board
             fill(0);
             String displayName=level.logicBoards.get(i+ filesScrole-(level.stages.size()+level.sounds.size())).name;//get the name of the logic board
             text(displayName, 80*Scale, (130+60*(i))*Scale);//display the name
-            logicIcon(40*Scale, (100+60*i)*Scale, 1*Scale,g);//draw the logic board icon
+            Assets.logicIcon(40*Scale, (100+60*i)*Scale, 1*Scale,g);//draw the logic board icon
           }
         }
 
@@ -771,7 +771,7 @@ void draw() {// the function that is called every frame
         respawnStage=level.mainStage;
 
         overview_saveLevel.draw();//draw save button
-        saveIcon(overview_saveLevel.x+overview_saveLevel.lengthX/2,overview_saveLevel.y+overview_saveLevel.lengthY/2,settings.getScale(),g);
+        Assets.saveIcon(overview_saveLevel.x+overview_saveLevel.lengthX/2,overview_saveLevel.y+overview_saveLevel.lengthY/2,settings.getScale(),g);
         help.draw();//draw help button
         if (filesScrole>0)//draw scroll buttons if nessarry
           overviewUp.draw();
@@ -806,7 +806,7 @@ void draw() {// the function that is called every frame
         addSound.draw();
         newFileCreate.draw();
         newFileBack.draw();
-        drawSpeakericon(addSound.x+addSound.lengthX/2, addSound.y+addSound.lengthY/2, 1*Scale,g);
+        Assets.drawSpeakericon(addSound.x+addSound.lengthX/2, addSound.y+addSound.lengthY/2, 1*Scale,g);
         fill(0);
 
         if (newFileType.equals("sound")) {//if the selected type is sound
@@ -859,23 +859,23 @@ void draw() {// the function that is called every frame
             String displayName=level.stages.get(i+ filesScrole).name, type=level.stages.get(i+ filesScrole).type;//get the name and type of the stages
             text(displayName, 80*Scale, (130+60*(i))*Scale);//display the name
             if (type.equals("stage")) {//if it is a stage then display the stage icon
-              drawWorldSymbol(20*Scale, (90+60*(i))*Scale,g);
+              Assets.drawWorldSymbol(20*Scale, (90+60*(i))*Scale,g);
             }
             if (type.equals("3Dstage")) {
-              draw3DStageIcon(43*Scale, (100+60*i)*Scale, 0.7*Scale,g);
+              Assets.draw3DStageIcon(43*Scale, (100+60*i)*Scale, 0.7*Scale,g);
             }
           } else if (i+ filesScrole<level.stages.size()+level.sounds.size()) {//if the thing is not a stage type
             fill(0);
             String displayName=level.sounds.get(keys[i+ filesScrole-level.stages.size()]).name, type=level.sounds.get(keys[i+ filesScrole-level.stages.size()]).type;//get the name and type of a sound in the level
             text(displayName, 80*Scale, (130+60*(i))*Scale);//display the name
             if (type.equals("sound")) {//if the thing is a sound then display the sound icon
-              drawSpeakericon(40*Scale, (110+60*(i))*Scale, 0.5*Scale,g);
+              Assets.drawSpeakericon(40*Scale, (110+60*(i))*Scale, 0.5*Scale,g);
             }
           } else {
             fill(0);
             String displayName=level.logicBoards.get(i+ filesScrole-(level.stages.size()+level.sounds.size())).name;//get the name of the logic board
             text(displayName, 80*Scale, (130+60*(i))*Scale);//display the name
-            logicIcon(40*Scale, (100+60*i)*Scale, 1*Scale,g);
+            Assets.logicIcon(40*Scale, (100+60*i)*Scale, 1*Scale,g);
           }
         }
         fill(0);

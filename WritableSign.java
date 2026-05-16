@@ -58,7 +58,7 @@ public class WritableSign extends StageComponent implements Configurable {
       return;
     }
     PVector pos = context.scaleCoord(x+group.xOffset, y+group.yOffset);
-    source.drawSign(pos.x, pos.y, context.scale(),context.render);
+    Assets.drawSign(pos.x, pos.y, context.scale(),context.render);
 
     Collider2D playerHitBox = context.get2DPlayerHitbox();
     if (CollisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x-35,y-40,70,40))) {//display the press e message to the player
@@ -83,7 +83,7 @@ public class WritableSign extends StageComponent implements Configurable {
     Group group=getGroup();
     if (!group.visable)
       return;
-    source.drawSign((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 0,context.render);
+    Assets.drawSign((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 0,context.render);
 
      Collider3D playerHitBox = context.get3DPlayerHitbox();
     if (CollisionDetection.collide3D(playerHitBox,Collider3D.createBoxHitBox(x-35,y-40,z-20,70,40,40))) {

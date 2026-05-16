@@ -84,7 +84,7 @@ public class Coin extends StageComponent {//ground component
     float x2=(x+group.xOffset)-context.cameraX();
     float scale = context.scale();
     if (!collected) {//if it has not been collected then 
-      source.drawCoin(scale*x2, scale*((y+group.yOffset)+context.cameraY()), context.scale(3),context.getRender());//draw the coin
+      Assets.drawCoin(scale*x2, scale*((y+group.yOffset)+context.cameraY()), context.scale(3),context.getRender());//draw the coin
       Collider2D playerHitBox = context.get2DPlayerHitbox();//check if the player is colliding with the coin
       if (!context.isSelcetingBlueprint() && CollisionDetection.collide2D(playerHitBox,new CircleCollider(new PVector(x,y),14))) {
         context.coins().set(coinId, true);//set the coin to collected
