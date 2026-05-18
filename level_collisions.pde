@@ -77,7 +77,7 @@ void stageLevelDraw() {
   }, currentStageIndex, coinRotation, () ->{
     WPressed = false;
     SPressed = false;
-  }
+  }, (level != null)?level.groupProvider():null
   );//render context
   
   if (stage.type.equals("stage")) {//if the cuurent thing that is being drawn is a 2D stage
@@ -572,7 +572,7 @@ void blueprintEditDraw() {
   }, currentStageIndex, coinRotation, () ->{
     WPressed = false;
     SPressed = false;
-  }
+  }, null/*group provider*/
   );//render context
   
   if (workingBlueprint.type.equals("blueprint")) {//if the type is a normal blueprint
@@ -1474,7 +1474,7 @@ ArrayList<Collider2D> generateLevel2DComboBox(Stage stage){
   ComboBox2D comboBox = new ComboBox2D();
   
   for (int i=0; stageLoopCondishen(i, stage); i++) {//loop over all the objects in the stage
-    Collider2D objectBox = stage.parts.get(i).getCollider2D();
+    Collider2D objectBox = stage.parts.get(i).getCollider2D(level.groupProvider());
     //if the current object provided a hitbox
     if(objectBox != null){
       counter++;
@@ -1550,7 +1550,7 @@ ArrayList<Collider3D> generateLevel3DComboBox(Stage stage){
   ComboBox3D comboBox = new ComboBox3D();
   
   for (int i=0; stageLoopCondishen(i, stage); i++) {//loop over all the objects in the stage
-    Collider3D objectBox = stage.parts.get(i).getCollider3D();
+    Collider3D objectBox = stage.parts.get(i).getCollider3D(level.groupProvider());
     //if the current object provided a hitbox
     if(objectBox != null){
       counter++;
@@ -1640,7 +1640,7 @@ Collider2D entityCollideObject(Entity self, Collider2D hitbox, Stage stage) {
       Collider2D otherbox = other.getHitBox2D(0, 0);
       if (otherbox == null)//if the object has no collider then go to the next object
         continue;
-      if (collisionDetection.collide2D(hitbox, otherbox)) {//check if the objects collide
+      if (CollisionDetection.collide2D(hitbox, otherbox)) {//check if the objects collide
         return otherbox;
       }
     }
@@ -1670,7 +1670,7 @@ Collider3D entityCollideObject(Entity self, Collider3D hitbox, Stage stage) {
       Collider3D otherbox = other.getHitBox3D(0, 0, 0);
       if (otherbox == null)//if the object has no collider then go to the next object
         continue;
-      if (collisionDetection.collide3D(hitbox, otherbox)) {//check if the objects collide
+      if (CollisionDetection.collide3D(hitbox, otherbox)) {//check if the objects collide
         return otherbox;
       }
     }
@@ -1688,8 +1688,8 @@ boolean player_kill(Collider2D hitbox, Stage stage) {
     StageComponent part = stage.parts.get(i);
     //if this part is a deth plane a nd the hitbox position is colliding with it
     if (part instanceof DethPlane) {
-      Collider2D dhb = part.getCollider2D();
-      if (dhb!=null && collisionDetection.collide2D(hitbox, dhb)) {
+      Collider2D dhb = part.getCollider2D(level.groupProvider());
+      if (dhb!=null && CollisionDetection.collide2D(hitbox, dhb)) {
         return true;
       }
     }
@@ -1706,7 +1706,7 @@ boolean player_kill(Collider2D hitbox, Stage stage) {
  */
 int colid_index(float x, float y, Stage stage) {
   for (int i=stage.parts.size()-1; i>=0; i--) {
-    if (stage.parts.get(i).colide(x, y, true)) {
+    if (stage.parts.get(i).colide(x, y, true,level.groupProvider())) {
       return i;
     }
   }
@@ -1722,7 +1722,7 @@ int colid_index(float x, float y, Stage stage) {
  */
 int colid_index(float x, float y, float z, Stage stage) {
   for (int i=stage.parts.size()-1; i>=0; i--) {
-    if (stage.parts.get(i).colide(x, y, z, true)) {
+    if (stage.parts.get(i).colide(x, y, z, true,level.groupProvider())) {
       return i;
     }
   }

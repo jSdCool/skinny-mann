@@ -43,12 +43,13 @@ public class StageComponentRenderContext implements ContextBase{
   @param currentStageIndex The value of current stage index
   @param coinRotation The rotation of the 3D coins
   @param reset3DMovement A function to set WPressed and SPressed to false
+  @param groupProvider A refrence to the levels group provider
   */
   public StageComponentRenderContext(PGraphics render, float screenScale, int camX, int camY, int multyplayerMode, ArrayList<Boolean> variables, Player currentPlayer, DynamicModifier<String> displayTextSetter, DynamicModifier<Integer> displayTextTimeupdate,
   boolean usePressed,DynamicModifier<Boolean> resetUsePressedButton, int stageIndex, DynamicModifier<Integer> setStageIndexFuncion,DynamicModifier<PVector> setPlayerPositionFunction,DynamicModifier<Integer> updateGlitchEffectTimeFunction, DynamicAction resetSelectionFuncion,
   DynamicModifier<PVector> setRespawnPosFuncion, DynamicModifier<Integer> setRespawnStageFunction, DynamicModifier<Boolean> setCheckpointIn3DstageFuncion, boolean editingBlueprint, ArrayList<Boolean> coins, boolean selectingBlueprint,boolean inLevelCreator, DynamicAction coinIncrementer,
   boolean levelComplete, DynamicModifier<Boolean> setLevelCompleteFunction, DynamicModifier<Boolean> setEndReached, LogicBoard levelCompleteLogicBoard, SoundHandler soundHandler, HashMap<String, StageSound> levelSounds, DynamicModifier<Boolean> set3DMode,
-  DynamicModifier<Boolean> setViewingItemContentFuncion, int currentStageIndex, int coinRotation, DynamicAction reset3DMovement){
+  DynamicModifier<Boolean> setViewingItemContentFuncion, int currentStageIndex, int coinRotation, DynamicAction reset3DMovement, DynamicProvider<ArrayList<Group>> groupProvider){
     this.render = render;
     scale = screenScale;
     cameraOffset = new PVector(camX,camY);
@@ -85,6 +86,7 @@ public class StageComponentRenderContext implements ContextBase{
     this.currentStageIndex = currentStageIndex;
     this.coinRotation = coinRotation;
     this.reset3DMovement = reset3DMovement;
+    this.groupProvider = groupProvider;
   }
   /**Create a new stage component render context from another with a diffrent renderer
   @param render The new renderer to use
@@ -127,6 +129,7 @@ public class StageComponentRenderContext implements ContextBase{
     this.setViewingItemContentFuncion = source.setViewingItemContentFuncion;
     this.coinRotation = source.coinRotation;
     this.reset3DMovement = source.reset3DMovement;
+    this.groupProvider = source.groupProvider;
   }
   
   /**The buffer that components render to
@@ -237,6 +240,9 @@ public class StageComponentRenderContext implements ContextBase{
   /**Resets the state of W and S pressed
   */
   private DynamicAction reset3DMovement;
+  /**Proivdes access to the levels groups
+  */
+  private DynamicProvider<ArrayList<Group>> groupProvider;
 
   /**Get the render buffer;
   @return the graphics instance to render to
@@ -495,5 +501,11 @@ public class StageComponentRenderContext implements ContextBase{
   */
   public void reset3DMovement(){
     reset3DMovement.go();
+  }
+  /**Get the group provider for the current level
+  @return The group provider provided by the current level
+  */
+  public DynamicProvider<ArrayList<Group>> getGroupProvider(){
+    return groupProvider;
   }
 }

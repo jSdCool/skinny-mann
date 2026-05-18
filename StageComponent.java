@@ -12,13 +12,13 @@ public abstract class StageComponent implements Serialization {//the base class 
   
   /**Render the 2D representation of this component.<br>
   NOTE: this method may be called more then once per frame
-  @param render The surface to draw to
+  @param context The context for the render
   */
   public abstract void draw(StageComponentRenderContext context);
   
   /**Render the 3D representation of this component.<br>
   NOTE: this method may be called more then once per frame
-  @param render The surface to draw to
+  @param context The context for the render
   */
   public abstract void draw3D(StageComponentRenderContext context);
   
@@ -26,9 +26,10 @@ public abstract class StageComponent implements Serialization {//the base class 
   @param x The x position of the mouse
   @param y The y position of the mouse
   @param c Check colliding with hitbox reghuardless of if the compoennt normally has collision during gameplay
+  @param groupProvider A refrence to the current group state of the level 
   @return true if a collision is occoring
   */
-  public boolean colide(float x, float y, boolean c) {
+  public boolean colide(float x, float y, boolean c,ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
     return false;
   }//c= is colideing with click box
   
@@ -37,18 +38,20 @@ public abstract class StageComponent implements Serialization {//the base class 
   @param y The y position of the mouse
   @param z The z position of the mouse
   @param c Check colliding with hitbox reghuardless of if the compoennt normally has collision during gameplay
+  @param groupProvider A refrence to the current group state of the level 
   @return true if a collision is occoring
   */
-  public boolean colide(float x, float y, float z, boolean c) {
+  public boolean colide(float x, float y, float z, boolean c,ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
     return false;
   }
   
   /**Check if this position is colliding with a deth plane
   @param x The x position 
   @param y The y position
+  @param groupProvider A refrence to the current group state of the level 
   @return true if a collision is occoring
   */
-  public boolean colideDethPlane(float x, float y) {
+  public boolean colideDethPlane(float x, float y,ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
     return false;
   }
   
@@ -59,23 +62,29 @@ public abstract class StageComponent implements Serialization {//the base class 
   public abstract JSONObject save(boolean stage_3D);
   
   /**Get the current group this component is accosicated with
+  @param groupProvider A DynamicProvider that grants access to the current levels groups
   @return The group this object is accocitated with
   */
-  public Group getGroup() {
+  public Group getGroup(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
     //if no group is selceted
     if (group==-1){
       return new Group();//return the base group
     }
     //if there is not level
-    if(source.level == null){
+    if(groupProvider == null){
+      return new Group();//return the base group
+    }
+    ArrayList<Group> groups = groupProvider.get();
+    //if the provider returns nothing
+    if(groups == null){
       return new Group();//return the base group
     }
     //if the selected group is outside the range of the groups that exsist
-    if(group>=source.level.groups.size()){
+    if(group>=groups.size()){
       return new Group();
     }
     //return the group
-    return source.level.groups.get(group);
+    return groups.get(group);
   }
   
   /**Set the group this object belongs to
@@ -92,13 +101,15 @@ public abstract class StageComponent implements Serialization {//the base class 
   }
   
   /**Get the 2D collision box for entitiy collisions
+  @param groupProvider A refrence to the current group state of the level 
   @return 2D hitbox for this component or null for none
   */
-  abstract public Collider2D getCollider2D();
+  abstract public Collider2D getCollider2D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider);
   /**Get the 3D collision box for entitiy collisions
+  @param groupProvider A refrence to the current group state of the level 
   @return 3D hitbox for this component or null for none
   */
-  abstract public Collider3D getCollider3D();
+  abstract public Collider3D getCollider3D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider);
   
   /**Convert this component to a byte representation that can be sent over the network or saved to a file.<br>
   This representation is contained inside of the passed in object
@@ -132,10 +143,11 @@ public abstract class StageComponent implements Serialization {//the base class 
   }
   
   /**Get the position at the current center of this component
+  @param groupProvider A refrence to the current group state of the level 
   @return A PVector representing the center of the component
   */
-  public PVector getCenter(){
-     Group group = getGroup();
+  public PVector getCenter(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider){
+     Group group = getGroup(groupProvider);
      return new PVector(getX()+getWidth()/2+group.xOffset,getY()+getHeight()/2+group.yOffset,getZ()+getDepth()/2+group.zOffset);
   }
   

@@ -7,6 +7,8 @@ public class LogicButton extends StageComponent implements Interactable, Configu
   
   public static final Identifier ID = new Identifier("logic_button");
 
+  /**The index of the boolean var from the level that this button controlls
+  */
   int variable=-1;
   /**Load a logic button from saved json data
   @param data The saved json data
@@ -67,7 +69,7 @@ public class LogicButton extends StageComponent implements Interactable, Configu
   */
   @Override
   public void draw(StageComponentRenderContext context) {
-    Group group=getGroup();
+    Group group=getGroup(context.getGroupProvider());
     if (!group.visable) {
       return;
     }
@@ -104,7 +106,7 @@ public class LogicButton extends StageComponent implements Interactable, Configu
   */
   @Override
   public void draw3D(StageComponentRenderContext context) {
-    Group group=getGroup();
+    Group group=getGroup(context.getGroupProvider());
     if (!group.visable)
       return;
     boolean state=false;
@@ -139,8 +141,9 @@ public class LogicButton extends StageComponent implements Interactable, Configu
   @param c Check colliding with hitbox reghuardless of if the compoennt normally has collision during gameplay
   @return true if a collision is occoring
   */
-  public boolean colide(float x, float y, boolean c) {
-    Group group=getGroup();
+  @Override
+  public boolean colide(float x, float y, boolean c,ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
+    Group group=getGroup(groupProvider);
     if (!group.visable)
       return false;
     if (c) {
@@ -158,8 +161,9 @@ public class LogicButton extends StageComponent implements Interactable, Configu
   @param c Check colliding with hitbox reghuardless of if the compoennt normally has collision during gameplay
   @return true if a collision is occoring
   */
-  public boolean colide(float x, float y, float z, boolean c) {
-    Group group=getGroup();
+  @Override
+  public boolean colide(float x, float y, float z, boolean c,ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
+    Group group=getGroup(groupProvider);
     if (!group.visable)
       return false;
     if (c) {
@@ -175,7 +179,7 @@ public class LogicButton extends StageComponent implements Interactable, Configu
    */
   public void worldInteractions(int data) {
     if (source.level.multyplayerMode==2) {//if in co op mode
-      Group group=getGroup();
+      Group group=getGroup(null);//TODO
       if (!group.visable)
         return;
       if (variable!=-1){//if the variable is set
@@ -202,13 +206,15 @@ public class LogicButton extends StageComponent implements Interactable, Configu
   /**Get the 2D collision box for entitiy collisions
   @return 2D hitbox for this component or null for none
   */
-  public Collider2D getCollider2D(){
+  @Override
+  public Collider2D getCollider2D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider){
     return null;
   }
   /**Get the 3D collision box for entitiy collisions
   @return 3D hitbox for this component or null for none
   */
-  public Collider3D getCollider3D(){ 
+  @Override
+  public Collider3D getCollider3D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider){ 
     return null;
   }
   

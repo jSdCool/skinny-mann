@@ -53,13 +53,15 @@ class GenericStageComponent extends StageComponent {
   /**No collision no conflict
   @return null
   */
-  public Collider2D getCollider2D(){
+  @Override
+  public Collider2D getCollider2D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider){
     return null;
   }
   /**A bit dimentionless
   @return null
   */
-  public Collider3D getCollider3D(){ 
+  @Override
+  public Collider3D getCollider3D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider){ 
     return null;
   }
   /**Convert this component to a byte representation that can be sent over the network or saved to a file.<br>

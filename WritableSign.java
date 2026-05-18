@@ -53,7 +53,7 @@ public class WritableSign extends StageComponent implements Configurable {
   */
   @Override
   public void draw(StageComponentRenderContext context) {
-    Group group=getGroup();
+    Group group=getGroup(context.getGroupProvider());
     if (!group.visable) {
       return;
     }
@@ -80,9 +80,10 @@ public class WritableSign extends StageComponent implements Configurable {
   */
   @Override
   public void draw3D(StageComponentRenderContext context) {
-    Group group=getGroup();
-    if (!group.visable)
+    Group group=getGroup(context.getGroupProvider());
+    if (!group.visable){
       return;
+    }
     Assets.drawSign((x+group.xOffset), (y+group.yOffset), (z+group.zOffset), 0,context.render);
 
      Collider3D playerHitBox = context.get3DPlayerHitbox();
@@ -104,10 +105,12 @@ public class WritableSign extends StageComponent implements Configurable {
   @param c Check colliding with hitbox reghuardless of if the compoennt normally has collision during gameplay
   @return true if a collision is occoring
   */
-  public boolean colide(float x, float y, boolean c) {
-    Group group=getGroup();
-    if (!group.visable)
+  @Override
+  public boolean colide(float x, float y, boolean c,ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
+    Group group=getGroup(groupProvider);
+    if (!group.visable){
       return false;
+    }
     if (c) {
       if (x >= ((this.x+group.xOffset))-35 && x <= ((this.x+group.xOffset)) + 35 && y >= ((this.y+group.yOffset)) - 65 && y <= (this.y+group.yOffset)) {
         return true;
@@ -123,10 +126,12 @@ public class WritableSign extends StageComponent implements Configurable {
   @param c Check colliding with hitbox reghuardless of if the compoennt normally has collision during gameplay
   @return true if a collision is occoring
   */
-  public boolean colide(float x, float y, float z, boolean c) {
-    Group group=getGroup();
-    if (!group.visable)
+  @Override
+  public boolean colide(float x, float y, float z, boolean c,ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
+    Group group=getGroup(groupProvider);
+    if (!group.visable){
       return false;
+    }
     if (c) {
       if (x >= ((this.x+group.xOffset))-35 && x <= ((this.x+group.xOffset)) + 35 && y >= ((this.y+group.yOffset)) - 65 && y <= (this.y+group.yOffset) && z >= ((this.z+group.yOffset)) - 5 && z <= (this.z+group.zOffset)+5) {
         return true;
@@ -155,13 +160,15 @@ public class WritableSign extends StageComponent implements Configurable {
   /**Get the 2D collision box for entitiy collisions
   @return 2D hitbox for this component or null for none
   */
-  public Collider2D getCollider2D(){
+  @Override
+  public Collider2D getCollider2D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider){
     return null;
   }
   /**Get the 3D collision box for entitiy collisions
   @return 3D hitbox for this component or null for none
   */
-  public Collider3D getCollider3D(){ 
+  @Override
+  public Collider3D getCollider3D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider){ 
     return null;
   }
   

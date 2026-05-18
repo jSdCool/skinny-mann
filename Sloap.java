@@ -13,6 +13,9 @@ public class Sloap extends StageComponent implements Rotatable,Resizeable{//sloa
   PVector verticies2D[] = new PVector[]{new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector()};//6 long
   PVector center = new PVector();
   PVector prevoursGroupPos = new PVector();
+  /**a group cached for vertext position generation
+  */
+  private Group groupCache = new Group();
   
   private final PVector F_XNORM = new PVector(1,0,0), F_YNORM = new PVector(0,1,0), F_ZNORM = new PVector(0,0,1);
 
@@ -103,11 +106,11 @@ public class Sloap extends StageComponent implements Rotatable,Resizeable{//sloa
   */
   @Override
   public void draw(StageComponentRenderContext context) {
-    Group group=getGroup();
+    Group group=getGroup(context.getGroupProvider());
     if (!group.visable) {
       return;
     }
-    
+    groupCache = group;
     //if the group has been modified then recalculate the verticies
     if(group.xOffset != prevoursGroupPos.x || group.yOffset!=prevoursGroupPos.y || group.zOffset!=prevoursGroupPos.z){
       updateVerticies();
@@ -143,10 +146,11 @@ public class Sloap extends StageComponent implements Rotatable,Resizeable{//sloa
   */
   @Override
   public void draw3D(StageComponentRenderContext context) {
-    Group group=getGroup();
-    if (!group.visable)
+    Group group=getGroup(context.getGroupProvider());
+    if (!group.visable){
       return;
-    
+    }
+    groupCache = group;
     //if the group has been modified then recalculate the verticies
     if(group.xOffset != prevoursGroupPos.x || group.yOffset!=prevoursGroupPos.y || group.zOffset!=prevoursGroupPos.z){
       updateVerticies();
@@ -163,11 +167,12 @@ public class Sloap extends StageComponent implements Rotatable,Resizeable{//sloa
   @param c Check colliding with hitbox reghuardless of if the compoennt normally has collision during gameplay
   @return true if a collision is occoring
   */
-  public boolean colide(float x, float y, boolean c) {
-    Group group=getGroup();
+  @Override
+  public boolean colide(float x, float y, boolean c,ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
+    Group group=getGroup(groupProvider);
     if (!group.visable)
       return false;
-    Collider2D hv = collide2Dimplm();
+    Collider2D hv = collide2Dimplm(groupProvider);
     Collider2D mp = new Collider2D(new PVector[]{new PVector(x-0.5f,y-0.5f),new PVector(x+0.5f,y-0.5f),new PVector(x+0.5f,y+0.5f),new PVector(x-0.5f,y+0.5f)});
     if (CollisionDetection.collide2D(hv,mp)) {
       return true;
@@ -181,8 +186,9 @@ public class Sloap extends StageComponent implements Rotatable,Resizeable{//sloa
   @param c Check colliding with hitbox reghuardless of if the compoennt normally has collision during gameplay
   @return true if a collision is occoring
   */
-  public boolean colide(float x, float y,float z, boolean c) {
-    Group group=getGroup();
+  @Override
+  public boolean colide(float x, float y,float z, boolean c,ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
+    Group group=getGroup(groupProvider);
     if (!group.visable)
       return false;
      Collider3D hv =new Collider3D(verticies);
@@ -197,19 +203,20 @@ public class Sloap extends StageComponent implements Rotatable,Resizeable{//sloa
   /**Get the 2D collision box for entitiy collisions
   @return 2D hitbox for this component or null for none
   */
-  public Collider2D getCollider2D() {
-    Group group=getGroup();
+  @Override
+  public Collider2D getCollider2D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
+    Group group=getGroup(groupProvider);
     if (!group.visable)
         return null;
-    return collide2Dimplm();
+    return collide2Dimplm(groupProvider);
     
   }
   /**Implmentation of creating the 2D collider
   @return The 2D hitbox of this object
   */
-  private Collider2D collide2Dimplm(){
+  private Collider2D collide2Dimplm(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider){
     if(!isRotated3D()){
-      Group group=getGroup();
+      Group group=getGroup(groupProvider);
       //draw a non rotated rect
       int rot=direction;
       switch(rot){
@@ -248,8 +255,9 @@ public class Sloap extends StageComponent implements Rotatable,Resizeable{//sloa
   /**Get the 3D collision box for entitiy collisions
   @return 3D hitbox for this component or null for none
   */
-  public Collider3D getCollider3D() {
-    Group group=getGroup();
+  @Override
+  public Collider3D getCollider3D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
+    Group group=getGroup(groupProvider);
     if (!group.visable)
         return null;
     return new Collider3D(verticies);
@@ -417,7 +425,7 @@ public class Sloap extends StageComponent implements Rotatable,Resizeable{//sloa
   */
   @Override
   public void updateVerticies(){
-    Group group=getGroup();
+    Group group=groupCache;
     transfomration.reset();
     center.x = getX()+getWidth()/2+group.xOffset;
     center.y = getY()+getHeight()/2+group.yOffset;

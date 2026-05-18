@@ -2893,7 +2893,7 @@ void mousePressed() {
         for (int i=0; i<5000; i++) {//ray cast from the camera
           Point3D testPoint=genMousePoint(i);
           if(!(current3DTransformMode == 3 && ct instanceof Rotatable)){//if not rotate mmode
-            PVector center = ct.getCenter();//get the center position
+            PVector center = ct.getCenter(level.groupProvider());//get the center position
             //if the mouse was over one of the z-axis poles
             if (testPoint.x >= center.x-5 && testPoint.x <= center.x+5 && testPoint.y >= center.y-5 && testPoint.y <= center.y+5 && testPoint.z >= center.z+ct.getDepth()/2 && testPoint.z <= center.z+ct.getDepth()/2+60) {
               translateZaxis=true;
@@ -2934,7 +2934,7 @@ void mousePressed() {
         }
         
         if(current3DTransformMode==3 && ct instanceof Rotatable){//if in rotate mode
-            PVector center = ct.getCenter();//get the center of the object
+            PVector center = ct.getCenter(level.groupProvider());//get the center of the object
             float sze = sqrt(pow(ct.getWidth()/2,2)+pow(ct.getHeight()/2,2)+pow(ct.getDepth()/2,2))/28;//calculate the aproximage size value
             sze*=31;//scale factor to make the cyleners the right size
             Rotatable rota = (Rotatable)ct;//cast to a rotatable type
@@ -3022,7 +3022,7 @@ void mousePressed() {
         //2D Rotation
         if(current3DTransformMode==3 && ct instanceof Rotatable){//if rotating
           //prepair the visual center pos
-          PVector center = ct.getCenter();
+          PVector center = ct.getCenter(level.groupProvider());
           center.z=0;
           center.mult(Scale);
           center.x -= drawCamPosX*Scale;

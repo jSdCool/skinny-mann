@@ -367,6 +367,13 @@ public class Level implements Serialization {//this is a big and important one
     }
   }
   
+  /**Get the group provider for this level
+  @return A function that returns the current level groups
+  */
+  public ContextBase.DynamicProvider<ArrayList<Group>> groupProvider(){
+    return () -> groups;
+  }
+  
   /**Convert this level to a byte representation that can be sent over the network or saved to a file.<br>
   @return This level as a binarry representation
   */

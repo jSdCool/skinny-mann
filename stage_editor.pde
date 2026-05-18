@@ -231,7 +231,7 @@ void stageEditGUI() {
       //2D Rotation
       if(current3DTransformMode==3 && ct instanceof Rotatable){//if rotating
         //prepair the visual center pos
-        PVector center = ct.getCenter();
+        PVector center = ct.getCenter(level.groupProvider());
         center.z=0;
         center.mult(Scale);
         center.x -= drawCamPosX*Scale;
@@ -480,7 +480,7 @@ void stageEditGUI() {
         //2D Rotation
         if(current3DTransformMode==3 && ct instanceof Rotatable){//if rotating
           //prepair the visual center pos
-          PVector center = ct.getCenter();
+          PVector center = ct.getCenter(level.groupProvider());
           center.z=0;
           center.mult(Scale);
           center.x -= drawCamPosX*Scale;
@@ -573,7 +573,7 @@ void stageEditGUI() {
         if(current3DTransformMode==3 && ct instanceof Rotatable){//if rotating
           //figure out what circle to hilight
           if(!(translateXaxis || translateYaxis || translateZaxis)){
-            PVector center = ct.getCenter();
+            PVector center = ct.getCenter(level.groupProvider());
             float sze = sqrt(pow(ct.getWidth()/2,2)+pow(ct.getHeight()/2,2)+pow(ct.getDepth()/2,2))/28;
             sze*=31;//scale factor to make the cyleners the right size
             Rotatable rota = (Rotatable)ct;
@@ -873,7 +873,7 @@ void stageEditGUI() {
         
         if(current3DTransformMode==3 && ct instanceof Rotatable){//if rotating something
           Rotatable rotb = (Rotatable)ct;
-          PVector center = ct.getCenter();
+          PVector center = ct.getCenter(level.groupProvider());
           PVector cameraVec = new PVector(cam3Dx+DX,cam3Dy-DY,cam3Dz-DZ), mousePointVec = new PVector(mousePoint.x,mousePoint.y,mousePoint.z);
           //calculate the position on the rotation plane that intersects with the mouse
           PVector inPlaneX = Util.intersectPlaneAndLine(cameraVec,mousePointVec,center,rotb.getXRotationAxis());
@@ -951,7 +951,7 @@ void stageEditGUI() {
             
             if(!Float.isNaN(inPlane.x)){//only do the next part if the mouse if not parellel to the plane in question
               //start by finding the ange of rotation:
-              PVector objectCenter = ct.getCenter();
+              PVector objectCenter = ct.getCenter(level.groupProvider());
               PVector AB = PVector.sub(initalMousePoint.toPVector(),objectCenter,null);
               PVector BC = PVector.sub(objectCenter, inPlane,null);
               AB.normalize();
@@ -1683,7 +1683,7 @@ void renderBlueprint() {
   }, currentStageIndex, coinRotation, () ->{
     WPressed = false;
     SPressed = false;
-  }
+  }, null/*goup provider*/
   );//render context
   
   //the actual render part
@@ -1749,7 +1749,7 @@ void renderBlueprint3D() {
   }, currentStageIndex, coinRotation, () ->{
     WPressed = false;
     SPressed = false;
-  }
+  }, null /*group provider*/
   );//render context
   for (int i=0; i<displayBlueprint.parts.size(); i++) {
     displayBlueprint.parts.get(i).draw3D(renderContext);

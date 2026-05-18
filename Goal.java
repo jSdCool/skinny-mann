@@ -61,7 +61,7 @@ class Goal extends StageComponent {//ground component
   */
   @Override
   public void draw(StageComponentRenderContext context) {
-    Group group=getGroup();
+    Group group=getGroup(context.getGroupProvider());
     if (!group.visable)
       return;
     //float x2 = (x+group.xOffset)-source.drawCamPosX, y2 = (y+group.yOffset);
@@ -105,8 +105,9 @@ class Goal extends StageComponent {//ground component
   @param c Check colliding with hitbox reghuardless of if the compoennt normally has collision during gameplay
   @return true if a collision is occoring
   */
-  public boolean colide(float x, float y, boolean c) {
-    Group group=getGroup();
+  @Override
+  public boolean colide(float x, float y, boolean c,ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
+    Group group=getGroup(groupProvider);
     if (!group.visable)
       return false;
     if (c) {
@@ -119,13 +120,15 @@ class Goal extends StageComponent {//ground component
   /**Get the 2D collision box for entitiy collisions
   @return 2D hitbox for this component or null for none
   */
-  public Collider2D getCollider2D(){
+  @Override
+  public Collider2D getCollider2D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider){
     return null;
   }
   /**Get the 3D collision box for entitiy collisions
   @return 3D hitbox for this component or null for none
   */
-  public Collider3D getCollider3D(){ 
+  @Override
+  public Collider3D getCollider3D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider){ 
     return null;
   }
   /**Convert this component to a byte representation that can be sent over the network or saved to a file.<br>

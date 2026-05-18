@@ -14,6 +14,9 @@ public class Holo extends StageComponent implements Rotatable,Resizeable{//groun
   PVector verticies2D[] = new PVector[]{new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector(),new PVector()};//8 long
   PVector center = new PVector();
   PVector prevoursGroupPos = new PVector();
+  /**a group cached for vertext position generation
+  */
+  private Group groupCache = new Group();
   
   private final PVector F_XNORM = new PVector(1,0,0), F_YNORM = new PVector(0,1,0), F_ZNORM = new PVector(0,0,1);
   /**Load a holo from saved JOSN data
@@ -101,9 +104,11 @@ public class Holo extends StageComponent implements Rotatable,Resizeable{//groun
   */
   @Override
   public void draw(StageComponentRenderContext context) {
-    Group group=getGroup();
-    if (!group.visable)
+    Group group=getGroup(context.getGroupProvider());
+    if (!group.visable) {
       return;
+    }
+    groupCache = group;
     //if the group has been modified then recalculate the verticies
     if(group.xOffset != prevoursGroupPos.x || group.yOffset!=prevoursGroupPos.y || group.zOffset!=prevoursGroupPos.z){
       updateVerticies();
@@ -135,9 +140,11 @@ public class Holo extends StageComponent implements Rotatable,Resizeable{//groun
   */
   @Override
   public void draw3D(StageComponentRenderContext context) {
-    Group group=getGroup();
-    if (!group.visable)
+    Group group=getGroup(context.getGroupProvider());
+    if (!group.visable){
       return;
+    }
+   groupCache = group; 
     //if the group has been modified then recalculate the verticies
     if(group.xOffset != prevoursGroupPos.x || group.yOffset!=prevoursGroupPos.y || group.zOffset!=prevoursGroupPos.z){
       updateVerticies();
@@ -160,8 +167,9 @@ public class Holo extends StageComponent implements Rotatable,Resizeable{//groun
   @param c Check colliding with hitbox reghuardless of if the compoennt normally has collision during gameplay
   @return true if a collision is occoring
   */
-  public boolean colide(float x, float y, boolean c) {
-    Group group=getGroup();
+  @Override
+  public boolean colide(float x, float y, boolean c,ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
+    Group group=getGroup(groupProvider);
     if (!group.visable)
       return false;
     Collider2D hv = collide2Dimplm();
@@ -178,8 +186,9 @@ public class Holo extends StageComponent implements Rotatable,Resizeable{//groun
   @param c Check colliding with hitbox reghuardless of if the compoennt normally has collision during gameplay
   @return true if a collision is occoring
   */
-  public boolean colide(float x, float y, float z, boolean c) {
-    Group group=getGroup();
+  @Override
+  public boolean colide(float x, float y, float z, boolean c,ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
+    Group group=getGroup(groupProvider);
     if (!group.visable)
       return false;
      Collider3D hv =new Collider3D(verticies);
@@ -193,7 +202,8 @@ public class Holo extends StageComponent implements Rotatable,Resizeable{//groun
   /**Get the 2D collision box for entitiy collisions
   @return 2D hitbox for this component or null for none
   */
-  public Collider2D getCollider2D(){
+  @Override
+  public Collider2D getCollider2D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider){
     return null;
   }
   /**Implmentation of creating the 2D collider
@@ -211,8 +221,9 @@ public class Holo extends StageComponent implements Rotatable,Resizeable{//groun
   /**Get the 3D collision box for entitiy collisions
   @return 3D hitbox for this component or null for none
   */
-  public Collider3D getCollider3D() {
-    Group group=getGroup();
+  @Override
+  public Collider3D getCollider3D(ContextBase.DynamicProvider<ArrayList<Group>> groupProvider) {
+    Group group=getGroup(groupProvider);
     if (!group.visable)
         return null;
     return new Collider3D(verticies);
@@ -325,7 +336,7 @@ public class Holo extends StageComponent implements Rotatable,Resizeable{//groun
   Recalculate the positions of the verticies of this component with rotation and translation.
   */
   public void updateVerticies(){
-    Group group=getGroup();
+    Group group=groupCache;
     transfomration.reset();
     center.x = x+dx/2+group.xOffset;
     center.y = y+dy/2+group.yOffset;
