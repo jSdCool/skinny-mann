@@ -12,6 +12,8 @@ public class SoundHandler extends Thread {
   private int musNum=0, currentMusicTrack=0, trackToSwitchTo=0;
   private float masterVolume=1, musicVolume=1, sfxVolume=1, prevVol=1,narrationVolume=1;
   private boolean switchMusicTrack=false, keepAlive=true, enableSounds=false, startMusic=false;
+  
+  private static SoundHandler instance;
 
   /**Create a new sound handler with the given music tracks and global sound and narration files.<br>
   Handles the porcess of actually loading the sound files
@@ -41,6 +43,7 @@ public class SoundHandler extends Thread {
     for(int i=0;i<narrations.length;i++){
       narrations[i] = new SoundFile(X,narrationFiles[i]);//load the narrations
     }
+    instance = this;
     start();//start the independednt sound handler thread
   }
 
@@ -391,6 +394,13 @@ public class SoundHandler extends Thread {
     levelSounds = new ArrayList<>();
     levelNarrations = new ArrayList<>();
     System.gc();//run garbage collection to remove old unloaded sound files from memory
+  }
+  
+  /**Get the current instance of the sound handler
+  @return The exsisting sound handler
+  */
+  public static SoundHandler getInstance(){
+    return instance;
   }
 
   //===============================BUILDER===============================

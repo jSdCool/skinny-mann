@@ -1,14 +1,12 @@
 import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
-import processing.sound.*;
 /**Level component representation / container of a sound 
 */
 public class StageSound implements Serialization {
   
   public static final Identifier ID = new Identifier("StageSound");
   
-  static transient skiny_mann source;
   String path, name, type="sound";
   protected transient int sound;
   boolean isNarration = true;
@@ -22,9 +20,9 @@ public class StageSound implements Serialization {
       isNarration = input.getBoolean("narration");
     }
     if(isNarration){
-      sound = source.soundHandler.registerLevelNarration(Util.rootPath+path);
+      sound = SoundHandler.getInstance().registerLevelNarration(Util.rootPath+path);
     }else{
-      sound = source.soundHandler.registerLevelSound(Util.rootPath+path);
+      sound = SoundHandler.getInstance().registerLevelSound(Util.rootPath+path);
     }
 
   }
@@ -38,9 +36,9 @@ public class StageSound implements Serialization {
     path=location;
     isNarration = narration;
     if(isNarration){
-      sound = source.soundHandler.registerLevelNarration(Util.rootPath+path);
+      sound = SoundHandler.getInstance().registerLevelNarration(Util.rootPath+path);
     }else{
-      sound = source.soundHandler.registerLevelSound(Util.rootPath+path);
+      sound = SoundHandler.getInstance().registerLevelSound(Util.rootPath+path);
     }
   }
   /**Recreate a stage sound from serialized binarray data
