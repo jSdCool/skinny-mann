@@ -2,6 +2,7 @@ import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 import java.util.function.Function;
+import java.io.File;
 /**Structure that represens a specific stage and contiains all of its components
 */
 public class Stage implements Serialization {
@@ -107,7 +108,8 @@ public class Stage implements Serialization {
     for(int i=0;i<entities.size();i++){
       staeg.append(entities.get(i).save());
     }
-    source.saveJSONArray(staeg, source.rootPath+"/"+name+".json");
+    staeg.save(new File(Util.rootPath+"/"+name+".json"),null);
+    //source.saveJSONArray(staeg, source.rootPath+"/"+name+".json");
     return "/"+name+".json";
   }
   

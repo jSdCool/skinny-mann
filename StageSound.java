@@ -22,9 +22,9 @@ public class StageSound implements Serialization {
       isNarration = input.getBoolean("narration");
     }
     if(isNarration){
-      sound = source.soundHandler.registerLevelNarration(source.rootPath+path);
+      sound = source.soundHandler.registerLevelNarration(Util.rootPath+path);
     }else{
-      sound = source.soundHandler.registerLevelSound(source.rootPath+path);
+      sound = source.soundHandler.registerLevelSound(Util.rootPath+path);
     }
 
   }
@@ -38,9 +38,9 @@ public class StageSound implements Serialization {
     path=location;
     isNarration = narration;
     if(isNarration){
-      sound = source.soundHandler.registerLevelNarration(source.rootPath+path);
+      sound = source.soundHandler.registerLevelNarration(Util.rootPath+path);
     }else{
-      sound = source.soundHandler.registerLevelSound(source.rootPath+path);
+      sound = source.soundHandler.registerLevelSound(Util.rootPath+path);
     }
   }
   /**Recreate a stage sound from serialized binarray data

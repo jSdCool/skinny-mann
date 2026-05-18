@@ -339,9 +339,6 @@ String ip = "localhost";
 /**The name of this player
 */
 String name = "can't_be_botherd_to_chane_it";
-/**The file path to the current level / blueprint
-*/
-String rootPath;
 /**The specific settings sub menu curretly being displayed
 */
 String settingsMenue = "game play";

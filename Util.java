@@ -8,6 +8,10 @@ import java.lang.reflect.Method;
 /**Various utility methods
 */
 public class Util{
+  /**The file path to the current level / blueprint
+  */
+  public static String rootPath;
+  
   /** Apply the given transformation to 4 verticies at the same time,
   the values of the input verticies will be modified by this function
   @param transform The transformation to apply

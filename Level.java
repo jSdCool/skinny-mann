@@ -95,7 +95,7 @@ public class Level implements Serialization {//this is a big and important one
       //if this part is a 2D or 3D stage
       if (job.getString("type").equals("stage")||job.getString("type").equals("3Dstage")) {
         //load the stage
-        stages.add(new Stage(source.loadJSONArray(source.rootPath+job.getString("location"))));
+        stages.add(new Stage(source.loadJSONArray(Util.rootPath+job.getString("location"))));
         System.out.println("loaded stage: "+stages.get(stages.size()-1).name);
       }
       if (job.getString("type").equals("sound")) {//if the part is a sound
@@ -103,7 +103,7 @@ public class Level implements Serialization {//this is a big and important one
         System.out.println("loaded sound: "+job.getString("name"));
       }
       if (job.getString("type").equals("logicBoard")) {//if the part is a logic board
-        logicBoards.add(new LogicBoard(source.loadJSONArray(source.rootPath+job.getString("location")), this));//load the logic board
+        logicBoards.add(new LogicBoard(source.loadJSONArray(Util.rootPath+job.getString("location")), this));//load the logic board
         numlogicBoards++;
         System.out.print("loaded logicboard: "+logicBoards.get(logicBoards.size()-1).name);//assign this logic board to the proper activing trigger
         if (logicBoards.get(logicBoards.size()-1).name.equals("load")) {
@@ -308,7 +308,7 @@ public class Level implements Serialization {//this is a big and important one
       board.setString("location", logicBoards.get(i).save());
       index.setJSONObject(index.size(), board);
     }
-    source.saveJSONArray(index, source.rootPath+"/index.json");
+    source.saveJSONArray(index, Util.rootPath+"/index.json");
   }
 
   /**Calculate the total file hash of the level
@@ -316,10 +316,10 @@ public class Level implements Serialization {//this is a big and important one
   */
   public String getHash() {
     String basePath="";//figure out the base folder of the level
-    if (source.rootPath.startsWith("data")) {
-      basePath=source.sketchPath()+"/"+source.rootPath;
+    if (Util.rootPath.startsWith("data")) {
+      basePath=source.sketchPath()+"/"+Util.rootPath;
     } else {
-      basePath=source.rootPath;
+      basePath=Util.rootPath;
     }
     String hash="";
     hash+=Hasher.getFileHash(basePath+"/index.json");//calculate the hash of the index file

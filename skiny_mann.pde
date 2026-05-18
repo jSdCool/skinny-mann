@@ -1901,7 +1901,7 @@ void mouseClicked() {// when you click the mouse
           if (newLevelButton.isMouseOver(mouseX,mouseY)) {//new level button
             startup=false;
             newLevel=true;
-            rootPath="";
+            Util.rootPath="";
             lcEnterLevelTextBox.setContence("");
             lcEnterLevelTextBox.activate();
             return;
@@ -1909,7 +1909,7 @@ void mouseClicked() {// when you click the mouse
           if (loadLevelButton.isMouseOver(mouseX,mouseY)) {//load level button
             startup=false;
             loading=true;
-            rootPath="";
+            Util.rootPath="";
             lcEnterLevelTextBox.setContence("");
             lcEnterLevelTextBox.activate();
             return;
@@ -1938,17 +1938,17 @@ void mouseClicked() {// when you click the mouse
           lcEnterLevelTextBox.mouseClicked(mouseX,mouseY);
           if (lcLoadLevelButton.isMouseOver(mouseX,mouseY)) {//load button
           JSONArray mainIndex = null;
-          rootPath = lcEnterLevelTextBox.getContence();
+          Util.rootPath = lcEnterLevelTextBox.getContence();
             try {//attempt to load the level
-              String tmp=rootPath;
-              rootPath=appdata+"/CBi-games/skinny mann level creator/levels/"+rootPath;
-              boolean exsists=new File(rootPath+"/index.json").exists();//check if the level even exsists
+              String tmp=Util.rootPath;
+              Util.rootPath=appdata+"/CBi-games/skinny mann level creator/levels/"+Util.rootPath;
+              boolean exsists=new File(Util.rootPath+"/index.json").exists();//check if the level even exsists
               if (!exsists) {
                 levelNotFound=true;
-                rootPath=tmp;
+                Util.rootPath=tmp;
                 return;
               }
-              mainIndex=loadJSONArray(rootPath+"/index.json");
+              mainIndex=loadJSONArray(Util.rootPath+"/index.json");
               lcEnterLevelTextBox.resetState();
               loading=false;
               levelOverview=true;
@@ -1981,7 +1981,7 @@ void mouseClicked() {// when you click the mouse
           if (lcNewLevelButton.isMouseOver(mouseX,mouseY)) {//create button
             new_name = lcEnterLevelTextBox.getContence();
             newLevel=false;
-            rootPath=appdata+"/CBi-games/skinny mann level creator/levels/"+new_name;
+            Util.rootPath=appdata+"/CBi-games/skinny mann level creator/levels/"+new_name;
             JSONArray mainIndex=new JSONArray();//set up a new level
             JSONObject terain = new JSONObject();//create all the basic into nessarry for a new level
             terain.setInt("level_id", (int)(Math.random()*1000000000%999999999));
@@ -2122,7 +2122,7 @@ void mouseClicked() {// when you click the mouse
               String pathSegments[]=fileToCoppyPath.split("/|\\\\");//split the file path at directory seperator
               try {//attempt to coppy the file
                 System.out.println("attempting to coppy file");
-                java.nio.file.Files.copy(new File(fileToCoppyPath).toPath(), new File(rootPath+"/"+pathSegments[pathSegments.length-1]).toPath());
+                java.nio.file.Files.copy(new File(fileToCoppyPath).toPath(), new File(Util.rootPath+"/"+pathSegments[pathSegments.length-1]).toPath());
               } catch(IOException i) {
                 i.printStackTrace();
                 return;
@@ -2220,7 +2220,7 @@ void mouseClicked() {// when you click the mouse
               editingBlueprint=true;
               camPos=-640;
               camPosY=360;
-              rootPath= appdata + "/CBi-games/skinny mann level creator/blueprints";
+              Util.rootPath = appdata + "/CBi-games/skinny mann level creator/blueprints";
               
             }//end of name was enterd
           }//end of create button
@@ -2242,8 +2242,8 @@ void mouseClicked() {// when you click the mouse
           if (createBlueprintGo.isMouseOver(mouseX,mouseY)) {//load button
           new_name = lcEnterLevelTextBox.getContence();
             if (new_name!=null&&!new_name.equals("")) {//if something was entered
-              rootPath = appdata + "/CBi-games/skinny mann level creator/blueprints";
-              workingBlueprint = new Stage(loadJSONArray(rootPath+"/"+new_name+".json"));//load the blueprint
+              Util.rootPath = appdata + "/CBi-games/skinny mann level creator/blueprints";
+              workingBlueprint = new Stage(loadJSONArray(Util.rootPath+"/"+new_name+".json"));//load the blueprint
               lcEnterLevelTextBox.resetState();
               loadingBlueprint = false;
               editingBlueprint = true;
@@ -2804,8 +2804,8 @@ void loadLevel(String path) {
   soundHandler.dumpLS();//unload any sounds from the prevous level and let them be garbage collected
   try {
     reachedEnd=false;
-    rootPath=path;//load the level
-    JSONArray mainIndex=loadJSONArray(rootPath+"/index.json");
+    Util.rootPath=path;//load the level
+    JSONArray mainIndex=loadJSONArray(Util.rootPath+"/index.json");
     level=new Level(mainIndex);
     level.logicBoards.get(level.loadBoard).superTick();//run the load logic board
   } catch(Throwable e) {
@@ -4882,7 +4882,7 @@ ClientContext createClientContext(){
       leaderBoard = newLeaderBoard;
     };
     public void setRootPath(String path){
-      rootPath = path;
+      Util.rootPath = path;
     };
     public void setLevelComplete(boolean complete){
       level_complete = complete;
@@ -4897,7 +4897,7 @@ ClientContext createClientContext(){
       return primaryWindow.random(start,end);
     };
     public String getRootPath(){
-      return rootPath;
+      return Util.rootPath;
     };
     public SelectedLevelInfo getMultyplayerSelectedLevel(){
       return multyplayerSelectedLevel;

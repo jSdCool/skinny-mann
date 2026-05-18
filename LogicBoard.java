@@ -59,7 +59,7 @@ public class LogicBoard implements Serialization {//stores all the logic compone
     for (int i=0; i<components.size(); i++) {
       logicComponents.setJSONObject(i+1, components.get(i).save());//save each component to the file
     }
-    source.saveJSONArray(logicComponents, source.rootPath+"/"+name+".json");
+    source.saveJSONArray(logicComponents, Util.rootPath+"/"+name+".json");
     return "/"+name+".json";
   }
 
