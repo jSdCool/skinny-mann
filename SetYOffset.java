@@ -15,7 +15,6 @@ public class SetYOffset extends LogicOutputComponent implements Configurable{
   */
   public SetYOffset(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "y-offset", context.getLogicBoard());
-    button.setText("y-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
   }
   /**Create a new set y offset from saved json data
   @param data The saved json data
@@ -24,7 +23,6 @@ public class SetYOffset extends LogicOutputComponent implements Configurable{
     super(data.getFloat("x"), data.getFloat("y"), "y-offset", data.getJSONArray("connections"));
     groupNumber=data.getInt("group number");
     offset=data.getFloat("offset");
-    reText=true;
   }
   /**Create a set y offset from serialized binarry data
   @param iterator The source of the data
@@ -33,6 +31,11 @@ public class SetYOffset extends LogicOutputComponent implements Configurable{
     super(iterator);
     groupNumber = iterator.getInt();
     offset = iterator.getFloat();
+  }
+  @Override
+  protected void commonInit(float uiScale, PGraphics render){
+    super.commonInit(uiScale,render);
+    reText = true;
   }
   /**The function where the logic/functionality of this component is execuated
   */

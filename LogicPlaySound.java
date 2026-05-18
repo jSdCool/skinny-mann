@@ -13,7 +13,6 @@ public class LogicPlaySound extends LogicComponent implements Configurable{
   */
   public LogicPlaySound(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "play sound", context.getLogicBoard());
-    button.setText("  play sound ");
   }
   /**Create a new play sound component from saved json data
   @param data The saved json data
@@ -21,6 +20,10 @@ public class LogicPlaySound extends LogicComponent implements Configurable{
   public LogicPlaySound(JSONObject data) {
     super(data.getFloat("x"), data.getFloat("y"), "play sound", data.getJSONArray("connections"));
     soundKey=data.getString("sound key");
+  }
+  @Override
+  protected void commonInit(float uiScale, PGraphics render){
+    super.commonInit(uiScale,render);
     button.setText("  play sound: "+soundKey+" ");
   }
   /**Create a play sound component from serialized binarry data

@@ -13,7 +13,6 @@ public class SetVariable extends LogicOutputComponent implements Configurable{
   */
   public SetVariable(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "set var", context.getLogicBoard());
-    button.setText("  Set var b"+variableNumber);
   }
   /**Create a new set variable from saved json data
   @param data The saved json data
@@ -21,6 +20,10 @@ public class SetVariable extends LogicOutputComponent implements Configurable{
   public SetVariable(JSONObject data) {
     super(data.getFloat("x"), data.getFloat("y"), "set var", data.getJSONArray("connections"));
     variableNumber=data.getInt("variable number");
+  }
+  @Override
+  protected void commonInit(float uiScale, PGraphics render){
+    super.commonInit(uiScale,render);
     button.setText("  Set var b"+variableNumber);
   }
   /**Create a set variable from serialized binarry data

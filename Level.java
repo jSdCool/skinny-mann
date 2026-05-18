@@ -105,6 +105,7 @@ public class Level implements Serialization {//this is a big and important one
       if (job.getString("type").equals("logicBoard")) {//if the part is a logic board
         logicBoards.add(new LogicBoard(source.loadJSONArray(Util.rootPath+job.getString("location")), this));//load the logic board
         numlogicBoards++;
+        logicBoards.get(logicBoards.size()-1).initComponents(source.g,source.Scale);
         System.out.print("loaded logicboard: "+logicBoards.get(logicBoards.size()-1).name);//assign this logic board to the proper activing trigger
         if (logicBoards.get(logicBoards.size()-1).name.equals("load")) {
           loadBoard=logicBoards.size()-1;

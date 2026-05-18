@@ -106,6 +106,15 @@ public class LogicBoard implements Serialization {//stores all the logic compone
       tick();
     }
   }
+  /**Finalize the initialization of the components
+  @param render The surface to render the componets to
+  @param scale The ui scale to use for the components
+  */
+  public void initComponents(PGraphics render, float scale){
+    for(int i=0;i<components.size();i++){
+      components.get(i).commonInit(scale,render);
+    }
+  }
   
   /**Convert this object to a byte representation that can be sent over the network or saved to a file.<br>
   @return This object as a binarry representation

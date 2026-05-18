@@ -14,7 +14,6 @@ public class SetVisibility extends LogicOutputComponent implements Configurable{
   */
   public SetVisibility(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "set visable", context.getLogicBoard());
-    button.setText("  visibility of "+source.level.groupNames.get(groupNumber));
   }
   /**Create a new set visability from saved json data
   @param data The saved json data
@@ -22,6 +21,11 @@ public class SetVisibility extends LogicOutputComponent implements Configurable{
   public SetVisibility(JSONObject data) {
     super(data.getFloat("x"), data.getFloat("y"), "set visable", data.getJSONArray("connections"));
     groupNumber=data.getInt("group number");
+  }
+  
+  @Override
+  protected void commonInit(float uiScale, PGraphics render){
+    super.commonInit(uiScale,render);
     reText = true;
   }
   /**Create a set visability from serialized binarry data

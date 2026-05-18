@@ -2265,6 +2265,7 @@ void mouseClicked() {// when you click the mouse
             Function<LogicCompoentnPlacementContext,LogicComponent> constructor = LogicComponentRegistry.getPlacementConstructor(currentlyPlaceing);//get the object constructor
             if(constructor != null){
               level.logicBoards.get(logicBoardIndex).components.add(constructor.apply(placementContext));//create the new compoentn and add it to the logic board
+              level.logicBoards.get(logicBoardIndex).components.get(level.logicBoards.get(logicBoardIndex).components.size()-1).commonInit(Scale,g);
             }
           }
           

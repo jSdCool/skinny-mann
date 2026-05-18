@@ -13,7 +13,6 @@ public class ReadVariable extends LogicInputComponent implements Configurable{
   */
   public ReadVariable(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "read var", context.getLogicBoard());
-    button.setText("Read var b"+variableNumber+"  ");
   }
   /**Create a new read varaible from saved json data
   @param data The saved json data
@@ -21,7 +20,11 @@ public class ReadVariable extends LogicInputComponent implements Configurable{
   public ReadVariable(JSONObject data) {
     super(data.getFloat("x"), data.getFloat("y"), "read var", data.getJSONArray("connections"));
     variableNumber=data.getInt("variable number");
-    button.setText("read var b"+variableNumber+"  ");
+  }
+  @Override
+  protected void commonInit(float uiScale, PGraphics render){
+    super.commonInit(uiScale,render);
+    button.setText("Read var b"+variableNumber+"  ");
   }
   /**Create a read varaible from serialized binarry data
   @param iterator The source of the data

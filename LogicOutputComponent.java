@@ -13,7 +13,6 @@ public abstract class LogicOutputComponent extends LogicComponent {
   */
   public LogicOutputComponent(float x, float y, String type, LogicBoard board) {
     super(x, y, type, board);
-    button=new Button(source.g, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
   }
   /**Creates a logic compoennet at the proviede position with the provided connections
   @param x the visual x position
@@ -23,15 +22,20 @@ public abstract class LogicOutputComponent extends LogicComponent {
   */
   public LogicOutputComponent(float x, float y, String type, JSONArray cnects) {
     super(x, y, type, cnects);
-    button=new Button(source.g, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
   }
   /**Creates a logic component from serialized data
   */
   public LogicOutputComponent(SerialIterator iterator){
     super(iterator);
   }
+  @Override
+  protected void commonInit(float uiScale, PGraphics render){
+    button = new Button(render, x, y, 100*uiScale, 80*uiScale, "  "+type+"  ");
+  }
+  
   /**renders the logic component a long with its I/O terminals
   */
+  @Override
   public void draw() {
     button.x=(x-source.camPos)*source.Scale;
     button.y=(y-source.camPosY)*source.Scale;

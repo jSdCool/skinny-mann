@@ -16,10 +16,15 @@ public class Delay extends LogicComponent implements Configurable{
   */
   public Delay(LogicCompoentnPlacementContext context) {
     super(context.getX(), context.getY(), "delay", context.getLogicBoard());
-    button.setText("delay "+time+" ticks  ");
     for (int i=0; i<time; i++) {
       mem.add(false);
     }
+  }
+  
+  @Override
+  protected void commonInit(float scale, PGraphics render){
+    super.commonInit(scale,render);
+    button.setText("delay "+time+" ticks  ");
   }
   /**Create a new delay comonent from saved json data
   @param data The saved json data
@@ -27,7 +32,6 @@ public class Delay extends LogicComponent implements Configurable{
   public Delay(JSONObject data) {
     super(data.getFloat("x"), data.getFloat("y"), "delay", data.getJSONArray("connections"));
     time=data.getInt("delay");
-    button.setText("delay "+time+" ticks  ");
     for (int i=0; i<time; i++) {
       mem.add(false);
     }

@@ -22,7 +22,6 @@ public abstract class LogicComponent implements Serialization {//the base of all
     this.x=x;
     this.y=y;
     this.type=type;
-    button=new Button(source.g, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
     lb=board;
   }
   
@@ -36,7 +35,6 @@ public abstract class LogicComponent implements Serialization {//the base of all
     this.x=x;
     this.y=y;
     this.type=type;
-    button=new Button(source.g, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
     for (int i=0; i<cnects.size(); i++) {
       JSONObject data= cnects.getJSONObject(i);
       connections.add(new Integer[]{data.getInt("index"), data.getInt("terminal")});
@@ -49,8 +47,6 @@ public abstract class LogicComponent implements Serialization {//the base of all
     x = iterator.getFloat();
     y = iterator.getFloat();
     type = iterator.getString();
-    
-    button=new Button(source.g, x, y, 100*source.Scale, 80*source.Scale, "  "+type+"  ");
     //connections
     int numConnections = iterator.getInt();
     for(int i=0;i<numConnections;i++){
@@ -63,6 +59,14 @@ public abstract class LogicComponent implements Serialization {//the base of all
   */
   protected void setLogicBoard(LogicBoard board){
     lb = board;
+  }
+  
+  /**Initialize common graphical components after the constructor is called or after a resize
+  @param uiScale The current ui scale
+  @param render the surface to render this omcponent to
+  */
+  protected void commonInit(float uiScale, PGraphics render){
+    button=new Button(render, x, y, 100*uiScale, 80*uiScale, "  "+type+"  ");
   }
 
   /**renders the logic component a long with its I/O terminals
