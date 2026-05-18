@@ -8,8 +8,7 @@ import java.io.File;
 public class Stage implements Serialization {
   
   public static final Identifier ID = new Identifier("Stage");
-  
-  static transient skiny_mann source;
+
   public ArrayList<StageComponent> parts = new ArrayList<>(), interactables=new ArrayList<>();
   public ArrayList<StageEntity> entities = new ArrayList<>();
   public boolean is3D=false;

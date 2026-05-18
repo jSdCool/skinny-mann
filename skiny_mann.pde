@@ -3994,7 +3994,6 @@ NOTE: we are going to get rid of this :tm:
 */
 void sourceInitilize() {
   Level.source=this;
-  Stage.source=this;
   LogicBoard.source=this;
   StageSound.source=this;
   LogicComponent.source=this;
