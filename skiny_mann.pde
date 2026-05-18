@@ -3995,7 +3995,6 @@ NOTE: we are going to get rid of this :tm:
 void sourceInitilize() {
   Level.source=this;
   Stage.source=this;
-  StageComponent.source=this;
   LogicBoard.source=this;
   StageSound.source=this;
   LogicComponent.source=this;
@@ -4179,9 +4178,9 @@ void programLoad() {
     //this init can only happen on the main render thread because it requires an open Gl context
     
     println("loading 3D coin modle");//load the 3D coin modle
-    coin3D=loadShape("data/modles/coin/tinker.obj");
+    Assets.coin3D=loadShape("data/modles/coin/tinker.obj");
     loadProgress++;
-    coin3D.scale(3);
+    Assets.coin3D.scale(3);
     
     //load the default author value
     defaultAuthorNameTextBox.setContence(settings.getDefaultAuthor());

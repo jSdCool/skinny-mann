@@ -2,6 +2,9 @@ import processing.core.*;
 /**Utility class that holds a fair ammount of funcions for drawing various sprites
 */
 public class Assets {
+  /**The coin model
+  */
+  public static PShape coin3D;
   /**Draw a coin to the given renderer
    @param x The x position to draw the coin at
    @param y The y position to draw the coin at

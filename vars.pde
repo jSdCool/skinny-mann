@@ -22,10 +22,6 @@ PImage uvTester;
 /**The startup logo
 */
 PImage CBi;
-
-/**The coin model
-*/
-PShape coin3D;
 /**The red movement arrow from the level creator
 */
 PShape redArrow;

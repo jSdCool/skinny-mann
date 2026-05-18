@@ -5,7 +5,6 @@ import java.util.ArrayList;
 /**The base class for all components that exsist inside of and make up a stage
 */
 public abstract class StageComponent implements Serialization {//the base class for all components that exsist inside a stage
-  static transient skiny_mann source;
   public float x, y, z, dx, dy, dz;
   public int ccolor, group=-1;
   public String type;
@@ -94,10 +93,11 @@ public abstract class StageComponent implements Serialization {//the base class 
     group=grp;
   }
   
-  /**Process Interactions between this component and the stage
-  @param data Some sort of useful data to the interaction, potential the index of the stage
+  /**Process Interactions between this component and the stage.<br>
+  Executed on the logic thread.
+  @param context The context for the interaction
   */
-  public void worldInteractions(int data) {
+  public void worldInteractions(WorldInteractionsContext context) {
   }
   
   /**Get the 2D collision box for entitiy collisions

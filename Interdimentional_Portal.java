@@ -53,9 +53,8 @@ public class Interdimentional_Portal extends StageComponent {
     if (stage_3D) {
       part.setFloat("z", z);
     }
-    if (source.level.stages.get(linkIndex).is3D) {
-      part.setFloat("linkZ", linkZ);
-    }
+    
+    part.setFloat("linkZ", linkZ);//this used to be conditional on the destination stage being 3D, for simplicity this has been removed, it does not matter
     part.setString("type", type);
     part.setFloat("linkX", linkX);
     part.setFloat("linkY", linkY);
@@ -105,7 +104,7 @@ public class Interdimentional_Portal extends StageComponent {
 
   /**Render the 3D representation of this component.<br>
   NOTE: this method may be called more then once per frame
-  @param render The surface to draw to
+  @param context The context for the render
   */
   @Override
   public void draw3D(StageComponentRenderContext context) {
@@ -122,20 +121,15 @@ public class Interdimentional_Portal extends StageComponent {
       context.render.fill(255);
       context.render.textSize(20);
       context.render.textSize(context.scale(20));
-      context.displayText("Press E",100);
+      context.displayText("Press E",100);//TODO make this text a global constant
 
 
-      if (source.E_pressed) {
+      if (context.usePressed()) {
         context.resetUsedPressed();
         context.resetSelection();
         context.setStageIndex(linkIndex);
 
         context.render.background(0);
-        //if (linkZ!=-1) {
-        //  source.setPlayerPosZ=(int)linkZ;
-        //  source.players[source.currentPlayer].z=linkZ;
-        //  source.tpCords[2]=linkZ;
-        //}
         context.setPlayerPosition(linkX,linkY+48,linkZ);
         context.glitchEffect(850);
         if(!context.inLevelCreator()){

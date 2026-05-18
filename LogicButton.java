@@ -177,28 +177,32 @@ public class LogicButton extends StageComponent implements Interactable, Configu
   /**this instance of this function allows the portal to test if a player is standing on it
    @param data the index of the stage the button is in
    */
-  public void worldInteractions(int data) {
-    if (source.level.multyplayerMode==2) {//if in co op mode
-      Group group=getGroup(null);//TODO
+   @Override
+  public void worldInteractions(WorldInteractionsContext context) {
+    if (context.getMultyPlayerMode()==2) {//if in co op mode
+      Group group=getGroup(context.getGroupProvider());//TODO
       if (!group.visable)
         return;
       if (variable!=-1){//if the variable is set
-        for (int i=0; i<source.currentNumberOfPlayers; i++) {//for each player
-          if (source.players[i].stage!=data)//test if the player is in the same stage as the button
+        for (int i=0; i<context.getCurrentNumberOfPlayers(); i++) {//for each player
+          Player player = context.getPlayers()[i];
+          if (player.stage!=context.getComponentStageIndex()){//test if the player is in the same stage as the button
             continue;
-          if (source.players[i].in3D) {//test if the player is in 3d mode
-            if (source.players[i].x>=(x+group.xOffset)-10&&source.players[i].x<=(x+group.xOffset)+10&&source.players[i].y >=(y+group.yOffset)-10&&source.players[i].y<= (y+group.yOffset)+2 && source.players[i].z >= (z+group.zOffset)-10 && source.players[i].z <= (z+group.zOffset)+10) {
-              source.level.variables.set(variable, true);
+          }
+          
+          if (player.in3D) {//test if the player is in 3d mode
+            if (player.x>=(x+group.xOffset)-10 && player.x<=(x+group.xOffset)+10 && player.y >=(y+group.yOffset)-10 && player.y<= (y+group.yOffset)+2 && player.z >= (z+group.zOffset)-10 && player.z <= (z+group.zOffset)+10) {
+              context.getVariables().set(variable, true);
               return;
             }
           } else {//if in 2D
-            if (source.players[i].x>=(x+group.xOffset)-10&&source.players[i].x<=(x+group.xOffset)+10&&source.players[i].y >=(y+group.yOffset)-10&&source.players[i].y<= (y+group.yOffset)+2) {
-              source.level.variables.set(variable, true);
+            if( player.x>=(x+group.xOffset)-10 && player.x<=(x+group.xOffset)+10 && player.y >=(y+group.yOffset)-10 && player.y<= (y+group.yOffset)+2) {
+              context.getVariables().set(variable, true);
               return;
             }
           }
         }
-      source.level.variables.set(variable, false);
+      context.getVariables().set(variable, false);
       }
     }
   }

@@ -1765,8 +1765,9 @@ class LogicThread extends Thread {
         level.logicBoards.get(level.tickBoard).tick();//tick the logic board
         //activate world interaction on all stage components that require it
         for (int i=0; i<level.stages.size(); i++) {
+          WorldInteractionsContext context = new WorldInteractionsContext(level.multyplayerMode,level.groupProvider(),currentNumberOfPlayers,i,players,level.variables);
           for (int j=0; j<level.stages.get(i).interactables.size(); j++) {
-            level.stages.get(i).interactables.get(j).worldInteractions(i);
+            level.stages.get(i).interactables.get(j).worldInteractions(context);
           }
         }
       }

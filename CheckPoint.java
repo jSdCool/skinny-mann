@@ -71,7 +71,7 @@ public class CheckPoint extends StageComponent {
     if (!group.visable)
       return;
     //check if the player is on top of the check point so we can turn the pole yellow and set their spawn point
-    Collider2D playerBox=source.players[source.currentPlayer].getHitBox2D(0,0);
+    Collider2D playerBox=context.get2DPlayerHitbox();
     boolean po=false;
     if (CollisionDetection.collide2D(playerBox,new Collider2D(new PVector[]{new PVector(x-3,y-60),new PVector(x+3,y-60),new PVector(x+3,y),new PVector(x-3,y)}))) {
       context.setRespawnPosition(x,y,0);

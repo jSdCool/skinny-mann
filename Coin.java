@@ -108,17 +108,17 @@ public class Coin extends StageComponent {//ground component
     if (context.isEditingBlueprint()) {//if in a blueprint it will not be collected
       collected=false;
     } else {//get the collected status
-      if (source.coins.size()==0)
+      if (context.coins().size()==0)
         collected=false;
       else
-        collected=source.coins.get(coinId);
+        collected=context.coins().get(coinId);
     }
 
     if (!collected) {//if the coin has not been collected
       //rendder the coin
       context.render.translate((x+group.xOffset), (y+group.yOffset), (z+group.zOffset));
       context.render.rotateY(PApplet.radians(context.getCoinRotation()));
-      context.render.shape(source.coin3D);//TODO place 3d modle in a better location
+      context.render.shape(Assets.coin3D);//TODO place 3d modle in a better location
       context.render.rotateY(PApplet.radians(-context.getCoinRotation()));
       context.render.translate(-(x+group.xOffset), -(y+group.yOffset), -(z+group.zOffset));
       //ckeck if the player is colliding with the coin
