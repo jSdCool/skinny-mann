@@ -29,6 +29,7 @@ public class Random extends LogicInputComponent {
   }
   /**The function where the logic/functionality of this component is execuated
   */
+  @Override
   public void tick() {
     outputTerminal=(int)(Math.random()*1000000%2)==1;
   }

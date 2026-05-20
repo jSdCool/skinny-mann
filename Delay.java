@@ -45,13 +45,16 @@ public class Delay extends LogicComponent implements Configurable{
   }
   /**renders the logic component a long with its I/O terminals
   */
-  public void draw() {
-    super.draw();
-    source.fill(0);
-    source.textSize(15);
-    source.textAlign(PConstants.LEFT, PConstants.CENTER);
-    source.text("input", (x+5-source.camPos)*source.Scale, (y+16-source.camPosY)*source.Scale);
-    source.text("clear", (x+5-source.camPos)*source.Scale, (y+56-source.camPosY)*source.Scale);
+  @Override
+  public void draw(LogicComponentRenderContext context) {
+    super.draw(context);
+    context.render.fill(0);
+    context.render.textSize(15);
+    context.render.textAlign(PConstants.LEFT, PConstants.CENTER);
+    PVector tp1 = context.scaleCoord(x+5,y+16);
+    PVector tp2 = context.scaleCoord(x+5,y+56);
+    context.render.text("input", tp1.x, tp1.y);
+    context.render.text("clear", tp2.x, tp2.y);
   }
   /**The function where the logic/functionality of this component is execuated
   */

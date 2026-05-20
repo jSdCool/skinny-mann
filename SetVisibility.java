@@ -37,6 +37,7 @@ public class SetVisibility extends LogicOutputComponent implements Configurable{
   }
   /**The function where the logic/functionality of this component is execuated
   */
+  @Override
   public void tick() {
     if (inputTerminal1) {
       source.level.groups.get(groupNumber).visable=true;
@@ -48,6 +49,7 @@ public class SetVisibility extends LogicOutputComponent implements Configurable{
   /**Get a JSONObject representation of this component that can be saved to a file
   @return JSONObject representation of this object
   */
+  @Override
   public JSONObject save() {
     JSONObject component=super.save();
     component.setInt("group number", groupNumber);
@@ -56,17 +58,20 @@ public class SetVisibility extends LogicOutputComponent implements Configurable{
 
   /**renders the logic component a long with its I/O terminals
   */
-  public void draw() {
+  @Override
+  public void draw(LogicComponentRenderContext context) {
     if(reText){
-      button.setText("  visibility of "+source.level.groupNames.get(groupNumber));
+      button.setText("  visibility of "+context.getGroupNames().get(groupNumber));
       reText=false;
     }
-    super.draw();
-    source.fill(0);
-    source.textSize(15*source.Scale);
-    source.textAlign(source.LEFT, source.CENTER);
-    source.text("true", (x+5-source.camPos)*source.Scale, (y+16-source.camPosY)*source.Scale);
-    source.text("false", (x+5-source.camPos)*source.Scale, (y+56-source.camPosY)*source.Scale);
+    super.draw(context);
+    context.render.fill(0);
+    context.render.textSize(context.scale(15));
+    context.render.textAlign(PConstants.LEFT, PConstants.CENTER);
+    PVector truePos = context.scaleCoord(x+5,y+16);
+    context.render.text("true", truePos.x, truePos.y);
+    PVector falsePos = context.scaleCoord(x+5,y+56);
+    context.render.text("false", falsePos.x, falsePos.y);
   }
   
   /**Convert this component to a byte representation that can be sent over the network or saved to a file.<br>

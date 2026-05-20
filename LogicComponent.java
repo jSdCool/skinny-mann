@@ -71,30 +71,36 @@ public abstract class LogicComponent implements Serialization {//the base of all
 
   /**renders the logic component a long with its I/O terminals
   */
-  public void draw() {
-    button.x=(x-source.camPos)*source.Scale;
-    button.y=(y-source.camPosY)*source.Scale;
+  public void draw(LogicComponentRenderContext context) {
+    PGraphics render = context.render;
+    PVector pos = context.scaleCoord(x,y);
+    button.x = pos.x;
+    button.y = pos.y;
     button.draw();
-    source.fill(-26416);
-    source.ellipse((x-2-source.camPos)*source.Scale, (y+20-source.camPosY)*source.Scale, 20*source.Scale, 20*source.Scale);
-    source.ellipse((x-2-source.camPos)*source.Scale, (y+60-source.camPosY)*source.Scale, 20*source.Scale, 20*source.Scale);
-    source.fill(-369706);
-    source.ellipse((x+102-source.camPos)*source.Scale, (y+40-source.camPosY)*source.Scale, 20*source.Scale, 20*source.Scale);
+    render.fill(-26416);
+    float scaled20 = context.scale(20);
+    PVector conDot1 = context.scaleCoord(x-2,y+20);
+    PVector conDot2 = context.scaleCoord(x-2,y+60);
+    PVector conDot3 = context.scaleCoord(x+102,y+40);
+    render.ellipse(conDot1.x, conDot1.y, scaled20, scaled20);
+    render.ellipse(conDot2.x, conDot2.y, scaled20, scaled20);
+    render.fill(-369706);
+    render.ellipse(conDot3.x, conDot3.y, scaled20, scaled20);
   }
 
   /**Get the position of a I/O terminal
   @param t The index of the terminal to get
   @return A float array containg 2 elemts represeting the on screen x,y coords of the terminal. NOTE: theese have allready been camera adjusted
   */
-  public float[] getTerminalPos(int t) {
+  public float[] getTerminalPos(int t,float camX, float camY) {
     if (t==0) {
-      return new float[]{x-2-source.camPos, y+20-source.camPosY};
+      return new float[]{x-2-camX, y+20-camY};
     }
     if (t==1) {
-      return new float[]{x-2-source.camPos, y+60-source.camPosY};
+      return new float[]{x-2-camX, y+60-camY};
     }
     if (t==2) {
-      return new float[]{x+102-source.camPos, y+40-source.camPosY};
+      return new float[]{x+102-camX, y+40-camY};
     }
     return new float[]{-1000, -1000};
   }
@@ -113,22 +119,22 @@ public abstract class LogicComponent implements Serialization {//the base of all
 
   /**Render the connections to other components
   */
-  public void drawConnections() {
+  public void drawConnections(LogicComponentRenderContext context) {
     //for each connection
     for (int i=0; i<connections.size(); i++) {
       //this uses stroke
       if (outputTerminal) {
-        source.stroke(220, 0, 0);
+        context.render.stroke(220, 0, 0);
       } else {
-        source.stroke(0);
+        context.render.stroke(0);
       }
-      source.strokeWeight(5*source.Scale);
+      context.render.strokeWeight(context.scale(5));
       //get that connection info
-      Integer[] connectionInfo =connections.get(i);
+      Integer[] connectionInfo = connections.get(i);
       //get the onscreen terminal corrds
-      float[] thisTerminal = getTerminalPos(2), toTerminal=lb.components.get(connectionInfo[0]).getTerminalPos(connectionInfo[1]);
+      float[] thisTerminal = getTerminalPos(2,context.cameraX(),context.cameraY()), toTerminal = lb.components.get(connectionInfo[0]).getTerminalPos(connectionInfo[1],context.cameraX(),context.cameraY());
       //draw the line
-      source.line(thisTerminal[0]*source.Scale, thisTerminal[1]*source.Scale, toTerminal[0]*source.Scale, toTerminal[1]*source.Scale);
+      context.render.line(context.scale(thisTerminal[0]), context.scale(thisTerminal[1]), context.scale(toTerminal[0]), context.scale(toTerminal[1]));
     }
   }
 

@@ -26,6 +26,7 @@ public class Read3DMode extends LogicInputComponent {
   }
   /**The function where the logic/functionality of this component is execuated
   */
+  @Override
   public void tick() {
     if (source.level.multyplayerMode!=2)
       outputTerminal=source.e3DMode;

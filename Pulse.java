@@ -29,16 +29,20 @@ public class Pulse extends LogicComponent {
   }
   /**renders the logic component a long with its I/O terminals
   */
-  public void draw() {
-    super.draw();
-    source.fill(0);
-    source.textSize(15*source.Scale);
-    source.textAlign(source.LEFT, source.CENTER);
-    source.text("input", (x+5-source.camPos)*source.Scale, (y+16-source.camPosY)*source.Scale);
-    source.text("invert", (x+5-source.camPos)*source.Scale, (y+56-source.camPosY)*source.Scale);
+  @Override
+  public void draw(LogicComponentRenderContext context) {
+    super.draw(context);
+    context.render.fill(0);
+    context.render.textSize(context.scale(15));
+    context.render.textAlign(PConstants.LEFT, PConstants.CENTER);
+    PVector inputPos = context.scaleCoord(x+5,y+16);
+    context.render.text("input", inputPos.x, inputPos.y);
+    PVector invertPos = context.scaleCoord(x+5,y+56);
+    context.render.text("invert", invertPos.x,invertPos.y);
   }
   /**The function where the logic/functionality of this component is execuated
   */
+  @Override
   public void tick() {
     if (inputTerminal2) {//invert terminal
       outputTerminal=!(inputTerminal1 && !prevousState);//if invert is activated then set the output high nles a pulse comes in

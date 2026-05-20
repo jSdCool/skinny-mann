@@ -83,15 +83,19 @@ public class LogicPlaySound extends LogicComponent implements Configurable{
   }
   /**renders the logic component a long with its I/O terminals
   */
-  public void draw() {
-    super.draw();
-    source.fill(0);
-    source.textSize(15*source.Scale);
-    source.textAlign(PConstants.LEFT, PConstants.CENTER);
-    source.text("play", (x+5-source.camPos)*source.Scale, (y+16-source.camPosY)*source.Scale);
-    source.text("stop", (x+5-source.camPos)*source.Scale, (y+56-source.camPosY)*source.Scale);
-    source.textAlign(PConstants.RIGHT, PConstants.CENTER);
-    source.text("playing", (x+97-source.camPos)*source.Scale, (y+16-source.camPosY)*source.Scale);
+  @Override
+  public void draw(LogicComponentRenderContext context) {
+    super.draw(context);
+    context.render.fill(0);
+    context.render.textSize(context.scale(15));
+    context.render.textAlign(PConstants.LEFT, PConstants.CENTER);
+    PVector playPos = context.scaleCoord(x+5,y+16);
+    context.render.text("play", playPos.x, playPos.y);
+    PVector stopPos = context.scaleCoord(x+5,y+56);
+    context.render.text("stop", stopPos.x, stopPos.y);
+    context.render.textAlign(PConstants.RIGHT, PConstants.CENTER);
+    PVector playerPos = context.scaleCoord(x+97, y+16);
+    context.render.text("playing", playerPos.x, playerPos.y);
   }
   
   /**Convert this component to a byte representation that can be sent over the network or saved to a file.<br>

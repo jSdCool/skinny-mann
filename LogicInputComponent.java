@@ -38,20 +38,24 @@ public abstract class LogicInputComponent extends LogicComponent {
   /**renders the logic component a long with its I/O terminals
   */
   @Override
-  public void draw() {
-    button.x=(x-source.camPos)*source.Scale;
-    button.y=(y-source.camPosY)*source.Scale;
+  public void draw(LogicComponentRenderContext context) {
+    PVector pos = context.scaleCoord(x,y);
+    button.x = pos.x;
+    button.y = pos.y;
     button.draw();
     source.fill(-369706);
-    source.ellipse((x+102-source.camPos)*source.Scale, (y+20-source.camPosY)*source.Scale, 20*source.Scale, 20*source.Scale);
+    float scaled20 = context.scale(20);
+    PVector conNum = context.scaleCoord(x+102,y+20);
+    source.ellipse(conNum.x, conNum.y, scaled20, scaled20);
   }
   /**Get the position of a I/O terminal
   @param t The index of the terminal to get
   @return A float array containg 2 elemts represeting the on screen x,y coords of the terminal. NOTE: theese have allready been camera adjusted
   */
-  public float[] getTerminalPos(int t) {
+  @Override
+  public float[] getTerminalPos(int t,float camX, float camY) {
     if (t==2) {
-      return new float[]{x+102-source.camPos, y+20-source.camPosY};
+      return new float[]{x+102-camX, y+20-camY};
     }
     return new float[]{-1000, -1000};
   }

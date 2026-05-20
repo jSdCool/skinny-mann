@@ -930,6 +930,7 @@ void draw() {// the function that is called every frame
       }//end of edit blueprint
 
       if (editinglogicBoard) {//if editing a logic board
+        LogicComponentRenderContext context = new LogicComponentRenderContext(g,level.variables,Scale,camPos,camPosY,level.groupProvider(),level.groupNames);
         background(#FFECA0);
         for (int i=0; i<level.logicBoards.get(logicBoardIndex).components.size(); i++) {//draw the components
           if (selectedIndex==i) {//if the current component is selected
@@ -937,14 +938,14 @@ void draw() {// the function that is called every frame
             fill(255, 0, 0);//draw the hilight arrounf the comonnent
             rect((level.logicBoards.get(logicBoardIndex).components.get(i).x-5-camPos)*Scale, (level.logicBoards.get(logicBoardIndex).components.get(i).y-5-camPosY)*Scale, (level.logicBoards.get(logicBoardIndex).components.get(i).button.lengthX+10*Scale), (level.logicBoards.get(logicBoardIndex).components.get(i).button.lengthY+10*Scale));
           }
-          level.logicBoards.get(logicBoardIndex).components.get(i).draw();//draw the component
+          level.logicBoards.get(logicBoardIndex).components.get(i).draw(context);//draw the component
         }
         for (int i=0; i<level.logicBoards.get(logicBoardIndex).components.size(); i++) {//draw the connections
-          level.logicBoards.get(logicBoardIndex).components.get(i).drawConnections();
+          level.logicBoards.get(logicBoardIndex).components.get(i).drawConnections(context);
         }
 
         if (connectingLogic&&connecting) {//draw the connnecting line to the mouse
-          float[] nodePos = level.logicBoards.get(logicBoardIndex).components.get(connectingFromIndex).getTerminalPos(2);
+          float[] nodePos = level.logicBoards.get(logicBoardIndex).components.get(connectingFromIndex).getTerminalPos(2,camPos,camPosY);
           stroke(0);
           strokeWeight(5*Scale);
           line(nodePos[0]*Scale, nodePos[1]*Scale, mouseX, mouseY);
@@ -2860,7 +2861,7 @@ void mousePressed() {
         if (connectingLogic) {//if connecting logic terminals
           LogicBoard board=level.logicBoards.get(logicBoardIndex);//get the current logic board
           for (int i=0; i<board.components.size(); i++) {//check all the terminals to see if the mouse if over any of them
-            float[] nodePos=board.components.get(i).getTerminalPos(2);
+            float[] nodePos=board.components.get(i).getTerminalPos(2,camPos,camPosY);
             if (Math.sqrt(Math.pow(nodePos[0]-mouseX/Scale, 2)+Math.pow(nodePos[1]-mouseY/Scale, 2))<=10) {
               connecting=true;//if the mouse is over any of them, then set this as the one to start connecting from
               connectingFromIndex=i;
@@ -3108,7 +3109,7 @@ void mouseReleased() {
           connecting=false;//stop more connecting
           LogicBoard board=level.logicBoards.get(logicBoardIndex);//get the current board
           for (int i=0; i<board.components.size(); i++) {//srech through all components in the current board
-            float[] nodePos1=board.components.get(i).getTerminalPos(0), nodePos2=board.components.get(i).getTerminalPos(1);//gets the positions of the terminals of the component
+            float[] nodePos1=board.components.get(i).getTerminalPos(0,camPos,camPosY), nodePos2=board.components.get(i).getTerminalPos(1,camPos,camPosY);//gets the positions of the terminals of the component
             if (Math.sqrt(Math.pow(nodePos1[0]-mouseX/Scale, 2)+Math.pow(nodePos1[1]-mouseY/Scale, 2))<=10) {//if the mmouse is over terminal 0
               for (int j=0; j<board.components.get(connectingFromIndex).connections.size(); j++) {//checkif the connection allready exsists
                 if (board.components.get(connectingFromIndex).connections.get(j)[0]==i&&board.components.get(connectingFromIndex).connections.get(j)[1]==0) {//if so then remove the connection

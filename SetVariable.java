@@ -41,17 +41,21 @@ public class SetVariable extends LogicOutputComponent implements Configurable{
   }
   /**renders the logic component a long with its I/O terminals
   */
-  public void draw() {
-    super.draw();
-    source.fill(0);
-    source.textSize(15*source.Scale);
-    source.textAlign(source.LEFT, source.CENTER);
-    source.text("data", (x+5-source.camPos)*source.Scale, (y+16-source.camPosY)*source.Scale);
-    source.text("set", (x+5-source.camPos)*source.Scale, (y+56-source.camPosY)*source.Scale);
+  @Override
+  public void draw(LogicComponentRenderContext context) {
+    super.draw(context);
+    context.render.fill(0);
+    context.render.textSize(context.scale(15));
+    context.render.textAlign(PConstants.LEFT, PConstants.CENTER);
+    PVector dataPos = context.scaleCoord(x+5,y+16);
+    context.render.text("data", dataPos.x, dataPos.y);
+    PVector setPos = context.scaleCoord(x+5,y+56);
+    context.render.text("set", setPos.x, setPos.y);
   }
   /**Get a JSONObject representation of this component that can be saved to a file
   @return JSONObject representation of this object
   */
+  @Override
   public JSONObject save() {
     JSONObject component=super.save();
     component.setInt("variable number", variableNumber);
