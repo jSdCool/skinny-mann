@@ -27,11 +27,8 @@ public class Read3DMode extends LogicInputComponent {
   /**The function where the logic/functionality of this component is execuated
   */
   @Override
-  public void tick() {
-    if (source.level.multyplayerMode!=2)
-      outputTerminal=source.e3DMode;
-    else
-      outputTerminal=false;
+  public void tick(LogicComponentTickingContext context) {
+      outputTerminal=context.get3DMode();
   }
   /**Convert this component to a byte representation that can be sent over the network or saved to a file.<br>
   @return This component as a binarry representation

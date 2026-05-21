@@ -29,8 +29,8 @@ public class NAndGate extends LogicComponent {
   /**The function where the logic/functionality of this component is execuated
   */
   @Override
-  public void tick() {
-    outputTerminal=!(inputTerminal1&&inputTerminal2);
+  public void tick(LogicComponentTickingContext context) {
+    outputTerminal =! (inputTerminal1 && inputTerminal2);
   }
   /**Convert this component to a byte representation that can be sent over the network or saved to a file.<br>
   @return This component as a binarry representation

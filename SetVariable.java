@@ -35,9 +35,11 @@ public class SetVariable extends LogicOutputComponent implements Configurable{
   }
   /**The function where the logic/functionality of this component is execuated
   */
-  public void tick() {
-    if (inputTerminal2)
-      source.level.variables.set(variableNumber, inputTerminal1);
+  @Override
+  public void tick(LogicComponentTickingContext context) {
+    if (inputTerminal2) {
+      context.getVariables().set(variableNumber, inputTerminal1);
+    }
   }
   /**renders the logic component a long with its I/O terminals
   */

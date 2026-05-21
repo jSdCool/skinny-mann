@@ -36,8 +36,8 @@ public class ReadVariable extends LogicInputComponent implements Configurable{
   /**The function where the logic/functionality of this component is execuated
   */
   @Override
-  public void tick() {
-    outputTerminal=source.level.variables.get(variableNumber);
+  public void tick(LogicComponentTickingContext context) {
+    outputTerminal = context.getVariables().get(variableNumber);
   }
   /**Get a JSONObject representation of this component that can be saved to a file
   @return JSONObject representation of this object

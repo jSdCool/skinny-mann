@@ -43,10 +43,10 @@ public abstract class LogicInputComponent extends LogicComponent {
     button.x = pos.x;
     button.y = pos.y;
     button.draw();
-    source.fill(-369706);
+    context.render.fill(-369706);
     float scaled20 = context.scale(20);
     PVector conNum = context.scaleCoord(x+102,y+20);
-    source.ellipse(conNum.x, conNum.y, scaled20, scaled20);
+    context.render.ellipse(conNum.x, conNum.y, scaled20, scaled20);
   }
   /**Get the position of a I/O terminal
   @param t The index of the terminal to get

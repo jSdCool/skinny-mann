@@ -5,7 +5,6 @@ import java.util.ArrayList;
 /**The base of all logic gates and components
 */
 public abstract class LogicComponent implements Serialization {//the base of all logic gates and things
-  static transient skiny_mann source;
   float x, y;//for visuals only
   String type;
   Button button;
@@ -169,8 +168,9 @@ public abstract class LogicComponent implements Serialization {//the base of all
   }
   
   /**The function where the logic/functionality of this component is execuated
+  @param context The context for the current tick
   */
-  public abstract void tick();
+  public abstract void tick(LogicComponentTickingContext context);
   
   /**Copy the data from the output terminal of this component to the input terminal of all conncetions
   */

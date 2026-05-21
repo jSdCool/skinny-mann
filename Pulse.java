@@ -43,11 +43,11 @@ public class Pulse extends LogicComponent {
   /**The function where the logic/functionality of this component is execuated
   */
   @Override
-  public void tick() {
+  public void tick(LogicComponentTickingContext context) {
     if (inputTerminal2) {//invert terminal
-      outputTerminal=!(inputTerminal1 && !prevousState);//if invert is activated then set the output high nles a pulse comes in
+      outputTerminal =! (inputTerminal1 && !prevousState);//if invert is activated then set the output high nles a pulse comes in
     } else {
-      outputTerminal=inputTerminal1 && !prevousState;//if the invert is deactivated then set the output low untill a pulse comes
+      outputTerminal = inputTerminal1 && !prevousState;//if the invert is deactivated then set the output low untill a pulse comes
     }
     prevousState=inputTerminal1;
   }

@@ -40,12 +40,12 @@ public class SetYOffset extends LogicOutputComponent implements Configurable{
   /**The function where the logic/functionality of this component is execuated
   */
   @Override
-  public void tick() {
+  public void tick(LogicComponentTickingContext context) {
     if (inputTerminal1) {
-      source.level.groups.get(groupNumber).yOffset=-offset;
+      context.getGroupProvider().get().get(groupNumber).yOffset=-offset;
     }
     if (inputTerminal2) {
-      source.level.groups.get(groupNumber).yOffset=0;
+      context.getGroupProvider().get().get(groupNumber).yOffset=0;
     }
   }
   /**Get a JSONObject representation of this component that can be saved to a file
@@ -74,18 +74,6 @@ public class SetYOffset extends LogicOutputComponent implements Configurable{
     context.render.text("set", setPos.x, setPos.y);
     PVector resetPos = context.scaleCoord(x+5,y+56);
     context.render.text("reset", resetPos.x, resetPos.y);
-  }
-  /**Set the value of the offset
-  @param of The new value of the offset
-  */
-  public void setOffset(float of) {
-    offset=of;
-    button.setText("y-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
-  }
-  /**Get the current value of the offset
-  */
-  public float getOffset() {
-    return offset;
   }
   
   /**Convert this component to a byte representation that can be sent over the network or saved to a file.<br>

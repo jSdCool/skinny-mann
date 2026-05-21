@@ -1959,7 +1959,7 @@ void mouseClicked() {// when you click the mouse
             }
             
             level=new Level(mainIndex);//load the level
-            level.logicBoards.get(level.loadBoard).superTick();//run the level load board
+            level.logicBoards.get(level.loadBoard).superTick(new LogicComponentTickingContext(level.variables,level.groupProvider(),false,(d)->e3DMode=d,(sound)->level.sounds.get(sound)));//run the level load board
             if (level.multyplayerMode==2) {//set the number of players if in co-op mode
               currentNumberOfPlayers=level.maxPLayers;
             }
@@ -2809,7 +2809,7 @@ void loadLevel(String path) {
     Util.rootPath=path;//load the level
     JSONArray mainIndex=loadJSONArray(Util.rootPath+"/index.json");
     level=new Level(mainIndex);
-    level.logicBoards.get(level.loadBoard).superTick();//run the load logic board
+    level.logicBoards.get(level.loadBoard).superTick(new LogicComponentTickingContext(level.variables,level.groupProvider(),false,(d)->e3DMode=d,(sound)->level.sounds.get(sound)));//run the load logic board
   } catch(Throwable e) {
     handleError(e);
   }
@@ -3997,7 +3997,6 @@ NOTE: we are going to get rid of this :tm:
 void sourceInitilize() {
   Level.source=this;
   LogicBoard.source=this;
-  LogicComponent.source=this;
 }
 
 /**Hanlde any errors that pop up in multyplayer netwiorking.<br>

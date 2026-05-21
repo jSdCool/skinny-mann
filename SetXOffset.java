@@ -41,12 +41,12 @@ public class SetXOffset extends LogicOutputComponent implements Configurable{
   /**The function where the logic/functionality of this component is execuated
   */
   @Override
-  public void tick() {
+  public void tick(LogicComponentTickingContext context) {
     if (inputTerminal1) {
-      source.level.groups.get(groupNumber).xOffset=offset;
+      context.getGroupProvider().get().get(groupNumber).xOffset=offset;
     }
     if (inputTerminal2) {
-      source.level.groups.get(groupNumber).xOffset=0;
+      context.getGroupProvider().get().get(groupNumber).xOffset=0;
     }
   }
   /**Get a JSONObject representation of this component that can be saved to a file
@@ -64,7 +64,7 @@ public class SetXOffset extends LogicOutputComponent implements Configurable{
   @Override
   public void draw(LogicComponentRenderContext context) {
     if(reText){
-      button.setText("x-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
+      button.setText("x-offset "+context.getGroupNames().get(groupNumber)+" by "+offset);
       reText = false;
     }
     super.draw(context);
@@ -75,18 +75,6 @@ public class SetXOffset extends LogicOutputComponent implements Configurable{
     context.render.text("set", setPos.x,setPos.y);
     PVector resetPos = context.scaleCoord(x+5,y+56);
     context.render.text("reset", resetPos.x, resetPos.y);
-  }
-  /**Set the value of the offset
-  @param of The new value of the offset
-  */
-  void setOffset(float of) {
-    offset=of;
-    button.setText("x-offset "+source.level.groupNames.get(groupNumber)+" by "+offset);
-  }
-  /**Get the current value of the offset
-  */
-  float getOffset() {
-    return offset;
   }
   
   /**Convert this component to a byte representation that can be sent over the network or saved to a file.<br>

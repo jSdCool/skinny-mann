@@ -58,7 +58,8 @@ public class Delay extends LogicComponent implements Configurable{
   }
   /**The function where the logic/functionality of this component is execuated
   */
-  public void tick() {
+  @Override
+  public void tick(LogicComponentTickingContext context) {
     if (inputTerminal2) {//if terminal 2 reset the delay memeory
       mem=new ArrayList<>();
       for (int i=0; i<time; i++) {

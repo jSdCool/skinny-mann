@@ -38,12 +38,12 @@ public class SetVisibility extends LogicOutputComponent implements Configurable{
   /**The function where the logic/functionality of this component is execuated
   */
   @Override
-  public void tick() {
+  public void tick(LogicComponentTickingContext context) {
     if (inputTerminal1) {
-      source.level.groups.get(groupNumber).visable=true;
+      context.getGroupProvider().get().get(groupNumber).visable=true;
     }
     if (inputTerminal2) {
-      source.level.groups.get(groupNumber).visable=false;
+      context.getGroupProvider().get().get(groupNumber).visable=false;
     }
   }
   /**Get a JSONObject representation of this component that can be saved to a file

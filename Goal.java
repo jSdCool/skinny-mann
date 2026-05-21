@@ -83,7 +83,8 @@ class Goal extends StageComponent {//ground component
 
     if (CollisionDetection.collide2D(playerHitBox,Collider2D.createRectHitbox(x+group.xOffset,y+group.yOffset-50,250,100))) {
       if (!context.getLevelComplete()) {
-        context.getLevelCompleteLogicBoard().superTick();
+        //TODO make this run on the logic thread!!!
+        context.getLevelCompleteLogicBoard().superTick(new LogicComponentTickingContext(context.getVariables(),context.getGroupProvider(),false,(d)->context.set3DMode(d), (sound) -> context.getLevelSound(sound)));
       }
       if (context.getMultyplayerMode()!=2) {
         context.completeLevel();

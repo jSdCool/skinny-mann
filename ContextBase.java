@@ -28,4 +28,16 @@ interface ContextBase{
     */
     void go();
   }
+  
+  /**A funciton to get dyamic content based on dynamic input
+  @param <T> The type the function returns
+  @param <R> The type the function takes as a parameter
+  */
+  interface DynamicGetter<T,R>{
+    /**Get the data
+    @param input The value to use for the data
+    @return The dynamic data
+    */
+    T get(R input);
+  }
 }

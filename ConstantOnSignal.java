@@ -31,7 +31,7 @@ public class ConstantOnSignal extends LogicInputComponent {
   }
   /**The function where the logic/functionality of this component is execuated
   */
-  public void tick() {
+  public void tick(LogicComponentTickingContext context) {
     outputTerminal=true;
   }
   /**Convert this component to a byte representation that can be sent over the network or saved to a file.<br>

@@ -33,7 +33,7 @@ public class AndGate extends LogicComponent {
   /**The function where the logic/functionality of this component is execuated
   */
   @Override
-  public void tick() {
+  public void tick(LogicComponentTickingContext context) {
     outputTerminal=inputTerminal1&&inputTerminal2;
   }
   

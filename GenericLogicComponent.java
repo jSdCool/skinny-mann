@@ -28,7 +28,8 @@ public class GenericLogicComponent extends LogicComponent {
   }
   /**The function where the logic/functionality of this component is execuated
   */
-  public void tick() {
+  @Override
+  public void tick(LogicComponentTickingContext context) {
   }
   
   /**Convert this component to a byte representation that can be sent over the network or saved to a file.<br>

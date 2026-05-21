@@ -245,7 +245,7 @@ public class Level implements Serialization {//this is a big and important one
     source.respawnX=(int)RewspawnX;
     source.respawnY=(int)RespawnY;
     source.respawnStage=source.currentStageIndex;
-    logicBoards.get(loadBoard).superTick();//run the load logic board
+    logicBoards.get(loadBoard).superTick(new LogicComponentTickingContext(variables,groupProvider(),false,(d)->source.e3DMode=d, (sound)->sounds.get(sound)));//run the load logic board
     respawnEntities();//repsawn all entities
   }
   

@@ -33,18 +33,12 @@ public class Set3DMode extends LogicOutputComponent {
   /**The function where the logic/functionality of this component is execuated
   */
   @Override
-  public void tick() {
+  public void tick(LogicComponentTickingContext context) {
     if (inputTerminal1) {
-      if (source.level.stages.get(source.currentStageIndex).type.equals("3Dstage"))
-        if (source.level.multyplayerMode!=2){
-          source.e3DMode=true;
-        }
+      context.set3DMode(true);
     }
     if (inputTerminal2) {
-      if (source.level.stages.get(source.currentStageIndex).type.equals("3Dstage"))
-        if (source.level.multyplayerMode!=2){
-          source.e3DMode=false;
-        }
+      context.set3DMode(false);
     }
   }
   /**renders the logic component a long with its I/O terminals
@@ -53,7 +47,7 @@ public class Set3DMode extends LogicOutputComponent {
   public void draw(LogicComponentRenderContext context) {
     super.draw(context);
     context.render.fill(0);
-    context.render.textSize(15*source.Scale);
+    context.render.textSize(context.scale(15));
     context.render.textAlign(PConstants.LEFT, PConstants.CENTER);
     PVector truePos = context.scaleCoord(x+5,y+16);
     context.render.text("true", truePos.x, truePos.y);

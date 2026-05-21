@@ -1762,7 +1762,8 @@ class LogicThread extends Thread {
       if (millis()-lastRun>=20) {//once 20 millisecconds have passed seince the last tick
         //System.out.println(millis()-lastRun);
         lastRun=millis();//update the time of the last tick
-        level.logicBoards.get(level.tickBoard).tick();//tick the logic board
+        LogicComponentTickingContext context_t = new LogicComponentTickingContext(level.variables,level.groupProvider(),e3DMode,(d)->e3DMode=d,(sound)->level.sounds.get(sound));
+        level.logicBoards.get(level.tickBoard).tick(context_t);//tick the logic board
         //activate world interaction on all stage components that require it
         for (int i=0; i<level.stages.size(); i++) {
           WorldInteractionsContext context = new WorldInteractionsContext(level.multyplayerMode,level.groupProvider(),currentNumberOfPlayers,i,players,level.variables);

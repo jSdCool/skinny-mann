@@ -1807,11 +1807,11 @@ class ToolBox extends PApplet {
           }
           //run the load board button
           if (runLoad.isMouseOver(mouseX,mouseY)) {
-            level.logicBoards.get(level.loadBoard).superTick();
+            level.logicBoards.get(level.loadBoard).superTick(new LogicComponentTickingContext(level.variables,level.groupProvider(),e3DMode,(d)->e3DMode=d,(sound)->level.sounds.get(sound)));
           }
           //tick current board by 1 button
           if (editinglogicBoard && tickLogicButton.isMouseOver(mouseX,mouseY)) {
-            level.logicBoards.get(logicBoardIndex).tick();
+            level.logicBoards.get(logicBoardIndex).tick(new LogicComponentTickingContext(level.variables,level.groupProvider(),e3DMode,(d)->e3DMode=d,(sound)->level.sounds.get(sound)));
           }
         }//end of editing a level
       }//end if page is varioables and groups

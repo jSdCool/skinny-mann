@@ -87,9 +87,9 @@ public class LogicBoard implements Serialization {//stores all the logic compone
 
   /**Process a single tick of this logic board. Ticking each logic component once
   */
-  public void tick() {//tick each component once
+  public void tick(LogicComponentTickingContext context) {//tick each component once
     for (int i=0; i<components.size(); i++) {//process a tick on each component
-      components.get(i).tick();
+      components.get(i).tick(context);
     }
     for (int i=0; i<components.size(); i++) {//copy the processed outputs of each component to the approprate input terminals
       components.get(i).sendOut();
@@ -101,9 +101,9 @@ public class LogicBoard implements Serialization {//stores all the logic compone
   
   /**Tick this logic board 256 times with no delay inbetween ticks
   */
-  public void superTick() {//
+  public void superTick(LogicComponentTickingContext context) {//
     for (int i=0; i<256; i++) {
-      tick();
+      tick(context);
     }
   }
   /**Finalize the initialization of the components
