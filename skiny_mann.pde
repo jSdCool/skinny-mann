@@ -3996,7 +3996,6 @@ NOTE: we are going to get rid of this :tm:
 */
 void sourceInitilize() {
   Level.source=this;
-  LogicBoard.source=this;
 }
 
 /**Hanlde any errors that pop up in multyplayer netwiorking.<br>

@@ -2,13 +2,13 @@ import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 import java.util.function.Function;
+import java.io.File;
 /**The strcture that stores and processes logic components
 */
 public class LogicBoard implements Serialization {//stores all the logic components
 
   public static final Identifier ID = new Identifier("LogicBoard");
 
-  static transient skiny_mann source;
   public String name="This value has not been initilized, If you can see this report it as a bug";//temp name
   public ArrayList<LogicComponent> components=new ArrayList<>();
   /*Load a logic board from a saved file
@@ -59,7 +59,7 @@ public class LogicBoard implements Serialization {//stores all the logic compone
     for (int i=0; i<components.size(); i++) {
       logicComponents.setJSONObject(i+1, components.get(i).save());//save each component to the file
     }
-    source.saveJSONArray(logicComponents, Util.rootPath+"/"+name+".json");
+    logicComponents.save(new File(Util.rootPath+"/"+name+".json"),null);
     return "/"+name+".json";
   }
 
