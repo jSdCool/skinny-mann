@@ -23,7 +23,7 @@ public class Level implements Serialization {//this is a big and important one
   /**Load a level from the provided json file
   @param file The JSONArray from the level index file
   */
-  public Level(JSONArray file) {
+  public Level(JSONArray file, LevelLoadContext context) {
     System.out.println("loading level");
     JSONObject job =file.getJSONObject(0);
     hedObj=job;
@@ -37,10 +37,9 @@ public class Level implements Serialization {//this is a big and important one
     RespawnY=job.getFloat("spawn pointY");
     name=job.getString("name");
     createdVersion=job.getString("game version");
-    source.author=job.getString("author");
-    author=job.getString("author");
-    //System.out.println("author: "+source.author);
-    source.currentStageIndex=mainStage;//set the current stage to the main stage
+    author = job.getString("author");
+    context.setAuthor(job.getString(author));
+    context.setStageIndex(mainStage);//set the current stage to the main stage
     if (job.isNull("number of variable")) {//if varibale information is not present
       System.out.println("setting up variables because none exsisted before");
       variables.add(false);//create the 5 default variables 
@@ -55,7 +54,7 @@ public class Level implements Serialization {//this is a big and important one
       System.out.println("loaded "+variables.size()+" variables");
     }
     if (!job.isNull("groups")) {//if group information is present
-      JSONArray gps= job.getJSONArray("groups");//load the names of the groups and crate the groups
+      JSONArray gps = job.getJSONArray("groups");//load the names of the groups and crate the groups
       for (int i=0; i<gps.size(); i++) {
         groupNames.add(gps.getString(i));
         groups.add(new Group());
@@ -76,14 +75,12 @@ public class Level implements Serialization {//this is a big and important one
       minPlayers=job.getInt("min players");//load the min plyaers
     }
     for (int i=0; i<10; i++) {//set all players to the spawn position
-      source.players[i].x=SpawnX;
-      source.players[i].y=SpawnY;
+      context.getPlayers()[i].x = SpawnX;
+      context.getPlayers()[i].y = SpawnY;
     }
-    source.respawnX=(int)RewspawnX;//set the host's respawn position
-    source.respawnY=(int)RespawnY;
-    source.respawnStage=source.currentStageIndex;
+    context.setRespawnLocation(RewspawnX,RespawnY,mainStage);
     System.out.println("checking game version compatablility");
-    if (!source.gameVersionCompatibilityCheck(createdVersion)) {//check is this level is compatable with this game version
+    if (!context.gameVersionCompatabilityCheck(createdVersion)) {//check is this level is compatable with this game version
       System.out.println("game version not compatable with the verion of this level");//if not, throw an error
       throw new RuntimeException("this level is not compatible with this version of the game");
     }
@@ -105,7 +102,7 @@ public class Level implements Serialization {//this is a big and important one
       if (job.getString("type").equals("logicBoard")) {//if the part is a logic board
         logicBoards.add(new LogicBoard(source.loadJSONArray(Util.rootPath+job.getString("location")), this));//load the logic board
         numlogicBoards++;
-        logicBoards.get(logicBoards.size()-1).initComponents(source.g,source.Scale);
+        logicBoards.get(logicBoards.size()-1).initComponents(context.render,context.scale());
         System.out.print("loaded logicboard: "+logicBoards.get(logicBoards.size()-1).name);//assign this logic board to the proper activing trigger
         if (logicBoards.get(logicBoards.size()-1).name.equals("load")) {
           loadBoard=logicBoards.size()-1;
@@ -121,10 +118,9 @@ public class Level implements Serialization {//this is a big and important one
         }
       }
     }
-    source.coins=new ArrayList<Boolean>();//create the coin collection info for the level
-    for (int i=0; i<numOfCoins; i++) {
-      source.coins.add(false);
-    }
+    context.initCoins(numOfCoins);
+    //create the coin collection info for the level
+ 
     System.out.println("loaded "+source.coins.size()+" coins");
 
     if (numlogicBoards==0) {//if no logic board were loaded
@@ -201,12 +197,10 @@ public class Level implements Serialization {//this is a big and important one
   
   /**Preform a fake load on the level> Effectivly resetting the level mkaing it readdy to play again
   */
-  public void psudoLoad() {
+  public void psudoLoad(LevelLoadContext context) {
     System.out.println("psudo loading level");
-    source.coins=new ArrayList<Boolean>();//reset the coins
-    for (int i=0; i<numOfCoins; i++) {
-      source.coins.add(false);
-    }
+    context.initCoins(numOfCoins);//reset the coins
+
     groups=new ArrayList<>();//reset the groups
     variables=new ArrayList<>();//reset the variables
     if (hedObj.isNull("number of variable")) {//re initilize the variables and group
@@ -234,29 +228,29 @@ public class Level implements Serialization {//this is a big and important one
       groupNames.add("group 0");
       groups.add(new Group());
     }
-    source.currentStageIndex=mainStage;//reset the current stage and respawn position
-    source.players[source.currentPlayer].x=SpawnX;
-    source.players[source.currentPlayer].y=SpawnY;
+    context.setStageIndex(mainStage);
+    //reset the current stage and respawn position
+    context.getPlayers()[context.getCurrentPlayer()].x=SpawnX;
+    context.getPlayers()[context.getCurrentPlayer()].y=SpawnY;
 
-    source.tpCords[0]=SpawnX;//move the player to the spawn
-    source.tpCords[1]=SpawnY;
-    source.setPlayerPosTo=true;
+    //TODO implment this if nessarry
+    //source.tpCords[0]=SpawnX;//move the player to the spawn
+    //source.tpCords[1]=SpawnY;
+    //source.setPlayerPosTo=true;
 
-    source.respawnX=(int)RewspawnX;
-    source.respawnY=(int)RespawnY;
-    source.respawnStage=source.currentStageIndex;
-    logicBoards.get(loadBoard).superTick(new LogicComponentTickingContext(variables,groupProvider(),false,(d)->source.e3DMode=d, (sound)->sounds.get(sound)));//run the load logic board
+    context.setRespawnLocation(RewspawnX,RespawnY,mainStage);
+    logicBoards.get(loadBoard).superTick(new LogicComponentTickingContext(variables,groupProvider(),false,(d)->context.set3DMode(d), (sound)->sounds.get(sound)));//run the load logic board
     respawnEntities();//repsawn all entities
   }
   
   /**Reset the collection status of all the coins in this level
   */
-  public void reloadCoins() {
-    source.coins=new ArrayList<Boolean>();
-    for (int i=0; i<numOfCoins; i++) {
-      source.coins.add(false);
-    }
-  }
+  //public void reloadCoins() {//this will take the coin reload things
+  //  source.coins=new ArrayList<Boolean>();
+  //  for (int i=0; i<numOfCoins; i++) {
+  //    source.coins.add(false);
+  //  }
+  //}
   
   /**save all the content of this level to the disk
   @param inLevelCreator Wether or not the save is coming from the level creator or the multyplayer download

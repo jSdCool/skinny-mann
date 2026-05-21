@@ -525,7 +525,12 @@ void draw() {// the function that is called every frame
             if (level.multyplayerMode==1) {//if this level is in speedrun mode
               players[currentPlayer].setX(-100);//move the player to -100,-100
               players[currentPlayer].setY(-100);
-              level.psudoLoad();//run a fake load on the level
+              level.psudoLoad(new LevelLoadContext((auth)-> author = auth, (index) -> currentStageIndex = index,players, (pos) -> {respawnX = (int)pos.x; respawnY = (int)pos.y;},(index)->respawnStage=index, (version) -> gameVersionCompatibilityCheck(version),g,Scale,(numCoins)->{
+                coins = new ArrayList<>();
+                for(int i=0;i<numCoins;i++){
+                  coins.add(false);
+                }
+              }, ()->coins,currentPlayer,(d)->e3DMode = d));//run a fake load on the level
               level_complete=false;//set the level to not be complete
               int completeTime=millis()-startTime;//calculate the time it took to complete
               println("completed in: "+completeTime+" "+formatMillis(completeTime));
@@ -1436,7 +1441,12 @@ void mouseClicked() {// when you click the mouse
           if (multiplayer) {//mulyplayer restart level button
             if (level.multyplayerMode==1) {
               if (pauseRestart.isMouseOver(mouseX,mouseY)) {
-                level.psudoLoad();
+                level.psudoLoad(new LevelLoadContext((auth)-> author = auth, (index) -> currentStageIndex = index,players, (pos) -> {respawnX = (int)pos.x; respawnY = (int)pos.y;},(index)->respawnStage=index, (version) -> gameVersionCompatibilityCheck(version),g,Scale,(numCoins)->{
+                coins = new ArrayList<>();
+                for(int i=0;i<numCoins;i++){
+                  coins.add(false);
+                }
+              }, ()->coins,currentPlayer,(d)->e3DMode = d));
                 startTime=millis();
                 menue=false;
               }
@@ -1957,8 +1967,13 @@ void mouseClicked() {// when you click the mouse
             } catch(Throwable e) {//do nothings if loading fails
               e.printStackTrace();
             }
-            
-            level=new Level(mainIndex);//load the level
+            LevelLoadContext context =  new LevelLoadContext((auth)-> author = auth, (index) -> currentStageIndex = index,players, (pos) -> {respawnX = (int)pos.x; respawnY = (int)pos.y;},(index)->respawnStage=index, (version) -> gameVersionCompatibilityCheck(version),g,Scale,(numCoins)->{
+                coins = new ArrayList<>();
+                for(int i=0;i<numCoins;i++){
+                  coins.add(false);
+                }
+              }, ()->coins,currentPlayer,(d)->e3DMode = d);
+            level=new Level(mainIndex,context);//load the level
             level.logicBoards.get(level.loadBoard).superTick(new LogicComponentTickingContext(level.variables,level.groupProvider(),false,(d)->e3DMode=d,(sound)->level.sounds.get(sound)));//run the level load board
             if (level.multyplayerMode==2) {//set the number of players if in co-op mode
               currentNumberOfPlayers=level.maxPLayers;
@@ -1997,7 +2012,13 @@ void mouseClicked() {// when you click the mouse
             terain.setString("author", author);
             mainIndex.setJSONObject(0, terain);//put that info into a JOSN Array
             levelOverview=true;
-            level=new Level(mainIndex);//load that new level
+            LevelLoadContext context = new LevelLoadContext((auth)-> author = auth, (index) -> currentStageIndex = index,players, (pos) -> {respawnX = (int)pos.x; respawnY = (int)pos.y;},(index)->respawnStage=index, (version) -> gameVersionCompatibilityCheck(version),g,Scale,(numCoins)->{
+                coins = new ArrayList<>();
+                for(int i=0;i<numCoins;i++){
+                  coins.add(false);
+                }
+              }, ()->coins,currentPlayer,(d)->e3DMode = d);
+            level=new Level(mainIndex,context);//load that new level
             level.save(true);//save the level to disc
             lcEnterLevelTextBox.resetState();
             return;
@@ -2808,7 +2829,13 @@ void loadLevel(String path) {
     reachedEnd=false;
     Util.rootPath=path;//load the level
     JSONArray mainIndex=loadJSONArray(Util.rootPath+"/index.json");
-    level=new Level(mainIndex);
+    LevelLoadContext context = new LevelLoadContext((auth)-> author = auth, (index) -> currentStageIndex = index,players, (pos) -> {respawnX = (int)pos.x; respawnY = (int)pos.y;},(index)->respawnStage=index, (version) -> gameVersionCompatibilityCheck(version),g,Scale,(numCoins)->{
+        coins = new ArrayList<>();
+        for(int i=0;i<numCoins;i++){
+          coins.add(false);
+        }
+      }, ()->coins,currentPlayer,(d)->e3DMode = d);
+    level=new Level(mainIndex,context);
     level.logicBoards.get(level.loadBoard).superTick(new LogicComponentTickingContext(level.variables,level.groupProvider(),false,(d)->e3DMode=d,(sound)->level.sounds.get(sound)));//run the load logic board
   } catch(Throwable e) {
     handleError(e);
@@ -4907,6 +4934,13 @@ ClientContext createClientContext(){
       primaryWindow.saveBytes(file,data);
     };
   };
+}
+
+void reloadCoins(){
+  coins = new ArrayList<>();
+  for(int i=0;i<level.numOfCoins;i++){
+    coins.add(false);
+  }
 }
 
 /**Initilize all scale managed text.<br>
