@@ -403,7 +403,7 @@ public class Client extends Thread {
             context.setRootPath(context.getAppdata()+"/CBi-games/skinny mann/UGC/levels/"+ldi.level.name+generateRandomString(20));//create the folder to download the level to. The name being <level name>+<random string> this is to ensure it does not overrite an exsising level with that name
             context.setLevel(ldi.level);//extract the serialized level data
             //this is nessarry as key parts if the level strutcure refrence the main level object for proper saving
-            ldi.level.save(false);//save that level data to disk
+            ldi.level.save(false,context.getGameVersion());//save that level data to disk
             context.setLevel(null);//clear the content of the level so we dont acedentaly use a potentiallty borken level causeing other errors
             currentDownloadIndex=-1;//set the index of the file component to download to -1
             currentDownloadblock=-1;

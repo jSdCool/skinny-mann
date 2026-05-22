@@ -1,9 +1,15 @@
 import processing.core.PMatrix3D;
 import processing.core.PVector;
 import processing.core.PGraphics;
+import processing.data.JSONArray;
+import processing.data.JSONObject;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.FileInputStream;
 import java.awt.Desktop;
 import java.io.File;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 
 /**Various utility methods
 */
@@ -167,5 +173,38 @@ public class Util{
       } catch (Exception e) {
           throw new RuntimeException(e);
       }
+  }
+  
+  /**Static version of the processing load json array
+  @param filePath the path of the file to load
+  @return the file loaded as a json array
+  */
+  public static JSONArray loadJSONArray(String filePath){
+    JSONArray outgoing;
+    try {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8));
+      outgoing = new JSONArray(reader);
+      reader.close();
+    } catch (Exception e) {
+      throw new RuntimeException("Exception while loading file",e);
+    }
+    return outgoing;
+    
+  }
+  
+  /**Static version of the processing load json object
+  @param filePath the path of the file to load
+  @return the file loaded as a json object
+  */
+  public static JSONObject loadJSONObject(String filePath){
+    JSONObject outgoing;
+    try {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8));
+      outgoing = new JSONObject(reader);
+      reader.close();
+    } catch (Exception e) {
+      throw new RuntimeException("Exception while loading file",e);
+    }
+    return outgoing;
   }
 }

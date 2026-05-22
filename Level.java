@@ -2,13 +2,13 @@ import processing.core.*;
 import processing.data.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.io.File;
 /**A level, it holds things
 */
 public class Level implements Serialization {//this is a big and important one
   
   public static final Identifier ID = new Identifier("Level");
   
-  static transient skiny_mann source;
   public ArrayList<Stage> stages=new ArrayList<>();
   public ArrayList<LogicBoard> logicBoards=new ArrayList<>();
   public ArrayList<Boolean> variables=new ArrayList<>();
@@ -92,7 +92,7 @@ public class Level implements Serialization {//this is a big and important one
       //if this part is a 2D or 3D stage
       if (job.getString("type").equals("stage")||job.getString("type").equals("3Dstage")) {
         //load the stage
-        stages.add(new Stage(source.loadJSONArray(Util.rootPath+job.getString("location"))));
+        stages.add(new Stage(Util.loadJSONArray(Util.rootPath+job.getString("location"))));
         System.out.println("loaded stage: "+stages.get(stages.size()-1).name);
       }
       if (job.getString("type").equals("sound")) {//if the part is a sound
@@ -100,7 +100,7 @@ public class Level implements Serialization {//this is a big and important one
         System.out.println("loaded sound: "+job.getString("name"));
       }
       if (job.getString("type").equals("logicBoard")) {//if the part is a logic board
-        logicBoards.add(new LogicBoard(source.loadJSONArray(Util.rootPath+job.getString("location")), this));//load the logic board
+        logicBoards.add(new LogicBoard(Util.loadJSONArray(Util.rootPath+job.getString("location")), this));//load the logic board
         numlogicBoards++;
         logicBoards.get(logicBoards.size()-1).initComponents(context.render,context.scale());
         System.out.print("loaded logicboard: "+logicBoards.get(logicBoards.size()-1).name);//assign this logic board to the proper activing trigger
@@ -121,7 +121,7 @@ public class Level implements Serialization {//this is a big and important one
     context.initCoins(numOfCoins);
     //create the coin collection info for the level
  
-    System.out.println("loaded "+source.coins.size()+" coins");
+    System.out.println("loaded "+numOfCoins+" coins");
 
     if (numlogicBoards==0) {//if no logic board were loaded
       System.out.println("generating new logic boards as none exsisted");
@@ -255,7 +255,7 @@ public class Level implements Serialization {//this is a big and important one
   /**save all the content of this level to the disk
   @param inLevelCreator Wether or not the save is coming from the level creator or the multyplayer download
   */
-  public void save(boolean inLevelCreator) {
+  public void save(boolean inLevelCreator, String version) {
     JSONArray index=new JSONArray();//save all the thinkgs to the JSON
     JSONObject head = new JSONObject();
     head.setInt("mainStage", mainStage);
@@ -267,7 +267,7 @@ public class Level implements Serialization {//this is a big and important one
     head.setFloat("spawn pointY", RespawnY);
     head.setString("name", name);
     if(inLevelCreator){
-      head.setString("game version", source.version);
+      head.setString("game version", version);
     }else {
       head.setString("game version", createdVersion);//when integrating the level creator make shure this line is changed to reflect the correct version
     }
@@ -303,40 +303,41 @@ public class Level implements Serialization {//this is a big and important one
       board.setString("location", logicBoards.get(i).save());
       index.setJSONObject(index.size(), board);
     }
-    source.saveJSONArray(index, Util.rootPath+"/index.json");
+    index.save(new File(Util.rootPath+"/index.json"),null);
   }
 
+  //appererntly this was unused
   /**Calculate the total file hash of the level
   @return The total concatanated hash of all the files in the level
   */
-  public String getHash() {
-    String basePath="";//figure out the base folder of the level
-    if (Util.rootPath.startsWith("data")) {
-      basePath=source.sketchPath()+"/"+Util.rootPath;
-    } else {
-      basePath=Util.rootPath;
-    }
-    String hash="";
-    hash+=Hasher.getFileHash(basePath+"/index.json");//calculate the hash of the index file
+  //public String getHash(String sketchPath) {
+  //  String basePath="";//figure out the base folder of the level
+  //  if (Util.rootPath.startsWith("data")) {
+  //    basePath=source.sketchPath()+"/"+Util.rootPath;
+  //  } else {
+  //    basePath=Util.rootPath;
+  //  }
+  //  String hash="";
+  //  hash+=Hasher.getFileHash(basePath+"/index.json");//calculate the hash of the index file
 
-    JSONArray file = source.loadJSONArray(basePath+"/index.json");
-    JSONObject job;
-    for (int i=1; i<file.size(); i++) {//calculatae the hash of each indiviual level file and add it to the current hash
-      job=file.getJSONObject(i);
-      if (job.getString("type").equals("stage")||job.getString("type").equals("3Dstage")) {
-        hash+=Hasher.getFileHash(basePath+job.getString("location"));
-        continue;
-      }
-      if (job.getString("type").equals("sound")) {
-        hash+=Hasher.getFileHash(basePath+job.getString("location"));
-        continue;
-      }
-      if (job.getString("type").equals("logicBoard")) {
-        hash+=Hasher.getFileHash(basePath+job.getString("location"));
-      }
-    }
-    return hash;
-  }
+  //  JSONArray file = Util.loadJSONArray(basePath+"/index.json");
+  //  JSONObject job;
+  //  for (int i=1; i<file.size(); i++) {//calculatae the hash of each indiviual level file and add it to the current hash
+  //    job=file.getJSONObject(i);
+  //    if (job.getString("type").equals("stage")||job.getString("type").equals("3Dstage")) {
+  //      hash+=Hasher.getFileHash(basePath+job.getString("location"));
+  //      continue;
+  //    }
+  //    if (job.getString("type").equals("sound")) {
+  //      hash+=Hasher.getFileHash(basePath+job.getString("location"));
+  //      continue;
+  //    }
+  //    if (job.getString("type").equals("logicBoard")) {
+  //      hash+=Hasher.getFileHash(basePath+job.getString("location"));
+  //    }
+  //  }
+  //  return hash;
+  //}
   
   /**Get the names of the non JSON level files
   @return A list of file names for the non JSON files in the level

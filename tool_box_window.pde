@@ -1520,7 +1520,7 @@ class ToolBox extends PApplet {
           //save button
           if (saveLevel.isMouseOver(mouseX,mouseY)) {
             System.out.println("saving level");
-            level.save(true);
+            level.save(true,version);
             gmillis=millis()+400+millisOffset;
             System.out.println("save complete"+gmillis);
           }
@@ -1663,7 +1663,7 @@ class ToolBox extends PApplet {
           }
           if (saveLevel.isMouseOver(mouseX,mouseY)) {
             System.out.println("saving level");
-            level.save(true);
+            level.save(true,version);
             gmillis=millis()+400+millisOffset;
             System.out.println("save complete"+gmillis);
           }

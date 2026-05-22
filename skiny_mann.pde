@@ -42,8 +42,6 @@ void settings() {//first function called
     println("loading window icon");
     //smet the window icon / task bar icon, why does this not wotk on lunix?
     PJOGL.setIcon("data/assets/skinny mann face.PNG");
-    //give a fair ammount of classes a static refence to this class, note: WE NEED TO REMOVE THIS!
-    sourceInitilize();
   }catch(Throwable e) {
     println("an error orrored in the settings function");
     handleError(e);
@@ -2019,7 +2017,7 @@ void mouseClicked() {// when you click the mouse
                 }
               }, ()->coins,currentPlayer,(d)->e3DMode = d);
             level=new Level(mainIndex,context);//load that new level
-            level.save(true);//save the level to disc
+            level.save(true,version);//save the level to disc
             lcEnterLevelTextBox.resetState();
             return;
           }
@@ -2060,7 +2058,7 @@ void mouseClicked() {// when you click the mouse
 
           if (overview_saveLevel.isMouseOver(mouseX,mouseY)) {//save button in the level overview
             System.out.println("saving level");
-            level.save(true);
+            level.save(true,version);
             gmillis=millis()+400;//glitch effect
             System.out.println("save complete");
           }
@@ -2153,7 +2151,7 @@ void mouseClicked() {// when you click the mouse
               String newFileName = lcNewFileTextBox.getContence();
               level.sounds.put(newFileName, new StageSound(newFileName, "/"+pathSegments[pathSegments.length-1],newSoundAsNarration));//add the sound to the level
               System.out.println("saving level");
-              level.save(true);//save the level
+              level.save(true,version);//save the level
               gmillis=millis()+400;///glitch effect
               System.out.println("save complete"+gmillis);
               newFile=false;//return back to the obverview
@@ -4018,13 +4016,6 @@ class GlitchBox{
   }
 }
 
-/**Give various classes static refrences to this class to make the function properly.<br>
-NOTE: we are going to get rid of this :tm:
-*/
-void sourceInitilize() {
-  Level.source=this;
-}
-
 /**Hanlde any errors that pop up in multyplayer netwiorking.<br>
 Show the disconnect screen with the reason for the disconnection.
 @param error The error that was thrown
@@ -4936,6 +4927,8 @@ ClientContext createClientContext(){
   };
 }
 
+/**Reload the coins in the current level
+*/
 void reloadCoins(){
   coins = new ArrayList<>();
   for(int i=0;i<level.numOfCoins;i++){
