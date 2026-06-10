@@ -85,4 +85,22 @@ abstract public class Entity{
   @param render The surface to draw to
   */
   public abstract void draw3D(skiny_mann context,PGraphics render);
+  
+  /**The last pfid this entity has been used with
+  */
+  private long lastUpdateNumber=0;
+  
+  /**Check if this entity has been updated in this physcis context. 
+  If the internal pfid number matches this function will return false. 
+  If it does not, then the internal number will be updated to the supplied one and this function will return true.
+  @param currentPfid The current pdif that the game is processing.
+  @return true if this entity has not yet been updated within this frame context.
+  */
+  public boolean updatePhysicsFrameNumber(long currentPfid){
+    if(lastUpdateNumber == currentPfid){
+      return false;
+    }
+    lastUpdateNumber = currentPfid;
+    return true;
+  }
 }

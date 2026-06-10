@@ -128,6 +128,21 @@ void stageLevelDraw() {
 
     draw_mann(Scale*(players[currentPlayer].getX()-drawCamPosX), Scale*(players[currentPlayer].getY()+drawCamPosY), players[currentPlayer].getPose(), Scale*players[currentPlayer].getScale(), players[currentPlayer].getColor(), g);//draw this users player
     players[currentPlayer].stage=currentStageIndex;//update the stage this player is in
+    
+    if(settings.getDebugHitboxes()){
+      HashMap<Entity, ArrayList<Entity>> esb = computeEntityStacks(stage);
+      for (int i=0; i<stage.entities.size(); i++) {//render all the Entites on this stage
+        if (!stage.entities.get(i).isDead()){//if this entity is not dead
+          Collider2D box = createEntityStackBox(stage.entities.get(i),esb,0,0);
+          fill(#E03AFA,80);
+          if(box instanceof ComboBox2D){
+            fill(#F9FA3A,80);
+          }
+          rect(Scale*(box.getMin().x - drawCamPosX), Scale*(box.getMin().y + drawCamPosY),Scale*(box.getMax().x - box.getMin().x),Scale*(box.getMax().y - box.getMin().y));
+        }
+      }
+    }
+    
     //end of rendering 2D stage
   } else if (stage.type.equals("3Dstage")) {//if the stage is a 3D stage
     if (e3DMode) {//if 3D mode is turned on
@@ -145,7 +160,6 @@ void stageLevelDraw() {
       
       perspective(settings.getFOV(),width*1.0/height,0.5,1048576);//set the FOV and min/max draw distance for 3D
       
-      //TODO decouple this from frame rate
       coinRotation += (int)(0.1875*frameDT);//rotate the coins
       
       if (coinRotation>360) {//reset the coin totation if  it is over 360 degrees
@@ -848,9 +862,9 @@ void camera3DpositionNotSimulating(int dt) {
 //////////////////////////////////////////-----------------------------------------------------
 //start of the physics zone
 
-/**Preform p[hyscics calucaltions for the current player and all entities if nessarry.<br>
+/**Preform physcics calucaltions for the current player and all entities if nessarry.<br>
 note this method also preforms monitoring for the logic thread.
-Executed on the physcics thread
+Executed on the physcics thread.
 */
 void playerPhysics() {
   int calcingPlayer = currentPlayer;//store the current player
@@ -859,9 +873,10 @@ void playerPhysics() {
   if(level.stages.get(currentStageIndex).is3D){//if this stage is 3D then generate the 3D hitboxes as well
     stageBoxes3D = generateLevel3DComboBox(level.stages.get(currentStageIndex));
   }
+  HashMap<Entity, ArrayList<Entity>> entityStacks = computeEntityStacks(level.stages.get(currentStageIndex));
 
   //calculate the players physics
-  entityPhysics(players[calcingPlayer], level.stages.get(currentStageIndex),stageBoxes,stageBoxes3D);
+  entityPhysics(players[calcingPlayer], level.stages.get(currentStageIndex),stageBoxes,stageBoxes3D,entityStacks);
 
   //code specific to the current player
   if (players[calcingPlayer].getY()>720) {//kill the player if they go below the stage
@@ -946,6 +961,7 @@ void playerPhysics() {
         entityStageBoxes = generateLevel2DComboBox(stage);
         entityStageBoxes3D = generateLevel3DComboBox(stage);
       }
+      HashMap<Entity, ArrayList<Entity>> stageEntityStacks = computeEntityStacks(stage);
       int stageIndex;
       //figure out the index of this stage
       for(stageIndex = 0;stageIndex < level.stages.size();stageIndex++){
@@ -964,7 +980,7 @@ void playerPhysics() {
       //calculate the physics for each entity in this stage
       for (int i=0; i<stage.entities.size(); i++) {
         stage.entities.get(i).update(agentContext);
-        entityPhysics(stage.entities.get(i), stage, entityStageBoxes,entityStageBoxes3D);
+        entityPhysics(stage.entities.get(i), stage, entityStageBoxes,entityStageBoxes3D,stageEntityStacks);
       }
     }
   } else if (level.multyplayerMode!=2) {//if the level is not in co-op mode
@@ -972,7 +988,7 @@ void playerPhysics() {
     EntityAgentContext agentContext = new EntityAgentContext(mspc,stageBoxes,stageBoxes3D,new Player[]{players[currentPlayer]},level.stages.get(currentStageIndex).entities);
     for (int i=0; i<level.stages.get(currentStageIndex).entities.size(); i++) {
       level.stages.get(currentStageIndex).entities.get(i).update(agentContext);
-      entityPhysics(level.stages.get(currentStageIndex).entities.get(i), level.stages.get(currentStageIndex),stageBoxes,stageBoxes3D);
+      entityPhysics(level.stages.get(currentStageIndex).entities.get(i), level.stages.get(currentStageIndex),stageBoxes,stageBoxes3D,entityStacks);
     }
   }
 
@@ -996,8 +1012,9 @@ void playerPhysics() {
 @param stage The stage the entity is on
 @param stageHitBoxs2D The 2D hitboxs for the stage
 @param stageHitBoxs3D The 3D hitboxs for the stage(if it has them)
+@param entityStacks The stacks of entities in this level
 */
-void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBoxs2D, ArrayList<Collider3D> stageHitBoxs3D) {
+void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBoxs2D, ArrayList<Collider3D> stageHitBoxs3D,HashMap<Entity, ArrayList<Entity>> entityStacks) {
   //create the context for getting a movement manager
   EntityGetMovementManagerContext eMMContext = new EntityGetMovementManagerContext(){
     public Player getCurrentPlayer(){
@@ -1112,16 +1129,39 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
     if (simulating || !levelCreator){
         //gravity
         //    d  =                      vi*t          + 0.5 * a * t^2
-        float pd = (entity.getVerticalVelocity()*mspc + 0.5*gravity*(float)Math.pow(mspc, 2));//calculate the new verticle position the player shoud be at
-        float newPos = pd +  entity.getY();
-        Collider2D newBox = entity.getHitBox2D(0, pd+0.5);
-        if (!level_colide(newBox, stageHitBoxs2D)) {//check if that location would be inside of the ground or ceiling
+        float pd = (entity.getVerticalVelocity()*mspc + 0.5*gravity*(float)Math.pow(mspc, 2));//pixel diffrence
+        float newPos = pd +  entity.getY();//calculate the new verticle position the player shoud be at
+        Collider2D newBox;
+        boolean movingUp = entity.getVerticalVelocity() < 0;
+        if(movingUp){//if this entity is moving up
+          //use the full hitbox of everything riding it
+          newBox = createEntityStackBox(entity, entityStacks,0,pd-2);
+        } else {//if this entity is moving down
+          //use just its hitbox
+          newBox = entity.getHitBox2D(0,pd+0.5);
+        }
+        if (!level_colide(newBox, stageHitBoxs2D) ) {//check if that location would be inside of the ground or ceiling
           //if the entity can coolide with other entites check if it is doing so, otherwise continue
-          if (!entity.collidesWithEntites() || !entityCollide(entity, newBox, stage)) {
+          if (movingUp || !entity.collidesWithEntites() || !entityCollide(entity, newBox, stage)) {
+            pfid ++;
             //if the new pos is not colliding with anything
             //           vf          =         vi                  +    a * t
             entity.setVerticalVelocity(entity.getVerticalVelocity()+gravity*mspc);//calculate the players new verticle velocity
-            entity.setY(newPos);//update the postiton of the player
+
+            //if moving in the up direction
+            //adjust the position of all riding entities
+            if(movingUp){
+              moveEntityStack(entity, entityStacks, 0, pd);
+            } else {
+              //moving down
+              //this prevetns entities from falling into eachother 
+              if(!(entity.collidesWithEntites() && entityCollide(entity, newBox, stage))){//if it can collide with entitites and it is not colliing right now
+                entity.setY(newPos);//update the postiton of the player
+              } else {
+                entity.setVerticalVelocity(0);//stop moving down/up
+              }
+            }
+            
           } else {//if you collided with an entity
             entity.setVerticalVelocity(0);//stop moving down/up
           }
@@ -1433,6 +1473,32 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
   }
 }
 
+/**Move an entire stack of entities by the given offset. Does not check for collison before moving. Rember to increment pfid before calling.
+@param base The entity at the base of the stack.
+@param entityStack The entire entity stack on this stage
+@param offsetX How far to move the stack in the x axis
+@param offsetY How far to moev the stack in the y axis
+*/
+void moveEntityStack(Entity base, HashMap<Entity, ArrayList<Entity>> entityStack, float offsetX, float offsetY){
+  //check this entities pfid
+  if(!base.updatePhysicsFrameNumber(pfid)){
+    return;
+  }
+  
+  //move this entity
+  base.setX(base.getX()+offsetX).setY(base.getY()+offsetY);
+  
+  //get any entities that are stacked on this one
+  ArrayList<Entity> stack = entityStack.get(base);
+  
+  //if there was nothing in the stack return
+  if(stack != null && !stack.isEmpty()){
+    //run this funcion on each entitiy in the stack
+    for(Entity sub: stack){
+      moveEntityStack(sub,entityStack,offsetX,offsetY);
+    }
+  }
+}
 
 /**Check if a point is inside of a solid object
 @param hitbox The hitbox to check for collision of
@@ -1744,6 +1810,74 @@ boolean stageLoopCondishen(int i, Stage stage) {
       return i<stage.parts.size();
     }
   }
+}
+
+/**Check what entities are rideing eachother and create a collection of information that represents this relationship
+@param stage The stage to get the entity stacks for
+@return A map that given a specific entity, returns a list of all entities that are riding that entity.
+*/
+HashMap<Entity, ArrayList<Entity>> computeEntityStacks(Stage stage){
+  //in the future, figure out a 3D version of this
+  HashMap<Entity, ArrayList<Entity>> result = new HashMap<>();
+  ArrayList<StageEntity> entities = stage.entities;
+  for (int i=0; i<entities.size(); i++) {
+    //if this entity does not collide with othgers, then just ignore it, nothing could be sitting on top of it
+    if(!entities.get(i).collidesWithEntites()){
+      continue;
+    }
+    ArrayList<Entity> riders = new ArrayList<>();
+    Collider2D bottomEntityHitbox = entities.get(i).getHitBox2D(0,0);
+    //check agained all other entities
+    for(int j=0;j<entities.size();j++){
+      if(i==j){
+        continue;
+      }
+      //if this one does not collide, the skip it
+      if(!entities.get(j).collidesWithEntites()){
+        continue;
+      }
+      Collider2D topBaseBox = entities.get(j).getHitBox2D(0,0);
+      Collider2D topDownBox = entities.get(j).getHitBox2D(0,2.5);
+      //check if moving this entitiy down slightly would make it collide and check that it is not currenly colliding
+      //this order of checks should be more efficient as they are not likely to be near eachother to start with
+      if(CollisionDetection.collide2D(topDownBox,bottomEntityHitbox) && !CollisionDetection.collide2D(topBaseBox,bottomEntityHitbox)){
+        riders.add(entities.get(j));
+      }
+    }
+    if(!riders.isEmpty()){
+      result.put(entities.get(i),riders);
+    }
+  }
+  return result;
+}
+
+/**Create a 2D combo hitbox for a stack of entities
+@param base The entity at the bottom of the stack
+@param riders The current stage's collection of entities that are on top of eachother
+@param offsetX the X offset of the resulting hitbox
+@param offsetY the Y offset of the resulting hitbox
+@return A combo box contianing the hitbox data of the entire entity stack, or the hitbox of the base entity if nothing is rideing it
+*/
+Collider2D createEntityStackBox(Entity base, HashMap<Entity, ArrayList<Entity>> riders, float offsetX, float offsetY){
+  ArrayList<Entity> tmp = riders.get(base);
+  if(tmp == null){
+    return base.getHitBox2D(offsetX,offsetY);
+  }
+  ArrayList<Entity> riding = new ArrayList<>(tmp);//make a copy 
+  ComboBox2D combined = new ComboBox2D();
+  combined.addBox(base.getHitBox2D(offsetX,offsetY));
+  //this effectivly has to recursivly get the hitboxes but, i do not want to do recursion right now so we will do it in a loop
+  while(!riding.isEmpty()){
+    Entity top = riding.remove(0);//take the next entitiy
+    combined.addBox(top.getHitBox2D(offsetX,offsetY));
+    ArrayList<Entity> moreRiders = riders.get(top);
+    //note: this has the potential to add hitboex that allready have been added. this should not effect the end result of the computation but will increase the total compute time
+    //it may be a good idea to weed out duplicates right here but those checks may be more expensive then just allowing the duplications
+    if(moreRiders != null){
+      riding.addAll(moreRiders);
+    }
+  }
+  return combined;
 }
 
 /**Thread responcable for ticking the logic baord tick

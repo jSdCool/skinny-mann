@@ -23,6 +23,7 @@ public class Settings {
 
   private boolean debugFPS = false;
   private boolean debugInfo = false;
+  private boolean debugShowHitboxes = false;
 
   private float soundMusicVolume = 1;
   private float soundSoundVolume = 1;
@@ -97,6 +98,7 @@ public class Settings {
   private void loadDebugSettings(JSONObject data) {
     debugFPS = data.getBoolean("fps");
     debugInfo = data.getBoolean("debug info");
+    debugShowHitboxes = data.getBoolean("hitboxes");
   }
   /**Load the sound settings block from the settings file
   @param data The object with th settings data
@@ -164,6 +166,7 @@ public class Settings {
     JSONObject data = new JSONObject();
     data.setBoolean("fps", debugFPS);
     data.setBoolean("debug info", debugInfo);
+    data.setBoolean("hitboxes",debugShowHitboxes);
     data.setString("label", "debug stuffs");
     return data;
   }
@@ -252,6 +255,12 @@ public class Settings {
   */
   public boolean getDebugInfo() {
     return debugInfo;
+  }
+  /**Get wether hitboxes should be renderd on the screen
+  @return true if hitboxes should be rendered 
+  */
+  public boolean getDebugHitboxes(){
+    return debugShowHitboxes;
   }
   /**Get the music volume
   @return The current volume of the music
@@ -387,11 +396,18 @@ public class Settings {
     adjustStats();
   }
   /**Set wether the debug info should be displayed
-  @param debugInfo Wther to shoe the current debug info on screen
+  @param debugInfo Wether to shoe the current debug info on screen
   */
   public void setDebugInfo(boolean debugInfo) {
     this.debugInfo=debugInfo;
     adjustStats();
+  }
+  /**Set if hitboxes should be rendered
+  @param hitboxes Wether hitboxes are to be renderd in 2D
+  */
+  public void setDebugHitboxes(boolean hitboxes){
+   this.debugShowHitboxes = hitboxes; 
+   adjustStats();
   }
   /**Set the music volume
   @param soundMusicVolume The new music volume

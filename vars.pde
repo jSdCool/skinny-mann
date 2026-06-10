@@ -659,6 +659,9 @@ float cam3Dy;
 */
 float cam3Dz;//camera rotation
 
+/**Physics Frame id, incremde through the physics process to prevent entities from being moved twice in the same action
+*/
+long pfid = 0;
 
 /**The saved level creator colors
 */
