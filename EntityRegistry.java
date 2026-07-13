@@ -24,9 +24,9 @@ public class EntityRegistry{
   */
   public static void register(Identifier id, Function<SerialIterator,Serialization> serialConstructor, Function<JSONObject, StageEntity> jsonConstructor, Function<StageEntityPlacementContext, StageEntity> placementConstructor, EntityButtonIconDraw icon, String description){
     SerialRegistry.register(id,serialConstructor);
-    //if(!id.equals(SimpleEntity.ID)){
+    if(!id.equals(SimpleEntity.ID)){
       ids.add(id);
-    //}
+    }
     jsonConstructors.put(id,jsonConstructor);
     placementConstructors.put(id,placementConstructor);
     icons.put(id,icon);

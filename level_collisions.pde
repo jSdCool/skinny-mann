@@ -1055,7 +1055,9 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
         if (!level_colide(newboxPos, stageHitBoxs2D)) {//check if the new posistion collids with anything
           //if it does not
           if (!entity.collidesWithEntites() || !entityCollide(entity, newboxPos, stage)) {//if this entity can collide with other entities check if this noew position would
-            entity.setX(newpos);//move the entity if all is good
+            pfid ++;
+            //the bottom entity works fine, it is those in top that are the problem
+            moveEntityStack(entity, entityStacks, offset,0,stageHitBoxs2D, stage);
           }
           //if it collided with the ground check if it can climb stairs
         } else if (entity.getVerticalVelocity()<0.008) {//check if the player is not falling
@@ -1063,7 +1065,9 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
             newboxPos = entity.getHitBox2D(offset, -i);//generate a new hitbox
             if (!level_colide(newboxPos, stageHitBoxs2D)) {//if it does not hit something then
               //maby allow use of entites as stairs
-              entity.setX(newpos);//move the entity forwards (anti in ground will take care of moving the entity up)
+              pfid ++;
+              moveEntityStack(entity, entityStacks, offset,0,stageHitBoxs2D, stage);
+              //entity.setX(newpos);//move the entity forwards (anti in ground will take care of moving the entity up)
               break;
             }
           }
@@ -1090,14 +1094,18 @@ void entityPhysics(Entity entity, Stage stage, ArrayList<Collider2D> stageHitBox
         if (!level_colide(newboxPos, stageHitBoxs2D)) {//check if the new posistion collids with anything
           //if the entity can coolide with other entites check if it is doing so, otherwise continue
           if (!entity.collidesWithEntites() || !entityCollide(entity, newboxPos, stage)) {
-            entity.setX(newpos);//move the entity if all is good
+            pfid ++;
+            moveEntityStack(entity, entityStacks, -offset,0,stageHitBoxs2D, stage);
+            //entity.setX(newpos);//move the entity if all is good
           }
         } else if (entity.getVerticalVelocity()<0.008) {//check if the player is not falling
           //check to see if the player can walk up a "step"
           for (int i=1; i<11; i++) {//check to see if the player can walk up a "step"
             newboxPos = entity.getHitBox2D(-offset, -i);//generate a new hitbox
             if (!level_colide(newboxPos, stageHitBoxs2D)) {
-              entity.setX(newpos);//move the entity backwards (anti in ground will take care of moving the entity up)
+              pfid ++;
+              moveEntityStack(entity, entityStacks, -offset,0,stageHitBoxs2D, stage);
+              //entity.setX(newpos);//move the entity backwards (anti in ground will take care of moving the entity up)
               break;
             }
           }
@@ -1500,6 +1508,44 @@ void moveEntityStack(Entity base, HashMap<Entity, ArrayList<Entity>> entityStack
   }
 }
 
+void moveEntityStack(Entity base, HashMap<Entity, ArrayList<Entity>> entityStack, float offsetX, float offsetY, ArrayList<Collider2D> stageHitBoxs2D, Stage stage){
+  //check if this eneity has been moved as part of this stack yet
+  if(!base.updatePhysicsFrameNumber(pfid)){
+    return;
+  }
+  
+  //check if the new hitbox pos is valid
+  Collider2D newBox = base.getHitBox2D(offsetX,offsetY);
+  
+  if(level_colide(newBox, stageHitBoxs2D)){ //check if this new position would be valid
+    return;//if not, stop here
+  }
+  //check if this new position collides with another entity
+  if(base.collidesWithEntites() && entityCollide(base, newBox, stage)){
+    //if so don't move and stop
+    return;
+  }
+  
+  //move this entity
+  float newX = base.getX() + offsetX;
+  float newY = base.getY() + offsetY;
+  
+  base.setX(newX);
+  base.setY(newY);
+  
+  
+  //get any entities that are stacked on this one
+  ArrayList<Entity> stack = entityStack.get(base);
+  
+  //if there was nothing in the stack return
+  if(stack != null && !stack.isEmpty()){
+    //run this funcion on each entitiy in the stack
+    for(Entity sub: stack){
+      moveEntityStack(sub,entityStack,offsetX,offsetY, stageHitBoxs2D, stage);
+    }
+  }
+}
+
 /**Check if a point is inside of a solid object
 @param hitbox The hitbox to check for collision of
 @param stageBoxes All the hitboxes of the stage to test with
@@ -1684,7 +1730,7 @@ ArrayList<Collider3D> generateLevel3DComboBox(Stage stage){
 
 /**Test if an entity collides with other entities
 @param self The entity to check collision for
-@param hitbox The hitbox of the entity
+@param hitbox The hitbox of the entity, used to distinguish between the 2D and 3D verion of this function and as an offset from the entity
 @param stage The stage to check the collision of ther entities
 @return true if this entity colliders with any onther on the same stage
 */
@@ -1694,7 +1740,7 @@ boolean entityCollide(Entity self, Collider2D hitbox, Stage stage) {
 
 /**Test if an entity collides with other entities
 @param self The entity to check collision for
-@param hitbox The hitbox of the entity
+@param hitbox The hitbox of the entity, used to distinguish between the 2D and 3D verion of this function and as an offset from the entity
 @param stage The stage to check the collision of ther entities
 @return The entitiy that was collided with or null if no collison occored
 */
@@ -1715,7 +1761,7 @@ Collider2D entityCollideObject(Entity self, Collider2D hitbox, Stage stage) {
 }
 /**Test if an entity collides with other entities
 @param self The entity to check collision for
-@param hitbox The hitbox of the entity
+@param hitbox The hitbox of the entity, used to distinguish between the 2D and 3D verion of this function and as an offset from the entity
 @param stage The stage to check the collision of ther entities
 @return true if this entity colliders with any onther on the same stage
 */
@@ -1724,7 +1770,7 @@ boolean entityCollide(Entity self, Collider3D hitbox, Stage stage) {
 }
 /**Test if an entity collides with other entities
 @param self The entity to check collision for
-@param hitbox The hitbox of the entity
+@param hitbox The hitbox of the entity, used to distinguish between the 2D and 3D verion of this function and as an offset from the entity
 @param stage The stage to check the collision of ther entities
 @return The entitiy that was collided with or null if no collison occored
 */
