@@ -1508,6 +1508,14 @@ void moveEntityStack(Entity base, HashMap<Entity, ArrayList<Entity>> entityStack
   }
 }
 
+/**Move an entire stack of entities by the given offset. Does not check for collison before moving. Rember to increment pfid before calling.
+@param base The entity at the base of the stack.
+@param entityStack The entire entity stack on this stage
+@param offsetX How far to move the stack in the x axis
+@param offsetY How far to moev the stack in the y axis
+@param stageHitBoxs2D The 2D ground hitboxes for the stage in question
+@param stage The stage in question, used for checking entity collisions
+*/
 void moveEntityStack(Entity base, HashMap<Entity, ArrayList<Entity>> entityStack, float offsetX, float offsetY, ArrayList<Collider2D> stageHitBoxs2D, Stage stage){
   //check if this eneity has been moved as part of this stack yet
   if(!base.updatePhysicsFrameNumber(pfid)){
