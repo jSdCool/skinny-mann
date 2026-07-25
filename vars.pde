@@ -631,6 +631,9 @@ int yangle=15;
 /**The 3D cmarea distance from the focal point
 */
 int dist=700;//camera presets
+/**The index of the currently selected entity
+*/
+int selectedEntityIndex;
 /**The sound index map for all of the tutorial narrations
 */
 int[][] tutorialNarration=new int[2][17];

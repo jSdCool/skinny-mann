@@ -187,7 +187,7 @@ void stageEditGUI() {
 
     if (deleteing&&delete) {//if attempting to delete something
       int index=colid_index(mouseX/Scale+camPos, mouseY/Scale-camPosY, current);//get the index of the element the mouse is currently over
-      if (index==-1) {//if the mouse was over nothing then do nothing
+      if (index==-1) {//if the mouse was over nothing, check if it was over an entity
         Collider2D c2D = Collider2D.createRectHitbox(mouseX/Scale+camPos-0.5f,mouseY/Scale-camPosY-0.5f,1,1);
         //check for collision with entities
         for(int i=0;i<current.entities.size();i++){
@@ -226,7 +226,7 @@ void stageEditGUI() {
     }
     
     //2D Component Transformations
-    if (selectedIndex!=-1) {//if something is selected
+    if (selectedIndex>-1) {//if something is selected
       StageComponent ct=current.parts.get(selectedIndex);//get the selected componenet
       //2D Rotation
       if(current3DTransformMode==3 && ct instanceof Rotatable){//if rotating
@@ -475,7 +475,7 @@ void stageEditGUI() {
       }
       
       //2D 3D Component transformations
-      if (selectedIndex!=-1) {//if selecting somethings
+      if (selectedIndex>-1) {//if selecting somethings
         StageComponent ct = current.parts.get(selectedIndex);
         //2D Rotation
         if(current3DTransformMode==3 && ct instanceof Rotatable){//if rotating
@@ -529,7 +529,7 @@ void stageEditGUI() {
     else {//if 3dmode is on
     
       //3D Component transformations
-      if (selectedIndex!=-1) {//if something is selected
+      if (selectedIndex>-1) {//if something is selected
         //wether the red/green/blue arrows are currrntly being hoverd over
         boolean b1=false, b2=false, r1=false, r2=false, g1=false, g2=false, rix=false,riy=false,riz=false;
         StageComponent ct=current.parts.get(selectedIndex);
@@ -1203,6 +1203,17 @@ void GUImouseClicked() {
 
     if (selecting) {//if selecting figureout what is being selected
       selectedIndex=colid_index(mouseX/Scale+camPos, mouseY/Scale-camPosY, current);
+      if(selectedIndex == -1){ //if you were unable to select a peice of the level, check and see if you can grab an entity
+      Collider2D c2D = Collider2D.createRectHitbox(mouseX/Scale+camPos-0.5f,mouseY/Scale-camPosY-0.5f,1,1);
+        //check for collision with entities
+        for(int i=0;i<current.entities.size();i++){
+          if(CollisionDetection.collide2D(current.entities.get(i).getHitBox2D(0,0),c2D)){//if clicking on a entity
+            selectedIndex = -2;
+            selectedEntityIndex = i;
+            break;
+          }
+        }
+    }
     }
     if (selectingBlueprint && blueprints.length != 0) {//place selected bluepring and paste it into the stage
       boolean type3d = blueprints[currentBluieprintIndex].type.equals("3D blueprint");

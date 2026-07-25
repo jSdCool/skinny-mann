@@ -4,7 +4,7 @@ import processing.data.*;
 import processing.core.*;
 /**A simple entity used to test the entity system
 */
-public class SimpleEntity extends StageEntity{
+public class SimpleEntity extends StageEntity implements Configurable{
   
   public static final Identifier ID = new Identifier("simple_entity");
   /**Place a simple entity
@@ -34,6 +34,8 @@ public class SimpleEntity extends StageEntity{
     return output;
   }
   
+  /**Movement change cooldown timer
+  */
   int to =0;
   MovementManager m  = new MovementManager(){
       int ax =0,az =0;
@@ -69,7 +71,8 @@ public class SimpleEntity extends StageEntity{
   public MovementManager getMovementmanager(EntityGetMovementManagerContext context){
     return m;
   }
-  
+  /**If this entity is currently dead
+  */
   boolean dead = false;
   
   /**Get wether or not this entity colides with outher entities
@@ -198,5 +201,18 @@ public class SimpleEntity extends StageEntity{
   @Override
   public Identifier id() {
     return ID;
+  }
+  
+  /**Property test value storage
+  */
+  private int value =0;
+  
+  /**Get the properties that can be configured on this component
+  @return An array of the properties that can be configured
+  */
+  public Property<?,?>[] getProperties(){
+    return new Property<?,?>[]{
+      new IntegerProperty(() -> value, (val)->value = val, "Test Property")
+    };
   }
 }

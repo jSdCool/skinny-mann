@@ -9,6 +9,17 @@ void stageLevelDraw() {
   int selectIndex=-1;//reset the selcting obejct
   if (selecting) {//if you are currently using the selection tool
     selectIndex=colid_index(mouseX/Scale+camPos, mouseY/Scale-camPosY, stage);//figure out what element you are hovering over
+    if(selectIndex == -1){ //if you were unable to select a peice of the level, check and see if you can grab an entity
+      Collider2D c2D = Collider2D.createRectHitbox(mouseX/Scale+camPos-0.5f,mouseY/Scale-camPosY-0.5f,1,1);
+        //check for collision with entities
+        for(int i=0;i<stage.entities.size();i++){
+          if(CollisionDetection.collide2D(stage.entities.get(i).getHitBox2D(0,0),c2D)){//if clicking on a entity
+            selectIndex = -2;
+            selectedEntityIndex = i;
+            break;
+          }
+        }
+    }
   }
   //currently only being used by signs
   if (E_pressed && viewingItemContents) {//if you are viewing the contence of an element and you press E
@@ -107,6 +118,15 @@ void stageLevelDraw() {
     
     for (int i=0; i<stage.entities.size(); i++) {//render all the Entites on this stage
       if (!stage.entities.get(i).isDead())//if this entity is not dead
+      if(selectIndex == -2 && selectedEntityIndex == i){
+        strokeWeight(2);
+        stroke(255,255,0);
+      } else if (selectedIndex == -2 && selectedEntityIndex == i) {//if the current element is the element that has been selected
+        stroke(#0A03FF);//give that element a yellow border
+        strokeWeight(2);
+      } else {
+        noStroke();
+      }
         stage.entities.get(i).draw(this, g);//render the entity
     }
     players[currentPlayer].in3D=false;//set this player to be in 2D mode

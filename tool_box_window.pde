@@ -1028,9 +1028,7 @@ class ToolBox extends PApplet {
           textSize(20);
           textAlign(CENTER, CENTER);
           text("nothing is selected", width/2, height/2);
-        } else {
-          //TODO replace this with a completely modular system
-          //due to this i can not be fucked to document this further
+        } else if(selectedIndex > -1) {//if regular stage componenets are selected
           String type="";
           //theese are assigned to things so that I do not get pesterd about them having the potential to be null
           //this stuf has to so with thigns being selected
@@ -1091,6 +1089,41 @@ class ToolBox extends PApplet {
             if (thing.group>-1)
               prevGroup.draw();
           }
+        } else {
+          String type="";
+          
+          Configurable configComponent = null;
+          
+          //check if the slected ebtity is configurable
+          Entity entity = level.stages.get(currentStageIndex).entities.get(selectedEntityIndex);
+          if(entity instanceof Configurable){
+            configComponent = (Configurable)entity;
+          }
+          
+          //if it is confinurable
+          if(configComponent != null){
+            //draw the regular properly config stuff
+            Property<?,?> properties[] = configComponent.getProperties();
+            if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
+              selectionPropertiesPage = 0;
+            }
+            PropertyConfigEnviormentContext context = createPropertyConfigContext();
+            for(int i=PROPERTIES_PER_PAGE*selectionPropertiesPage;i<properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage +PROPERTIES_PER_PAGE;i++){
+              properties[i].draw(i%PROPERTIES_PER_PAGE,context);
+            }
+            if(selectionPropertiesPage < (properties.length-1)/PROPERTIES_PER_PAGE){
+              nextPropertyPageButton.draw();
+            }
+            if(selectionPropertiesPage > 0){
+              prevPropertyPageButton.draw();
+            }
+          } else {
+            fill(0);
+            textSize(20);
+            textAlign(CENTER, CENTER);
+            text("This object does not have any outher\nproperties that can be changed", width/2, height/2);
+          }
+          
         }//end of thing is selected
       }//end of selection page
       
@@ -1695,8 +1728,7 @@ class ToolBox extends PApplet {
       }//end of tools
 
       if (page.equals("selection")) {//if the page is the selection page
-        if (selectedIndex!=-1) {//if something is selected
-          
+        if (selectedIndex > -1) {//if something is selected
           
           String type="";
           Configurable configComponent = null;
@@ -1748,6 +1780,37 @@ class ToolBox extends PApplet {
             }
             if (thing.group>-1&&prevGroup.isMouseOver(mouseX,mouseY)) {
               thing.group--;
+            }
+          }
+        } else if(selectedIndex == -2){
+          Configurable configComponent = null;
+          
+          //check if the slected ebtity is configurable
+          Entity entity = level.stages.get(currentStageIndex).entities.get(selectedEntityIndex);
+          if(entity instanceof Configurable){
+            configComponent = (Configurable)entity;
+          }
+          if(configComponent != null){
+            Property<?,?> properties[] = configComponent.getProperties();
+            if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
+              selectionPropertiesPage = 0;
+            }
+            //procees clicks for the properties them selfs
+            PropertyConfigEnviormentContext context = createPropertyConfigContext();
+            for(int i = PROPERTIES_PER_PAGE * selectionPropertiesPage; i < properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage + PROPERTIES_PER_PAGE;i++){
+              properties[i].mouseClicked(i%PROPERTIES_PER_PAGE, context,mouseX,mouseY);
+            }
+            
+            //property page buttons
+            if(selectionPropertiesPage < (properties.length-1)/PROPERTIES_PER_PAGE){
+              if(nextPropertyPageButton.isMouseOver(mouseX,mouseY)){
+                selectionPropertiesPage++;
+              }
+            }
+            if(selectionPropertiesPage > 0){
+              if(prevPropertyPageButton.isMouseOver(mouseX,mouseY)){
+                selectionPropertiesPage--;
+              }
             }
           }
         }//if something is selected
@@ -1921,7 +1984,7 @@ class ToolBox extends PApplet {
       if (page.equals("selection")) {
         //sign selection text entering
         //this will be modularized in the near future
-        if (selectedIndex!=-1) {
+        if (selectedIndex > -1) {
           
           Configurable configComponent = null;
           if (editingStage) {
@@ -1935,6 +1998,25 @@ class ToolBox extends PApplet {
             if(logicThing instanceof Configurable){
               configComponent = (Configurable)logicThing;
             }
+          }
+          
+          if(configComponent != null){
+            Property<?,?> properties[] = configComponent.getProperties();
+            if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
+              selectionPropertiesPage = 0;
+            }
+            PropertyConfigEnviormentContext context = createPropertyConfigContext();
+            for(int i=PROPERTIES_PER_PAGE*selectionPropertiesPage;i<properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage +PROPERTIES_PER_PAGE;i++){
+              properties[i].keyPressed(i%PROPERTIES_PER_PAGE, context, keyCode, key);
+            }
+          }
+        } else if (selectedIndex == -2) {
+          Configurable configComponent = null;
+          
+          //check if the slected ebtity is configurable
+          Entity entity = level.stages.get(currentStageIndex).entities.get(selectedEntityIndex);
+          if(entity instanceof Configurable){
+            configComponent = (Configurable)entity;
           }
           
           if(configComponent != null){
@@ -1968,7 +2050,7 @@ class ToolBox extends PApplet {
       if (page.equals("selection")) {
         //sign selection text entering
         //this will be modularized in the near future
-        if (selectedIndex!=-1) {
+        if (selectedIndex > -1) {
           Configurable configComponent = null;
           if (editingStage) {
             StageComponent thing= level.stages.get(currentStageIndex).parts.get(selectedIndex);
@@ -1994,6 +2076,25 @@ class ToolBox extends PApplet {
               properties[i].keyReleased(i%PROPERTIES_PER_PAGE, context, keyCode);
             }
           }
+        } else if (selectedIndex == -2) {
+          Configurable configComponent = null;
+          
+          //check if the slected ebtity is configurable
+          Entity entity = level.stages.get(currentStageIndex).entities.get(selectedEntityIndex);
+          if(entity instanceof Configurable){
+            configComponent = (Configurable)entity;
+          }
+          
+          if(configComponent != null){
+            Property<?,?> properties[] = configComponent.getProperties();
+            if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
+              selectionPropertiesPage = 0;
+            }
+            PropertyConfigEnviormentContext context = createPropertyConfigContext();
+            for(int i=PROPERTIES_PER_PAGE*selectionPropertiesPage;i<properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage +PROPERTIES_PER_PAGE;i++){
+              properties[i].keyPressed(i%PROPERTIES_PER_PAGE, context, keyCode, key);
+            }
+          }
         }
       }
     }
@@ -2006,7 +2107,7 @@ class ToolBox extends PApplet {
       if (page.equals("selection")) {
         //sign selection text entering
         //this will be modularized in the near future
-        if (selectedIndex!=-1) {
+        if (selectedIndex > -1) {
           Configurable configComponent = null;
           if (editingStage) {
             StageComponent thing= level.stages.get(currentStageIndex).parts.get(selectedIndex);
@@ -2029,6 +2130,25 @@ class ToolBox extends PApplet {
             PropertyConfigEnviormentContext context = createPropertyConfigContext();
             for(int i = PROPERTIES_PER_PAGE * selectionPropertiesPage; i < properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage + PROPERTIES_PER_PAGE; i++){
               properties[i].keyTyped(i % PROPERTIES_PER_PAGE, context, key);
+            }
+          }
+        } else if (selectedIndex == -2) {
+          Configurable configComponent = null;
+          
+          //check if the slected ebtity is configurable
+          Entity entity = level.stages.get(currentStageIndex).entities.get(selectedEntityIndex);
+          if(entity instanceof Configurable){
+            configComponent = (Configurable)entity;
+          }
+          
+          if(configComponent != null){
+            Property<?,?> properties[] = configComponent.getProperties();
+            if(selectionPropertiesPage > (properties.length-1)/PROPERTIES_PER_PAGE){
+              selectionPropertiesPage = 0;
+            }
+            PropertyConfigEnviormentContext context = createPropertyConfigContext();
+            for(int i=PROPERTIES_PER_PAGE*selectionPropertiesPage;i<properties.length && i < PROPERTIES_PER_PAGE * selectionPropertiesPage +PROPERTIES_PER_PAGE;i++){
+              properties[i].keyPressed(i%PROPERTIES_PER_PAGE, context, keyCode, key);
             }
           }
         }
