@@ -1,0 +1,24 @@
+//Automatic dependancy management file for use with Processing Dependancy Manager
+//https://github.com/jSdCool/Processing_dependancy_manager
+
+plib {
+	name sound
+}
+
+plib {
+	name minim
+}
+
+
+// ===================
+// VCS spacing DO NOT EDIT!!
+//
+// ===================
+
+//this spaace is reserved for use by sub projects like arcade edition
+
+
+// ===================
+// VCS spacing DO NOT EDIT!!
+//
+// ===================
