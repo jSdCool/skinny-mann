@@ -15,6 +15,7 @@ public abstract class SoundHandler extends Thread {
   
   static {
     backends.put("processing", ProcessingSoundHandler::new);
+    backends.put("minim", MinimSoundHandler::new);
   }
 
   ///**Create a new sound handler with the given music tracks and global sound and narration files.<br>

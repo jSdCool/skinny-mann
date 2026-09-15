@@ -13,6 +13,7 @@ import java.util.Map;
 import java.awt.Desktop;
 import javax.swing.*;
 import java.util.function.Function;
+import ddf.minim.*;
 
 
 /**First method called during initilization.<br>
