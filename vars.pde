@@ -1030,6 +1030,12 @@ Button select_lvl_16;
 /**Level select screen next screen button
 */
 Button select_lvl_next;
+/**Set the sound backend to processing
+*/
+Button soundBackendProcessing;
+/**Set the sound backend to minim
+*/
+Button soundBackendMinim;
 
 /**User interface scaling and positioning manager
 */
@@ -1164,12 +1170,21 @@ UiText st_snd_better;
 /**save narrations
 */
 UiText st_snd_demonitized;
+/**Processing backend text
+*/
+UiText st_snd_backendProcessing;
+/**minim backend text
+*/
+UiText st_snd_backendMinim;
 /**Music volume value display
 */
 UiText st_snd_currentMusicVolume;
 /**Sound volume value display
 */
 UiText st_snd_currentSoundsVolume;
+/**Sound backend setting label
+*/
+UiText st_snd_soundBackend;
 /**Other settings title
 */
 UiText st_other;

@@ -14,6 +14,7 @@ https://github.com/processing/processing4/wiki/Troubleshooting#viruses-and-troja
 +added: entity on entity movement interactions. Note: no entities currently utilize this system 
 +added: entities can now be selected in the level creator
 +added: entities can now have modular configurable properties
++added: new setting, sound backend with options of Processing and Minim. Processing is the default unless your on linux then Minim is the default due to bugs in Ubuntu 26.04 that caused processing's sound lib to not work.
 
 0.10.1_Early_Access
 -changed: made multiplayer networking faster

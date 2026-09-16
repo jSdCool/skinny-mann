@@ -1559,6 +1559,15 @@ void mouseClicked() {// when you click the mouse
               settings.setSoundNarrationMode(1);
               settings.save();
             }
+            //backend buttons
+            if(soundBackendProcessing.isMouseOver(mouseX,mouseY)){
+              settings.setSoundBackend("processing");
+              settings.save();
+            }
+            if(soundBackendMinim.isMouseOver(mouseX,mouseY)){
+              settings.setSoundBackend("minim");
+              settings.save();
+            }
             
           }//end of sound settings
           
@@ -3294,6 +3303,9 @@ void drawSettings() {
     st_snd_narration.draw();
     st_snd_narrationVol.draw();
     st_snd_currentNarrationVolume.draw();
+    st_snd_backendProcessing.draw();
+    st_snd_backendMinim.draw();
+    st_snd_soundBackend.draw();
     
     musicVolumeSlider.draw();
     SFXVolumeSlider.draw();
@@ -3301,6 +3313,9 @@ void drawSettings() {
     
     narrationMode1.draw();
     narrationMode0.draw();
+    
+    soundBackendProcessing.draw();
+    soundBackendMinim.draw();
   }
   if (settingsMenue.equals("outher")) {//if on the other tab
     fill(0);
@@ -3373,6 +3388,12 @@ void drawSettings() {
         chechMark(narrationMode0.x+narrationMode0.lengthX/2, narrationMode0.y+narrationMode0.lengthY/2);
       } else if (settings.getSoundNarrationMode()==1) {
         chechMark(narrationMode1.x+narrationMode1.lengthX/2, narrationMode1.y+narrationMode1.lengthY/2);
+      }
+      
+      if(settings.getSoundBackend().equals("processing")){
+        chechMark(soundBackendProcessing.x+soundBackendProcessing.lengthX/2, soundBackendProcessing.y+soundBackendProcessing.lengthY/2);
+      } else if(settings.getSoundBackend().equals("minim")){
+        chechMark(soundBackendMinim.x+soundBackendMinim.lengthX/2, soundBackendMinim.y+soundBackendMinim.lengthY/2);
       }
     }
     if (settingsMenue.equals("outher")) {
@@ -4559,6 +4580,8 @@ void  initButtons() {
   shadows0 = new UiButton(ui, 920, 190, 40, 40, 255, 0).setStrokeWeight(5);
   narrationMode1 =new UiButton(ui, (1200), (340), (40), (40), 255, 0).setStrokeWeight(5);
   narrationMode0 = new UiButton(ui, (1130), (340), (40), (40), 255, 0).setStrokeWeight(5);
+  soundBackendProcessing = new UiButton(ui, 1130, 420, 40, 40, 255, 0).setStrokeWeight(5);
+  soundBackendMinim = new UiButton(ui, 1200, 420, 40, 40, 255, 0).setStrokeWeight(5);
   select_lvl_UGC=new UiButton(ui, (350), (600), (200), (50), "UGC", -59135, -1791).setStrokeWeight( (10));
   UGC_open_folder=new UiButton(ui, (350), (600), (200), (50), "Open Folder", -59135, -1791).setStrokeWeight( (10));
   UGC_lvls_next=new UiButton(ui, (1030), (335), (200), (50), "Next", -59135, -1791).setStrokeWeight( (10));
@@ -4981,6 +5004,7 @@ void initText() {
   st_snd_SFXvol = new UiText(ui, "sounds volume", 40, 180, 40, LEFT, BOTTOM);
   st_o_3DShadow = new UiText(ui, "3D shadows", 40, 210, 40, LEFT, BOTTOM);
   st_snd_narration = new UiText(ui, "narration mode", 40, 380, 40, LEFT, BOTTOM);
+  st_snd_soundBackend = new UiText(ui, "Sound backend (requires restart)",40, 460, 40, LEFT, BOTTOM);
   st_o_yes = new UiText(ui, "yes", 1190, 45, 20, LEFT, BOTTOM);
   st_o_no = new UiText(ui, "no", 1120, 45, 20, LEFT, BOTTOM);
   st_o_shadowsOff    = new UiText(ui, "Off", 940, 175, 20, CENTER, CENTER);
@@ -4993,6 +5017,8 @@ void initText() {
   st_o_defaultAuthor = new UiText(ui,"Default Level Creator Author",40,350,40,LEFT,BOTTOM);
   st_snd_better = new UiText(ui, "better", 1190, 340, 20, LEFT, BOTTOM);
   st_snd_demonitized = new UiText(ui, "please don't\ndemonetize\nme youtube", 1070, 340, 20, LEFT, BOTTOM);
+  st_snd_backendProcessing = new UiText(ui, "Processing", 1090, 410, 20, LEFT, BOTTOM);
+  st_snd_backendMinim = new UiText(ui, "Minim", 1195, 410, 20, LEFT, BOTTOM);
   st_snd_currentMusicVolume = new UiText(ui, "V", 700, 110, 40, LEFT, BOTTOM);
   st_snd_currentSoundsVolume = new UiText(ui, "B", 700, 180, 40, LEFT, BOTTOM);
   st_other = new UiText(ui, "Outher", 640, 0, 50, CENTER, TOP);
