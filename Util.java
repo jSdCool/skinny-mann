@@ -10,6 +10,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 
 /**Various utility methods
 */
@@ -206,5 +207,38 @@ public class Util{
       throw new RuntimeException("Exception while loading file",e);
     }
     return outgoing;
+  }
+  
+  public static void validateWavFileBitRate(String filePath){
+    try {
+      FileInputStream fis = new FileInputStream(filePath);
+      boolean foundFmt = false;
+      byte[] fmtBuffer = new byte[4];
+      while(!foundFmt) {
+        //bubble the buffer
+        fmtBuffer[0] = fmtBuffer[1];
+        fmtBuffer[1] = fmtBuffer[2];
+        fmtBuffer[2] = fmtBuffer[3];
+        fmtBuffer[3] = (byte)fis.read();
+        
+        //check if it matches the str
+        foundFmt = fmtBuffer[0] == 'f' && fmtBuffer[1] == 'm' && fmtBuffer[2] == 't' && fmtBuffer[3] == ' ';
+      }
+      //we got to the format block
+      //skip all the bytes before the ones we want
+      fis.skip(18);
+      byte[] bitsPerSampleRaw = fis.readNBytes(2);
+      int bitsPerSample = 0;
+      bitsPerSample |= bitsPerSampleRaw[0];
+      bitsPerSample |= bitsPerSampleRaw[1] << 8;
+      fis.close();
+      
+      //we can only use 16 bit samples with the minim lib
+      if(bitsPerSample != 16){
+        throw new RuntimeException("Wav file incompatable! "+bitsPerSample+" bits per sample was found but 16 bits per sample is required! ("+filePath+")");
+      }
+    }catch(IOException e){
+      throw new RuntimeException(e);
+    }
   }
 }

@@ -14,6 +14,7 @@ public class ProcessingSoundHandler extends SoundHandler{
   @param X A reffence to the surface the sounds will be played from
   */
   protected ProcessingSoundHandler(String[][] musicFiles, String[] soundsFiles, String[] narrationFiles,PApplet X) {
+    System.out.println("Creating processing based sound handler");
     music=new SoundFile[musicFiles.length][];
     for (int i=0; i<musicFiles.length; i++) {//set the size of the music tracks
       music[i]=new SoundFile[musicFiles[i].length];
@@ -85,6 +86,7 @@ public class ProcessingSoundHandler extends SoundHandler{
     if (enableSounds) {//if sounds are enabled right now
       if (startMusic) {//if the music should be started
         music[currentMusicTrack][musNum].play(1, getMasterVolume()*getMusicVolume());//play the next music track
+         music[currentMusicTrack][musNum].amp(getMasterVolume()*getMusicVolume());//fix for sound lib being broken
         startMusic=false;
       }
 
@@ -222,6 +224,9 @@ public class ProcessingSoundHandler extends SoundHandler{
   }
   
   public int registerLevelSound(String path) {
+    if(path.endsWith(".wav")){
+        Util.validateWavFileBitRate(path);
+      }
     SoundFile sound = new SoundFile(ggn, path);
     int id =sounds.length+levelSounds.size();
     levelSounds.add(sound);
@@ -229,6 +234,9 @@ public class ProcessingSoundHandler extends SoundHandler{
   }
   
   public int registerLevelNarration(String path){
+    if(path.endsWith(".wav")){
+        Util.validateWavFileBitRate(path);
+      }
     SoundFile sound = new SoundFile(ggn, path);
     int id = narrations.length+levelNarrations.size();
     levelNarrations.add(sound);

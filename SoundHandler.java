@@ -220,6 +220,7 @@ public abstract class SoundHandler extends Thread {
     /**The current backend factory
     */
     private SoundHandlerFactory factory = backends.get("processing");//default to processing (linux should default to minim)
+    
     /**Add a music file to the builder
     @param path The path of the sound file
     @param track The track to put this song in
@@ -228,6 +229,9 @@ public abstract class SoundHandler extends Thread {
     public Builder addMusic(String path, int track) {
       if (track>=numMusicTracks||track<0)
         throw new RuntimeException("invalid music track number "+track);
+      if(path.endsWith(".wav")){
+        Util.validateWavFileBitRate(path);
+      }
       musicPaths.get(track).add(path);
       return this;
     }
@@ -236,6 +240,9 @@ public abstract class SoundHandler extends Thread {
     @return this
     */
     public Builder addSound(String path) {
+      if(path.endsWith(".wav")){
+        Util.validateWavFileBitRate(path);
+      }
       soundPaths.add(path);
       return this;
     }
@@ -245,6 +252,9 @@ public abstract class SoundHandler extends Thread {
     @return this
     */
     public Builder addNarration(String path,int[] narrationIdCallBack){
+      if(path.endsWith(".wav")){
+        Util.validateWavFileBitRate(path);
+      }
       if(narrationIdCallBack != null && narrationIdCallBack.length >0){
         narrationIdCallBack[0] = narrationPaths.size();
       }

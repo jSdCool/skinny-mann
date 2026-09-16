@@ -4242,116 +4242,118 @@ void programLoad() {
     //load the list of music tracks
     String[] musicTracks=loadStrings("data/music/music.txt");
     for (int i=0; i<musicTracks.length; i++) {
-      soundBuilder.addMusic(musicTracks[i], 0);
+      soundBuilder.addMusic(sketchPath()+"/"+musicTracks[i], 0);
     }
     //load the list of global sounds
     String[] sfxTracks=loadStrings("data/sounds/sounds.txt");
     for (int i=0; i<sfxTracks.length; i++) {
-      soundBuilder.addSound(sfxTracks[i]);
+      soundBuilder.addSound(sketchPath()+"/"+sfxTracks[i]);
     }
+
+    soundBuilder.setBackend(settings.getSoundBackend());
   
     int[] idcb = {0};//narration id call back array. used to get the id of the narration, will be set to out of the builder
     //register all the narrations for the tutorial
-    soundBuilder.addNarration("data/sounds/tutorial/T1a.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T1a.wav",idcb);
     tutorialNarration[0][0]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T2a.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T2a.wav",idcb);
     tutorialNarration[0][1]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T3.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T3.wav",idcb);
     tutorialNarration[0][2]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T4a.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T4a.wav",idcb);
     tutorialNarration[0][3]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T5a.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T5a.wav",idcb);
     tutorialNarration[0][4]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T6a.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T6a.wav",idcb);
     tutorialNarration[0][5]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T7.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T7.wav",idcb);
     tutorialNarration[0][6]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T8a.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T8a.wav",idcb);
     tutorialNarration[0][7]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T9a.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T9a.wav",idcb);
     tutorialNarration[0][8]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T10.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T10.wav",idcb);
     tutorialNarration[0][9]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T11.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T11.wav",idcb);
     tutorialNarration[0][10]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T12.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T12.wav",idcb);
     tutorialNarration[0][11]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T13.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T13.wav",idcb);
     tutorialNarration[0][12]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T14a.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T14a.wav",idcb);
     tutorialNarration[0][13]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T15.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T15.wav",idcb);
     tutorialNarration[0][14]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T16.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T16.wav",idcb);
     tutorialNarration[0][15]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T17.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T17.wav",idcb);
     tutorialNarration[0][16]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T1b.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T1b.wav",idcb);
     tutorialNarration[1][0]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T2b.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T2b.wav",idcb);
     tutorialNarration[1][1]=idcb[0];
    
-    soundBuilder.addNarration("data/sounds/tutorial/T3.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T3.wav",idcb);
     tutorialNarration[1][2]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T4b.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T4b.wav",idcb);
     tutorialNarration[1][3]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T5b.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T5b.wav",idcb);
     tutorialNarration[1][4]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T6b.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T6b.wav",idcb);
     tutorialNarration[1][5]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T7.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T7.wav",idcb);
     tutorialNarration[1][6]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T8b.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T8b.wav",idcb);
     tutorialNarration[1][7]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T9b.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T9b.wav",idcb);
     tutorialNarration[1][8]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T10.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T10.wav",idcb);
     tutorialNarration[1][9]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T11.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T11.wav",idcb);
     tutorialNarration[1][10]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T12.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T12.wav",idcb);
     tutorialNarration[1][11]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T13.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T13.wav",idcb);
     tutorialNarration[1][12]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T14b.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T14b.wav",idcb);
     tutorialNarration[1][13]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T15.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T15.wav",idcb);
     tutorialNarration[1][14]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T16.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T16.wav",idcb);
     tutorialNarration[1][15]=idcb[0];
     
-    soundBuilder.addNarration("data/sounds/tutorial/T17.wav",idcb);
+    soundBuilder.addNarration(sketchPath()+"/data/sounds/tutorial/T17.wav",idcb);
     tutorialNarration[1][16]=idcb[0];
     
     println("loading sounds");

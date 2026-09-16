@@ -13,6 +13,7 @@ public class MinimSoundHandler extends SoundHandler{
   @param X A reffence to the surface the sounds will be played from
   */
   public MinimSoundHandler(String[][] musicFiles, String[] soundsFiles, String[] narrationFiles,PApplet X){
+    System.out.println("Creating minim based sound handler");
     minim = new Minim(X);
     music=new AudioPlayer[musicFiles.length][];
     for (int i=0; i<musicFiles.length; i++) {//set the size of the music tracks
@@ -243,6 +244,9 @@ public class MinimSoundHandler extends SoundHandler{
   }
   
   public int registerLevelSound(String path) {
+    if(path.endsWith(".wav")){
+        Util.validateWavFileBitRate(path);
+      }
     AudioPlayer sound = minim.loadFile(path);
     int id =sounds.length+levelSounds.size();
     levelSounds.add(sound);
@@ -250,6 +254,9 @@ public class MinimSoundHandler extends SoundHandler{
   }
 
   public int registerLevelNarration(String path){
+    if(path.endsWith(".wav")){
+        Util.validateWavFileBitRate(path);
+      }
     AudioPlayer sound = minim.loadFile(path);
     int id = narrations.length+levelNarrations.size();
     levelNarrations.add(sound);

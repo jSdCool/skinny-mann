@@ -7,6 +7,25 @@ import java.io.File;
 /**The manager and guardain of all the game's settings
 */
 public class Settings {
+  
+  /**Simple OS detection utility
+  @return The general os that is in use
+  */
+  static String detectOS() {
+    String name = System.getProperty("os.name");
+    name=name.toLowerCase();
+    if(name.contains("windows")) {
+      return "windows";
+    }
+    if(name.contains("linux")) {
+      return "linux";
+    }
+    if(name.contains("mac")) {
+      return "mac";
+    }
+    return "linux";
+  }
+  
   //all theese are the default value for theese settings
   private static final int version = 6;
 
@@ -29,6 +48,8 @@ public class Settings {
   private float soundSoundVolume = 1;
   private float soundNarrationVolume = 1;
   private int soundNarrationMode = 0;
+  
+  private String soundBackend;//no default set here!
 
   private int shadows = 3;
   private boolean disableMenuTransitions = false;
@@ -42,6 +63,13 @@ public class Settings {
   @param path The path to the settings file
   */
   public Settings(String path) {
+    //set the default sound backend
+    if(detectOS().equals("linux")){
+      //due to issues in Ubuntu 26.04 minim is the default on linux
+      soundBackend = "minim";
+    } else {
+      soundBackend = "processing";
+    }
     JSONArray file;
 
     saveFilePath = path;
@@ -108,6 +136,7 @@ public class Settings {
     soundSoundVolume =  data.getFloat("SFX volume");
     soundNarrationVolume =  data.getFloat("narration volume");
     soundNarrationMode = data.getInt("narrationMode");
+    soundBackend = data.getString("backend");
   }
   /**Load the other settings block from the settings file
   @param data The object with the settings data
@@ -179,6 +208,7 @@ public class Settings {
     data.setFloat("SFX volume", soundSoundVolume);
     data.setFloat("narration volume", soundNarrationVolume);
     data.setInt("narrationMode", soundNarrationMode);
+    data.setString("backend", soundBackend);
     data.setString("label", "music and sound volume");
     return data;
   }
@@ -285,6 +315,12 @@ public class Settings {
   */
   public int getSoundNarrationMode() {
     return soundNarrationMode;
+  }
+  /**Get the current backend set to be used for sounds
+  @return the name of the sound backend
+  */
+  public String getSoundBackend(){
+    return soundBackend;
   }
   /**Get the show mode
   @return The mode to use for drawing shadows. 0 = none, 1 = old, 2 = low, 3 = medium, 4 = high, 5 = very high, 6 = ultra. note: 5/6 do not work very well 
@@ -441,6 +477,13 @@ public class Settings {
   */
   public void setSoundNarrationMode(int soundNarrationMode) {
     this.soundNarrationMode=soundNarrationMode;
+    adjustStats();
+  }
+  /**Set the sound backend to use
+  @param backend The backend to use
+  */
+  public void setSoundBackend(String backend){
+    soundBackend = backend;
     adjustStats();
   }
   
